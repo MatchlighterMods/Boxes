@@ -7,7 +7,7 @@ import net.minecraft.tileentity.TileEntity;
 
 public class TileEntityBox extends TileEntity implements IInventory {
 
-	public int flapAngle;
+	public int flapAngle = 0;
 	public int color = 0xFFFFFF;
 	
 	@Override
@@ -63,6 +63,12 @@ public class TileEntityBox extends TileEntity implements IInventory {
 	@Override
 	public void closeChest() {
 
+	}
+
+	@Override
+	public void updateEntity() {
+		
+		super.updateEntity();
 	}
 
 }
