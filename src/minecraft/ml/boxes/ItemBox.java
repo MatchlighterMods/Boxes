@@ -30,4 +30,9 @@ public class ItemBox extends ItemBlock {
 		super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
 	}
 
+	@Override
+	public String getItemNameIS(ItemStack par1ItemStack) {
+		return "block.box";
+	}
+	
 }

@@ -13,6 +13,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 
 @Mod(modid="Boxes", name="Boxes", dependencies="required-after:Forge@[6.5,)")
 @NetworkMod(channels={"Boxes"}, versionBounds="[1.0,)", clientSideRequired=true, serverSideRequired=false, packetHandler=NetworkHandler.class)
@@ -46,6 +47,8 @@ public class Boxes {
 		GameRegistry.registerTileEntity(TileEntityBox.class, "box");
 		this.BlockBox = new BlockBox(boxBlockID);
 		GameRegistry.registerBlock(this.BlockBox, ItemBox.class, "box");
+		LanguageRegistry.instance().addStringLocalization("block.box.name", "en_US", "Box");
+		
 		
 		proxy.load();
 	}

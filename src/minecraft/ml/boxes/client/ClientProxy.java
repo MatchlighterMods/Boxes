@@ -1,5 +1,7 @@
 package ml.boxes.client;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.item.ItemStack;
@@ -61,8 +63,22 @@ public class ClientProxy extends CommonProxy {
 
 		@Override
 		public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-			BoxTESR.setBoxFlaps(0, 0, 0, 0);
-			BoxTESR.renderBox();
+			GL11.glPushMatrix();
+			switch (type){
+			case ENTITY:
+				GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+				BoxTESR.setBoxFlaps(5, 2, 0, 0);
+				break;
+			case EQUIPPED:
+				BoxTESR.setBoxFlaps(5, 2, 0, 0);
+				break;
+			case INVENTORY:
+				GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+				BoxTESR.setBoxFlaps(0, 0, 0, 0);
+				break;
+			}
+			BoxTESR.renderBox(0x44FF44);
+			GL11.glPopMatrix();
 		}
 
 		//To prevent default rendering.

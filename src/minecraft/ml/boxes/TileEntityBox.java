@@ -8,7 +8,7 @@ import net.minecraft.tileentity.TileEntity;
 public class TileEntityBox extends TileEntity implements IInventory {
 
 	public int flapAngle = 0;
-	public int color = 0xFFFFFF;
+	public int color = 0x44FF44;
 	
 	@Override
 	public int getSizeInventory() {
