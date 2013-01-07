@@ -1,31 +1,47 @@
 package ml.boxes.client;
 
-import org.lwjgl.opengl.GL11;
-
+import ml.boxes.BoxData;
+import ml.boxes.Boxes;
+import ml.boxes.CommonProxy;
+import ml.boxes.ItemBox;
+import ml.boxes.TileEntityBox;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.client.ForgeHooksClient;
+import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.client.IItemRenderer.ItemRenderType;
-import net.minecraftforge.client.IItemRenderer.ItemRendererHelper;
+
+import org.lwjgl.opengl.GL11;
+
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import ml.boxes.Boxes;
-import ml.boxes.CommonProxy;
-import ml.boxes.TileEntityBox;
 
 public class ClientProxy extends CommonProxy {
 
 	private BoxTERenderer BoxTESR;
 	
 	@Override
+	public Object getClientGuiElement(int ID, EntityPlayer player, World world,
+			int x, int y, int z) {
+		TileEntity te = world.getBlockTileEntity(x, y, z);
+		if (te instanceof TileEntityBox){
+			return new GuiBox(((TileEntityBox)te).data, player);
+		}
+		return null;
+	}
+
+	@Override
 	public void load(){
 		
 		MinecraftForgeClient.preloadTexture("/ml/Boxes/gfx/box.png");
+		MinecraftForgeClient.preloadTexture("/ml/Boxes/gfx/boxColor.png");
+		MinecraftForgeClient.preloadTexture("/ml/Boxes/gfx/sprites.png");
 		
 		BoxTESR = new BoxTERenderer();
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBox.class, BoxTESR);
@@ -77,7 +93,8 @@ public class ClientProxy extends CommonProxy {
 				BoxTESR.setBoxFlaps(0, 0, 0, 0);
 				break;
 			}
-			BoxTESR.renderBox(0x44FF44);
+			BoxData box = ItemBox.getDataFromIS(item);
+			BoxTESR.renderBox(ItemDye.dyeColors[item.getItemDamage()]);
 			GL11.glPopMatrix();
 		}
 

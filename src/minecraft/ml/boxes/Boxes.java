@@ -2,6 +2,9 @@ package ml.boxes;
 
 import java.util.logging.Level;
 
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.Configuration;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
@@ -25,16 +28,21 @@ public class Boxes {
 	public static Boxes instance;
 	
 	public static BlockBox BlockBox;
+	public static ItemCardboard ItemCardboard;
 	
 	public static int boxRendererID = -1;
 	public static int boxBlockID = 540;
+	public static int cardboardItemID = 3000;
+	
+	public static CreativeTabs BoxTab = new BoxesCreativeTab("boxes");
 	
 	@PreInit
 	public void PreInit(FMLPreInitializationEvent evt){
 		Configuration config = new Configuration(evt.getSuggestedConfigurationFile());
 		try {
 			config.load();
-			boxBlockID = config.get(Configuration.CATEGORY_BLOCK, "BlockID"	, boxBlockID).getInt();
+			boxBlockID = config.get(Configuration.CATEGORY_BLOCK, "BoxBlockID"	, boxBlockID).getInt();
+			cardboardItemID = config.get(Configuration.CATEGORY_ITEM, "CardboardItemID", cardboardItemID).getInt();
 		} catch (Exception e) {
 			FMLLog.log(Level.SEVERE, e, "Boxes had an error loading its configuration.");
 		} finally {
@@ -45,10 +53,20 @@ public class Boxes {
 	@Init
 	public void Init(FMLInitializationEvent evt){
 		GameRegistry.registerTileEntity(TileEntityBox.class, "box");
+		
 		this.BlockBox = new BlockBox(boxBlockID);
 		GameRegistry.registerBlock(this.BlockBox, ItemBox.class, "box");
-		LanguageRegistry.instance().addStringLocalization("block.box.name", "en_US", "Box");
 		
+		this.ItemCardboard = new ItemCardboard(cardboardItemID-256);
+		GameRegistry.registerItem(ItemCardboard, "cardboard");
+		
+		LanguageRegistry.instance().addStringLocalization("item.box.name", "en_US", "Box");
+		LanguageRegistry.instance().addStringLocalization("item.cardboard.name", "en_US", "Cardboard Sheet");
+		LanguageRegistry.instance().addStringLocalization("itemGroup.boxes", "en_US", "Boxes");
+		
+		
+		GameRegistry.addRecipe(new ItemStack(ItemCardboard, 1), "ppp", 'p', Item.paper);
+		GameRegistry.addRecipe(new RecipeBox());
 		
 		proxy.load();
 	}
