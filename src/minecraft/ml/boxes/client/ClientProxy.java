@@ -3,8 +3,9 @@ package ml.boxes.client;
 import ml.boxes.BoxData;
 import ml.boxes.Boxes;
 import ml.boxes.CommonProxy;
-import ml.boxes.ItemBox;
 import ml.boxes.TileEntityBox;
+import ml.boxes.inventory.ContainerBox;
+import ml.boxes.item.ItemBox;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.player.EntityPlayer;
@@ -29,9 +30,13 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world,
 			int x, int y, int z) {
-		TileEntity te = world.getBlockTileEntity(x, y, z);
-		if (te instanceof TileEntityBox){
-			return new GuiBox(((TileEntityBox)te).data, player);
+		switch (ID) {
+		case 1:
+		case 2: //Box
+			ContainerBox container = (ContainerBox)getServerGuiElement(ID, player, world, x, y, z);
+			if (container != null)
+				return new GuiBox(container , player);
+			break;
 		}
 		return null;
 	}
@@ -39,9 +44,9 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void load(){
 		
-		MinecraftForgeClient.preloadTexture("/ml/Boxes/gfx/box.png");
-		MinecraftForgeClient.preloadTexture("/ml/Boxes/gfx/boxColor.png");
-		MinecraftForgeClient.preloadTexture("/ml/Boxes/gfx/sprites.png");
+		MinecraftForgeClient.preloadTexture("/ml/boxes/gfx/box.png");
+		MinecraftForgeClient.preloadTexture("/ml/boxes/gfx/boxColor.png");
+		MinecraftForgeClient.preloadTexture("/ml/boxes/gfx/sprites.png");
 		
 		BoxTESR = new BoxTERenderer();
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBox.class, BoxTESR);

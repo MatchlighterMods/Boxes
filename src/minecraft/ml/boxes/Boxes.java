@@ -2,6 +2,9 @@ package ml.boxes;
 
 import java.util.logging.Level;
 
+import ml.boxes.block.BlockBox;
+import ml.boxes.item.ItemBox;
+import ml.boxes.item.ItemCardboard;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -15,6 +18,7 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
@@ -64,6 +68,7 @@ public class Boxes {
 		LanguageRegistry.instance().addStringLocalization("item.cardboard.name", "en_US", "Cardboard Sheet");
 		LanguageRegistry.instance().addStringLocalization("itemGroup.boxes", "en_US", "Boxes");
 		
+		NetworkRegistry.instance().registerGuiHandler(instance, proxy);
 		
 		GameRegistry.addRecipe(new ItemStack(ItemCardboard, 1), "ppp", 'p', Item.paper);
 		GameRegistry.addRecipe(new RecipeBox());

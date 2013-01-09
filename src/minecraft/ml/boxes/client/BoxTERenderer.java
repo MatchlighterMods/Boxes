@@ -7,6 +7,7 @@ import net.minecraft.tileentity.TileEntity;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
+import org.lwjgl.opengl.GL14;
 
 public class BoxTERenderer extends TileEntitySpecialRenderer {
 
@@ -14,17 +15,27 @@ public class BoxTERenderer extends TileEntitySpecialRenderer {
 	
 	@Override
 	public void renderTileEntityAt(TileEntity var1, double var2, double var4,
-			double var6, float var8) {
+			double var6, float tickTime) {
 				
 		TileEntityBox box = (TileEntityBox)var1;
 		int meta = box.worldObj.getBlockMetadata(box.xCoord, box.yCoord, box.zCoord);
 		
-		
 		GL11.glPushMatrix();
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         GL11.glTranslatef((float)var2, (float)var4, (float)var6);
+        GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+        GL11.glRotatef(box.facing*90F, 0F, 1F, 0F);
+        GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
         
-        setBoxFlaps(box.flapAngle + 3, box.flapAngle+1, box.flapAngle, box.flapAngle);
+        float openAngleInner = box.prevAngleInner + (box.flapAngleInner-box.prevAngleInner)*tickTime;
+        openAngleInner = (float)Math.sin(openAngleInner*3.14/2);
+        int innerAngle = (int)(120 * openAngleInner);
+        
+        float openAngleOuter = box.prevAngleOuter + (box.flapAngleOuter-box.prevAngleOuter)*tickTime;
+        openAngleOuter = (float)Math.sin(openAngleOuter*3.14/2);
+        int outerAngle = (int)(120 * openAngleOuter); 
+        
+        setBoxFlaps(outerAngle + 3, outerAngle+1, innerAngle, innerAngle);
 
         renderBox(ItemDye.dyeColors[meta]);
         
@@ -41,10 +52,10 @@ public class BoxTERenderer extends TileEntitySpecialRenderer {
 	}
 	
 	public void renderBox(int color){
-			
-		bindTextureByName("/ml/Boxes/gfx/box.png");
-		boxModel.renderAll();
 		
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glEnable(GL11.GL_BLEND);
+        
 		float red = ((color >> 16) & 0xFF)/255F;
 		float green = ((color >> 8) & 0xFF)/255F;
 		float blue = (color & 0xFF)/255F;
@@ -53,8 +64,12 @@ public class BoxTERenderer extends TileEntitySpecialRenderer {
 		
 		bindTextureByName("/ml/Boxes/gfx/boxColor.png");
 		boxModel.renderAll();
-		
+				
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        bindTextureByName("/ml/Boxes/gfx/box.png");
+                
+		boxModel.renderAll();
+		GL11.glDisable(GL11.GL_BLEND);
 	}
 	
 }

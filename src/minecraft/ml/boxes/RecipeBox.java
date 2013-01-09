@@ -1,5 +1,6 @@
 package ml.boxes;
 
+import ml.boxes.item.ItemBox;
 import net.minecraft.block.BlockCloth;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntitySheep;

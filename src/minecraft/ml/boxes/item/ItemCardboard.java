@@ -1,4 +1,4 @@
-package ml.boxes;
+package ml.boxes.item;
 
 import net.minecraft.item.Item;
 

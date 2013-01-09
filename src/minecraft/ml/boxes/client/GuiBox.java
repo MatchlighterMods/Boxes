@@ -1,16 +1,16 @@
 package ml.boxes.client;
 
 import ml.boxes.BoxData;
-import ml.boxes.ContainerBox;
 import ml.boxes.TileEntityBox;
+import ml.boxes.inventory.ContainerBox;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 
 public class GuiBox extends GuiContainer {
 
-	public GuiBox(BoxData box, EntityPlayer pl) {
-		super(new ContainerBox(box, pl));
+	public GuiBox(ContainerBox container, EntityPlayer pl) {
+		super(container);
 		// TODO Auto-generated constructor stub
 	}
 
