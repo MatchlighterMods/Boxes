@@ -13,10 +13,7 @@ public class ModelBox extends ModelBase {
 	public ModelRenderer flap2; //X-
 	public ModelRenderer flap3; //Z-
 	public ModelRenderer flap4; //Z+
-	public ModelRenderer sidexm;
-	public ModelRenderer sidexp;
-	public ModelRenderer sidezm;
-	public ModelRenderer sidezp;
+	public ModelRenderer[] sides = new ModelRenderer[4];
 	
 	public ModelBox() {
 		bottom = new ModelRenderer(this, 0, 0).setTextureSize(texX, texY);
@@ -48,31 +45,16 @@ public class ModelBox extends ModelBase {
 		flap4.rotationPointY = 13.4F;
 		flap4.rotationPointZ = 2F;
 
+		for (int i=0; i<4; i++){
+			ModelRenderer side = new ModelRenderer(this, i*32, 15).setTextureSize(texX, texY);
+			side.addBox(-7F, 0F, -7F, 1, 14, 14);
+			side.rotationPointX = 8F;
+			side.rotationPointY = 0F;
+			side.rotationPointZ = 8F;
+			side.rotateAngleY = (float)(i*(Math.PI/2));
+			sides[i] = side;
+		}
 		
-		
-		sidexm = new ModelRenderer(this, 0, 15).setTextureSize(texX, texY);
-		sidexm.addBox(0F, 0F, 0F, 1, 14, 14);
-		sidexm.rotationPointX = 1F;
-		sidexm.rotationPointY = 0F;
-		sidexm.rotationPointZ = 1F;
-
-		sidezm = new ModelRenderer(this, 32, 28).setTextureSize(texX, texY);
-		sidezm.addBox(0F, 0F, 0F, 12, 14, 1);
-		sidezm.rotationPointX = 2F;
-		sidezm.rotationPointY = 0F;
-		sidezm.rotationPointZ = 1F;
-		
-		sidexp = new ModelRenderer(this, 60, 15).setTextureSize(texX, texY);
-		sidexp.addBox(0F, 0F, 0F, 1, 14, 14);
-		sidexp.rotationPointX = 14F;
-		sidexp.rotationPointY = 0F;
-		sidexp.rotationPointZ = 1F;
-
-		sidezp = new ModelRenderer(this, 92, 28).setTextureSize(texX, texY);
-		sidezp.addBox(0F, 0F, 0F, 12, 14, 1);
-		sidezp.rotationPointX = 2F;
-		sidezp.rotationPointY = 0F;
-		sidezp.rotationPointZ = 14F;
 	}
 	
 	public void renderAll(){
@@ -81,9 +63,10 @@ public class ModelBox extends ModelBase {
 		flap2.render(0.0625F);
 		flap3.render(0.0625F);
 		flap4.render(0.0625F);
-		sidexm.render(0.0625F);
-		sidexp.render(0.0625F);
-		sidezm.render(0.0625F);
-		sidezp.render(0.0625F);
+		
+		for (ModelRenderer mr : sides){
+			mr.render(0.0625F);
+		}
+		
 	}
 }
