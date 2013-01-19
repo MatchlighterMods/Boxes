@@ -19,9 +19,12 @@ import net.minecraftforge.client.MinecraftForgeClient;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.registry.TickRegistry;
+import cpw.mods.fml.relauncher.Side;
 
 public class ClientProxy extends CommonProxy {
 
@@ -52,6 +55,7 @@ public class ClientProxy extends CommonProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBox.class, BoxTESR);
 		Boxes.boxRendererID = RenderingRegistry.getNextAvailableRenderId();
 		MinecraftForgeClient.registerItemRenderer(Boxes.boxBlockID, new BoxRenderer());
+		TickRegistry.registerTickHandler(new ContentTipHandler(), Side.CLIENT);
 	}
 	
 	public class BoxRenderer implements IItemRenderer, ISimpleBlockRenderingHandler {

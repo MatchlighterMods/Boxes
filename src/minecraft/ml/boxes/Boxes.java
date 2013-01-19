@@ -9,6 +9,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.Configuration;
+import net.minecraftforge.common.Property;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
@@ -30,6 +31,7 @@ public class Boxes {
 	public static CommonProxy proxy;
 	@Instance("Boxes")
 	public static Boxes instance;
+	public static Boolean neiInstalled;
 	
 	public static BlockBox BlockBox;
 	public static ItemCardboard ItemCardboard;
@@ -37,6 +39,8 @@ public class Boxes {
 	public static int boxRendererID = -1;
 	public static int boxBlockID = 540;
 	public static int cardboardItemID = 3000;
+	
+	public static Boolean shiftForTip;
 	
 	public static CreativeTabs BoxTab = new BoxesCreativeTab("boxes");
 	
@@ -47,6 +51,11 @@ public class Boxes {
 			config.load();
 			boxBlockID = config.get(Configuration.CATEGORY_BLOCK, "BoxBlockID"	, boxBlockID).getInt();
 			cardboardItemID = config.get(Configuration.CATEGORY_ITEM, "CardboardItemID", cardboardItemID).getInt();
+			
+			Property ShiftForTip = config.get(Configuration.CATEGORY_GENERAL, "requireShiftForContentTip", false);
+			ShiftForTip.comment = "Set to true to require the use of the Shift key to show the content tip";
+			shiftForTip = ShiftForTip.getBoolean(false);
+			
 		} catch (Exception e) {
 			FMLLog.log(Level.SEVERE, e, "Boxes had an error loading its configuration.");
 		} finally {

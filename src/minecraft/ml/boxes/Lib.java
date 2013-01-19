@@ -10,4 +10,8 @@ public class Lib {
 			return true;
 		return false;
 	}
+
+	public static Boolean pointInRect(int pntX, int pntY, int rectX, int rectY, int rectW, int rectH){
+		return (pntX >= rectX && pntY >= rectY && pntX <= rectX+rectW && pntY <= rectY + rectH);
+	}
 }
