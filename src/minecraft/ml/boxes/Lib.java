@@ -14,4 +14,38 @@ public class Lib {
 	public static Boolean pointInRect(int pntX, int pntY, int rectX, int rectY, int rectW, int rectH){
 		return (pntX >= rectX && pntY >= rectY && pntX <= rectX+rectW && pntY <= rectY + rectH);
 	}
+	
+	public static boolean pointInRect(int pntX, int pntY, rectangle r){
+		return pointInRect(pntX, pntY, r.xCoord, r.yCoord, r.width, r.height);
+	}
+	
+	public static XYPair determineBestGrid(int elements){
+		int a = (int)Math.round(Math.sqrt(elements));
+		int b = (int)Math.ceil(elements/a);
+		return a>b ? new XYPair(a, b) : new XYPair(b, a);
+	}
+	
+	public static class rectangle {
+		public int xCoord;
+		public int yCoord;
+		public int width;
+		public int height;
+		
+		public rectangle(int x, int y, int width, int height) {
+			this.xCoord = x;
+			this.yCoord = y;
+			this.width = width;
+			this.height = height;
+		}
+	}
+	
+	public static class XYPair {
+		public int X;
+		public int Y;
+		
+		public XYPair(int x, int y) {
+			this.X = x;
+			this.Y = y;
+		}
+	}
 }

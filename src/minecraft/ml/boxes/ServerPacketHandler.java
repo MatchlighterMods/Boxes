@@ -1,7 +1,12 @@
 package ml.boxes;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
+
+import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteStreams;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -15,7 +20,9 @@ public class ServerPacketHandler implements IPacketHandler {
 	@Override
 	public void onPacketData(INetworkManager manager,
 			Packet250CustomPayload packet, Player player) {
-		// TODO Auto-generated method stub
+		
+		ByteArrayDataInput data = ByteStreams.newDataInput(packet.data);
+		
 		
 	}
 	

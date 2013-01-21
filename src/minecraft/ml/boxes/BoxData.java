@@ -1,5 +1,8 @@
 package ml.boxes;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -68,7 +71,16 @@ public class BoxData implements IInventory {
 //		nameBuild += LanguageRegistry.instance().getStringLocalization("item.box.name", "en_US");
 //		return nameBuild;
 //	}
-		
+	
+	public List<ItemStack> getContainedItemStacks(){
+		List<ItemStack> iStacks = new ArrayList<ItemStack>();
+		for (int i=0; i<getSizeInventory(); i++){
+			if (inventory[i] != null)
+				iStacks.add(inventory[i]);
+		}
+		return iStacks;
+	}
+			
 	@Override
 	public int getSizeInventory() {
 		// TODO Auto-generated method stub
