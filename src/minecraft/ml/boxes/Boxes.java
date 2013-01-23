@@ -34,7 +34,7 @@ public class Boxes {
 	public static CommonProxy proxy;
 	@Instance("Boxes")
 	public static Boxes instance;
-	public static Boolean neiInstalled;
+	public static Boolean neiInstalled = false;
 	
 	public static BlockBox BlockBox;
 	public static ItemCardboard ItemCardboard;

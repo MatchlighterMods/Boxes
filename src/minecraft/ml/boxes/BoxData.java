@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -17,6 +18,7 @@ public class BoxData implements IInventory {
 	
 	public BoxData() {
 		inventory=new ItemStack[this.getSizeInventory()];
+		inventory[3] = new ItemStack(Item.axeDiamond);
 	}
 	
 	public BoxData(NBTTagCompound data){
@@ -83,14 +85,12 @@ public class BoxData implements IInventory {
 			
 	@Override
 	public int getSizeInventory() {
-		// TODO Auto-generated method stub
-		return 0;
+		return 18;
 	}
 
 	@Override
 	public ItemStack getStackInSlot(int var1) {
-		// TODO Auto-generated method stub
-		return null;
+		return inventory[var1];
 	}
 
 	@Override

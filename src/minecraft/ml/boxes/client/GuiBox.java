@@ -11,13 +11,15 @@ public class GuiBox extends GuiContainer {
 
 	public GuiBox(ContainerBox container, EntityPlayer pl) {
 		super(container);
-		// TODO Auto-generated constructor stub
+		this.xSize = 178;
+		this.ySize = 152;
 	}
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float var1, int var2,
 			int var3) {
-		// TODO Auto-generated method stub
+		this.mc.renderEngine.bindTexture(this.mc.renderEngine.getTexture("/ml/boxes/gfx/boxGui.png"));
+		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 
 	}
 

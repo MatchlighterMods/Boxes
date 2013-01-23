@@ -17,21 +17,16 @@ public class ContainerBox extends Container {
 		this.box = box;
 		this.player = pl;
 		
-		int leftCol = 0;
-		int ySize = 100;
-        for (int playerInvRow = 0; playerInvRow < 3; playerInvRow++)
-        {
-            for (int playerInvCol = 0; playerInvCol < 9; playerInvCol++)
-            {
-                addSlotToContainer(new Slot(pl.inventory, playerInvCol + playerInvRow * 9 + 9, leftCol + playerInvCol * 18, ySize - (4 - playerInvRow) * 18
-                        - 10));
-            }
-
-        }
+		int leftCol = 9;
+		int ySize = 152;
+		for (int slt=9; slt < pl.inventory.mainInventory.length; slt++){
+			int row = (int)Math.floor(slt/9) -1;
+			addSlotToContainer(new Slot(pl.inventory, slt, 9 + (slt%9)*18, ySize - 83 + row*18));
+		}
 
         for (int hotbarSlot = 0; hotbarSlot < 9; hotbarSlot++)
         {
-            addSlotToContainer(new Slot(pl.inventory, hotbarSlot, leftCol + hotbarSlot * 18, ySize - 24));
+            addSlotToContainer(new Slot(pl.inventory, hotbarSlot, leftCol + hotbarSlot * 18, ySize - 25));
         }
 	}
 	

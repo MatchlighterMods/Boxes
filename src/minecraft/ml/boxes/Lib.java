@@ -20,8 +20,10 @@ public class Lib {
 	}
 	
 	public static XYPair determineBestGrid(int elements){
+		if (elements == 0)
+			return new XYPair(0, 0);
 		int a = (int)Math.round(Math.sqrt(elements));
-		int b = (int)Math.ceil(elements/a);
+		int b = (int)Math.ceil(((float)elements)/a);
 		return a>b ? new XYPair(a, b) : new XYPair(b, a);
 	}
 	
@@ -47,5 +49,11 @@ public class Lib {
 			this.X = x;
 			this.Y = y;
 		}
+		
+		@Override
+		public String toString(){
+			return "X: " + X + ", Y: " + Y;
+		}
 	}
+
 }

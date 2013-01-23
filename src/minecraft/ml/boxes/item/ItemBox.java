@@ -116,7 +116,8 @@ public class ItemBox extends ItemBlock {
 	@Override
 	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World,
 			EntityPlayer par3EntityPlayer) {
-		par3EntityPlayer.openGui(Boxes.instance, 2, par2World, 0,0,0);
+		if (!par3EntityPlayer.isSneaking())
+			par3EntityPlayer.openGui(Boxes.instance, 2, par2World, 0,0,0);
 		return super.onItemRightClick(par1ItemStack, par2World, par3EntityPlayer);
 	}
 	
