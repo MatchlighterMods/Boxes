@@ -3,6 +3,7 @@ package ml.boxes;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -18,7 +19,7 @@ public class BoxData implements IInventory {
 	
 	public BoxData() {
 		inventory=new ItemStack[this.getSizeInventory()];
-		inventory[3] = new ItemStack(Item.axeDiamond);
+		inventory[3] = new ItemStack(Block.thinGlass, 7);
 	}
 	
 	public BoxData(NBTTagCompound data){

@@ -14,6 +14,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.RenderEngine;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -39,6 +40,7 @@ public class ContentTip extends Gui {
 	private int slotSize = 16;
 	private List<ItemStack> activeStacks = new ArrayList<ItemStack>();
 	private boolean resizing = false;
+	private boolean inInteractMode = false; //Better for keeping things in sync than calling interactable() from doRender() (doRender() may come before tick(), so it would render the background slot before resizing is set)
 	
 	public ContentTip(GuiContainer gui, Slot slot, int gWidth, int gHeight, int gTop, int gLeft) {
 		this.gui = gui;
@@ -68,14 +70,17 @@ public class ContentTip extends Gui {
 		int tex = re.getTexture("/ml/boxes/gfx/contentTipGui2.png");
 		re.bindTexture(tex);
 		
-		GL11.glPushMatrix();
-		GL11.glTranslatef(position.X, position.Y, 0);
 		int amX = mX - position.X;
 		int amY = mY - position.Y;
 		
-		zLevel = 250F;
-		itemRenderer.zLevel = 250F;
+		zLevel = 300F;
+		itemRenderer.zLevel = 300F;
+		
+		GL11.glPushMatrix();
+		GL11.glTranslatef(position.X, position.Y, 0);
 		GL11.glDisable(GL11.GL_LIGHTING);
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		
 		drawTexturedModalRect(0, 0, 0, 0, currentSize.X-9, currentSize.Y-7);
 		drawTexturedModalRect(7, 0, 178-(currentSize.X-7), 0, currentSize.X-7, currentSize.Y-7);
 		drawTexturedModalRect(7, 9, 178-(currentSize.X-7), 106-(currentSize.Y-9), currentSize.X-7, currentSize.Y-9);
@@ -91,7 +96,7 @@ public class ContentTip extends Gui {
 				int slotY = 10+row*18;
 				
 				re.bindTexture(tex);
-				if (interactable())
+				if (inInteractMode)
 					drawTexturedModalRect(slotX-1, slotY-1, 0, 106, 18, 18);
 				
 				if (activeStacks.get(i) != null){
@@ -99,7 +104,7 @@ public class ContentTip extends Gui {
 				}
 				
 				GL11.glDisable(GL11.GL_LIGHTING); //Will affect the next iteration as well (this is good)
-				if (interactable() && Lib.pointInRect(amX, amY, slotX, slotY, 16, 16)){
+				if (inInteractMode && Lib.pointInRect(amX, amY, slotX, slotY, 16, 16)){
 					this.drawGradientRect(slotX, slotY, slotX + 16, slotY + 16, -2130706433, -2130706433);
 				}
 			}
@@ -107,7 +112,7 @@ public class ContentTip extends Gui {
 		GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glPopMatrix();
 		
-		gui.manager.renderToolTips(mX+guiLeft, mY+guiTop);
+		//gui.manager.renderToolTips(mX+guiLeft, mY+guiTop);
 		
 		itemRenderer.zLevel = 0F;
 		zLevel = 0F;
@@ -116,14 +121,15 @@ public class ContentTip extends Gui {
 	public void tick(Minecraft mc, int mX, int mY){
 		activeStacks.clear();
 		if (!interactable()){
+			inInteractMode = false;
 			activeStacks.addAll(box.getContainedItemStacks());
 		} else {
+			inInteractMode = true;
 			for (int i=0; i<box.getSizeInventory(); i++){
 				activeStacks.add(i, box.getStackInSlot(i));
 			}
 		}
 		
-		//int elementCount = interactable(mX, mY) ? box.getSizeInventory() : box.getContainedItemStacks().size();
 		gridSize = Lib.determineBestGrid(activeStacks.size());
 		resizing = false;
 		int targX = gridSize.X*(slotSize+2) +16;
@@ -168,7 +174,7 @@ public class ContentTip extends Gui {
 	public boolean StillValid(int mX, int mY){
 		return ((Lib.pointInRect(mX-guiLeft, mY-guiTop, slot.xDisplayPosition, slot.yDisplayPosition, 16, 16) || 
 				(interactable() && pointInTip(mX, mY))) &&
-				slot.getHasStack()
+				slot.getHasStack() // TODO Add better checking to ensure that it is the same box.
 				);
 	}
 	
@@ -189,7 +195,7 @@ public class ContentTip extends Gui {
 	}
 	
 	public ItemStack getStackAtPosition(int pX, int pY){
-		if (!resizing){
+		if (inInteractMode){
 			int numStacks = activeStacks.size();
 			for (int i=0; i< activeStacks.size(); i++){
 				int col = i%gridSize.X;

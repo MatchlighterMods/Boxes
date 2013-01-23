@@ -43,7 +43,8 @@ public class Boxes {
 	public static int boxBlockID = 540;
 	public static int cardboardItemID = 3000;
 	
-	public static Boolean shiftForTip;
+	public static Boolean shiftForTip = false;
+	public static int tipReactionTime = 100;
 	
 	public static CreativeTabs BoxTab = new BoxesCreativeTab("boxes");
 	
@@ -55,9 +56,13 @@ public class Boxes {
 			boxBlockID = config.get(Configuration.CATEGORY_BLOCK, "BoxBlockID"	, boxBlockID).getInt();
 			cardboardItemID = config.get(Configuration.CATEGORY_ITEM, "CardboardItemID", cardboardItemID).getInt();
 			
-			Property ShiftForTip = config.get(Configuration.CATEGORY_GENERAL, "requireShiftForContentTip", false);
+			Property ShiftForTip = config.get(Configuration.CATEGORY_GENERAL, "requireShiftForContentTip", shiftForTip);
 			ShiftForTip.comment = "Set to true to require the use of the Shift key to show the content tip";
-			shiftForTip = ShiftForTip.getBoolean(false);
+			shiftForTip = ShiftForTip.getBoolean(shiftForTip);
+			
+			Property TipReactionTime = config.get(Configuration.CATEGORY_GENERAL, "tipReactionTime", tipReactionTime);
+			TipReactionTime.comment = "The number of Milliseconds that you need to hover over a box item befor it shows its contents tip";
+			tipReactionTime = TipReactionTime.getInt(tipReactionTime);
 			
 		} catch (Exception e) {
 			FMLLog.log(Level.SEVERE, e, "Boxes had an error loading its configuration.");

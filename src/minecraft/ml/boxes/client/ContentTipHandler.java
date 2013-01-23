@@ -26,6 +26,9 @@ public class ContentTipHandler implements ITickHandler {
 	
 	public static ContentTip currentTip;
 	
+	private Slot tickerSlot;
+	private long tickerTime = 0;
+	
 	@Override
 	public void tickStart(EnumSet<TickType> type, Object... tickData) {
 
@@ -34,7 +37,8 @@ public class ContentTipHandler implements ITickHandler {
 	@Override
 	public void tickEnd(EnumSet<TickType> type, Object... tickData) {
 		if (type.contains(TickType.RENDER)){
-			renderContentTip((Float)tickData[0]);
+			if (!Boxes.neiInstalled) //NEI Provides a better place for doing this. Ue it if we can
+				renderContentTip((Float)tickData[0]);
 		}else if (type.contains(TickType.CLIENT)){
 			updateCurrentTip();
 		}
@@ -60,17 +64,30 @@ public class ContentTipHandler implements ITickHandler {
 
             if (currentTip == null || !currentTip.StillValid(adjMouseX, adjMouseY)){
             	currentTip = null;
+            	boolean inASlot = false;
             	for (Object slt : asGuiContainer.inventorySlots.inventorySlots){
             		Slot asSlot = (Slot)slt;
-            		if (!asSlot.getHasStack() ||
-            				!(asSlot.getStack().getItem() instanceof ItemBox) ||
-            				!Lib.pointInRect(adjMouseX-guiLeft, adjMouseY-guiTop, asSlot.xDisplayPosition, asSlot.yDisplayPosition, 16, 16) || 
-            				(asGuiContainer instanceof GuiBox && false) || // TODO Make sure the tip will not be for the open box
-            				(Boxes.shiftForTip && !asGuiContainer.isShiftKeyDown())
-            				)
-            			continue;
-            		currentTip = new ContentTip(asGuiContainer, asSlot, guiXSize, guiYSize, guiTop, guiLeft);
+            		
+            		if (Lib.pointInRect(adjMouseX-guiLeft, adjMouseY-guiTop, asSlot.xDisplayPosition, asSlot.yDisplayPosition, 16, 16)){
+            			inASlot = true;
+            			if (tickerSlot != asSlot){
+	            			tickerSlot=asSlot;
+	            			tickerTime = mc.getSystemTime();
+            			}
+            			
+            			if (asSlot.getHasStack() &&
+                				(asSlot.getStack().getItem() instanceof ItemBox) &&
+                				//!(asGuiContainer instanceof GuiBox && false) && // TODO Make sure the tip will not be for the open box
+                				//(!Boxes.shiftForTip || asGuiContainer.isShiftKeyDown())
+                				(mc.getSystemTime() - tickerTime > Boxes.tipReactionTime)
+                				)
+                		{
+            				currentTip = new ContentTip(asGuiContainer, asSlot, guiXSize, guiYSize, guiTop, guiLeft);
+                		}
+            		}
             	}
+            	if (!inASlot)
+            		tickerSlot = null;
             }
             if (currentTip != null)
             	currentTip.tick(mc, adjMouseX, adjMouseY);
