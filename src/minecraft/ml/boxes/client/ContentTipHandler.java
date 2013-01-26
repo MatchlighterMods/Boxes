@@ -10,6 +10,7 @@ import ml.boxes.item.ItemBox;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.gui.inventory.GuiContainerCreative;
 import net.minecraft.inventory.Slot;
 
 import org.lwjgl.input.Mouse;
@@ -78,8 +79,9 @@ public class ContentTipHandler implements ITickHandler {
             			if (asSlot.getHasStack() &&
                 				(asSlot.getStack().getItem() instanceof ItemBox) &&
                 				//!(asGuiContainer instanceof GuiBox && false) && // TODO Make sure the tip will not be for the open box
-                				//(!Boxes.shiftForTip || asGuiContainer.isShiftKeyDown())
-                				(mc.getSystemTime() - tickerTime > Boxes.tipReactionTime)
+                				(!Boxes.shiftForTip || asGuiContainer.isShiftKeyDown()) &&
+                				(mc.getSystemTime() - tickerTime > Boxes.tipReactionTime || Boxes.shiftForTip)
+                				
                 				)
                 		{
             				currentTip = new ContentTip(asGuiContainer, asSlot, guiXSize, guiYSize, guiTop, guiLeft);
