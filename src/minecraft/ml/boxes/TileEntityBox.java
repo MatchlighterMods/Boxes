@@ -6,7 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
-public class TileEntityBox extends TileEntity implements IInventory {
+public class TileEntityBox extends TileEntity implements IInventory, IBox {
 
 	public float prevAngleOuter = 0F; //Used for smoothness when FPS > 1 tick
 	public float flapAngleOuter = 0F;
@@ -145,6 +145,24 @@ public class TileEntityBox extends TileEntity implements IInventory {
 	public void closeChest() {
 		users--;
 		worldObj.addBlockEvent(xCoord, yCoord, zCoord, Boxes.boxBlockID, 1, users);
+	}
+
+	@Override
+	public void saveData() {}
+
+	@Override
+	public void boxOpen() {
+		openChest();
+	}
+
+	@Override
+	public void boxClose() {
+		closeChest();
+	}
+
+	@Override
+	public BoxData getBoxData() {
+		return data;
 	}
 
 }

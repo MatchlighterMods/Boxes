@@ -19,7 +19,6 @@ public class BoxData implements IInventory {
 	
 	public BoxData() {
 		inventory=new ItemStack[this.getSizeInventory()];
-		inventory[3] = new ItemStack(Block.thinGlass, 7);
 	}
 	
 	public BoxData(NBTTagCompound data){
@@ -108,20 +107,18 @@ public class BoxData implements IInventory {
 
 	@Override
 	public void setInventorySlotContents(int var1, ItemStack var2) {
-		// TODO Auto-generated method stub
-
+		inventory[var1] = var2;
+		this.onInventoryChanged();
 	}
 
 	@Override
 	public String getInvName() {
-		// TODO Auto-generated method stub
-		return null;
+		return "box";
 	}
 
 	@Override
 	public int getInventoryStackLimit() {
-		// TODO Auto-generated method stub
-		return 0;
+		return 64;
 	}
 
 	@Override
@@ -136,15 +133,9 @@ public class BoxData implements IInventory {
 	}
 
 	@Override
-	public void openChest() {
-		// TODO Auto-generated method stub
-
-	}
+	public void openChest() {}
 
 	@Override
-	public void closeChest() {
-		// TODO Auto-generated method stub
-
-	}
+	public void closeChest() {}
 
 }

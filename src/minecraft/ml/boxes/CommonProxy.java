@@ -1,7 +1,7 @@
 package ml.boxes;
 
+import ml.boxes.inventory.ContainerBox;
 import ml.boxes.inventory.ContainerBoxItem;
-import ml.boxes.inventory.ContainerBoxTE;
 import ml.boxes.item.ItemBox;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -20,7 +20,7 @@ public class CommonProxy implements IGuiHandler {
 		case 1: //BoxIsAsTileEntity
 			TileEntity te = world.getBlockTileEntity(x, y, z);
 			if (te instanceof TileEntityBox){
-				return new ContainerBoxTE(((TileEntityBox)te), player);
+				return new ContainerBox(((TileEntityBox)te), player);
 			}
 			break;
 		case 2: //BoxIsAsItem

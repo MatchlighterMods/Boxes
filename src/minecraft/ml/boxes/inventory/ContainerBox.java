@@ -1,6 +1,7 @@
 package ml.boxes.inventory;
 
 import ml.boxes.BoxData;
+import ml.boxes.IBox;
 import ml.boxes.item.ItemBox;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -10,12 +11,13 @@ import net.minecraft.item.ItemStack;
 
 public class ContainerBox extends Container {
 
-	public final BoxData box;
+	public final IBox box;
 	public final EntityPlayer player;
 	
-	public ContainerBox(BoxData box, EntityPlayer pl) {
+	public ContainerBox(IBox box, EntityPlayer pl) {
 		this.box = box;
 		this.player = pl;
+		box.boxOpen();
 		
 		int leftCol = 9;
 		int ySize = 152;
@@ -28,28 +30,29 @@ public class ContainerBox extends Container {
         {
             addSlotToContainer(new Slot(pl.inventory, hotbarSlot, leftCol + hotbarSlot * 18, ySize - 25));
         }
+        
+        for (int sln = 0; sln < box.getBoxData().getSizeInventory(); sln++){
+        	addSlotToContainer(new SlotBox(box.getBoxData(), sln, 8 + (sln%9)*18, 10 + (int)Math.floor(sln/9)*18));
+        }
 	}
 	
 	@Override
 	public boolean canInteractWith(EntityPlayer var1) {
-		return box.isUseableByPlayer(var1);
+		return box.getBoxData().isUseableByPlayer(var1);
 	}
 	
 	@Override
 	public ItemStack slotClick(int slotNum, int mouseBtn, int action,
 			EntityPlayer par4EntityPlayer) {
-		saveInventory();
+		box.saveData();
 		return super.slotClick(slotNum, mouseBtn, action, par4EntityPlayer);
 	}
 
 	@Override
 	public void onCraftGuiClosed(EntityPlayer par1EntityPlayer) {
 		super.onCraftGuiClosed(par1EntityPlayer);
-		saveInventory();
-	}
-
-	public void saveInventory(){
-		
+		box.saveData();
+		box.boxClose();
 	}
 	
 	protected class SlotBox extends Slot{
@@ -64,6 +67,5 @@ public class ContainerBox extends Container {
 				return false;
 			return true;
 		}
-		
 	}
 }
