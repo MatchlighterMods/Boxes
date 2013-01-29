@@ -18,7 +18,7 @@ public class BoxTERenderer extends TileEntitySpecialRenderer {
 			double var6, float tickTime) {
 				
 		TileEntityBox box = (TileEntityBox)var1;
-		int meta = box.worldObj.getBlockMetadata(box.xCoord, box.yCoord, box.zCoord);
+		//int meta = box.worldObj.getBlockMetadata(box.xCoord, box.yCoord, box.zCoord);
 		
 		GL11.glPushMatrix();
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
@@ -37,7 +37,7 @@ public class BoxTERenderer extends TileEntitySpecialRenderer {
         
         setBoxFlaps(outerAngle + 3, outerAngle+1, innerAngle, innerAngle);
 
-        renderBox(ItemDye.dyeColors[meta]);
+        renderBox(ItemDye.dyeColors[box.getBoxData().boxColor]);
         
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
         GL11.glPopMatrix();
