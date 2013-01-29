@@ -1,6 +1,10 @@
 package ml.boxes;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemDye;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class Lib {
 
@@ -54,6 +58,15 @@ public class Lib {
 		public String toString(){
 			return "X: " + X + ", Y: " + Y;
 		}
+	}
+	
+	public static ItemStack getEquivVanillaDye(ItemStack is){
+		for (int i=0; i<ItemDye.dyeColorNames.length; i++){
+			if (OreDictionary.getOreID(is) == OreDictionary.getOreID(new ItemStack(Item.dyePowder, 1, i))){
+				return new ItemStack(Item.dyePowder, 1, i);
+			}
+		}
+		return null;
 	}
 
 }

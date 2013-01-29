@@ -15,7 +15,7 @@ public class BoxData implements IInventory {
 
 	private ItemStack[] inventory;
 	public String boxName = "";
-	//public int boxColor = 2;
+	public int boxColor = 2;
 	
 	public BoxData() {
 		inventory=new ItemStack[this.getSizeInventory()];

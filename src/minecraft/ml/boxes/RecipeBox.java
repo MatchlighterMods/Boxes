@@ -1,5 +1,7 @@
 package ml.boxes;
 
+import java.util.ArrayList;
+
 import ml.boxes.item.ItemBox;
 import net.minecraft.block.BlockCloth;
 import net.minecraft.entity.Entity;
@@ -12,7 +14,13 @@ import net.minecraft.world.World;
 
 public class RecipeBox implements IRecipe {
 	
-	ItemStack[] pattern;
+	public final Object[] pattern;
+	
+    private static final int MAX_CRAFT_GRID_WIDTH = 3;
+    private static final int MAX_CRAFT_GRID_HEIGHT = 3;
+    
+    public int width = 3;
+    public int height = 3;
 	
 	public RecipeBox() {
 		ItemStack cb = new ItemStack(Boxes.ItemCardboard);
@@ -22,20 +30,81 @@ public class RecipeBox implements IRecipe {
 				cb,cb,cb};
 	}
 	
-	@Override
-	public boolean matches(InventoryCrafting var1, World var2) {
-		for (int i=0; i<9; i++){
-			if (!checkItemEquals(pattern[i], var1.getStackInSlot(i)))
-				return false;
-		}
-		return true;
-	}
+    @Override
+    public boolean matches(InventoryCrafting inv, World world)
+    {        
+        for (int x = 0; x <= MAX_CRAFT_GRID_WIDTH - width; x++)
+        {
+            for (int y = 0; y <= MAX_CRAFT_GRID_HEIGHT - height; ++y)
+            {
+            	if (checkMatch(inv, x, y, true))
+            		return true;
+            }
+        }
+    
+        return false;
+    }
+    
+    private boolean checkMatch(InventoryCrafting inv, int startX, int startY, boolean mirror)
+    {
+        for (int x = 0; x < MAX_CRAFT_GRID_WIDTH; x++)
+        {
+            for (int y = 0; y < MAX_CRAFT_GRID_HEIGHT; y++)
+            {
+                int subX = x - startX;
+                int subY = y - startY;
+                Object target = null;
 
+                if (subX >= 0 && subY >= 0 && subX < width && subY < height)
+                {
+                    if (mirror)
+                    {
+                        target = pattern[width - subX - 1 + subY * width];
+                    }
+                    else
+                    {
+                        target = pattern[subX + subY * width];
+                    }
+                }
+
+                ItemStack slot = inv.getStackInRowAndColumn(x, y);
+                
+                if (target instanceof ItemStack)
+                {
+                    if (!checkItemEquals((ItemStack)target, slot))
+                    {
+                        return false;
+                    }
+                }
+                else if (target instanceof ArrayList)
+                {
+                    boolean matched = false;
+                    
+                    for (ItemStack item : (ArrayList<ItemStack>)target)
+                    {
+                        matched = matched || checkItemEquals(item, slot);
+                    }
+                    
+                    if (!matched)
+                    {
+                        return false;
+                    }
+                }
+                else if (target == null && slot != null)
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+	
 	@Override
 	public ItemStack getCraftingResult(InventoryCrafting var1) {
-		ItemStack is = new ItemStack(Boxes.BlockBox, 1, var1.getStackInRowAndColumn(1, 1).getItemDamage());
+		ItemStack is = new ItemStack(Boxes.BlockBox, 1);
 		BoxData data = ItemBox.getDataFromIS(is);
-		//data.boxColor = var1.getStackInRowAndColumn(1, 1).getItemDamage();
+		data.boxColor = Lib.getEquivVanillaDye(var1.getStackInRowAndColumn(1, 1)).getItemDamage();
 		ItemBox.setBoxDataToIS(is, data);
 		
 		return is;

@@ -15,6 +15,7 @@ import codechicken.nei.forge.IContainerDrawHandler;
 import codechicken.nei.forge.IContainerInputHandler;
 import codechicken.nei.forge.IContainerObjectHandler;
 import codechicken.nei.forge.IContainerTooltipHandler;
+import codechicken.nei.recipe.TemplateRecipeHandler;
 
 public class NEI_Boxes_Config implements IConfigureNEI {
 
@@ -26,6 +27,10 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 		GuiContainerManager.addInputHandler(handler);
 		GuiContainerManager.addObjectHandler(handler);
 		GuiContainerManager.addDrawHandler(handler);
+		
+		TemplateRecipeHandler recipeHandler = new BoxesRecipeHandler();
+		API.registerRecipeHandler(recipeHandler);
+		API.registerUsageHandler(recipeHandler);
 		
 		MultiItemRange range = new MultiItemRange();
 		range.add(Boxes.BlockBox);
