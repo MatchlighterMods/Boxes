@@ -94,9 +94,35 @@ public class BoxData implements IInventory {
 	}
 
 	@Override
-	public ItemStack decrStackSize(int var1, int var2) {
-		// TODO Auto-generated method stub
-		return null;
+	public ItemStack decrStackSize(int slotIndex, int var2) {
+        if (this.inventory[slotIndex] != null)
+        {
+            ItemStack var3;
+
+            if (this.inventory[slotIndex].stackSize <= var2)
+            {
+                var3 = this.inventory[slotIndex];
+                this.inventory[slotIndex] = null;
+                this.onInventoryChanged();
+                return var3;
+            }
+            else
+            {
+                var3 = this.inventory[slotIndex].splitStack(var2);
+
+                if (this.inventory[slotIndex].stackSize == 0)
+                {
+                    this.inventory[slotIndex] = null;
+                }
+
+                this.onInventoryChanged();
+                return var3;
+            }
+        }
+        else
+        {
+            return null;
+        }
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package ml.boxes.inventory;
 
 import ml.boxes.BoxData;
 import ml.boxes.IBox;
+import ml.boxes.ItemIBox;
 import ml.boxes.item.ItemBox;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -44,8 +45,13 @@ public class ContainerBox extends Container {
 	@Override
 	public ItemStack slotClick(int slotNum, int mouseBtn, int action,
 			EntityPlayer par4EntityPlayer) {
+		//if (box instanceof ItemIBox && ((ItemIBox)box).stack == getSlot(slotNum).getStack()){ //TODO check for -999
+			//par4EntityPlayer.closeScreen();
+		//	return null;
+		//}
+		ItemStack ret = super.slotClick(slotNum, mouseBtn, action, par4EntityPlayer);
 		box.saveData();
-		return super.slotClick(slotNum, mouseBtn, action, par4EntityPlayer);
+		return ret;
 	}
 
 	@Override

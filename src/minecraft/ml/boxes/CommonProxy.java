@@ -26,7 +26,7 @@ public class CommonProxy implements IGuiHandler {
 		case 2: //BoxIsAsItem
 			ItemStack is = player.getHeldItem();
 			if (is != null && is.getItem() instanceof ItemBox){
-				return new ContainerBoxItem(is, player);
+				return new ContainerBox(new ItemIBox(is), player);
 			}
 			break;
 		}

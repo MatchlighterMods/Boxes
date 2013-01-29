@@ -1,5 +1,6 @@
 package ml.boxes.inventory;
 
+import ml.boxes.ItemIBox;
 import ml.boxes.item.ItemBox;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
@@ -7,17 +8,11 @@ import net.minecraft.item.ItemStack;
 
 public class ContainerBoxItem extends ContainerBox {
 
-	private final ItemStack boxStack;
+	private final ItemIBox itemIBox;
 	
-	public ContainerBoxItem(ItemStack boxStack, EntityPlayer pl) {
-		super(ItemBox.getDataFromIS(boxStack), pl);
-		this.boxStack = boxStack;
-	}
-
-	@Override
-	public void saveInventory() {
-		super.saveInventory();
-		ItemBox.setBoxDataToIS(boxStack, box);
+	public ContainerBoxItem(ItemIBox box, EntityPlayer pl) {
+		super(box, pl);
+		itemIBox = box;
 	}
 
 	@Override
