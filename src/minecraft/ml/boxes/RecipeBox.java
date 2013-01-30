@@ -21,6 +21,8 @@ public class RecipeBox implements IRecipe {
     
     public int width = 3;
     public int height = 3;
+    
+    private ItemStack currentOut;
 	
 	public RecipeBox() {
 		ItemStack cb = new ItemStack(Boxes.ItemCardboard);
@@ -31,8 +33,7 @@ public class RecipeBox implements IRecipe {
 	}
 	
     @Override
-    public boolean matches(InventoryCrafting inv, World world)
-    {        
+    public boolean matches(InventoryCrafting inv, World world){
         for (int x = 0; x <= MAX_CRAFT_GRID_WIDTH - width; x++)
         {
             for (int y = 0; y <= MAX_CRAFT_GRID_HEIGHT - height; ++y)
@@ -106,7 +107,7 @@ public class RecipeBox implements IRecipe {
 		BoxData data = ItemBox.getDataFromIS(is);
 		data.boxColor = Lib.getEquivVanillaDye(var1.getStackInRowAndColumn(1, 1)).getItemDamage();
 		ItemBox.setBoxDataToIS(is, data);
-		
+		System.out.println(Integer.toHexString(is.hashCode()));
 		return is;
 	}
 

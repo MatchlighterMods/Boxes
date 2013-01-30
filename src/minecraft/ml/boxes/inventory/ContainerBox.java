@@ -1,6 +1,7 @@
 package ml.boxes.inventory;
 
 import ml.boxes.BoxData;
+import ml.boxes.Boxes;
 import ml.boxes.IBox;
 import ml.boxes.ItemIBox;
 import ml.boxes.item.ItemBox;
@@ -50,15 +51,21 @@ public class ContainerBox extends Container {
 		//	return null;
 		//}
 		ItemStack ret = super.slotClick(slotNum, mouseBtn, action, par4EntityPlayer);
-		box.saveData();
+		save(par4EntityPlayer);
 		return ret;
 	}
 
 	@Override
 	public void onCraftGuiClosed(EntityPlayer par1EntityPlayer) {
 		super.onCraftGuiClosed(par1EntityPlayer);
-		box.saveData();
+		save(par1EntityPlayer);
 		box.boxClose();
+	}
+	
+	private void save(EntityPlayer pl){
+		if (!pl.worldObj.isRemote){
+			box.saveData();
+		}
 	}
 	
 	protected class SlotBox extends Slot{
