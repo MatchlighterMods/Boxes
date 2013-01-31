@@ -24,7 +24,7 @@ public class CommonProxy implements IGuiHandler {
 			}
 			break;
 		case 2: //BoxIsAsItem
-			ItemStack is = player.getHeldItem();
+			ItemStack is = player.getCurrentEquippedItem();
 			if (is != null && is.getItem() instanceof ItemBox){
 				if (!world.isRemote)
 					System.out.println(Integer.toHexString(is.hashCode()));

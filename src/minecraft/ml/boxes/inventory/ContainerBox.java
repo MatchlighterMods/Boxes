@@ -56,6 +56,41 @@ public class ContainerBox extends Container {
 	}
 
 	@Override
+    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
+    {
+        ItemStack var3 = null;
+        Slot var4 = (Slot)this.inventorySlots.get(par2);
+
+        if (var4 != null && var4.getHasStack())
+        {
+            ItemStack var5 = var4.getStack();
+            var3 = var5.copy();
+            if (par2 < 36)
+            {
+                if (!this.mergeItemStack(var5, 36, this.inventorySlots.size(), false))
+                {
+                    return null;
+                }
+            }
+            else if (!this.mergeItemStack(var5, 0, 36, true))
+            {
+                return null;
+            }
+
+            if (var5.stackSize == 0)
+            {
+                var4.putStack((ItemStack)null);
+            }
+            else
+            {
+                var4.onSlotChanged();
+            }
+        }
+
+        return var3;
+    }
+	
+	@Override
 	public void onCraftGuiClosed(EntityPlayer par1EntityPlayer) {
 		super.onCraftGuiClosed(par1EntityPlayer);
 		save(par1EntityPlayer);
