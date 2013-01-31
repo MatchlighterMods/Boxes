@@ -13,8 +13,7 @@ public class ItemIBox implements IBox {
 	}
 	
 	@Override
-	public void saveData() { //TODO Fix this
-		System.out.println(Integer.toHexString(stack.hashCode()));
+	public void saveData() {
 		ItemBox.setBoxDataToIS(stack, data);
 	}
 

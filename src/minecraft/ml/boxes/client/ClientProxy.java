@@ -3,12 +3,14 @@ package ml.boxes.client;
 import ml.boxes.BoxData;
 import ml.boxes.Boxes;
 import ml.boxes.CommonProxy;
+import ml.boxes.ItemIBox;
 import ml.boxes.TileEntityBox;
 import ml.boxes.inventory.ContainerBox;
 import ml.boxes.item.ItemBox;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -38,7 +40,7 @@ public class ClientProxy extends CommonProxy {
 		case 2: //Box
 			ContainerBox container = (ContainerBox)getServerGuiElement(ID, player, world, x, y, z);
 			if (container != null)
-				return new GuiBox(container , player);
+				return new GuiBox(container, player);
 			break;
 		}
 		return null;

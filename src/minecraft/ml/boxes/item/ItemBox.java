@@ -45,6 +45,11 @@ public class ItemBox extends ItemBlock {
 	}
 
 	@Override
+	public int getMaxItemUseDuration(ItemStack par1ItemStack) {
+		return 1;
+	}
+
+	@Override
 	public void addInformation(ItemStack par1ItemStack,
 			EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
 		// TODO Auto-generated method stub
@@ -108,8 +113,7 @@ public class ItemBox extends ItemBlock {
 			return super.onItemUse(par1ItemStack, par2EntityPlayer, par3World, par4, par5,
 					par6, par7, par8, par9, par10);
 		}
-		
-		//par2EntityPlayer.openGui(Boxes.instance, 2, par3World, 0,0,0);
+
 		return false;
 	}
 
