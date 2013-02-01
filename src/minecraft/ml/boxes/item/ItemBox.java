@@ -100,7 +100,11 @@ public class ItemBox extends ItemBlock {
 	public void getSubItems(int par1, CreativeTabs par2CreativeTabs,
 			List par3List) {
 		for (int i=0; i<15; i++){
-			par3List.add(new ItemStack(Boxes.BlockBox, 1, i));
+			ItemStack is = new ItemStack(Boxes.BlockBox, 1);
+			BoxData bd = new BoxData();
+			bd.boxColor = i;
+			setBoxDataToIS(is, bd);
+			par3List.add(is);
 		}
 	}
 

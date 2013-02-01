@@ -3,9 +3,9 @@ package ml.boxes;
 import java.util.logging.Level;
 
 import ml.boxes.block.BlockBox;
-import ml.boxes.client.ClientPacketHandler;
 import ml.boxes.item.ItemBox;
 import ml.boxes.item.ItemCardboard;
+import ml.boxes.network.PacketHandler;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -21,13 +21,11 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.network.NetworkMod.SidedPacketHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 @Mod(modid="Boxes", name="Boxes", dependencies="required-after:Forge@[6.5,)")
-@NetworkMod(versionBounds="[1.0,)", clientSideRequired=true, serverSideRequired=false, serverPacketHandlerSpec=@SidedPacketHandler(channels={"Boxes"}, packetHandler=ServerPacketHandler.class),
-clientPacketHandlerSpec=@SidedPacketHandler(packetHandler = ClientPacketHandler.class, channels={"Boxes"}))
+@NetworkMod(versionBounds="[1.0,)", clientSideRequired=true, serverSideRequired=false, channels={"Boxes"}, packetHandler=PacketHandler.class)
 public class Boxes {
 	
 	@SidedProxy(serverSide="ml.boxes.CommonProxy", clientSide="ml.boxes.client.ClientProxy")

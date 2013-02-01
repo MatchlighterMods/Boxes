@@ -46,10 +46,10 @@ public class ContainerBox extends Container {
 	@Override
 	public ItemStack slotClick(int slotNum, int mouseBtn, int action,
 			EntityPlayer par4EntityPlayer) {
-		//if (box instanceof ItemIBox && ((ItemIBox)box).stack == getSlot(slotNum).getStack()){ //TODO check for -999
-			//par4EntityPlayer.closeScreen();
-		//	return null;
-		//}
+		if (box instanceof ItemIBox && getSlot(slotNum) != null && ((ItemIBox)box).stack == getSlot(slotNum).getStack()){ //TODO check for -999
+			par4EntityPlayer.closeScreen();
+			return null;
+		}
 		ItemStack ret = super.slotClick(slotNum, mouseBtn, action, par4EntityPlayer);
 		save(par4EntityPlayer);
 		return ret;

@@ -1,9 +1,12 @@
 package ml.boxes;
 
+import ml.boxes.network.packets.PacketUpdateData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 
 public class TileEntityBox extends TileEntity implements IInventory, IBox {
@@ -163,6 +166,11 @@ public class TileEntityBox extends TileEntity implements IInventory, IBox {
 	@Override
 	public BoxData getBoxData() {
 		return data;
+	}
+
+	@Override
+	public Packet getDescriptionPacket() {
+		return (new PacketUpdateData(this)).convertToPkt250();
 	}
 
 }

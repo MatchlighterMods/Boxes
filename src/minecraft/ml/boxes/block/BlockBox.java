@@ -27,7 +27,6 @@ public class BlockBox extends BlockContainer {
 
 	@Override
 	public TileEntity createTileEntity(World world, int metadata) {
-		// TODO Auto-generated method stub
 		return new TileEntityBox();
 	}
 

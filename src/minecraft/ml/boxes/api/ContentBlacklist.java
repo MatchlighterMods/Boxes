@@ -10,7 +10,7 @@ import net.minecraft.item.Item;
  * @author Matchlighter
  *
  */
-public class blacklist {
+public class ContentBlacklist {
 	private static List<Item> blacklist = new ArrayList<Item>();
 	
 	
