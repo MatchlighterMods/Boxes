@@ -107,16 +107,17 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 		@Override
 		public ItemStack getStackUnderMouse(GuiContainer gui, int mousex,
 				int mousey) {
-			if (ContentTipHandler.currentTip != null)
-				return ContentTipHandler.currentTip.getStackAtPosition(mousex, mousey);
+			//if (ContentTipHandler.currentTip != null)
+				//return ContentTipHandler.currentTip.getStackAtPosition(mousex, mousey);
 			return null;
 		}
 
-		private boolean hideTips = true;
+		private boolean hideTips = false;
 		@Override
 		public boolean objectUnderMouse(GuiContainer gui, int mousex, int mousey) {
-			hideTips = ContentTipHandler.currentTip != null && ContentTipHandler.currentTip.getStackAtPosition(mousex, mousey)==null; //&& ContentTipHandler.currentTip.pointInTip(mousex, mousey);
-			return ContentTipHandler.currentTip != null && ContentTipHandler.currentTip.pointInTip(mousex, mousey);
+			//hideTips = ContentTipHandler.currentTip != null && ContentTipHandler.currentTip.getStackAtPosition(mousex, mousey)==null; //&& ContentTipHandler.currentTip.pointInTip(mousex, mousey);
+			//return ContentTipHandler.currentTip != null && ContentTipHandler.currentTip.pointInTip(mousex, mousey);
+			return false;
 		}
 
 		@Override
@@ -130,8 +131,8 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 
 		@Override
 		public void renderObjects(GuiContainer gui, int mousex, int mousey) {
-			if (ContentTipHandler.currentTip != null)
-				ContentTipHandler.currentTip.doRender(gui.mc, mousex, mousey, 0);
+			//if (ContentTipHandler.currentTip != null)
+				//ContentTipHandler.currentTip.doRender(gui.mc, mousex, mousey, 0);
 		}
 
 		@Override

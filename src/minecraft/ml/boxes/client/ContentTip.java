@@ -16,6 +16,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.RenderEngine;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import cpw.mods.fml.relauncher.Side;
@@ -24,7 +25,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ContentTip extends Gui {
 	
-	public RenderItem itemRenderer = new RenderItem();
+	public static RenderItem itemRenderer = new RenderItem();
 	
 	public final GuiContainer gui;
 	public final Slot slot;
@@ -58,11 +59,11 @@ public class ContentTip extends Gui {
         itemRenderer.renderItemOverlayIntoGUI(gui.fontRenderer, re, is, x, y);
 	}
 	
-	private int getSlotAt(int x, int y){
-		int ax = x - position.X-5;
-		int ay = y-position.Y-5;
-		return (int)Math.floor(ax/18) + (int)Math.floor(ay/18)*gridSize.X;
-	}
+//	private int getSlotAt(int x, int y){
+//		int ax = x - position.X-5;
+//		int ay = y-position.Y-5;
+//		return (int)Math.floor(ax/18) + (int)Math.floor(ay/18)*gridSize.X;
+//	}
 	
 	public void doRender(Minecraft mc, int mX, int mY, float tickTime){
 		RenderEngine re = mc.renderEngine;
@@ -118,66 +119,7 @@ public class ContentTip extends Gui {
 		zLevel = 0F;
 	}
 	
-	public void tick(Minecraft mc, int mX, int mY){
-		activeStacks.clear();
-		if (!interactable()){
-			inInteractMode = false;
-			activeStacks.addAll(box.getContainedItemStacks());
-		} else {
-			inInteractMode = true;
-			for (int i=0; i<box.getSizeInventory(); i++){
-				activeStacks.add(i, box.getStackInSlot(i));
-			}
-		}
 		
-		gridSize = Lib.determineBestGrid(activeStacks.size());
-		resizing = false;
-		int targX = gridSize.X*(slotSize+2) +16;
-		int targY = gridSize.Y*(slotSize+2) +16;
-		
-		if (targX != currentSize.X || targY != currentSize.Y){
-			resizing = true;
-			if (targX > currentSize.X){
-				currentSize.X += 16;
-				if (targX < currentSize.X)
-					currentSize.X = targX;
-			} else if (targX < currentSize.X) {
-				currentSize.X -= 16;
-				if (targX > currentSize.X)
-					currentSize.X = targX;
-			}
-			
-			if (targY > currentSize.Y){
-				currentSize.Y += 16;
-				if (targY < currentSize.Y)
-					currentSize.Y = targY;
-			} else if (targY < currentSize.Y) {
-				currentSize.Y -= 16;
-				if (targY > currentSize.Y)
-					currentSize.Y = targY;
-			}
-		}
-				
-		position.X = guiLeft + slot.xDisplayPosition + (slotSize-currentSize.X)/2;
-		position.Y = guiTop + slot.yDisplayPosition - currentSize.Y;
-		
-	}
-	
-	private boolean interactable(){
-		return (Boxes.neiInstalled && gui.isShiftKeyDown());
-	}
-	
-	public boolean pointInTip(int px, int py){
-		return Lib.pointInRect(px, py, position.X, position.Y, currentSize.X, currentSize.Y);
-	}
-	
-	public boolean StillValid(int mX, int mY){
-		return ((Lib.pointInRect(mX-guiLeft, mY-guiTop, slot.xDisplayPosition, slot.yDisplayPosition, 16, 16) || 
-				(interactable() && pointInTip(mX, mY))) &&
-				slot.getHasStack() // TODO Add better checking to ensure that it is the same box.
-				);
-	}
-	
 	public int getSlotAtPosition(int pX, int pY){
 		int numStacks = activeStacks.size();
 		for (int i=0; i< activeStacks.size(); i++){
