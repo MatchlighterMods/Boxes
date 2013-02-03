@@ -38,7 +38,7 @@ public class ContentTipHandler implements ITickHandler {
 	@Override
 	public void tickEnd(EnumSet<TickType> type, Object... tickData) {
 		if (type.contains(TickType.RENDER)){
-			if (!Boxes.neiInstalled) //NEI Provides a better place for doing this. Ue it if we can
+			if (!Boxes.neiInstalled) //NEI Provides a better place for doing this. Use it if we can
 				renderContentTip((Float)tickData[0]);
 		}else if (type.contains(TickType.CLIENT)){
 			updateCurrentTip();
@@ -84,7 +84,7 @@ public class ContentTipHandler implements ITickHandler {
                 				
                 				)
                 		{
-            				currentTip = new ContentTip(asGuiContainer, asSlot, guiXSize, guiYSize, guiTop, guiLeft);
+            				currentTip = new ContentTip(asGuiContainer, asSlot, guiTop, guiLeft);
                 		}
             		}
             	}
