@@ -1,5 +1,14 @@
 package ml.boxes;
 
+import java.util.Map;
+
+import org.lwjgl.input.Mouse;
+
+import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLCommonHandler;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemDye;
@@ -7,7 +16,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class Lib {
-
+	
+	private static String[] suffixes = {"k", "M", "G", "T", "P"};
+	
 	public static boolean isRealPlayer(EntityPlayer pl){
 		Package pkg = pl.getClass().getPackage();
 		if (!pkg.getName().contains(".") || pkg.getName().contains("net.minecraft"))
@@ -45,6 +56,40 @@ public class Lib {
 		}
 	}
 	
+	public static ItemStack getEquivVanillaDye(ItemStack is){
+		for (int i=0; i<ItemDye.dyeColorNames.length; i++){
+			if (OreDictionary.getOreID(is) == OreDictionary.getOreID(new ItemStack(Item.dyePowder, 1, i))){
+				return new ItemStack(Item.dyePowder, 1, i);
+			}
+		}
+		return null;
+	}
+	
+	public static XYPair getScaledMouse(){
+		Minecraft mc = FMLClientHandler.instance().getClient();
+		ScaledResolution var13 = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
+		int var14 = var13.getScaledWidth();
+		int var15 = var13.getScaledHeight();
+		int adjMouseX = Mouse.getX() * var14 / mc.displayWidth;
+		int adjMouseY = var15 - Mouse.getY() * var15 / mc.displayHeight - 1;
+		
+		return new XYPair(adjMouseX, adjMouseY);
+	}
+	
+	public static String toGroupedString(float n, int p){
+		String suffix = "";
+		for (int i=suffixes.length; i>0; i--){
+			if (n / Math.pow(1000, i) >= 1){
+				suffix = suffixes[i-1];
+				n /= Math.pow(1000, i);
+				break;
+			}
+		}
+		n = (float)(Math.round(n*Math.pow(10, p))/Math.pow(10, p));
+		String ns = ""+n;
+		return ""+(ns.replaceAll("\\.?[0]*$", ""))+suffix;
+	}
+	
 	public static class XYPair {
 		public int X;
 		public int Y;
@@ -59,14 +104,4 @@ public class Lib {
 			return "X: " + X + ", Y: " + Y;
 		}
 	}
-	
-	public static ItemStack getEquivVanillaDye(ItemStack is){
-		for (int i=0; i<ItemDye.dyeColorNames.length; i++){
-			if (OreDictionary.getOreID(is) == OreDictionary.getOreID(new ItemStack(Item.dyePowder, 1, i))){
-				return new ItemStack(Item.dyePowder, 1, i);
-			}
-		}
-		return null;
-	}
-
 }

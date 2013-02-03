@@ -77,8 +77,9 @@ public class BoxData implements IInventory {
 	public List<ItemStack> getContainedItemStacks(){
 		List<ItemStack> iStacks = new ArrayList<ItemStack>();
 		for (int i=0; i<getSizeInventory(); i++){
-			if (inventory[i] != null)
+			if (inventory[i] != null){
 				iStacks.add(inventory[i]);
+			}
 		}
 		return iStacks;
 	}
