@@ -57,13 +57,14 @@ public class RenderUtils {
     }
 	
 	public static void drawStackAt(Minecraft mc, int x, int y, ItemStack is){
-		GL11.glEnable(GL11.GL_DEPTH_TEST);
+		GL11.glEnable(GL11.GL_LIGHTING);
         itemRenderer.renderItemAndEffectIntoGUI(mc.fontRenderer, mc.renderEngine, is, x, y);
         itemRenderer.renderItemOverlayIntoGUI(mc.fontRenderer, mc.renderEngine, is, x, y);
+        GL11.glDisable(GL11.GL_LIGHTING);
 	}
 	
 	public static void drawSpecialStackAt(Minecraft mc, int x, int y, ItemStack is, String str){
-		GL11.glEnable(GL11.GL_DEPTH_TEST);
+		GL11.glEnable(GL11.GL_LIGHTING);
 		ItemStack tis = is.copy();
 		tis.stackSize = 1;
         itemRenderer.renderItemAndEffectIntoGUI(mc.fontRenderer, mc.renderEngine, tis, x, y);
@@ -74,5 +75,7 @@ public class RenderUtils {
         mc.fontRenderer.drawStringWithShadow(str, x + 19 - 2 - mc.fontRenderer.getStringWidth(str), y + 6 + 3, 16777215);
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glEnable(GL11.GL_DEPTH_TEST);
+        
+        GL11.glDisable(GL11.GL_LIGHTING);
 	}
 }

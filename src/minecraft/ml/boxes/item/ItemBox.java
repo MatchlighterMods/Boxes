@@ -66,9 +66,6 @@ public class ItemBox extends ItemBlock {
 				return box.boxName;
 		}
 		
-		if (par1ItemStack.getItemDamage()>-1){
-			nameBuild += StringTranslate.getInstance().translateKey("item.fireworksCharge." + ItemDye.dyeColorNames[par1ItemStack.getItemDamage()]) + " ";
-		}
 		nameBuild += LanguageRegistry.instance().getStringLocalization("item.box.name", "en_US");
 		return nameBuild;
 	}
@@ -102,7 +99,7 @@ public class ItemBox extends ItemBlock {
 		for (int i=0; i<15; i++){
 			ItemStack is = new ItemStack(Boxes.BlockBox, 1);
 			BoxData bd = new BoxData();
-			bd.boxColor = i;
+			bd.boxColor = ItemDye.dyeColors[i];
 			setBoxDataToIS(is, bd);
 			par3List.add(is);
 		}

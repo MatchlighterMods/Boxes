@@ -115,7 +115,7 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 		private boolean hideTips = false;
 		@Override
 		public boolean objectUnderMouse(GuiContainer gui, int mousex, int mousey) {
-			hideTips = ContentTipHandler.currentTip != null && ContentTipHandler.currentTip.getStackAtPosition(mousex, mousey)==null && ContentTipHandler.currentTip.pointInTip(mousex, mousey);
+			hideTips = ContentTipHandler.currentTip != null && ContentTipHandler.currentTip.getStackAtPosition(mousex, mousey)==null; //&& ContentTipHandler.currentTip.pointInTip(mousex, mousey);
 			return ContentTipHandler.currentTip != null && ContentTipHandler.currentTip.pointInTip(mousex, mousey);
 		}
 

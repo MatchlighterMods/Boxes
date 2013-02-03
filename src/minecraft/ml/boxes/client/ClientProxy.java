@@ -105,7 +105,7 @@ public class ClientProxy extends CommonProxy {
 				break;
 			}
 			BoxData box = ItemBox.getDataFromIS(item);
-			BoxTESR.renderBox(ItemDye.dyeColors[box.boxColor]);
+			BoxTESR.renderBox(box.boxColor);
 			GL11.glPopMatrix();
 		}
 

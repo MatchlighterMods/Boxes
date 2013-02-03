@@ -8,6 +8,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
@@ -105,9 +106,9 @@ public class RecipeBox implements IRecipe {
 	public ItemStack getCraftingResult(InventoryCrafting var1) {
 		ItemStack is = new ItemStack(Boxes.BlockBox, 1);
 		BoxData data = ItemBox.getDataFromIS(is);
-		data.boxColor = Lib.getEquivVanillaDye(var1.getStackInRowAndColumn(1, 1)).getItemDamage();
+		data.boxColor = ItemDye.dyeColors[Lib.getEquivVanillaDye(var1.getStackInRowAndColumn(1, 1)).getItemDamage()];
 		ItemBox.setBoxDataToIS(is, data);
-		System.out.println(Integer.toHexString(is.hashCode()));
+		
 		return is;
 	}
 

@@ -55,6 +55,9 @@ public class ContentTip {
 	
 	public void doRender(Minecraft mc, int mx, int my){
 		BoxData bd = ItemBox.getDataFromIS(slot.getStack());
+		if (!inInteractMode && hintTipStacks.size()==0)
+			return;
+		
 		RenderEngine re = mc.renderEngine;
 		int tex = re.getTexture("/ml/boxes/gfx/contentTipGui2.png");
 		re.bindTexture(tex);

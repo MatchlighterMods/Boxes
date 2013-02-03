@@ -33,11 +33,9 @@ public class ContentTipHandler implements ITickHandler {
 	
 	public static ContentTip currentTip;
 	
-	private static Slot tickerSlot;
+	private static Slot hoverSlot;
 	private static long tickerTime = 0;
-	
-	private static GuiContainer openGui;
-	
+		
 	@Override
 	public void tickStart(EnumSet<TickType> type, Object... tickData) {
 
@@ -62,41 +60,41 @@ public class ContentTipHandler implements ITickHandler {
 	private void updateCurrentTip(){
 		Minecraft mc = FMLClientHandler.instance().getClient();
 		if (mc.currentScreen instanceof GuiContainer){
-			openGui = (GuiContainer)mc.currentScreen;
+			GuiContainer asGuiContainer = (GuiContainer)mc.currentScreen;
 			
 			int guiXSize = ObfuscationReflectionHelper.getPrivateValue(GuiContainer.class, (GuiContainer)mc.currentScreen, 1);
 			int guiYSize = ObfuscationReflectionHelper.getPrivateValue(GuiContainer.class, (GuiContainer)mc.currentScreen, 2);
 			
 			XYPair m = Lib.getScaledMouse();
 
-            int guiLeft = (openGui.width - guiXSize) / 2;
-            int guiTop = (openGui.height - guiYSize) / 2;
+            int guiLeft = (asGuiContainer.width - guiXSize) / 2;
+            int guiTop = (asGuiContainer.height - guiYSize) / 2;
 
             if (currentTip == null || !currentTip.StillValid(m.X, m.Y)){
             	currentTip = null;
             	boolean inASlot = false;
-            	for (Object slt : openGui.inventorySlots.inventorySlots){
+            	for (Object slt : asGuiContainer.inventorySlots.inventorySlots){
             		Slot asSlot = (Slot)slt;
             		
             		if (Lib.pointInRect(m.X-guiLeft, m.Y-guiTop, asSlot.xDisplayPosition, asSlot.yDisplayPosition, 16, 16)){
             			inASlot = true;
-            			if (tickerSlot != asSlot){
-	            			tickerSlot=asSlot;
+            			if (hoverSlot != asSlot || !asSlot.getHasStack() || !(asSlot.getStack().getItem() instanceof ItemBox)){ //
 	            			tickerTime = mc.getSystemTime();
             			}
+            			hoverSlot = asSlot;
             			
-            			if (asSlot.getHasStack() &&
-                				(asSlot.getStack().getItem() instanceof ItemBox) &&
-                				//!(asGuiContainer instanceof GuiBox && false) && // TODO Make sure the tip will not be for the open box
-                				(!Boxes.shiftForTip || openGui.isShiftKeyDown()) &&
-                				(mc.getSystemTime() - tickerTime > Boxes.tipReactionTime || openGui.isShiftKeyDown())
+            			if (asSlot.getHasStack() && 
+            					(asSlot.getStack().getItem() instanceof ItemBox) &&
+            					//!(asGuiContainer instanceof GuiBox && false) && // TODO Make sure the tip will not be for the open box
+                				(!Boxes.shiftForTip || asGuiContainer.isShiftKeyDown()) &&
+                				(mc.getSystemTime() - tickerTime > Boxes.tipReactionTime || asGuiContainer.isShiftKeyDown())
                 				){
-            				currentTip = new ContentTip(openGui, asSlot, guiTop, guiLeft);
+            				currentTip = new ContentTip(asGuiContainer, asSlot, guiTop, guiLeft);
             			}
             		}
             	}
             	if (!inASlot)
-            		tickerSlot = null;
+            		hoverSlot = null;
             }
 
             if (currentTip!=null)
@@ -106,6 +104,8 @@ public class ContentTipHandler implements ITickHandler {
 	
 	//Render the tip
 	public static void renderContentTip(Minecraft mc, int mx, int my, float tickTime){
+		if (!(hoverSlot.getStack().getItem() instanceof ItemBox))
+			currentTip=null;
 		if (currentTip != null)
 			currentTip.doRender(mc, mx, my);
 	}

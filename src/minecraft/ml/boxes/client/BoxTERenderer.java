@@ -37,7 +37,7 @@ public class BoxTERenderer extends TileEntitySpecialRenderer {
         
         setBoxFlaps(outerAngle + 3, outerAngle+1, innerAngle, innerAngle);
 
-        renderBox(ItemDye.dyeColors[box.getBoxData().boxColor]);
+        renderBox(box.getBoxData().boxColor);
         
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
         GL11.glPopMatrix();
