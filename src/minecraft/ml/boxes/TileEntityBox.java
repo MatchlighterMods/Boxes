@@ -32,7 +32,7 @@ public class TileEntityBox extends TileEntity implements IInventory, IBox {
 		
 		super.updateEntity();
 		if ((++syncTime % 20) == 0)
-			worldObj.addBlockEvent(xCoord, yCoord, zCoord, Boxes.boxBlockID, 2, facing);
+			worldObj.addBlockEvent(xCoord, yCoord, zCoord, Boxes.config.boxBlockID, 2, facing);
 		
 		prevAngleOuter = flapAngleOuter;
 		prevAngleInner = flapAngleInner;
@@ -141,13 +141,13 @@ public class TileEntityBox extends TileEntity implements IInventory, IBox {
 	@Override
 	public void openChest() {
 		users++;
-		worldObj.addBlockEvent(xCoord, yCoord, zCoord, Boxes.boxBlockID, 1, users);
+		worldObj.addBlockEvent(xCoord, yCoord, zCoord, Boxes.config.boxBlockID, 1, users);
 	}
 
 	@Override
 	public void closeChest() {
 		users--;
-		worldObj.addBlockEvent(xCoord, yCoord, zCoord, Boxes.boxBlockID, 1, users);
+		worldObj.addBlockEvent(xCoord, yCoord, zCoord, Boxes.config.boxBlockID, 1, users);
 	}
 
 	@Override

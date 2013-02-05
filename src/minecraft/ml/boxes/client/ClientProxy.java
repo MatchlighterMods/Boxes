@@ -56,7 +56,7 @@ public class ClientProxy extends CommonProxy {
 		BoxTESR = new BoxTERenderer();
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBox.class, BoxTESR);
 		Boxes.boxRendererID = RenderingRegistry.getNextAvailableRenderId();
-		MinecraftForgeClient.registerItemRenderer(Boxes.boxBlockID, new BoxRenderer());
+		MinecraftForgeClient.registerItemRenderer(Boxes.config.boxBlockID, new BoxRenderer());
 		TickRegistry.registerTickHandler(new ContentTipHandler(), Side.CLIENT);
 	}
 	

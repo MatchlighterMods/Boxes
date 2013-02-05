@@ -86,8 +86,8 @@ public class ContentTipHandler implements ITickHandler {
             			if (asSlot.getHasStack() && 
             					(asSlot.getStack().getItem() instanceof ItemBox) &&
             					//!(asGuiContainer instanceof GuiBox && false) && // TODO Make sure the tip will not be for the open box
-                				(!Boxes.shiftForTip || asGuiContainer.isShiftKeyDown()) &&
-                				(mc.getSystemTime() - tickerTime > Boxes.tipReactionTime || asGuiContainer.isShiftKeyDown())
+                				(!Boxes.config.shiftForTip || asGuiContainer.isShiftKeyDown()) &&
+                				(mc.getSystemTime() - tickerTime > Boxes.config.tipReactionTime || asGuiContainer.isShiftKeyDown())
                 				){
             				currentTip = new ContentTip(asGuiContainer, asSlot, guiTop, guiLeft);
             			}

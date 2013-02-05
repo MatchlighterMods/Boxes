@@ -7,7 +7,7 @@ import net.minecraft.tileentity.TileEntity;
 
 import ml.boxes.BoxData;
 import ml.boxes.TileEntityBox;
-import ml.boxes.network.MLPacket;
+import ml.core.network.MLPacket;
 
 import com.google.common.io.ByteArrayDataInput;
 

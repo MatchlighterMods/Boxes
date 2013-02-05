@@ -38,45 +38,50 @@ public class Boxes {
 	public static ItemCardboard ItemCardboard;
 	
 	public static int boxRendererID = -1;
-	public static int boxBlockID = 540;
-	public static int cardboardItemID = 3000;
-	
-	public static Boolean shiftForTip = false;
-	public static int tipReactionTime = 100;
+//	public static int boxBlockID = 540;
+//	public static int cardboardItemID = 3000;
+//	
+//	public static Boolean shiftForTip = false;
+//	public static int tipReactionTime = 100;
 	
 	public static CreativeTabs BoxTab = new BoxesCreativeTab("boxes");
 	
+	public static BoxesConfig config = new BoxesConfig();
+	
 	@PreInit
 	public void PreInit(FMLPreInitializationEvent evt){
-		Configuration config = new Configuration(evt.getSuggestedConfigurationFile());
-		try {
-			config.load();
-			boxBlockID = config.get(Configuration.CATEGORY_BLOCK, "BoxBlockID"	, boxBlockID).getInt();
-			cardboardItemID = config.get(Configuration.CATEGORY_ITEM, "CardboardItemID", cardboardItemID).getInt();
-			
-			Property ShiftForTip = config.get(Configuration.CATEGORY_GENERAL, "requireShiftForContentTip", shiftForTip);
-			ShiftForTip.comment = "Set to true to require the use of the Shift key to show the content tip";
-			shiftForTip = ShiftForTip.getBoolean(shiftForTip);
-			
-			Property TipReactionTime = config.get(Configuration.CATEGORY_GENERAL, "tipReactionTime", tipReactionTime);
-			TipReactionTime.comment = "The number of Milliseconds that you need to hover over a box item befor it shows its contents tip";
-			tipReactionTime = TipReactionTime.getInt(tipReactionTime);
-			
-		} catch (Exception e) {
-			FMLLog.log(Level.SEVERE, e, "Boxes had an error loading its configuration.");
-		} finally {
-			config.save();
-		}
+		Configuration cfg = new Configuration(evt.getSuggestedConfigurationFile());
+		
+//		try {
+//			cfg.load();
+//			boxBlockID = cfg.get(Configuration.CATEGORY_BLOCK, "BoxBlockID"	, boxBlockID).getInt();
+//			cardboardItemID = cfg.get(Configuration.CATEGORY_ITEM, "CardboardItemID", cardboardItemID).getInt();
+//			
+//			Property ShiftForTip = cfg.get(Configuration.CATEGORY_GENERAL, "requireShiftForContentTip", shiftForTip);
+//			ShiftForTip.comment = "Set to true to require the use of the Shift key to show the content tip";
+//			shiftForTip = ShiftForTip.getBoolean(shiftForTip);
+//			
+//			Property TipReactionTime = cfg.get(Configuration.CATEGORY_GENERAL, "tipReactionTime", tipReactionTime);
+//			TipReactionTime.comment = "The number of Milliseconds that you need to hover over a box item befor it shows its contents tip";
+//			tipReactionTime = TipReactionTime.getInt(tipReactionTime);
+//			
+//		} catch (Exception e) {
+//			FMLLog.log(Level.SEVERE, e, "Boxes had an error loading its configuration.");
+//		} finally {
+//			cfg.save();
+//		}
+		
+		config.load(cfg);
 	}
 	
 	@Init
 	public void Init(FMLInitializationEvent evt){
 		GameRegistry.registerTileEntity(TileEntityBox.class, "box");
 		
-		this.BlockBox = new BlockBox(boxBlockID);
+		this.BlockBox = new BlockBox(config.boxBlockID);
 		GameRegistry.registerBlock(this.BlockBox, ItemBox.class, "box");
 		
-		this.ItemCardboard = new ItemCardboard(cardboardItemID-256);
+		this.ItemCardboard = new ItemCardboard(config.cardboardItemID-256);
 		GameRegistry.registerItem(ItemCardboard, "cardboard");
 		
 		LanguageRegistry.instance().addStringLocalization("item.box.name", "en_US", "Box");
