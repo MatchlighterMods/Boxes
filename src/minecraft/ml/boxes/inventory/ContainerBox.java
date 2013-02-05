@@ -4,6 +4,7 @@ import ml.boxes.BoxData;
 import ml.boxes.Boxes;
 import ml.boxes.IBox;
 import ml.boxes.ItemIBox;
+import ml.boxes.api.ContentBlacklist;
 import ml.boxes.item.ItemBox;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -112,6 +113,8 @@ public class ContainerBox extends Container {
 		@Override
 		public boolean isItemValid(ItemStack par1ItemStack) {
 			if (par1ItemStack.getItem() instanceof ItemBox)
+				return false;
+			if (ContentBlacklist.ItemBlacklisted(par1ItemStack))
 				return false;
 			return true;
 		}

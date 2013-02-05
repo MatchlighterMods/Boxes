@@ -38,7 +38,7 @@ public class BoxTERenderer extends TileEntitySpecialRenderer {
         setBoxFlaps(outerAngle + 3, outerAngle+1, innerAngle, innerAngle);
 
         renderBox(box.getBoxData().boxColor);
-        
+
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
         GL11.glPopMatrix();
 
@@ -46,30 +46,31 @@ public class BoxTERenderer extends TileEntitySpecialRenderer {
 
 	public void setBoxFlaps(int a, int b, int c, int d){
 		boxModel.flap1.rotateAngleX = (float)Math.toRadians(360-a);
-        boxModel.flap2.rotateAngleX = (float)Math.toRadians(b);
-        boxModel.flap3.rotateAngleZ = (float)Math.toRadians(c);
-        boxModel.flap4.rotateAngleZ = (float)Math.toRadians(360-d);
+		boxModel.flap2.rotateAngleX = (float)Math.toRadians(b);
+		boxModel.flap3.rotateAngleZ = (float)Math.toRadians(c);
+		boxModel.flap4.rotateAngleZ = (float)Math.toRadians(360-d);
 	}
-	
+
 	public void renderBox(int color){
-		
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GL11.glEnable(GL11.GL_BLEND);
-        
+
 		float red = ((color >> 16) & 0xFF)/255F;
 		float green = ((color >> 8) & 0xFF)/255F;
 		float blue = (color & 0xFF)/255F;
-		
+
 		GL11.glColor4f(red, green, blue, 1.0F);
-		
+
 		bindTextureByName("/ml/Boxes/gfx/boxColor.png");
 		boxModel.renderAll();
-				
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        bindTextureByName("/ml/Boxes/gfx/box.png");
-                
+		
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		bindTextureByName("/ml/Boxes/gfx/box.png");
 		boxModel.renderAll();
+
+
 		GL11.glDisable(GL11.GL_BLEND);
 	}
-	
+
 }

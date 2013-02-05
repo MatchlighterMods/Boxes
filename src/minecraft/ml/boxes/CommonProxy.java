@@ -1,7 +1,6 @@
 package ml.boxes;
 
 import ml.boxes.inventory.ContainerBox;
-import ml.boxes.inventory.ContainerBoxItem;
 import ml.boxes.item.ItemBox;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -25,7 +24,7 @@ public class CommonProxy implements IGuiHandler {
 			break;
 		case 2: //BoxIsAsItem
 			ItemStack is = player.getCurrentEquippedItem();
-			if (is != null && is.getItem() instanceof ItemBox){
+			if (is != null && is.getItem() instanceof ItemBox){ 
 				return new ContainerBox(new ItemIBox(is), player);
 			}
 			break;
