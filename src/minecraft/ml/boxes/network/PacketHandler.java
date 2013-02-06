@@ -1,9 +1,8 @@
 package ml.boxes.network;
 
 import ml.boxes.network.packets.PacketUpdateData;
-import ml.core.network.MLPacketHandler;
 
-public class PacketHandler extends MLPacketHandler {
+public class PacketHandler extends ml.core.network.PacketHandler {
 	public PacketHandler() {
 		addHandler(PacketUpdateData.class);
 	}
