@@ -29,9 +29,6 @@ public class ContentTip {
 	
 	public final GuiContainer gui;
 	public final Slot slot;
-	//public BoxData box;
-//	public final int guiWidth;
-//	public final int guiHeight;
 	public final int guiTop;
 	public final int guiLeft;
 
@@ -214,7 +211,7 @@ public class ContentTip {
 		return (Boxes.neiInstalled && gui.isShiftKeyDown() && slot.inventory instanceof InventoryPlayer);
 	}
 	
-	private BoxData getBoxData(){
+	public BoxData getBoxData(){
 		return ItemBox.getDataFromIS(slot.getStack());
 	}
 	

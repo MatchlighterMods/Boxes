@@ -1,12 +1,17 @@
 package ml.boxes.nei;
 
-import java.util.List;
-
+import ml.boxes.BoxData;
 import ml.boxes.Boxes;
 import ml.boxes.client.ContentTipHandler;
+import ml.boxes.item.ItemBox;
+import ml.boxes.network.packets.PacketTipClick;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.multiplayer.NetClientHandler;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.packet.Packet250CustomPayload;
 import codechicken.nei.MultiItemRange;
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
@@ -14,8 +19,7 @@ import codechicken.nei.forge.GuiContainerManager;
 import codechicken.nei.forge.IContainerDrawHandler;
 import codechicken.nei.forge.IContainerInputHandler;
 import codechicken.nei.forge.IContainerObjectHandler;
-import codechicken.nei.forge.IContainerTooltipHandler;
-import codechicken.nei.recipe.TemplateRecipeHandler;
+import cpw.mods.fml.common.network.Player;
 
 public class NEI_Boxes_Config implements IConfigureNEI {
 
@@ -67,6 +71,21 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 		@Override
 		public boolean mouseClicked(GuiContainer gui, int mousex, int mousey,
 				int button) {
+			
+			if (ContentTipHandler.currentTip != null && ContentTipHandler.currentTip.pointInTip(mousex, mousey)){
+				int slNum = ContentTipHandler.currentTip.getSlotAtPosition(mousex, mousey);
+				BoxData bd = ContentTipHandler.currentTip.getBoxData();
+				if (gui.mc.thePlayer.inventory.getItemStack() == null || bd.ISAllowedInBox(gui.mc.thePlayer.inventory.getItemStack())){
+					ItemStack isInBox = bd.getStackInSlot(slNum);
+					bd.setInventorySlotContents(slNum, gui.mc.thePlayer.inventory.getItemStack());
+					gui.mc.thePlayer.inventory.setItemStack(isInBox);
+					ItemBox.setBoxDataToIS(ContentTipHandler.currentTip.slot.getStack(), bd);
+				}
+				
+				Packet250CustomPayload pkt = (new PacketTipClick((Player)gui.mc.thePlayer, ContentTipHandler.currentTip.slot.slotNumber, slNum)).convertToPkt250();
+				gui.mc.thePlayer.sendQueue.addToSendQueue(pkt);
+				return true;
+			}
 			return false;
 		}
 
@@ -108,7 +127,7 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 		public ItemStack getStackUnderMouse(GuiContainer gui, int mousex,
 				int mousey) {
 			if (ContentTipHandler.currentTip != null)
-				return ContentTipHandler.currentTip.getStackAtPosition(mousex, mousey);
+				return ContentTipHandler.currentTip.getStackAtPosition(mousex, mousey); //TODO Called after an ItemStack of Boxes is Deleted by Shift+Clicking in creative. End in NullPExcept
 			return null;
 		}
 

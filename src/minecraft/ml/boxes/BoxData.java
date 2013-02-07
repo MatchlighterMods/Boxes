@@ -3,6 +3,8 @@ package ml.boxes;
 import java.util.ArrayList;
 import java.util.List;
 
+import ml.boxes.api.ContentBlacklist;
+import ml.boxes.item.ItemBox;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -73,6 +75,14 @@ public class BoxData implements IInventory {
 //		nameBuild += LanguageRegistry.instance().getStringLocalization("item.box.name", "en_US");
 //		return nameBuild;
 //	}
+	
+	public boolean ISAllowedInBox(ItemStack is){
+		if (is.getItem() instanceof ItemBox)
+			return false;
+		if (ContentBlacklist.ItemBlacklisted(is))
+			return false;
+		return true;
+	}
 	
 	public List<ItemStack> getContainedItemStacks(){
 		List<ItemStack> iStacks = new ArrayList<ItemStack>();

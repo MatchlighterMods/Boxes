@@ -48,7 +48,7 @@ public class ContentTipHandler implements ITickHandler {
 			if (mc.currentScreen instanceof GuiContainer){
 				
 				XYPair m = Lib.getScaledMouse();
-				if (!Boxes.neiInstalled) //NEI Provides a better place for doing this. Ue it if we can
+				if (!Boxes.neiInstalled) //NEI Provides a better place for doing this. Use it if we can
 					renderContentTip(mc, m.X, m.Y, (Float)tickData[0]);
 			}
 		}else if (type.contains(TickType.CLIENT)){

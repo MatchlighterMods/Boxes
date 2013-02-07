@@ -7,6 +7,7 @@ import ml.boxes.Boxes;
 import ml.boxes.item.ItemBox;
 import ml.core.network.MLPacket;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 import com.google.common.io.ByteArrayDataInput;
@@ -20,6 +21,7 @@ public class PacketTipClick extends MLPacket {
 
 	public PacketTipClick(Player pl, Integer invSlot, Integer boxSlot) {
 		super(pl);
+		chunkDataPacket = false;
 		
 		inventorySlot = invSlot;
 		boxInvSlot = boxSlot;
@@ -41,13 +43,18 @@ public class PacketTipClick extends MLPacket {
 	@Override
 	public void handleServerSide() throws IOException {
 		EntityPlayer asEntPl = (EntityPlayer)player;
-		
-		ItemStack isInSlot = asEntPl.inventory.mainInventory[inventorySlot];
-		if (isInSlot != null && isInSlot.getItem().itemID == Boxes.BlockBox.blockID) {
-			BoxData bd  = ItemBox.getDataFromIS(isInSlot);
-			ItemStack isInBox = bd.getStackInSlot(boxInvSlot);
-			bd.setInventorySlotContents(boxInvSlot, asEntPl.inventory.getItemStack());
-			asEntPl.inventory.setItemStack(isInBox);
+
+		if (asEntPl.openContainer != null && inventorySlot <= asEntPl.openContainer.inventorySlots.size()){
+			ItemStack isInSlot = ((Slot)asEntPl.openContainer.inventorySlots.get(inventorySlot)).getStack();
+			if (isInSlot != null && isInSlot.getItem().itemID == Boxes.BlockBox.blockID) {
+				BoxData bd  = ItemBox.getDataFromIS(isInSlot);
+				if (asEntPl.inventory.getItemStack() == null || bd.ISAllowedInBox(asEntPl.inventory.getItemStack())){
+					ItemStack isInBox = bd.getStackInSlot(boxInvSlot);
+					bd.setInventorySlotContents(boxInvSlot, asEntPl.inventory.getItemStack());
+					asEntPl.inventory.setItemStack(isInBox);
+					ItemBox.setBoxDataToIS(isInSlot, bd);
+				}
+			}
 		}
 	}
 }

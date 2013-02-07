@@ -112,11 +112,7 @@ public class ContainerBox extends Container {
 
 		@Override
 		public boolean isItemValid(ItemStack par1ItemStack) {
-			if (par1ItemStack.getItem() instanceof ItemBox)
-				return false;
-			if (ContentBlacklist.ItemBlacklisted(par1ItemStack))
-				return false;
-			return true;
+			return box.getBoxData().ISAllowedInBox(par1ItemStack);
 		}
 	}
 }
