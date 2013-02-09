@@ -1,17 +1,14 @@
 package ml.boxes;
 
-import java.util.logging.Level;
-
 import ml.boxes.block.BlockBox;
 import ml.boxes.item.ItemBox;
 import ml.boxes.item.ItemCardboard;
 import ml.boxes.network.PacketHandler;
+import ml.boxes.recipe.RecipeBox;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.Configuration;
-import net.minecraftforge.common.Property;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
@@ -91,7 +88,7 @@ public class Boxes {
 		NetworkRegistry.instance().registerGuiHandler(instance, proxy);
 		
 		GameRegistry.addRecipe(new ItemStack(ItemCardboard, 1), "ppp", 'p', Item.paper);
-		GameRegistry.addRecipe(new RecipeBox());
+		//GameRegistry.addRecipe(new RecipeBox());
 		
 		proxy.load();
 	}

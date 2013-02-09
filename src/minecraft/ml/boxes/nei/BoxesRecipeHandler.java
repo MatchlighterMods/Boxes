@@ -2,12 +2,9 @@ package ml.boxes.nei;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
-import ml.boxes.BoxData;
 import ml.boxes.Boxes;
-import ml.boxes.RecipeBox;
-import ml.boxes.item.ItemBox;
+import ml.boxes.recipe.RecipeBox;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
@@ -16,16 +13,14 @@ import codechicken.nei.InventoryCraftingDummy;
 import codechicken.nei.NEIClientUtils;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.ShapedRecipeHandler;
-import codechicken.nei.recipe.TemplateRecipeHandler;
-import codechicken.nei.recipe.FireworkRecipeHandler.CachedFireworkRecipe;
+import codechicken.nei.recipe.ShapedRecipeHandler.CachedShapedRecipe;
 import codechicken.nei.recipe.TemplateRecipeHandler.CachedRecipe;
 
-public class BoxesRecipeHandler extends TemplateRecipeHandler {
+public class BoxesRecipeHandler extends ShapedRecipeHandler {
 
-	public class CachedBoxesRecipe extends CachedRecipe{
-		public PositionedStack result;
-		
+	public class CachedBoxesRecipe extends CachedShapedRecipe{
 		public CachedBoxesRecipe() {
+			super(2, 1, new Object[]{new ItemStack(Boxes.ItemCardboard), new ItemStack(Boxes.ItemCardboard)}, recipe.getRecipeOutput()); //TODO Add the recipe
 			cycle();
 		}
 				
@@ -34,13 +29,7 @@ public class BoxesRecipeHandler extends TemplateRecipeHandler {
             for(int i = 0; i < 9; i++)
                 invCrafting.setInventorySlotContents(i, i < ingreds.size() ? ingreds.get(i).item : null);
 			this.result = new PositionedStack(recipe.getCraftingResult(invCrafting), 119, 24);
-		}
-
-		@Override
-		public PositionedStack getResult() {
-			return result;
-		}
-		
+		}		
 	}
 	
 	private InventoryCrafting invCrafting = new InventoryCraftingDummy();
@@ -52,20 +41,9 @@ public class BoxesRecipeHandler extends TemplateRecipeHandler {
 	}
 	
 	@Override
-	public String getRecipeName() {
-		return "Boxes";
-	}
-
-	@Override
 	public void loadCraftingRecipes(String outputId, Object... results) {
 		if (outputId == "crafting"){
-			List<IRecipe> recipes = CraftingManager.getInstance().getRecipeList();
-			for (IRecipe ir : recipes){
-				if (ir instanceof RecipeBox){
-					RecipeBox rb = (RecipeBox)ir;
-					arecipes.add(new CachedShapedRecipe(rb.width, rb.height, rb.pattern, rb.getRecipeOutput()));
-				}
-			}
+			arecipes.add(cached);
 		} else {
 			super.loadCraftingRecipes(outputId, results);
 		}
@@ -73,27 +51,17 @@ public class BoxesRecipeHandler extends TemplateRecipeHandler {
 
 	@Override
 	public void loadCraftingRecipes(ItemStack result) {
-		List<IRecipe> recipes = CraftingManager.getInstance().getRecipeList();
-		for (IRecipe ir : recipes){
-			if (NEIClientUtils.areStacksSameTypeCrafting(ir.getRecipeOutput(), result) && ir instanceof RecipeBox) {
-				RecipeBox rb = (RecipeBox)ir;
-				arecipes.add(new CachedShapedRecipe(rb.width, rb.height, rb.pattern, rb.getRecipeOutput()));
-			}
+		if (result.isItemEqual(recipe.getRecipeOutput())){
+			arecipes.add(cached);
 		}
 	}
 
 	@Override
 	public void loadUsageRecipes(ItemStack ingredient) {
 		List<IRecipe> recipes = CraftingManager.getInstance().getRecipeList();
-		for (IRecipe ir : recipes){
-			if (ir instanceof RecipeBox){
-				RecipeBox rb = (RecipeBox)ir;
-				CachedShapedRecipe recipe = new CachedShapedRecipe(rb.width, rb.height, rb.pattern, rb.getRecipeOutput());
-				if (recipe.contains(recipe.ingredients, ingredient)){
-					recipe.setIngredientPermutation(recipe.ingredients, ingredient);
-					arecipes.add(recipe);
-				}
-			}
+		if (cached.contains(cached.ingredients, ingredient)){
+			cached.setIngredientPermutation(cached.ingredients, ingredient);
+			arecipes.add(cached);
 		}
 	}
 
@@ -107,18 +75,4 @@ public class BoxesRecipeHandler extends TemplateRecipeHandler {
                     ((CachedBoxesRecipe)crecipe).cycle();
         }
 	}
-	
-	@Override
-	public String getGuiTexture()
-	{
-		return "/gui/crafting.png";
-	}
-    
-    @Override
-    public String getOverlayIdentifier()
-    {
-        return "crafting";
-    }
-
-	
 }

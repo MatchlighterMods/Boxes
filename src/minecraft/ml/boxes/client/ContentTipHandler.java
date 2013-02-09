@@ -6,9 +6,9 @@ import java.util.List;
 
 import ml.boxes.BoxData;
 import ml.boxes.Boxes;
-import ml.boxes.Lib;
-import ml.boxes.Lib.XYPair;
 import ml.boxes.item.ItemBox;
+import ml.core.Geometry;
+import ml.core.Geometry.XYPair;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
@@ -47,7 +47,7 @@ public class ContentTipHandler implements ITickHandler {
 			Minecraft mc = FMLClientHandler.instance().getClient();
 			if (mc.currentScreen instanceof GuiContainer){
 				
-				XYPair m = Lib.getScaledMouse();
+				Geometry.XYPair m = Geometry.getScaledMouse();
 				if (!Boxes.neiInstalled) //NEI Provides a better place for doing this. Use it if we can
 					renderContentTip(mc, m.X, m.Y, (Float)tickData[0]);
 			}
@@ -65,7 +65,7 @@ public class ContentTipHandler implements ITickHandler {
 			int guiXSize = ObfuscationReflectionHelper.getPrivateValue(GuiContainer.class, (GuiContainer)mc.currentScreen, 1);
 			int guiYSize = ObfuscationReflectionHelper.getPrivateValue(GuiContainer.class, (GuiContainer)mc.currentScreen, 2);
 			
-			XYPair m = Lib.getScaledMouse();
+			Geometry.XYPair m = Geometry.getScaledMouse();
 
             int guiLeft = (asGuiContainer.width - guiXSize) / 2;
             int guiTop = (asGuiContainer.height - guiYSize) / 2;
@@ -76,7 +76,7 @@ public class ContentTipHandler implements ITickHandler {
             	for (Object slt : asGuiContainer.inventorySlots.inventorySlots){
             		Slot asSlot = (Slot)slt;
             		
-            		if (Lib.pointInRect(m.X-guiLeft, m.Y-guiTop, asSlot.xDisplayPosition, asSlot.yDisplayPosition, 16, 16)){
+            		if (Geometry.pointInRect(m.X-guiLeft, m.Y-guiTop, asSlot.xDisplayPosition, asSlot.yDisplayPosition, 16, 16)){
             			inASlot = true;
             			if (hoverSlot != asSlot || !asSlot.getHasStack() || !(asSlot.getStack().getItem() instanceof ItemBox)){ //
 	            			tickerTime = mc.getSystemTime();

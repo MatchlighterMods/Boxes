@@ -5,10 +5,7 @@ import ml.boxes.Boxes;
 import ml.boxes.client.ContentTipHandler;
 import ml.boxes.item.ItemBox;
 import ml.boxes.network.packets.PacketTipClick;
-import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.multiplayer.NetClientHandler;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.Packet250CustomPayload;
@@ -19,6 +16,7 @@ import codechicken.nei.forge.GuiContainerManager;
 import codechicken.nei.forge.IContainerDrawHandler;
 import codechicken.nei.forge.IContainerInputHandler;
 import codechicken.nei.forge.IContainerObjectHandler;
+import codechicken.nei.recipe.TemplateRecipeHandler;
 import cpw.mods.fml.common.network.Player;
 
 public class NEI_Boxes_Config implements IConfigureNEI {
@@ -32,9 +30,9 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 		GuiContainerManager.addObjectHandler(handler);
 		GuiContainerManager.addDrawHandler(handler);
 		
-		//TemplateRecipeHandler recipeHandler = new BoxesRecipeHandler();
-		//API.registerRecipeHandler(recipeHandler);
-		//API.registerUsageHandler(recipeHandler);
+		TemplateRecipeHandler recipeHandler = new BoxesRecipeHandler();
+		API.registerRecipeHandler(recipeHandler);
+		API.registerUsageHandler(recipeHandler);
 		
 		MultiItemRange range = new MultiItemRange();
 		range.add(Boxes.BlockBox);

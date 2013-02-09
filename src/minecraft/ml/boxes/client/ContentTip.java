@@ -8,8 +8,9 @@ import org.lwjgl.opengl.GL11;
 import ml.boxes.BoxData;
 import ml.boxes.Boxes;
 import ml.boxes.Lib;
-import ml.boxes.Lib.XYPair;
 import ml.boxes.item.ItemBox;
+import ml.core.Geometry;
+import ml.core.Geometry.XYPair;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -32,9 +33,9 @@ public class ContentTip {
 	public final int guiTop;
 	public final int guiLeft;
 
-	private XYPair position = new XYPair(0, 0);
-	private XYPair currentSize = new XYPair(0, 0);
-	private XYPair gridSize = new XYPair(0,0);
+	private Geometry.XYPair position = new Geometry.XYPair(0, 0);
+	private Geometry.XYPair currentSize = new Geometry.XYPair(0, 0);
+	private Geometry.XYPair gridSize = new Geometry.XYPair(0,0);
 	private int slotSize = 16;
 	private List<HintItemStack> hintTipStacks = new ArrayList<HintItemStack>();
 	private boolean resizing = false;
@@ -87,7 +88,7 @@ public class ContentTip {
 					RenderUtils.drawStackAt(mc, slotX, slotY, bd.getStackInSlot(i));
 
 					GL11.glDisable(GL11.GL_LIGHTING); //Will affect the next iteration as well (this is good)
-					if (Lib.pointInRect(lmx, lmy, slotX, slotY, 16, 16)){
+					if (Geometry.pointInRect(lmx, lmy, slotX, slotY, 16, 16)){
 						RenderUtils.drawGradientRect(slotX, slotY, slotX + 16, slotY + 16, -2130706433, -2130706433);
 					}
 				}
@@ -134,7 +135,7 @@ public class ContentTip {
 			gridCount = bd.getSizeInventory();
 		}
         
-		gridSize = Lib.determineBestGrid(gridCount);
+		gridSize = Geometry.determineSquarestGrid(gridCount);
 		resizing = false;
 		int targX = gridSize.X*(18) +16;
 		int targY = gridSize.Y*(18) +16;
@@ -171,11 +172,11 @@ public class ContentTip {
 	}
 	
 	public boolean pointInTip(int px, int py){
-		return Lib.pointInRect(px, py, position.X, position.Y, currentSize.X, currentSize.Y);
+		return Geometry.pointInRect(px, py, position.X, position.Y, currentSize.X, currentSize.Y);
 	}
 	
 	public boolean StillValid(int mX, int mY){
-		return ((Lib.pointInRect(mX-guiLeft, mY-guiTop, slot.xDisplayPosition, slot.yDisplayPosition, 16, 16) || 
+		return ((Geometry.pointInRect(mX-guiLeft, mY-guiTop, slot.xDisplayPosition, slot.yDisplayPosition, 16, 16) || 
 				(interactStartable() && pointInTip(mX, mY))) &&
 				slot.getHasStack() // TODO Add better checking to ensure that it is the same box.
 				);
@@ -190,7 +191,7 @@ public class ContentTip {
 				int slotX = 8+col*18 + position.X;
 				int slotY = 10+row*18 + position.Y;
 				
-				if (Lib.pointInRect(pX, pY, slotX, slotY, 16, 16)){
+				if (Geometry.pointInRect(pX, pY, slotX, slotY, 16, 16)){
 					return i;
 				}
 			}
