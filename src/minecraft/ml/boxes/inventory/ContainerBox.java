@@ -47,7 +47,7 @@ public class ContainerBox extends Container {
 	@Override
 	public ItemStack slotClick(int slotNum, int mouseBtn, int action,
 			EntityPlayer par4EntityPlayer) {
-		if (box instanceof ItemIBox && slotNum>=0 && ((ItemIBox)box).stack == getSlot(slotNum).getStack()){ //TODO check for -999
+		if (box instanceof ItemIBox && slotNum>=0 && ((ItemIBox)box).stack == getSlot(slotNum).getStack()){
 			par4EntityPlayer.closeScreen();
 			return null;
 		}

@@ -16,10 +16,10 @@ import cpw.mods.fml.common.network.Player;
 
 public class PacketTipClick extends MLPacket {
 	
-	public final Integer inventorySlot;
-	public final Integer boxInvSlot;
+	public final int inventorySlot;
+	public final int boxInvSlot;
 
-	public PacketTipClick(Player pl, Integer invSlot, Integer boxSlot) {
+	public PacketTipClick(Player pl, int invSlot, int boxSlot) {
 		super(pl);
 		chunkDataPacket = false;
 		

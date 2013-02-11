@@ -88,7 +88,7 @@ public class Boxes {
 		NetworkRegistry.instance().registerGuiHandler(instance, proxy);
 		
 		GameRegistry.addRecipe(new ItemStack(ItemCardboard, 1), "ppp", 'p', Item.paper);
-		//GameRegistry.addRecipe(new RecipeBox());
+		GameRegistry.addRecipe(new RecipeBox());
 		
 		proxy.load();
 	}

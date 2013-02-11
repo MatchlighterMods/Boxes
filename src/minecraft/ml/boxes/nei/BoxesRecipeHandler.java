@@ -6,9 +6,11 @@ import java.util.List;
 import ml.boxes.Boxes;
 import ml.boxes.recipe.RecipeBox;
 import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraftforge.oredict.OreDictionary;
 import codechicken.nei.InventoryCraftingDummy;
 import codechicken.nei.NEIClientUtils;
 import codechicken.nei.PositionedStack;
@@ -19,8 +21,8 @@ import codechicken.nei.recipe.TemplateRecipeHandler.CachedRecipe;
 public class BoxesRecipeHandler extends ShapedRecipeHandler {
 
 	public class CachedBoxesRecipe extends CachedShapedRecipe{
-		public CachedBoxesRecipe() {
-			super(2, 1, new Object[]{new ItemStack(Boxes.ItemCardboard), new ItemStack(Boxes.ItemCardboard)}, recipe.getRecipeOutput()); //TODO Add the recipe
+		public CachedBoxesRecipe(Object [] rec) {
+			super(3, 3, rec, recipe.getRecipeOutput());
 			cycle();
 		}
 				
@@ -37,7 +39,12 @@ public class BoxesRecipeHandler extends ShapedRecipeHandler {
 	private final CachedBoxesRecipe cached;
 	
 	public BoxesRecipeHandler() {
-		cached = new CachedBoxesRecipe();
+		ItemStack cb = new ItemStack(Boxes.ItemCardboard);
+		List<ItemStack> dyes = new ArrayList<ItemStack>();
+		for (int i=0; i<16; i++){
+			dyes.addAll(OreDictionary.getOres(OreDictionary.getOreID(new ItemStack(Item.dyePowder, 1, i))));
+		}
+		cached = new CachedBoxesRecipe(new Object[]{cb,cb,cb, cb,dyes,cb, cb,cb,cb});
 	}
 	
 	@Override
