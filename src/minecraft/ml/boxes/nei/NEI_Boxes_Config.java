@@ -70,7 +70,7 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 		public boolean mouseClicked(GuiContainer gui, int mousex, int mousey,
 				int button) {
 			
-			if (ContentTipHandler.currentTip != null && ContentTipHandler.currentTip.pointInTip(mousex, mousey)){
+			if (ContentTipHandler.showingTip && ContentTipHandler.isPointInTip(mousex, mousey)){
 				int slNum = ContentTipHandler.currentTip.getSlotAtPosition(mousex, mousey);
 				BoxData bd = ContentTipHandler.currentTip.getBoxData();
 				if (gui.mc.thePlayer.inventory.getItemStack() == null || bd.ISAllowedInBox(gui.mc.thePlayer.inventory.getItemStack())){
@@ -80,7 +80,7 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 					ItemBox.setBoxDataToIS(ContentTipHandler.currentTip.slot.getStack(), bd);
 				}
 				
-				Packet250CustomPayload pkt = (new PacketTipClick((Player)gui.mc.thePlayer, ContentTipHandler.currentTip.slot.slotNumber, slNum)).convertToPkt250();
+				Packet250CustomPayload pkt = (new PacketTipClick((Player)gui.mc.thePlayer, ContentTipHandler.currentTip.slot.getSlotIndex(), slNum)).convertToPkt250();
 				gui.mc.thePlayer.sendQueue.addToSendQueue(pkt);
 				return true;
 			}
@@ -124,7 +124,7 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 		@Override
 		public ItemStack getStackUnderMouse(GuiContainer gui, int mousex,
 				int mousey) {
-			if (ContentTipHandler.currentTip != null)
+			if (ContentTipHandler.showingTip)
 				return ContentTipHandler.currentTip.getStackAtPosition(mousex, mousey); //TODO Called after an ItemStack of Boxes is Deleted by Shift+Clicking in creative. End in NullPExcept
 			return null;
 		}
@@ -132,8 +132,8 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 		private boolean hideTips = false;
 		@Override
 		public boolean objectUnderMouse(GuiContainer gui, int mousex, int mousey) {
-			hideTips = ContentTipHandler.currentTip != null && ContentTipHandler.currentTip.getStackAtPosition(mousex, mousey)==null; //&& ContentTipHandler.currentTip.pointInTip(mousex, mousey);
-			return ContentTipHandler.currentTip != null && ContentTipHandler.currentTip.pointInTip(mousex, mousey);
+			hideTips = ContentTipHandler.showingTip;
+			return ContentTipHandler.showingTip && ContentTipHandler.isPointInTip(mousex, mousey);
 		}
 
 		@Override
@@ -147,8 +147,8 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 
 		@Override
 		public void renderObjects(GuiContainer gui, int mousex, int mousey) {
-			if (ContentTipHandler.currentTip != null)
-				ContentTipHandler.currentTip.doRender(gui.mc, mousex, mousey);
+			if (ContentTipHandler.showingTip)
+				ContentTipHandler.renderContentTip(gui.mc, mousex, mousey, 0);
 		}
 
 		@Override

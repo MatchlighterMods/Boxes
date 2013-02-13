@@ -14,6 +14,7 @@ import com.google.common.io.ByteArrayDataInput;
 
 import cpw.mods.fml.common.network.Player;
 
+//TODO An IndexOutOfBoundsException is raised if interaction occurs in CreativeInventory. Possible fix: Convert slot# to slot# in InvPlayer
 public class PacketTipClick extends MLPacket {
 	
 	public final int inventorySlot;
