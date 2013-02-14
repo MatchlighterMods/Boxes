@@ -7,6 +7,7 @@ import java.util.List;
 import ml.boxes.BoxData;
 import ml.boxes.Boxes;
 import ml.boxes.ItemIBox;
+import ml.boxes.Lib;
 import ml.boxes.client.ContentTip.HintItemStack;
 import ml.boxes.inventory.ContainerBox;
 import ml.boxes.item.ItemBox;
@@ -33,7 +34,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-//TODO Rewrite w/o ContentTip class
 //TODO Tip does not close when an NEI recipe is shown
 public class ContentTipHandler implements ITickHandler {
 
@@ -41,6 +41,7 @@ public class ContentTipHandler implements ITickHandler {
 	private static long tickerTime = 0;
 	public static boolean showingTip = false;
 
+	private static Slot boxSlot;
 	private static rectangle curBounds;
 	private static boolean renderContents = true;
 	private static rectangle gcBounds = new rectangle(0, 0, 0, 0);
@@ -85,15 +86,43 @@ public class ContentTipHandler implements ITickHandler {
 			gcBounds.xCoord = (asGuiContainer.width - guiXSize) / 2;
 			gcBounds.yCoord = (asGuiContainer.height - guiYSize) / 2;
 			
-			if (showingTip && isTipValid(m.X, m.Y)){
+			if (!showingTip || !isTipValid(m.X, m.Y)){
+				showingTip = false;
+				curBounds = new rectangle(0, 0, 0, 0);
+				boolean thoverSlot = false;
+				for (Object objSlt : asGuiContainer.inventorySlots.inventorySlots){
+					Slot slt = (Slot)objSlt;
+					if (Geometry.pointInRect(m.X, m.Y, gcBounds.xCoord + slt.xDisplayPosition, gcBounds.yCoord + slt.yDisplayPosition, 16, 16)){
+						thoverSlot = true;
+						if (hoverSlot != slt)
+							tickerTime = mc.getSystemTime();
+						hoverSlot = slt;
+					}
+				}
+				if (!thoverSlot)
+					hoverSlot = null;
+			}
+			
+			if (hoverSlot != null &&
+					hoverSlot.getHasStack() &&
+					(hoverSlot.getStack().getItem() instanceof ItemBox) &&
+					(!Boxes.config.shiftForTip || asGuiContainer.isShiftKeyDown()) &&
+					(mc.getSystemTime() - tickerTime > Boxes.config.tipReactionTime || asGuiContainer.isShiftKeyDown()) &&
+					!(asGuiContainer instanceof GuiBox && ((ContainerBox)asGuiContainer.inventorySlots).box instanceof ItemIBox && ((ItemIBox)((ContainerBox)asGuiContainer.inventorySlots).box).stack == hoverSlot.getStack()) //TODO Doesn't Work
+					)
+			{
 				BoxData bd = ItemBox.getDataFromIS(hoverSlot.getStack());
 				
+				contentStacks.clear();
 				if (Boxes.neiInstalled && asGuiContainer.isShiftKeyDown() && hoverSlot.inventory instanceof InventoryPlayer){
 					interacting = true;
+					for (int i=0; i<bd.getSizeInventory(); i++){
+						contentStacks.add(bd.getStackInSlot(i));
+					}
 					gridDimensions = Geometry.determineSquarestGrid(bd.getSizeInventory());
+					showingTip = true;
 				} else {
 					interacting = false;
-					contentStacks.clear();
 					List<ItemStack> iss = bd.getContainedItemStacks();
 					boolean matched = false;
 					for (ItemStack is : iss){
@@ -108,8 +137,11 @@ public class ContentTipHandler implements ITickHandler {
 							contentStacks.add(is.copy());
 					}
 					gridDimensions = Geometry.determineSquarestGrid(contentStacks.size());
+					showingTip = contentStacks.size() > 0;
 				}
-				
+			}
+			
+			if (showingTip){
 				int tX = gridDimensions.X*18 +16;
 				int tY = gridDimensions.Y*18 +16;
 				renderContents = true;
@@ -138,36 +170,12 @@ public class ContentTipHandler implements ITickHandler {
 					curBounds.xCoord = gcBounds.xCoord + hoverSlot.xDisplayPosition + (16-curBounds.width)/2;
 					curBounds.yCoord = gcBounds.yCoord + hoverSlot.yDisplayPosition - curBounds.height;
 				}
-			} else {
-				showingTip = false;
-				curBounds = new rectangle(0, 0, 0, 0);
-				boolean thoverSlot = false;
-				for (Object objSlt : asGuiContainer.inventorySlots.inventorySlots){
-					Slot slt = (Slot)objSlt;
-					if (Geometry.pointInRect(m.X, m.Y, gcBounds.xCoord + slt.xDisplayPosition, gcBounds.yCoord + slt.yDisplayPosition, 16, 16)){
-						thoverSlot = true;
-						if (hoverSlot != slt)
-							tickerTime = mc.getSystemTime();
-						hoverSlot = slt;
-
-						if (slt.getHasStack() &&
-								(slt.getStack().getItem() instanceof ItemBox) &&
-								(!Boxes.config.shiftForTip || asGuiContainer.isShiftKeyDown()) &&
-								(mc.getSystemTime() - tickerTime > Boxes.config.tipReactionTime || asGuiContainer.isShiftKeyDown()) &&
-								!(asGuiContainer instanceof GuiBox && ((ContainerBox)asGuiContainer.inventorySlots).box instanceof ItemIBox && ((ItemIBox)((ContainerBox)asGuiContainer.inventorySlots).box).stack == slt.getStack())
-								){
-							showingTip = true;
-						}
-					}
-				}
-				if (!thoverSlot)
-					hoverSlot = null;
 			}
 		}
 	}
 	
 	public static boolean isTipValid(int mX, int mY){
-		return ((Geometry.pointInRect(mX, mY, gcBounds.xCoord + hoverSlot.xDisplayPosition, gcBounds.yCoord + hoverSlot.yDisplayPosition, 16, 16) || 
+		return (hoverSlot != null && (Geometry.pointInRect(mX, mY, gcBounds.xCoord + hoverSlot.xDisplayPosition, gcBounds.yCoord + hoverSlot.yDisplayPosition, 16, 16) || 
 				(interacting && Geometry.pointInRect(mX, mY, curBounds))) &&
 				hoverSlot.getHasStack() // TODO Add better checking to ensure that it is the same box.
 				);
@@ -197,6 +205,31 @@ public class ContentTipHandler implements ITickHandler {
 			RenderUtils.drawTexturedModalRect(7, 0, 178-(curBounds.width-7), 0, curBounds.width-7, curBounds.height-7);
 			RenderUtils.drawTexturedModalRect(7, 9, 178-(curBounds.width-7), 106-(curBounds.height-9), curBounds.width-7, curBounds.height-9);
 			RenderUtils.drawTexturedModalRect(0, 9, 0, 106-(curBounds.height-9), curBounds.width-9, curBounds.height-9);
+
+			if (renderContents){
+				for (int i=0; i<contentStacks.size(); i++){
+					int col = i%gridDimensions.X;
+					int row = i/gridDimensions.X;
+
+					int slotX = 8+col*18;
+					int slotY = 10+row*18;
+					
+					ItemStack is = contentStacks.get(i);
+					if (interacting){
+						re.bindTexture(tex);
+						RenderUtils.drawTexturedModalRect(slotX-1, slotY-1, 0, 106, 18, 18);
+
+						RenderUtils.drawStackAt(mc, slotX, slotY, is);
+
+						GL11.glDisable(GL11.GL_LIGHTING);
+						if (Geometry.pointInRect(mx - curBounds.xCoord, my - curBounds.yCoord, slotX, slotY, 16, 16)){
+							RenderUtils.drawGradientRect(slotX, slotY, slotX + 16, slotY + 16, -2130706433, -2130706433);
+						}
+					} else {
+						RenderUtils.drawSpecialStackAt(mc, slotX, slotY, is, Lib.toGroupedString(is.stackSize,1));
+					}
+				}
+			}
 
 			GL11.glEnable(GL11.GL_LIGHTING);
 			GL11.glPopMatrix();
