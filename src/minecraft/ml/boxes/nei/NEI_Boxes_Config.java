@@ -69,22 +69,7 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 		@Override
 		public boolean mouseClicked(GuiContainer gui, int mousex, int mousey,
 				int button) {
-			
-//			if (ContentTipHandler.showingTip && ContentTipHandler.isPointInTip(mousex, mousey)){
-//				int slNum = ContentTipHandler.currentTip.getSlotAtPosition(mousex, mousey);
-//				BoxData bd = ContentTipHandler.currentTip.getBoxData();
-//				if (gui.mc.thePlayer.inventory.getItemStack() == null || bd.ISAllowedInBox(gui.mc.thePlayer.inventory.getItemStack())){
-//					ItemStack isInBox = bd.getStackInSlot(slNum);
-//					bd.setInventorySlotContents(slNum, gui.mc.thePlayer.inventory.getItemStack());
-//					gui.mc.thePlayer.inventory.setItemStack(isInBox);
-//					ItemBox.setBoxDataToIS(ContentTipHandler.currentTip.slot.getStack(), bd);
-//				}
-//				
-//				Packet250CustomPayload pkt = (new PacketTipClick((Player)gui.mc.thePlayer, ContentTipHandler.currentTip.slot.getSlotIndex(), slNum)).convertToPkt250();
-//				gui.mc.thePlayer.sendQueue.addToSendQueue(pkt);
-//				return true;
-//			}
-			return false;
+			return ContentTipHandler.handleClick(mousex, mousey, button);
 		}
 
 		@Override

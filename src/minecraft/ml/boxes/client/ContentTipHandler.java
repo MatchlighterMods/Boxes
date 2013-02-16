@@ -8,28 +8,30 @@ import ml.boxes.BoxData;
 import ml.boxes.Boxes;
 import ml.boxes.ItemIBox;
 import ml.boxes.Lib;
-import ml.boxes.client.ContentTip.HintItemStack;
 import ml.boxes.inventory.ContainerBox;
 import ml.boxes.item.ItemBox;
+import ml.boxes.network.packets.PacketTipClick;
 import ml.core.Geometry;
 import ml.core.Geometry.XYPair;
 import ml.core.Geometry.rectangle;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.gui.inventory.GuiContainerCreative;
 import net.minecraft.client.renderer.RenderEngine;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.packet.Packet250CustomPayload;
 
-import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
+
+import codechicken.nei.ContainerCreativeInv;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.common.TickType;
+import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -41,7 +43,7 @@ public class ContentTipHandler implements ITickHandler {
 	private static long tickerTime = 0;
 	public static boolean showingTip = false;
 
-	private static Slot boxSlot;
+	//private static Slot boxSlot;
 	private static rectangle curBounds;
 	private static boolean renderContents = true;
 	private static rectangle gcBounds = new rectangle(0, 0, 0, 0);
@@ -86,7 +88,7 @@ public class ContentTipHandler implements ITickHandler {
 			gcBounds.xCoord = (asGuiContainer.width - guiXSize) / 2;
 			gcBounds.yCoord = (asGuiContainer.height - guiYSize) / 2;
 			
-			if (!showingTip || !isTipValid(m.X, m.Y)){
+			if (!isTipValid(m.X, m.Y)){
 				showingTip = false;
 				curBounds = new rectangle(0, 0, 0, 0);
 				boolean thoverSlot = false;
@@ -108,7 +110,7 @@ public class ContentTipHandler implements ITickHandler {
 					(hoverSlot.getStack().getItem() instanceof ItemBox) &&
 					(!Boxes.config.shiftForTip || asGuiContainer.isShiftKeyDown()) &&
 					(mc.getSystemTime() - tickerTime > Boxes.config.tipReactionTime || asGuiContainer.isShiftKeyDown()) &&
-					!(asGuiContainer instanceof GuiBox && ((ContainerBox)asGuiContainer.inventorySlots).box instanceof ItemIBox && ((ItemIBox)((ContainerBox)asGuiContainer.inventorySlots).box).stack == hoverSlot.getStack()) //TODO Doesn't Work
+					!(asGuiContainer instanceof GuiBox && ((ContainerBox)asGuiContainer.inventorySlots).box instanceof ItemIBox && mc.thePlayer.inventory.currentItem == hoverSlot.getSlotIndex()) //((ItemIBox)((ContainerBox)asGuiContainer.inventorySlots).box).stack == hoverSlot.getStack()
 					)
 			{
 				BoxData bd = ItemBox.getDataFromIS(hoverSlot.getStack());
@@ -175,7 +177,7 @@ public class ContentTipHandler implements ITickHandler {
 	}
 	
 	public static boolean isTipValid(int mX, int mY){
-		return (hoverSlot != null && (Geometry.pointInRect(mX, mY, gcBounds.xCoord + hoverSlot.xDisplayPosition, gcBounds.yCoord + hoverSlot.yDisplayPosition, 16, 16) || 
+		return showingTip && (hoverSlot != null && (Geometry.pointInRect(mX, mY, gcBounds.xCoord + hoverSlot.xDisplayPosition, gcBounds.yCoord + hoverSlot.yDisplayPosition, 16, 16) || 
 				(interacting && Geometry.pointInRect(mX, mY, curBounds))) &&
 				hoverSlot.getHasStack() // TODO Add better checking to ensure that it is the same box.
 				);
@@ -183,6 +185,36 @@ public class ContentTipHandler implements ITickHandler {
 
 	public static boolean isPointInTip(int pX, int pY){
 		return Geometry.pointInRect(pX, pY, curBounds);
+	}
+	
+	public static int getSlotAtPosition(int pX, int pY){
+		if (interacting && renderContents && hoverSlot != null){
+			for (int i=0; i< getBoxData().getSizeInventory(); i++){
+				int col = i%gridDimensions.X;
+				int row = i/gridDimensions.X;
+				
+				int slotX = 8+col*18 + curBounds.xCoord;
+				int slotY = 10+row*18 + curBounds.yCoord;
+				
+				if (Geometry.pointInRect(pX, pY, slotX, slotY, 16, 16)){
+					return i;
+				}
+			}
+		}
+		return -1;
+	}
+	
+	public static ItemStack getStackAtPosition(int pX, int pY){
+		int sltNum = getSlotAtPosition(pX, pY);
+		BoxData bd = getBoxData();
+		if (sltNum >= 0 && sltNum < bd.getSizeInventory()){
+			return bd.getStackInSlot(sltNum);
+		}
+		return null;
+	}
+	
+	private static BoxData getBoxData(){
+		return ItemBox.getDataFromIS(hoverSlot.getStack());
 	}
 
 	//Render the tip
@@ -236,14 +268,35 @@ public class ContentTipHandler implements ITickHandler {
 		}
 	}
 
-//	public static boolean handleClick(int mx, int my, int btn){
-//		if (!isTipValid(mx, my)){
-//			showingTip = false;
-//			return false;
-//		}
-//		
-//		
-//	}
+	public static boolean handleClick(int mx, int my, int btn){
+		if (!isTipValid(mx, my)){
+			showingTip = false;
+			return false;
+		}
+		
+		if (isPointInTip(mx, my)){
+			int slNum = getSlotAtPosition(mx, my);
+			BoxData bd = getBoxData();
+			Minecraft mc = FMLClientHandler.instance().getClient();
+			
+			if (slNum >= 0 && (mc.thePlayer.inventory.getItemStack() == null || bd.ISAllowedInBox(mc.thePlayer.inventory.getItemStack()))){
+				ItemStack isInBox = bd.getStackInSlot(slNum);
+				bd.setInventorySlotContents(slNum, mc.thePlayer.inventory.getItemStack());
+				mc.thePlayer.inventory.setItemStack(isInBox);
+				ItemBox.setBoxDataToIS(hoverSlot.getStack(), bd);
+				
+				if (mc.currentScreen instanceof GuiContainerCreative){ //Don't love this, but it's the only way I have found to get the ContentTips updating properly in CreativeInventory. PR anyone?
+					mc.thePlayer.inventoryContainer.detectAndSendChanges();
+				} else {
+					Packet250CustomPayload pkt = (new PacketTipClick((Player)mc.thePlayer, hoverSlot.getSlotIndex(), slNum)).convertToPkt250();
+					mc.thePlayer.sendQueue.addToSendQueue(pkt);
+				}
+			}
+			return true;
+		}
+		
+		return false;
+	}
 	
 	@Override
 	public EnumSet<TickType> ticks() {
