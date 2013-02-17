@@ -1,19 +1,15 @@
 package ml.boxes.recipe;
 
-import java.util.ArrayList;
-
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import ml.boxes.BoxData;
 import ml.boxes.Boxes;
-import ml.boxes.Lib;
 import ml.boxes.item.ItemBox;
-import net.minecraft.block.BlockCloth;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.StringTranslate;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -50,6 +46,7 @@ public class RecipeBox implements IRecipe {
 		ItemStack dyeStack = var1.getStackInRowAndColumn(1, 1);
 		for (int i=0; i<16; i++){
 			if (OreDictionary.getOreID(new ItemStack(Item.dyePowder, 1, i)) == OreDictionary.getOreID(dyeStack)){
+				data.boxName = ItemBox.getColoredBoxName(i);
 				data.boxColor = ItemDye.dyeColors[i];
 				break;
 			}

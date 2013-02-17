@@ -109,8 +109,8 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 		@Override
 		public ItemStack getStackUnderMouse(GuiContainer gui, int mousex,
 				int mousey) {
-			//if (ContentTipHandler.showingTip)
-				//return ContentTipHandler.currentTip.getStackAtPosition(mousex, mousey); //TODO Called after an ItemStack of Boxes is Deleted by Shift+Clicking in creative. End in NullPExcept
+			if (ContentTipHandler.revalidateTip(mousex, mousey))
+				return ContentTipHandler.getStackAtPosition(mousex, mousey);
 			return null;
 		}
 

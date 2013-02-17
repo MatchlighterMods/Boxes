@@ -36,7 +36,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-//TODO Tip does not close when an NEI recipe is shown
 public class ContentTipHandler implements ITickHandler {
 
 	private static Slot hoverSlot;
@@ -219,11 +218,7 @@ public class ContentTipHandler implements ITickHandler {
 
 	//Render the tip
 	public static void renderContentTip(Minecraft mc, int mx, int my, float tickTime){
-		if (!isTipValid(mx, my)){
-			showingTip = false;
-		}
-		
-		if (showingTip){
+		if (revalidateTip(mx, my)){
 			RenderEngine re = mc.renderEngine;
 			int tex = re.getTexture("/ml/boxes/gfx/contentTipGui2.png");
 			re.bindTexture(tex);
@@ -268,13 +263,15 @@ public class ContentTipHandler implements ITickHandler {
 		}
 	}
 
-	public static boolean handleClick(int mx, int my, int btn){
+	public static boolean revalidateTip(int mx, int my){
 		if (!isTipValid(mx, my)){
 			showingTip = false;
-			return false;
 		}
-		
-		if (isPointInTip(mx, my)){
+		return showingTip;
+	}
+	
+	public static boolean handleClick(int mx, int my, int btn){
+		if (revalidateTip(mx, my) && isPointInTip(mx, my)){
 			int slNum = getSlotAtPosition(mx, my);
 			BoxData bd = getBoxData();
 			Minecraft mc = FMLClientHandler.instance().getClient();

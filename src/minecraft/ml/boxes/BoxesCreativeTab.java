@@ -1,7 +1,9 @@
 package ml.boxes;
 
+import ml.boxes.item.ItemBox;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 
 public class BoxesCreativeTab extends CreativeTabs {
@@ -12,7 +14,11 @@ public class BoxesCreativeTab extends CreativeTabs {
 
 	@Override
 	public ItemStack getIconItemStack() {
-		return new ItemStack(Boxes.BlockBox, 1, 1);
+		BoxData bd = new BoxData();
+		bd.boxColor = ItemDye.dyeColors[12];
+		ItemStack is = new ItemStack(Boxes.BlockBox);
+		ItemBox.setBoxDataToIS(is, bd);
+		return is;
 	}
 	
 }

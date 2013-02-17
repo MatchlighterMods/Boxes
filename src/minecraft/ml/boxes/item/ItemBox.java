@@ -58,16 +58,15 @@ public class ItemBox extends ItemBlock {
 
 	@Override
 	public String getItemDisplayName(ItemStack par1ItemStack) {
-		BoxData box = ItemBox.getDataFromIS(par1ItemStack);
-		String nameBuild = "";
+		BoxData bd = ItemBox.getDataFromIS(par1ItemStack);
 		
-		if (box != null){
-			if (box.boxName != null && !box.boxName.isEmpty())
-				return box.boxName;
+		if (bd != null){
+			if (bd.boxName != null && !bd.boxName.isEmpty()){
+				return bd.boxName;
+			}
 		}
 		
-		nameBuild += LanguageRegistry.instance().getStringLocalization("item.box.name", "en_US");
-		return nameBuild;
+		return LanguageRegistry.instance().getStringLocalization("item.box.name", "en_US");
 	}
 
 	@Override
@@ -99,6 +98,7 @@ public class ItemBox extends ItemBlock {
 		for (int i=0; i<15; i++){
 			ItemStack is = new ItemStack(Boxes.BlockBox, 1);
 			BoxData bd = new BoxData();
+			bd.boxName = getColoredBoxName(i);
 			bd.boxColor = ItemDye.dyeColors[i];
 			setBoxDataToIS(is, bd);
 			par3List.add(is);
@@ -124,6 +124,10 @@ public class ItemBox extends ItemBlock {
 		if (!par3EntityPlayer.isSneaking())
 			par3EntityPlayer.openGui(Boxes.instance, 2, par2World, 0,0,0);
 		return super.onItemRightClick(par1ItemStack, par2World, par3EntityPlayer);
+	}
+	
+	public static String getColoredBoxName(int i){
+		return StringTranslate.getInstance().translateKey("item.fireworksCharge." + ItemDye.dyeColorNames[i]) + " " + LanguageRegistry.instance().getStringLocalization("item.box.name", "en_US");
 	}
 	
 }
