@@ -11,9 +11,9 @@ public class Lib {
 	private static String[] suffixes = {"k", "M", "G", "T", "P"};
 	public static String[] DyeOreNames = {"dyeBlack", "dyeRed", "dyeGreen", "dyeBrown", "dyeBlue", "dyePurple", "dyeCyan", "dyeLightGray", "dyeGray", "dyePink", "dyeLime", "dyeYellow", "dyeLightBlue", "dyeMagenta", "dyeOrange", "dyeWhite"};
 	
-	public static boolean isRealPlayer(EntityPlayer pl){ //TODO Doesn't work once compiled
+	public static boolean isRealPlayer(EntityPlayer pl){ //TODO Doesn't work once compiled; NPE
 		Package pkg = pl.getClass().getPackage();
-		if (!pkg.getName().contains(".") || pkg.getName().contains("net.minecraft"))
+		if (pkg.getName() == null ||!pkg.getName().contains(".") || pkg.getName().contains("net.minecraft"))
 			return true;
 		return false;
 	}
