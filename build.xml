@@ -66,6 +66,7 @@
 				<present present="both" targetdir="${code.src.dir}" />
 			</fileset>
 		</delete>
+		<mkdir dir="${build.dest}" />
 		<delete verbose="true">
 			<fileset dir="${build.dest}" includes="**/*"/>
 		</delete>
