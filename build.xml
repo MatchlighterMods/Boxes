@@ -27,7 +27,7 @@
 		
 		<property name="ext" location="${build.env}/../../../userContent" />
 		<property name="forge.src" location="${ext}/forge" />
-		<property name="mlcore.src" location="${ext}/MLCore" />
+		<property name="mlcore.src" location="${ext}/MLCore/src" />
 		
 		<property name="forge.home" location="${build.env}/forge" />
 		<property name="mcp.home" location="${forge.home}/mcp" />
@@ -38,7 +38,7 @@
 		
 		<property name="mcp.obfoutput" location="${mcp.home}/reobf" />
 		<property name="mcp.obfoutput.classes" location="${mcp.obfoutput}/minecraft" />
-		<property name="mcp.srcdir" location="${mcp.home}/src/minecraft" />
+		<property name="mcp.srcdir" location="${mcp.home}/src" />
 		
 		<property name="code.src.dir" location="${build.env}/src" />
 		<property name="build.dest" location="${build.env}/build" />
