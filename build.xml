@@ -73,11 +73,11 @@
 			</fileset>
 		</delete> -->
 		<mkdir dir="${build.dest}" />
-		<delete>
-			<fileset dir="${build.dest}" includes="**/*"/>
+		<delete includeemptydirs="true">
+			<fileset dir="${build.dest}"/>
 		</delete>
-		<delete>
-			<fileset dir="${forge.home}" includes="**/*"/>
+		<delete includeemptydirs="true">
+			<fileset dir="${forge.home}"/>
 		</delete>
 	</target>
 	
