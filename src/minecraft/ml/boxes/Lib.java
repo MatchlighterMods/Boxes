@@ -13,7 +13,7 @@ public class Lib {
 	
 	public static boolean isRealPlayer(EntityPlayer pl){ //TODO Doesn't work once compiled; NPE
 		Package pkg = pl.getClass().getPackage();
-		if (pkg.getName() == null ||!pkg.getName().contains(".") || pkg.getName().contains("net.minecraft"))
+		if (pkg == null ||!pkg.getName().contains(".") || pkg.getName().contains("net.minecraft"))
 			return true;
 		return false;
 	}
