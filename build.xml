@@ -67,7 +67,7 @@
 			</fileset>
 		</delete>
 		<delete verbose="true">
-			<fileset dir="${build.dest}" />
+			<fileset dir="${build.dest}" includes="**/*"/>
 		</delete>
 	</target>
 
