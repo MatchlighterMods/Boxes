@@ -24,7 +24,13 @@
 		<condition property="build.env" value="${env.WORKSPACE}" else="${default}">
 			<isset property="env.WORKSPACE" />
 		</condition>
-		<property name="mcp.home" location="${build.env}/forge/mcp" />
+		
+		<property name="ext" location="${build.env}/../../../userContent" />
+		<property name="forge.src" location="${ext}/forge" />
+		<property name="mlcore.src" location="${ext}/MLCore" />
+		
+		<property name="forge.home" location="${build.env}/forge" />
+		<property name="mcp.home" location="${forge.home}/mcp" />
 		
 		<condition property="python.exe" value="${mcp.home}/runtime/bin/python/python_mcp" else="python">
 			<os family="Windows" />
@@ -69,7 +75,20 @@
 		<mkdir dir="${build.dest}" />
 		<delete verbose="true">
 			<fileset dir="${build.dest}" includes="**/*"/>
+			<fileset dir="${forge.home}" includes="**/*"/>
 		</delete>
+	</target>
+	
+	<target name="loadForge" depends="init">
+		<copy todir="${forge.home}" overwrite="true" verbose="true">
+			<fileset dir="${forge.src}" includes="**/*" />
+		</copy>
+	</target>
+	
+	<target name="importMLCore" depends="init">
+		<copy todir="${mcp.srcdir}" overwrite="true" verbose="true">
+			<fileset dir="${mlcore.src}" includes="**/*" />
+		</copy>
 	</target>
 
 	<target name="merge" depends="init">
