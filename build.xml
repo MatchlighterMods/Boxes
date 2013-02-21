@@ -62,7 +62,7 @@
 	</target>
 
 	<target name="clean" depends="buildenvsetup">
-		<exec executable="${python.exe}" dir="${mcp.home}">
+		<!-- <exec executable="${python.exe}" dir="${mcp.home}">
 			<arg value="${mcp.home}/runtime/updatemd5.py" />
 			<arg value="-f" />
 		</exec>
@@ -71,9 +71,9 @@
 			<fileset dir="${mcp.srcdir}">
 				<present present="both" targetdir="${code.src.dir}" />
 			</fileset>
-		</delete>
+		</delete> -->
 		<mkdir dir="${build.dest}" />
-		<delete verbose="true">
+		<delete>
 			<fileset dir="${build.dest}" includes="**/*"/>
 			<fileset dir="${forge.home}" includes="**/*"/>
 		</delete>
@@ -109,7 +109,7 @@
 		</exec>
 	</target>
 
-	<target name="build" depends="init,clean,merge,recompile,reobfuscate">
+	<target name="build" depends="init,clean,loadForge,importMLCore,merge,recompile,reobfuscate">
 		<antcall target="writeversion" />
 		<antcall target="extract-built-jar"/>
 	</target>
