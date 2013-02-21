@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="Boxes" default="build">
+	<description>Boxes</description>
+	<target name="writeversion" depends="buildenvsetup">
+		<exec executable="${python.exe}" dir="${build.env}" failonerror="true">
+			<arg value="${build.env}/getversion.py" />
+			<arg value="${mcp.home}" />
+		</exec>
+		<propertyfile file="version.properties">
+			<entry key="Boxes.build.number" type="int" value="${version.build}"/>
+			<entry key="Boxes.version" type="string" value="${version}"/>
+		</propertyfile>
+	</target>
+
+	<target name="buildenvsetup">
+		<tstamp>
+			<format pattern="yyMMddHHmmss" property="timestamp" />
+		</tstamp>
+		<property environment="env" />
+		<property file="build.properties" />
+		<property name="modname" value="Boxes" />
+		
+		<condition property="build.env" value="${env.WORKSPACE}" else="${default}">
+			<isset property="env.WORKSPACE" />
+		</condition>
+		<property name="mcp.home" location="${build.env}/forge/mcp" />
+		
+		<condition property="python.exe" value="${mcp.home}/runtime/bin/python/python_mcp" else="python">
+			<os family="Windows" />
+		</condition>
+		
+		<property name="mcp.obfoutput" location="${mcp.home}/reobf" />
+		<property name="mcp.obfoutput.classes" location="${mcp.obfoutput}/minecraft" />
+		<property name="mcp.srcdir" location="${mcp.home}/src/minecraft" />
+		
+		<property name="code.src.dir" location="${build.env}/src" />
+		<property name="build.dest" location="${build.env}/build" />
+		
+		<!--<property name="resource.dir" location="${build.env}/resources" />-->
+		<condition property="version.build" value="${env.BUILD_NUMBER}" else="1">
+			<isset property="env.BUILD_NUMBER" />
+		</condition>
+	</target>
+
+	<target name="init" depends="buildenvsetup">
+		<antcall target="writeversion" />
+		<property file="version.properties" />
+		<property name="build.number" value="${Boxes.build.major.number}.${Boxes.build.minor.number}.${Boxes.build.revision.number}" />
+		<property name="version.minecraft" value="${Boxes.build.mcversion}" />
+		<property name="version.major" value="${Boxes.build.major.number}" />
+		<property name="version.minor" value="${Boxes.build.minor.number}" />
+		<property name="version.rev" value="${Boxes.build.revision.number}" />
+		<property name="version" value="${version.major}.${version.minor}.${version.rev}.${version.build}" />
+		<antcall target="writeversion" />
+	</target>
+
+	<target name="clean" depends="buildenvsetup">
+		<exec executable="${python.exe}" dir="${mcp.home}">
+			<arg value="${mcp.home}/runtime/updatemd5.py" />
+			<arg value="-f" />
+		</exec>
+		
+		<delete verbose="true">
+			<fileset dir="${mcp.srcdir}">
+				<present present="both" targetdir="${code.src.dir}" />
+			</fileset>
+		</delete>
+		<delete verbose="true">
+			<fileset dir="${build.dest}" />
+		</delete>
+	</target>
+
+	<target name="merge" depends="init">
+		<copy todir="${mcp.srcdir}" overwrite="true" verbose="true">
+			<fileset dir="${code.src.dir}" includes="**/*.java" />
+		</copy>
+	</target>
+	
+	<target name="recompile" depends="init">
+		<exec executable="${python.exe}" dir="${mcp.home}" failonerror="true">
+			<arg value="${mcp.home}/runtime/recompile.py" />
+		</exec>
+	</target>
+
+	<target name="reobfuscate" depends="init">
+		<exec executable="${python.exe}" dir="${mcp.home}">
+			<arg value="${mcp.home}/runtime/reobfuscate.py" />
+		</exec>
+	</target>
+
+	<target name="build" depends="init,clean,merge,recompile,reobfuscate">
+		<antcall target="writeversion" />
+		<antcall target="extract-built-jar"/>
+	</target>
+
+	<target name="extract-built-jar">
+		<property name="jarname" value="${modname}-universal-${version.minecraft}-${version}" />
+		<mkdir dir="${build.dest}" />
+		<jar destfile="${build.dest}/target/${jarname}.zip">
+		<fileset dir="${mcp.obfoutput.classes}" includes="**/*.class" />
+		
+		<zipfileset dir="${build.env}" includes="version.properties"/>
+		<mappedresources>
+			<concat>
+				<fileset dir="${build.env}" includes="mcmod.info" />
+				<filterchain>
+					<replacetokens>
+						<token key="VERSION" value="${version}" />
+					</replacetokens>
+				</filterchain>
+			</concat>
+			<mergemapper to="mcmod.info" />
+		</mappedresources>
+		<!-- <fileset dir="${resource.dir}" erroronmissingdir="false">
+			<filename name="**/*.png" />
+		</fileset> -->
+		</jar>
+	</target>
+</project>
