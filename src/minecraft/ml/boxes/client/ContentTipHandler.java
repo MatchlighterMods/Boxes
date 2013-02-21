@@ -220,7 +220,7 @@ public class ContentTipHandler implements ITickHandler {
 	public static void renderContentTip(Minecraft mc, int mx, int my, float tickTime){
 		if (revalidateTip(mx, my)){
 			RenderEngine re = mc.renderEngine;
-			int tex = re.getTexture("/ml/boxes/gfx/contentTipGui2.png");
+			int tex = re.getTexture("/ml/boxes/res/contentTipGui2.png");
 			re.bindTexture(tex);
 			
 			GL11.glPushMatrix();

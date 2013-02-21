@@ -6,7 +6,7 @@ public class ItemCardboard extends Item {
 
 	public ItemCardboard(int par1) {
 		super(par1);
-		setTextureFile("/ml/boxes/gfx/sprites.png");
+		setTextureFile("/ml/boxes/res/sprites.png");
 		setIconIndex(0);
 		setItemName("cardboard");
 	}

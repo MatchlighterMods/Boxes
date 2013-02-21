@@ -57,7 +57,7 @@ public class BlockBox extends BlockContainer {
 
 	@Override
 	public String getTextureFile() {
-		return "/ml/boxes/gfx/sprites.png";
+		return "/ml/boxes/res/sprites.png";
 	}
 
 	@Override
