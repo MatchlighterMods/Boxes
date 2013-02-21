@@ -75,6 +75,8 @@
 		<mkdir dir="${build.dest}" />
 		<delete>
 			<fileset dir="${build.dest}" includes="**/*"/>
+		</delete>
+		<delete>
 			<fileset dir="${forge.home}" includes="**/*"/>
 		</delete>
 	</target>
