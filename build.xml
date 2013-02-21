@@ -120,23 +120,24 @@
 		<property name="jarname" value="${modname}-universal-${version}" /> <!---${version.minecraft}-->
 		<mkdir dir="${build.dest}" />
 		<jar destfile="${build.dest}/${jarname}.zip">
-		<fileset dir="${mcp.obfoutput.classes}" includes="**/*.class" />
-		
-		<zipfileset dir="${build.env}" includes="version.properties"/>
-		<mappedresources>
-			<concat>
-				<fileset dir="${build.env}" includes="mcmod.info" />
-				<filterchain>
-					<replacetokens>
-						<token key="VERSION" value="${version}" />
-					</replacetokens>
-				</filterchain>
-			</concat>
-			<mergemapper to="mcmod.info" />
-		</mappedresources>
-		<!-- <fileset dir="${resource.dir}" erroronmissingdir="false">
-			<filename name="**/*.png" />
-		</fileset> -->
+			<fileset dir="${mcp.obfoutput.classes}" includes="**/ml/boxes/**/*.class" />
+			<fileset dir="${code.src.dir}/minecraft" includes="**/ml/boxes/**/*.png" />
+			
+			<zipfileset dir="${build.env}" includes="version.properties"/>
+			<mappedresources>
+				<concat>
+					<fileset dir="${build.env}" includes="mcmod.info" />
+					<filterchain>
+						<replacetokens>
+							<token key="VERSION" value="${version}" />
+						</replacetokens>
+					</filterchain>
+				</concat>
+				<mergemapper to="mcmod.info" />
+			</mappedresources>
+			<!-- <fileset dir="${resource.dir}" erroronmissingdir="false">
+				<filename name="**/*.png" />
+			</fileset> -->
 		</jar>
 	</target>
 </project>
