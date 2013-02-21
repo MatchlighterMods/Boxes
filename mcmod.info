@@ -1,0 +1,21 @@
+[
+{
+  "modid": "Boxes",
+  "name": "Boxes",
+  "description": "",
+  "version": "@VERSION@",
+  "mcversion": "1.4.7",
+  "url": "",
+  "updateUrl": "",
+  "authors": [
+    "Matchlighter"
+  ],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [
+  ],
+  "parent":"",
+  "dependencies": [
+  ]
+}
+]
