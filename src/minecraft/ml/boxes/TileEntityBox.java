@@ -1,5 +1,6 @@
 package ml.boxes;
 
+import buildcraft.api.inventory.ISpecialInventory;
 import ml.boxes.data.BoxData;
 import ml.boxes.network.packets.PacketUpdateData;
 import net.minecraft.entity.item.EntityItem;
@@ -9,8 +10,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.ForgeDirection;
 
-public class TileEntityBox extends TileEntity implements IInventory, IBox {
+public class TileEntityBox extends TileEntity implements IInventory, IBox, ISpecialInventory {
 
 	public float prevAngleOuter = 0F; //Used for smoothness when FPS > 1 tick
 	public float flapAngleOuter = 0F;
@@ -180,5 +182,22 @@ public class TileEntityBox extends TileEntity implements IInventory, IBox {
 			EntityItem ei = new EntityItem(worldObj, 0.5F + xCoord, 1F + yCoord, 0.5F + zCoord, is);
 			worldObj.spawnEntityInWorld(ei);
 		}
+	}
+
+	@Override
+	public int addItem(ItemStack stack, boolean doAdd, ForgeDirection from) {
+		if (!getBoxData().ISAllowedInBox(stack)){
+			doAdd = false;
+			return 0;
+		}
+		
+		return getBoxData().pipeTransferIn(stack, doAdd, from);
+	}
+
+	@Override
+	public ItemStack[] extractItem(boolean doRemove, ForgeDirection from,
+			int maxItemCount) {
+
+		return getBoxData().pipeExtract(doRemove, from, maxItemCount);
 	}
 }

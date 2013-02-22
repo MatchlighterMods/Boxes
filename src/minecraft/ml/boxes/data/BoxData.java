@@ -14,6 +14,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraftforge.common.ForgeDirection;
 
 public class BoxData implements IInventory {
 
@@ -170,6 +171,14 @@ public class BoxData implements IInventory {
 		return 64;
 	}
 
+	public int pipeTransferIn(ItemStack stack, boolean doAdd, ForgeDirection from){
+		return 0;
+	}
+	
+	public ItemStack[] pipeExtract(boolean doRemove, ForgeDirection from, int maxItemCount){
+		return null;
+	}
+	
 	@Override
 	public void onInventoryChanged() {
 		// TODO Auto-generated method stub
