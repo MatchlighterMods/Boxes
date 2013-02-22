@@ -1,10 +1,10 @@
 package ml.boxes.inventory;
 
-import ml.boxes.BoxData;
 import ml.boxes.Boxes;
 import ml.boxes.IBox;
-import ml.boxes.ItemIBox;
 import ml.boxes.api.ContentBlacklist;
+import ml.boxes.data.BoxData;
+import ml.boxes.data.ItemIBox;
 import ml.boxes.item.ItemBox;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -112,7 +112,7 @@ public class ContainerBox extends Container {
 
 		@Override
 		public boolean isItemValid(ItemStack par1ItemStack) {
-			return box.getBoxData().ISAllowedInBox(par1ItemStack);
+			return true; //box.getBoxData().ISAllowedInBox(par1ItemStack);
 		}
 	}
 }

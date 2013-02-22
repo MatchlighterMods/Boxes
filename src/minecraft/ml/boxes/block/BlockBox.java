@@ -1,11 +1,10 @@
 package ml.boxes.block;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import cpw.mods.fml.client.registry.RenderingRegistry;
 import ml.boxes.Boxes;
 import ml.boxes.TileEntityBox;
+import ml.boxes.data.ItemIBox;
 import ml.boxes.item.ItemBox;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -101,8 +100,10 @@ public class BlockBox extends BlockContainer {
 		ArrayList<ItemStack> iss = new ArrayList<ItemStack>();
 		ItemStack is = new ItemStack(world.getBlockId(x, y, z), 1, metadata);
 		TileEntity te = world.getBlockTileEntity(x, y, z);
-		if (te instanceof TileEntityBox)
-			ItemBox.setBoxDataToIS(is, ((TileEntityBox)te).data);
+		
+		if (te instanceof TileEntityBox){
+			ItemBox.saveBoxData(is, ((TileEntityBox)te).getBoxData());
+		}
 		iss.add(is);
 		return iss;		
 	}

@@ -3,10 +3,11 @@ package ml.boxes.network.packets;
 import java.io.IOException;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
-import ml.boxes.BoxData;
 import ml.boxes.TileEntityBox;
+import ml.boxes.data.BoxData;
 import ml.core.network.MLPacket;
 
 import com.google.common.io.ByteArrayDataInput;
@@ -18,7 +19,7 @@ public class PacketUpdateData extends MLPacket {
 	public Integer x;
 	public Integer y;
 	public Integer z;
-	public BoxData pktData;
+	public NBTTagCompound pktData;
 	
 	public PacketUpdateData(TileEntityBox te) {
 		super(null);
@@ -26,24 +27,21 @@ public class PacketUpdateData extends MLPacket {
 		x = te.xCoord;
 		y = te.yCoord;
 		z = te.zCoord;
-		pktData = te.data;
+		pktData = te.getBoxData().asNBTTag();
 		
 		writeInt(x);
 		writeInt(y);
 		writeInt(z);
-		writeInt(pktData.boxColor);
-		writeString(pktData.boxName);
+		writeNBTTagCompound(pktData);
 	}
 	
 	public PacketUpdateData(Player pl, ByteArrayDataInput data) {
 		super(pl, data);
-		pktData = new BoxData();
 		try {
 			x = dataIn.readInt();
 			y = dataIn.readInt();
 			z = dataIn.readInt();
-			pktData.boxColor = dataIn.readInt();
-			pktData.boxName = readString(200);
+			pktData = readNBTTagCompound();
 		} catch (IOException e){
 			
 		}
@@ -55,7 +53,7 @@ public class PacketUpdateData extends MLPacket {
 		TileEntity te = asEntPl.worldObj.getBlockTileEntity(x, y, z);
 		
 		if (te instanceof TileEntityBox){
-			((TileEntityBox)te).data = pktData;
+			((TileEntityBox)te).getBoxData().loadNBT(pktData);
 		}
 	}
 

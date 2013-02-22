@@ -2,10 +2,11 @@ package ml.boxes.item;
 
 import java.util.List;
 
-import ml.boxes.BoxData;
 import ml.boxes.Boxes;
 import ml.boxes.Lib;
 import ml.boxes.TileEntityBox;
+import ml.boxes.data.BoxData;
+import ml.boxes.data.ItemIBox;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
@@ -30,23 +31,22 @@ public class ItemBox extends ItemBlock {
 		setCreativeTab(Boxes.BoxTab);
 		setItemName("Box");
 	}
-	
-	public static BoxData getDataFromIS(ItemStack is){
-		if (is.hasTagCompound()){
-			return new BoxData(is.getTagCompound().getCompoundTag("boxData"));
-		}
-		return new BoxData();
-	}
-	
-	public static void setBoxDataToIS(ItemStack is, BoxData data){
-		NBTTagCompound isTag = is.hasTagCompound() ? is.getTagCompound() : new NBTTagCompound();
-		isTag.setCompoundTag("boxData", data.asNBTTag());
-		is.setTagCompound(isTag);
-	}
 
 	@Override
 	public int getMaxItemUseDuration(ItemStack par1ItemStack) {
 		return 1;
+	}
+	
+	public static NBTTagCompound getBoxNBT(ItemStack is){
+		if (is.hasTagCompound())
+			return is.getTagCompound().getCompoundTag("boxData");
+		return new NBTTagCompound();
+	}
+	
+	public static void saveBoxData(ItemStack is, BoxData bd){
+		NBTTagCompound isTag = is.hasTagCompound() ? is.getTagCompound() : new NBTTagCompound();
+		isTag.setCompoundTag("boxData", bd.asNBTTag());
+		is.setTagCompound(isTag);
 	}
 
 	@Override
@@ -58,11 +58,11 @@ public class ItemBox extends ItemBlock {
 
 	@Override
 	public String getItemDisplayName(ItemStack par1ItemStack) {
-		BoxData bd = ItemBox.getDataFromIS(par1ItemStack);
+		ItemIBox iib = new ItemIBox(par1ItemStack);
 		
-		if (bd != null){
-			if (bd.boxName != null && !bd.boxName.isEmpty()){
-				return bd.boxName;
+		if (iib.getBoxData() != null){
+			if (iib.getBoxData().boxName != null && !iib.getBoxData().boxName.isEmpty()){
+				return iib.getBoxData().boxName;
 			}
 		}
 		
@@ -79,13 +79,11 @@ public class ItemBox extends ItemBlock {
 			World world, int x, int y, int z, int side, float hitX, float hitY,
 			float hitZ, int metadata) {
 		
-		BoxData box = ItemBox.getDataFromIS(stack);
-		
 		if (super.placeBlockAt(stack, player, world, x, y, z, side, hitX, hitY, hitZ, metadata)){
 			if (world.getBlockId(x, y, z) == this.blockID)
 			{
 				TileEntityBox te = (TileEntityBox)world.getBlockTileEntity(x, y, z);
-				te.data = box;
+				te.getBoxData().loadNBT(ItemBox.getBoxNBT(stack));
 			}
 		}
 		
@@ -97,10 +95,10 @@ public class ItemBox extends ItemBlock {
 			List par3List) {
 		for (int i=0; i<15; i++){
 			ItemStack is = new ItemStack(Boxes.BlockBox, 1);
-			BoxData bd = new BoxData();
-			bd.boxName = getColoredBoxName(i);
-			bd.boxColor = ItemDye.dyeColors[i];
-			setBoxDataToIS(is, bd);
+			ItemIBox iib = new ItemIBox(is);
+			iib.getBoxData().boxName = getColoredBoxName(i);
+			iib.getBoxData().boxColor = ItemDye.dyeColors[i];
+			iib.saveData();
 			par3List.add(is);
 		}
 	}

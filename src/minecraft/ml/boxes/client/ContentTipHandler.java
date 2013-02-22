@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
-import ml.boxes.BoxData;
 import ml.boxes.Boxes;
-import ml.boxes.ItemIBox;
 import ml.boxes.Lib;
+import ml.boxes.data.BoxData;
+import ml.boxes.data.ItemIBox;
 import ml.boxes.inventory.ContainerBox;
 import ml.boxes.item.ItemBox;
 import ml.boxes.network.packets.PacketTipClick;
@@ -112,7 +112,7 @@ public class ContentTipHandler implements ITickHandler {
 					!(asGuiContainer instanceof GuiBox && ((ContainerBox)asGuiContainer.inventorySlots).box instanceof ItemIBox && mc.thePlayer.inventory.currentItem == hoverSlot.getSlotIndex()) //((ItemIBox)((ContainerBox)asGuiContainer.inventorySlots).box).stack == hoverSlot.getStack()
 					)
 			{
-				BoxData bd = ItemBox.getDataFromIS(hoverSlot.getStack());
+				BoxData bd = getROBoxData();
 				
 				contentStacks.clear();
 				if (Boxes.neiInstalled && asGuiContainer.isShiftKeyDown() && hoverSlot.inventory instanceof InventoryPlayer){
@@ -188,7 +188,7 @@ public class ContentTipHandler implements ITickHandler {
 	
 	public static int getSlotAtPosition(int pX, int pY){
 		if (interacting && renderContents && hoverSlot != null){
-			for (int i=0; i< getBoxData().getSizeInventory(); i++){
+			for (int i=0; i< getROBoxData().getSizeInventory(); i++){
 				int col = i%gridDimensions.X;
 				int row = i/gridDimensions.X;
 				
@@ -205,15 +205,19 @@ public class ContentTipHandler implements ITickHandler {
 	
 	public static ItemStack getStackAtPosition(int pX, int pY){
 		int sltNum = getSlotAtPosition(pX, pY);
-		BoxData bd = getBoxData();
+		BoxData bd = getROBoxData();
 		if (sltNum >= 0 && sltNum < bd.getSizeInventory()){
 			return bd.getStackInSlot(sltNum);
 		}
 		return null;
 	}
 	
-	private static BoxData getBoxData(){
-		return ItemBox.getDataFromIS(hoverSlot.getStack());
+	private static ItemIBox getItemIBox(){
+		return new ItemIBox(hoverSlot.getStack());
+	}
+	
+	private static BoxData getROBoxData(){
+		return getItemIBox().getBoxData();
 	}
 
 	//Render the tip
@@ -253,7 +257,7 @@ public class ContentTipHandler implements ITickHandler {
 							RenderUtils.drawGradientRect(slotX, slotY, slotX + 16, slotY + 16, -2130706433, -2130706433);
 						}
 					} else {
-						RenderUtils.drawSpecialStackAt(mc, slotX, slotY, is, Lib.toGroupedString(is.stackSize,1));
+						RenderUtils.drawSpecialStackAt(mc, slotX, slotY, is, is.stackSize> 1 ? Lib.toGroupedString(is.stackSize,1) : "");
 					}
 				}
 			}
@@ -273,14 +277,14 @@ public class ContentTipHandler implements ITickHandler {
 	public static boolean handleClick(int mx, int my, int btn){
 		if (revalidateTip(mx, my) && isPointInTip(mx, my)){
 			int slNum = getSlotAtPosition(mx, my);
-			BoxData bd = getBoxData();
+			ItemIBox iib = getItemIBox();
 			Minecraft mc = FMLClientHandler.instance().getClient();
 			
-			if (slNum >= 0 && (mc.thePlayer.inventory.getItemStack() == null || bd.ISAllowedInBox(mc.thePlayer.inventory.getItemStack()))){
-				ItemStack isInBox = bd.getStackInSlot(slNum);
-				bd.setInventorySlotContents(slNum, mc.thePlayer.inventory.getItemStack());
+			if (slNum >= 0 && (mc.thePlayer.inventory.getItemStack() == null || iib.getBoxData().ISAllowedInBox(mc.thePlayer.inventory.getItemStack()))){
+				ItemStack isInBox = iib.getBoxData().getStackInSlot(slNum);
+				iib.getBoxData().setInventorySlotContents(slNum, mc.thePlayer.inventory.getItemStack());
+				iib.saveData();
 				mc.thePlayer.inventory.setItemStack(isInBox);
-				ItemBox.setBoxDataToIS(hoverSlot.getStack(), bd);
 				
 				if (mc.currentScreen instanceof GuiContainerCreative){ //Don't love this, but it's the only way I have found to get the ContentTips updating properly in CreativeInventory. PR anyone?
 					mc.thePlayer.inventoryContainer.detectAndSendChanges();

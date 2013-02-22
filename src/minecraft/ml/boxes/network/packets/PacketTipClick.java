@@ -2,8 +2,9 @@ package ml.boxes.network.packets;
 
 import java.io.IOException;
 
-import ml.boxes.BoxData;
 import ml.boxes.Boxes;
+import ml.boxes.data.BoxData;
+import ml.boxes.data.ItemIBox;
 import ml.boxes.item.ItemBox;
 import ml.core.network.MLPacket;
 import net.minecraft.entity.player.EntityPlayer;
@@ -46,12 +47,12 @@ public class PacketTipClick extends MLPacket {
 
 		ItemStack isInSlot = asEntPl.inventory.getStackInSlot(inventorySlot);
 		if (isInSlot != null && isInSlot.getItem().itemID == Boxes.BlockBox.blockID) {
-			BoxData bd  = ItemBox.getDataFromIS(isInSlot);
-			if (asEntPl.inventory.getItemStack() == null || bd.ISAllowedInBox(asEntPl.inventory.getItemStack())){
-				ItemStack isInBox = bd.getStackInSlot(boxInvSlot);
-				bd.setInventorySlotContents(boxInvSlot, asEntPl.inventory.getItemStack());
+			ItemIBox iib = new ItemIBox(isInSlot);
+			if (asEntPl.inventory.getItemStack() == null || iib.getBoxData().ISAllowedInBox(asEntPl.inventory.getItemStack())){
+				ItemStack isInBox = iib.getBoxData().getStackInSlot(boxInvSlot);
+				iib.getBoxData().setInventorySlotContents(boxInvSlot, asEntPl.inventory.getItemStack());
+				iib.saveData();
 				asEntPl.inventory.setItemStack(isInBox);
-				ItemBox.setBoxDataToIS(isInSlot, bd);
 				asEntPl.inventory.setInventorySlotContents(inventorySlot, isInSlot);
 			}
 		}

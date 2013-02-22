@@ -1,8 +1,10 @@
-package ml.boxes;
+package ml.boxes.data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import ml.boxes.IBox;
 import ml.boxes.api.ContentBlacklist;
 import ml.boxes.item.ItemBox;
 import net.minecraft.block.Block;
@@ -18,17 +20,23 @@ public class BoxData implements IInventory {
 	private ItemStack[] inventory;
 	public String boxName = "";
 	public int boxColor = 5;
+	public final IBox IBoxOwner;
 	
-	public BoxData() {
+	public BoxData(IBox owner) {
 		inventory=new ItemStack[this.getSizeInventory()];
+		IBoxOwner = owner;
 	}
 	
-	public BoxData(NBTTagCompound data){
-		//this();
-		boxName = data.getString("name");
-		boxColor = data.getInteger("color");
+	public BoxData(NBTTagCompound data, IBox owner){
+		IBoxOwner = owner;
+		loadNBT(data);
+	}
+	
+	public void loadNBT(NBTTagCompound nbt){
+		boxName = nbt.getString("name");
+		boxColor = nbt.getInteger("color");
 		
-		NBTTagList nbttaglist = data.getTagList("Items");
+		NBTTagList nbttaglist = nbt.getTagList("Items");
         inventory = new ItemStack[getSizeInventory()];
         for (int i = 0; i < nbttaglist.tagCount(); i++)
         {
@@ -77,9 +85,9 @@ public class BoxData implements IInventory {
 //	}
 	
 	public boolean ISAllowedInBox(ItemStack is){
-		if (is.getItem() instanceof ItemBox)
-			return false;
-		if (ContentBlacklist.ItemBlacklisted(is))
+		if (is == null)
+			return true;
+		if (is.getItem() instanceof ItemBox || ContentBlacklist.ItemBlacklisted(is))
 			return false;
 		return true;
 	}
@@ -144,8 +152,12 @@ public class BoxData implements IInventory {
 
 	@Override
 	public void setInventorySlotContents(int var1, ItemStack var2) {
-		inventory[var1] = var2;
-		this.onInventoryChanged();
+		if (ISAllowedInBox(var2)){
+			inventory[var1] = var2;
+			this.onInventoryChanged();
+		}else{
+			IBoxOwner.ejectItem(var2);
+		}
 	}
 
 	@Override

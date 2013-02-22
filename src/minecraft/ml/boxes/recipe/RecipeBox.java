@@ -1,8 +1,9 @@
 package ml.boxes.recipe;
 
 import cpw.mods.fml.common.registry.LanguageRegistry;
-import ml.boxes.BoxData;
 import ml.boxes.Boxes;
+import ml.boxes.data.BoxData;
+import ml.boxes.data.ItemIBox;
 import ml.boxes.item.ItemBox;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
@@ -41,18 +42,18 @@ public class RecipeBox implements IRecipe {
 	@Override
 	public ItemStack getCraftingResult(InventoryCrafting var1) {
 		ItemStack is = new ItemStack(Boxes.BlockBox, 1);
-		BoxData data = ItemBox.getDataFromIS(is);
+		ItemIBox iib = new ItemIBox(is);
 		
 		ItemStack dyeStack = var1.getStackInRowAndColumn(1, 1);
 		for (int i=0; i<16; i++){
 			if (OreDictionary.getOreID(new ItemStack(Item.dyePowder, 1, i)) == OreDictionary.getOreID(dyeStack)){
-				data.boxName = ItemBox.getColoredBoxName(i);
-				data.boxColor = ItemDye.dyeColors[i];
+				iib.getBoxData().boxName = ItemBox.getColoredBoxName(i);
+				iib.getBoxData().boxColor = ItemDye.dyeColors[i];
 				break;
 			}
 		}
 
-		ItemBox.setBoxDataToIS(is, data);
+		iib.saveData();
 
 		return is;
 	}

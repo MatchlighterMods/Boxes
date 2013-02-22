@@ -1,10 +1,10 @@
 package ml.boxes.client;
 
-import ml.boxes.BoxData;
 import ml.boxes.Boxes;
 import ml.boxes.CommonProxy;
-import ml.boxes.ItemIBox;
 import ml.boxes.TileEntityBox;
+import ml.boxes.data.BoxData;
+import ml.boxes.data.ItemIBox;
 import ml.boxes.inventory.ContainerBox;
 import ml.boxes.item.ItemBox;
 import net.minecraft.block.Block;
@@ -104,8 +104,7 @@ public class ClientProxy extends CommonProxy {
 				BoxTESR.setBoxFlaps(0, 0, 0, 0);
 				break;
 			}
-			BoxData box = ItemBox.getDataFromIS(item);
-			BoxTESR.renderBox(box.boxColor);
+			BoxTESR.renderBox(new ItemIBox(item).getBoxData().boxColor);
 			GL11.glPopMatrix();
 		}
 
