@@ -8,6 +8,7 @@ import ml.boxes.recipe.RecipeBox;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.Configuration;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
@@ -35,12 +36,6 @@ public class Boxes {
 	public static ItemCardboard ItemCardboard;
 	
 	public static int boxRendererID = -1;
-//	public static int boxBlockID = 540;
-//	public static int cardboardItemID = 3000;
-//	
-//	public static Boolean shiftForTip = false;
-//	public static int tipReactionTime = 100;
-	
 	public static CreativeTabs BoxTab = new BoxesCreativeTab("boxes");
 	
 	public static BoxesConfig config = new BoxesConfig();
@@ -48,26 +43,6 @@ public class Boxes {
 	@PreInit
 	public void PreInit(FMLPreInitializationEvent evt){
 		Configuration cfg = new Configuration(evt.getSuggestedConfigurationFile());
-		
-//		try {
-//			cfg.load();
-//			boxBlockID = cfg.get(Configuration.CATEGORY_BLOCK, "BoxBlockID"	, boxBlockID).getInt();
-//			cardboardItemID = cfg.get(Configuration.CATEGORY_ITEM, "CardboardItemID", cardboardItemID).getInt();
-//			
-//			Property ShiftForTip = cfg.get(Configuration.CATEGORY_GENERAL, "requireShiftForContentTip", shiftForTip);
-//			ShiftForTip.comment = "Set to true to require the use of the Shift key to show the content tip";
-//			shiftForTip = ShiftForTip.getBoolean(shiftForTip);
-//			
-//			Property TipReactionTime = cfg.get(Configuration.CATEGORY_GENERAL, "tipReactionTime", tipReactionTime);
-//			TipReactionTime.comment = "The number of Milliseconds that you need to hover over a box item befor it shows its contents tip";
-//			tipReactionTime = TipReactionTime.getInt(tipReactionTime);
-//			
-//		} catch (Exception e) {
-//			FMLLog.log(Level.SEVERE, e, "Boxes had an error loading its configuration.");
-//		} finally {
-//			cfg.save();
-//		}
-		
 		config.load(cfg);
 	}
 	
@@ -90,7 +65,13 @@ public class Boxes {
 		GameRegistry.addRecipe(new ItemStack(ItemCardboard, 1), "ppp", 'p', Item.paper);
 		GameRegistry.addRecipe(new RecipeBox());
 		
+		initDungeonLoot();
+		
 		proxy.load();
+	}
+	
+	public void initDungeonLoot(){
+		
 	}
 	
 }

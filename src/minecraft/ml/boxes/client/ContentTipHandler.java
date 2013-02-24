@@ -125,8 +125,8 @@ public class ContentTipHandler implements ITickHandler {
 				} else {
 					interacting = false;
 					List<ItemStack> iss = bd.getContainedItemStacks();
-					boolean matched = false;
 					for (ItemStack is : iss){
+						boolean matched = false;
 						for (ItemStack his : contentStacks){
 							if (his.isItemEqual(is) && ItemStack.areItemStackTagsEqual(his, is)){
 								his.stackSize += is.stackSize;

@@ -10,6 +10,7 @@ import ml.boxes.item.ItemBox;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -71,19 +72,6 @@ public class BoxData implements IInventory {
 		
 		return tag;
 	}
-	
-//	public int getColor(){
-//		return ItemDye.dyeColors[boxColor];
-//	}
-	
-//	public String getBoxDisplayName() {
-//		String nameBuild = "";
-//		if (boxColor>-1){
-//			nameBuild += StringTranslate.getInstance().translateKey("item.fireworksCharge." + ItemDye.dyeColorNames[boxColor]) + " ";
-//		}
-//		nameBuild += LanguageRegistry.instance().getStringLocalization("item.box.name", "en_US");
-//		return nameBuild;
-//	}
 	
 	public boolean ISAllowedInBox(ItemStack is){
 		if (is == null)
@@ -170,12 +158,115 @@ public class BoxData implements IInventory {
 	public int getInventoryStackLimit() {
 		return 64;
 	}
+	
+    public boolean mergeItemStack(ItemStack is, int lbound, int ubound)
+    {
+        boolean var5 = false;
+        int itI = lbound;
+
+        boolean direction = lbound > ubound;
+        if (direction)
+        {
+            itI = ubound - 1;
+        }
+
+        ItemStack stackOn;
+
+        if (is.isStackable())
+        {
+            while (is.stackSize > 0 && (!direction && itI < ubound || direction && itI >= lbound))
+            {
+                stackOn = this.getStackInSlot(itI);
+
+                if (stackOn != null && stackOn.itemID == is.itemID && (!is.getHasSubtypes() || is.getItemDamage() == stackOn.getItemDamage()) && ItemStack.areItemStackTagsEqual(is, stackOn))
+                {
+                	int var9 = stackOn.stackSize + is.stackSize;
+
+                    if (var9 <= is.getMaxStackSize())
+                    {
+                        is.stackSize = 0;
+                        stackOn.stackSize = var9;
+                        var5 = true;
+                    }
+                    else if (stackOn.stackSize < is.getMaxStackSize())
+                    {
+                        is.stackSize -= is.getMaxStackSize() - stackOn.stackSize;
+                        stackOn.stackSize = is.getMaxStackSize();
+                        var5 = true;
+                    }
+                }
+
+                if (direction)
+                {
+                    --itI;
+                }
+                else
+                {
+                    ++itI;
+                }
+            }
+        }
+
+        if (is.stackSize > 0)
+        {
+            if (direction)
+            {
+                itI = ubound - 1;
+            }
+            else
+            {
+                itI = lbound;
+            }
+
+            while (!direction && itI < ubound || direction && itI >= lbound)
+            {
+                stackOn = this.getStackInSlot(itI);
+
+                if (stackOn == null)
+                {
+                	this.setInventorySlotContents(itI, is.copy());
+                    is.stackSize = 0;
+                    var5 = true;
+                    break;
+                }
+
+                if (direction)
+                {
+                    --itI;
+                }
+                else
+                {
+                    ++itI;
+                }
+            }
+        }
+
+        return var5;
+    }
 
 	public int pipeTransferIn(ItemStack stack, boolean doAdd, ForgeDirection from){
-		return 0;
+		if (ISAllowedInBox(stack)){
+			int orig = stack.stackSize;
+			mergeItemStack(stack, 0, getSizeInventory());
+			onInventoryChanged();
+			return orig - stack.stackSize;
+		} else {
+			doAdd = false;
+			return 0;
+		}
 	}
 	
 	public ItemStack[] pipeExtract(boolean doRemove, ForgeDirection from, int maxItemCount){
+		for (int i=0; i<this.getSizeInventory(); i++){
+			ItemStack is = getStackInSlot(i);
+			if (is != null){
+				int take = Math.min(maxItemCount, is.stackSize);
+				ItemStack ret = is.copy();
+				ret.stackSize = take;
+				decrStackSize(i, take);
+				return new ItemStack[]{ret};
+			}
+		}
 		return null;
 	}
 	
