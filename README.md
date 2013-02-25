@@ -13,3 +13,4 @@ Boxes is an open-source mod for the game Minecraft.
 ##Special Thanks To##
 * Gidgiddoni - Several of the graphics
 * Azanor - Lending a few tips on rendering
+* cpw - Most of the build-related scripts
