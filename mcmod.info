@@ -4,7 +4,7 @@
   "name": "Boxes",
   "description": "",
   "version": "@VERSION@",
-  "mcversion": "1.4.7",
+  "mcversion": "@MCVERSION@",
   "url": "",
   "updateUrl": "",
   "authors": [

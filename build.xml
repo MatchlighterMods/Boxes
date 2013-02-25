@@ -53,7 +53,7 @@
 		<antcall target="writeversion" />
 		<property file="version.properties" />
 		<property name="build.number" value="${Boxes.build.major.number}.${Boxes.build.minor.number}.${Boxes.build.revision.number}" />
-		<!--<property name="version.minecraft" value="${Boxes.build.mcversion}" />-->
+		<property name="version.minecraft" value="${Boxes.build.mcversion}" />
 		<property name="version.major" value="${Boxes.build.major.number}" />
 		<property name="version.minor" value="${Boxes.build.minor.number}" />
 		<property name="version.rev" value="${Boxes.build.revision.number}" />
@@ -117,7 +117,7 @@
 	</target>
 
 	<target name="extract-built-jar">
-		<property name="jarname" value="${modname}-universal-${version}" /> <!---${version.minecraft}-->
+		<property name="jarname" value="${modname}-${version.minecraft}-${version}" /> 
 		<mkdir dir="${build.dest}" />
 		<jar destfile="${build.dest}/${jarname}.zip">
 			<fileset dir="${mcp.obfoutput.classes}" includes="**/ml/boxes/**/*.class" />
@@ -130,6 +130,9 @@
 					<filterchain>
 						<replacetokens>
 							<token key="VERSION" value="${version}" />
+						</replacetokens>
+						<replacetokens>
+							<token key="MCVERSION" value="${version.minecraft}" />
 						</replacetokens>
 					</filterchain>
 				</concat>

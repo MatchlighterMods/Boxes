@@ -11,8 +11,8 @@ mcp_dir = os.path.abspath(mcp_home)
 print(mcp_dir)
 sys.path.append(mcp_dir)
 
-#from runtime.commands import Commands
-#Commands._version_config = os.path.join(mcp_dir,Commands._version_config)
+from runtime.commands import Commands
+Commands._version_config = os.path.join(mcp_dir,Commands._version_config)
 
 def cmdsplit(args):
     if os.sep == '\\':
@@ -45,17 +45,17 @@ def main():
       vers="v1.0-0-deadbeef"
     (major,minor,rev,githash)=re.match("v(\d+).(\d+)-(\d+)-(.*)",vers).groups()
 
-    #(mcpversion,mcversion,mcserverversion) = re.match("[.\w]+ \(data: ([.\w]+), client: ([.\w.]+), server: ([.\w.]+)\)",Commands.fullversion()).groups()
+    (mcpversion,mcversion,mcserverversion) = re.match("[.\w]+ \(data: ([.\w]+), client: ([.\w.]+), server: ([.\w.]+)\)",Commands.fullversion()).groups()
 
     with open("version.properties","w") as f:
       f.write("%s=%s\n" %("Boxes.build.major.number",major))
       f.write("%s=%s\n" %("Boxes.build.minor.number",minor))
       f.write("%s=%s\n" %("Boxes.build.revision.number",rev))
       f.write("%s=%s\n" %("Boxes.build.githash",githash))
-      #f.write("%s=%s\n" %("Boxes.build.mcpversion",mcpversion))
-      #f.write("%s=%s\n" %("Boxes.build.mcversion",mcversion))
+      f.write("%s=%s\n" %("Boxes.build.mcpversion",mcpversion))
+      f.write("%s=%s\n" %("Boxes.build.mcversion",mcversion))
 
-    print("Version information: Boxes %s.%s.%s" % (major, minor, rev)) #, mcpversion, mcversion))  using MCP %s for %s
+    print("Version information: Boxes %s.%s.%s using MCP %s for %s" % (major, minor, rev, mcpversion, mcversion))))
 
 if __name__ == '__main__':
     main()
