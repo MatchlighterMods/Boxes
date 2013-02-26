@@ -35,6 +35,7 @@ import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+//TODO Fix Non-NEI Rendering
 @SideOnly(Side.CLIENT)
 public class ContentTipHandler implements ITickHandler {
 
@@ -62,8 +63,12 @@ public class ContentTipHandler implements ITickHandler {
 			if (mc.currentScreen instanceof GuiContainer){
 
 				Geometry.XYPair m = Geometry.getScaledMouse();
-				if (!Boxes.neiInstalled) //NEI Provides a better place for doing this. Use it if we can
+				if (!Boxes.neiInstalled){ //NEI Provides a better place for doing this. Use it if we can
+					GL11.glPushMatrix();
+					GL11.glTranslatef(0F, 0F, 200F);
 					renderContentTip(mc, m.X, m.Y, (Float)tickData[0]);
+					GL11.glPopMatrix();
+				}
 			}
 		}else if (type.contains(TickType.CLIENT)){
 			updateCurrentTip();
