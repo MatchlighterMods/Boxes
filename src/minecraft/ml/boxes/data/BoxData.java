@@ -1,17 +1,14 @@
 package ml.boxes.data;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import ml.boxes.IBox;
 import ml.boxes.api.ContentBlacklist;
 import ml.boxes.item.ItemBox;
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -49,6 +46,14 @@ public class BoxData implements IInventory {
             	inventory[j] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
             }
         }
+	}
+	
+	public List<Slot> getSlots(){
+		List<Slot> slots = new ArrayList<Slot>();
+		for (int sln = 0; sln < getSizeInventory(); sln++){
+			slots.add(new BoxSlot(this, sln, 8 + (sln%9)*18, 10 + (int)Math.floor(sln/9)*18));
+        }
+		return slots;
 	}
 	
 	public NBTTagCompound asNBTTag(){
@@ -243,7 +248,7 @@ public class BoxData implements IInventory {
 
         return var5;
     }
-
+    
 	public int pipeTransferIn(ItemStack stack, boolean doAdd, ForgeDirection from){
 		if (ISAllowedInBox(stack)){
 			int orig = stack.stackSize;
@@ -286,5 +291,18 @@ public class BoxData implements IInventory {
 
 	@Override
 	public void closeChest() {}
-
+	
+	public static class BoxSlot extends Slot {
+		private final BoxData boxData;
+		
+		public BoxSlot(BoxData bd, int par2, int par3, int par4) {
+			super(bd, par2, par3, par4);
+			boxData = bd;
+		}
+		
+		@Override
+		public boolean isItemValid(ItemStack par1ItemStack) {
+			return boxData.ISAllowedInBox(par1ItemStack);
+		}
+	}
 }

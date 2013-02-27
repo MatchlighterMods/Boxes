@@ -1,5 +1,7 @@
 package ml.boxes.inventory;
 
+import java.util.List;
+
 import ml.boxes.Boxes;
 import ml.boxes.IBox;
 import ml.boxes.api.ContentBlacklist;
@@ -34,8 +36,9 @@ public class ContainerBox extends Container {
             addSlotToContainer(new Slot(pl.inventory, hotbarSlot, leftCol + hotbarSlot * 18, ySize - 25));
         }
         
-        for (int sln = 0; sln < box.getBoxData().getSizeInventory(); sln++){
-        	addSlotToContainer(new SlotBox(box.getBoxData(), sln, 8 + (sln%9)*18, 10 + (int)Math.floor(sln/9)*18));
+        List<Slot> boxSlots = box.getBoxData().getSlots();
+        for (Slot slt : boxSlots){
+        	addSlotToContainer(slt);
         }
 	}
 	
@@ -101,18 +104,6 @@ public class ContainerBox extends Container {
 	private void save(EntityPlayer pl){
 		if (!pl.worldObj.isRemote){
 			box.saveData();
-		}
-	}
-	
-	protected class SlotBox extends Slot{
-		public SlotBox(IInventory par1iInventory, int par2, int par3, int par4) {
-			super(par1iInventory, par2, par3, par4);
-			
-		}
-
-		@Override
-		public boolean isItemValid(ItemStack par1ItemStack) {
-			return true; //box.getBoxData().ISAllowedInBox(par1ItemStack);
 		}
 	}
 }
