@@ -15,6 +15,7 @@ import ml.core.Geometry;
 import ml.core.Geometry.XYPair;
 import ml.core.Geometry.rectangle;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiContainerCreative;
 import net.minecraft.client.renderer.RenderEngine;
@@ -24,8 +25,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.Packet250CustomPayload;
 
 import org.lwjgl.opengl.GL11;
-
-import codechicken.nei.ContainerCreativeInv;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.ITickHandler;
@@ -74,7 +73,7 @@ public class ContentTipHandler implements ITickHandler {
 			updateCurrentTip();
 		}
 	}
-
+	
 	// Do calculations for the tip
 	private static void updateCurrentTip(){
 		Minecraft mc = FMLClientHandler.instance().getClient();
@@ -181,7 +180,8 @@ public class ContentTipHandler implements ITickHandler {
 	}
 	
 	public static boolean isTipValid(int mX, int mY){
-		return showingTip && (hoverSlot != null && (Geometry.pointInRect(mX, mY, gcBounds.xCoord + hoverSlot.xDisplayPosition, gcBounds.yCoord + hoverSlot.yDisplayPosition, 16, 16) || 
+		GuiScreen oc = FMLClientHandler.instance().getClient().currentScreen;
+		return showingTip && oc instanceof GuiContainer && ((GuiContainer)oc).inventorySlots.inventorySlots.contains(hoverSlot) && (hoverSlot != null && (Geometry.pointInRect(mX, mY, gcBounds.xCoord + hoverSlot.xDisplayPosition, gcBounds.yCoord + hoverSlot.yDisplayPosition, 16, 16) || 
 				(interacting && Geometry.pointInRect(mX, mY, curBounds))) &&
 				hoverSlot.getHasStack() // TODO Add better checking to ensure that it is the same box.
 				);
