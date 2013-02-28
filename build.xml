@@ -121,6 +121,7 @@
 		<mkdir dir="${build.dest}" />
 		<jar destfile="${build.dest}/${jarname}.zip">
 			<fileset dir="${mcp.obfoutput.classes}" includes="**/ml/boxes/**/*.class" />
+			<fileset dir="${mcp.obfoutput.classes}" includes="**/buildcraft/api/**/*" />
 			<fileset dir="${code.src.dir}/minecraft" includes="**/ml/boxes/res/**/*" />
 			
 			<zipfileset dir="${build.env}" includes="version.properties"/>
