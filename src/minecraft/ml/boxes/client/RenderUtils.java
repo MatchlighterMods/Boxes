@@ -78,4 +78,11 @@ public class RenderUtils {
         
         GL11.glDisable(GL11.GL_LIGHTING);
 	}
+	
+	public static void drawSlicedRect(int x, int y, int w, int h, int uBase, int vBase, int tBord, int rBord, int bBord, int lBord){
+		drawTexturedModalRect(x, y, uBase, vBase, w-rBord, h-bBord);
+		drawTexturedModalRect(x+lBord, y, uBase+lBord, vBase, w-lBord, h-bBord);
+		drawTexturedModalRect(x+lBord, y+tBord, uBase+lBord, vBase+tBord, w-lBord, h-tBord);
+		drawTexturedModalRect(x, y+tBord, uBase, vBase+tBord, w-rBord, h-tBord);
+	}
 }

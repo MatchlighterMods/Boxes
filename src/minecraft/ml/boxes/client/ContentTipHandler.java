@@ -5,7 +5,6 @@ import java.util.EnumSet;
 import java.util.List;
 
 import ml.boxes.Boxes;
-import ml.boxes.Lib;
 import ml.boxes.data.BoxData;
 import ml.boxes.data.ItemIBox;
 import ml.boxes.inventory.ContainerBox;
@@ -14,6 +13,7 @@ import ml.boxes.network.packets.PacketTipClick;
 import ml.core.Geometry;
 import ml.core.Geometry.XYPair;
 import ml.core.Geometry.rectangle;
+import ml.core.lib.StringLib;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -232,11 +232,6 @@ public class ContentTipHandler implements ITickHandler {
 			int tex = re.getTexture("/ml/boxes/res/contentTipGui2.png");
 			re.bindTexture(tex);
 			
-			GL11.glPushMatrix();
-			GL11.glTranslatef(curBounds.xCoord, curBounds.yCoord, 0F);
-			GL11.glDisable(GL11.GL_LIGHTING);
-			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-
 			RenderUtils.drawTexturedModalRect(0, 0, 0, 0, curBounds.width-9, curBounds.height-7);
 			RenderUtils.drawTexturedModalRect(7, 0, 178-(curBounds.width-7), 0, curBounds.width-7, curBounds.height-7);
 			RenderUtils.drawTexturedModalRect(7, 9, 178-(curBounds.width-7), 106-(curBounds.height-9), curBounds.width-7, curBounds.height-9);
@@ -262,13 +257,10 @@ public class ContentTipHandler implements ITickHandler {
 							RenderUtils.drawGradientRect(slotX, slotY, slotX + 16, slotY + 16, -2130706433, -2130706433);
 						}
 					} else {
-						RenderUtils.drawSpecialStackAt(mc, slotX, slotY, is, is.stackSize> 1 ? Lib.toGroupedString(is.stackSize,1) : "");
+						RenderUtils.drawSpecialStackAt(mc, slotX, slotY, is, is.stackSize> 1 ? StringLib.toGroupedString(is.stackSize,1) : "");
 					}
 				}
 			}
-
-			GL11.glEnable(GL11.GL_LIGHTING);
-			GL11.glPopMatrix();
 		}
 	}
 

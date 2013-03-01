@@ -3,10 +3,10 @@ package ml.boxes.item;
 import java.util.List;
 
 import ml.boxes.Boxes;
-import ml.boxes.Lib;
 import ml.boxes.TileEntityBox;
 import ml.boxes.data.BoxData;
 import ml.boxes.data.ItemIBox;
+import ml.core.lib.PlayerLib;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
@@ -108,7 +108,7 @@ public class ItemBox extends ItemBlock {
 			EntityPlayer par2EntityPlayer, World par3World, int par4, int par5,
 			int par6, int par7, float par8, float par9, float par10) {
 		
-		if (par2EntityPlayer.isSneaking() || !Lib.isRealPlayer(par2EntityPlayer)){
+		if (par2EntityPlayer.isSneaking() || !PlayerLib.isRealPlayer(par2EntityPlayer)){
 			return super.onItemUse(par1ItemStack, par2EntityPlayer, par3World, par4, par5,
 					par6, par7, par8, par9, par10);
 		}
