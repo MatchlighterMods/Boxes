@@ -44,14 +44,14 @@ public class ContainerBox extends Container {
 	
 	@Override
 	public boolean canInteractWith(EntityPlayer var1) {
-		return box.getBoxData().isUseableByPlayer(var1);
+		return box.getBoxData().isUseableByPlayer(var1) && (!(box instanceof ItemIBox) || ((ItemIBox)box).stack == var1.getCurrentEquippedItem());
 	}
 	
 	@Override
 	public ItemStack slotClick(int slotNum, int mouseBtn, int action,
 			EntityPlayer par4EntityPlayer) {
-		if (box instanceof ItemIBox && slotNum>=0 && ((ItemIBox)box).stack == getSlot(slotNum).getStack()){
-			par4EntityPlayer.closeScreen();
+		if (box instanceof ItemIBox && slotNum>=0 && getSlot(slotNum).getSlotIndex() == par4EntityPlayer.inventory.currentItem) { //((ItemIBox)box).stack == getSlot(slotNum).getStack()){
+			//par4EntityPlayer.closeScreen();
 			return null;
 		}
 		ItemStack ret = super.slotClick(slotNum, mouseBtn, action, par4EntityPlayer);

@@ -53,6 +53,9 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 
 		@Override
 		public boolean keyTyped(GuiContainer gui, char keyChar, int keyCode) {
+			if (ContentTipHandler.openTip != null){
+				return ContentTipHandler.openTip.handleKeyPress(keyChar, keyCode);
+			}
 			return false;
 		}
 
@@ -69,7 +72,10 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 		@Override
 		public boolean mouseClicked(GuiContainer gui, int mousex, int mousey,
 				int button) {
-			return ContentTipHandler.handleClick(mousex, mousey, button);
+			if (ContentTipHandler.revalidateCurrentTip(mousex, mousey)){
+				return ContentTipHandler.openTip.handleMouseClick(mousex, mousey, button);
+			}
+			return false;
 		}
 
 		@Override
@@ -109,16 +115,18 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 		@Override
 		public ItemStack getStackUnderMouse(GuiContainer gui, int mousex,
 				int mousey) {
-			if (ContentTipHandler.revalidateTip(mousex, mousey))
-				return ContentTipHandler.getStackAtPosition(mousex, mousey);
+			if (ContentTipHandler.revalidateCurrentTip(mousex, mousey)){
+				return ContentTipHandler.openTip.getStackAtPosition(mousex, mousey);
+			}
 			return null;
 		}
 
 		private boolean hideTips = false;
 		@Override
 		public boolean objectUnderMouse(GuiContainer gui, int mousex, int mousey) {
-			hideTips = ContentTipHandler.showingTip && ContentTipHandler.getSlotAtPosition(mousex, mousey) < 0;
-			return ContentTipHandler.showingTip && ContentTipHandler.isPointInTip(mousex, mousey);
+			hideTips = ContentTipHandler.openTip != null
+					&& ContentTipHandler.openTip.getStackAtPosition(mousex, mousey) == null;
+			return ContentTipHandler.openTip != null && ContentTipHandler.openTip.isPointInTip(mousex, mousey);
 		}
 
 		@Override
@@ -132,7 +140,7 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 
 		@Override
 		public void renderObjects(GuiContainer gui, int mousex, int mousey) {
-			if (ContentTipHandler.showingTip)
+			if (ContentTipHandler.openTip != null)
 				ContentTipHandler.renderContentTip(gui.mc, mousex, mousey, 0);
 		}
 

@@ -5,7 +5,11 @@ import java.util.List;
 
 import ml.boxes.IBox;
 import ml.boxes.api.ContentBlacklist;
+import ml.boxes.inventory.ContentTip;
+import ml.boxes.inventory.GridContentTip;
 import ml.boxes.item.ItemBox;
+import ml.core.Geometry.rectangle;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
@@ -291,6 +295,18 @@ public class BoxData implements IInventory {
 
 	@Override
 	public void closeChest() {}
+	
+	public ContentTip createContentTip(Slot bSlot, rectangle guiBounds){
+		return new GridContentTip(bSlot, guiBounds);
+	}
+	
+	public boolean canOpenContentTip(){
+		return true;
+	}
+	
+	public boolean canOpenContentPreview(){
+		return getContainedItemStacks().size() > 0;
+	}
 	
 	public static class BoxSlot extends Slot {
 		private final BoxData boxData;

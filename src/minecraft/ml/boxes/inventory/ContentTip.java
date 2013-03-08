@@ -1,39 +1,56 @@
 package ml.boxes.inventory;
 
-import org.lwjgl.opengl.GL11;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import ml.boxes.client.RenderUtils;
+import ml.boxes.Boxes;
+import ml.boxes.IBox;
 import ml.boxes.data.BoxData;
-import ml.boxes.data.BoxData.BoxSlot;
+import ml.boxes.data.ItemIBox;
+import ml.boxes.network.packets.PacketTipClick;
+import ml.core.Geometry;
 import ml.core.Geometry.XYPair;
 import ml.core.Geometry.rectangle;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.RenderEngine;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.gui.inventory.GuiContainerCreative;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
+import org.lwjgl.opengl.GL11;
+
+import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.network.Player;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 public abstract class ContentTip {
 	
 	protected final Slot boxSlot;
 	
-	protected rectangle tipBounds;
+	protected rectangle tipBounds = new rectangle(0, 0, 0, 0);
 	protected rectangle gcBounds;
+	protected int hvrSltIndex;
 	
-	protected XYPair targetSize;
-	private String tipTexture = "";
+	protected XYPair targetSize = new XYPair(0, 0);
 	
 	protected boolean renderContents;
+	public boolean interacting = false;
+	
+	protected int mousex = 0;
+	protected int mousey = 0;
+	
+	private ItemStack origStack;
 	
 	public ContentTip(Slot slt, rectangle gcRect) {
 		boxSlot = slt;
 		gcBounds = gcRect;
+		origStack = boxSlot.getStack();
 	}
 	
-	public void tick(){
+	@SideOnly(Side.CLIENT)
+	public void tick(Minecraft mc){
+		
 		renderContents = true;
 		if (targetSize.X != tipBounds.width || targetSize.Y != tipBounds.height){
 			renderContents = false;
@@ -63,38 +80,126 @@ public abstract class ContentTip {
 	}
 	
 	@SideOnly(Side.CLIENT)
-	protected abstract void renderPreview(Minecraft mc);
-	
-	@SideOnly(Side.CLIENT)
-	protected abstract void renderIteractable(Minecraft mc);
+	public void renderTick(Minecraft mc, int mx, int my){
+		hvrSltIndex = getSlotAtPosition(mx, my);
+		mousex = mx;
+		mousey = my;
 		
-	@SideOnly(Side.CLIENT)
-	public void render(){
 		GL11.glPushMatrix();
 		GL11.glTranslatef(tipBounds.xCoord, tipBounds.yCoord, 0F);
 		GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		
-		RenderEngine re = mc.renderEngine;
-		int tex = re.getTexture(this.tipTexture);
-		re.bindTexture(tex);
+		renderBackground(mc, mx, my);
+		
+		if (renderContents){
+			if (interacting){
+				renderIteractable(mc, mx, my);
+			} else {
+				renderPreview(mc, mx, my);
+			}
+		}
 		
 		GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glPopMatrix();
-		
+	}
+	
+	@SideOnly(Side.CLIENT)
+	protected abstract void renderPreview(Minecraft mc, int mx, int my);
+	
+	@SideOnly(Side.CLIENT)
+	protected abstract void renderIteractable(Minecraft mc, int mx, int my);
+	
+	@SideOnly(Side.CLIENT)
+	protected abstract void renderBackground(Minecraft mc, int mx, int my);
+	
+	@SideOnly(Side.CLIENT)
+	public boolean handleMouseClick(int mx, int my, int btn){
+		Minecraft mc = FMLClientHandler.instance().getClient();
+		if (isPointInTip(mx, my)){
+			if (btn == 2){
+				clientSlotClick(mc, hvrSltIndex, 0, 3, mc.thePlayer);
+			} else {
+				clientSlotClick(mc, hvrSltIndex, btn, 0, mc.thePlayer);
+			}
+			return true;
+		}
+		return false;
+	}
+	
+	@SideOnly(Side.CLIENT)
+	public boolean handleKeyPress(char chr, int kc){
+		Minecraft mc = FMLClientHandler.instance().getClient();
+		//if (isPointInTip(mousex, mousey)){
+			if (mc.thePlayer.inventory.getItemStack() == null && hvrSltIndex >= 0)
+	        {
+	            for (int var2 = 0; var2 < 9; ++var2)
+	            {
+	                if (kc == 2 + var2)
+	                {
+	                	clientSlotClick(mc, hvrSltIndex, var2, 2, mc.thePlayer);
+	                    return true;
+	                }
+	            }
+	        }
+			//return true;
+		//}
+		return false;
 	}
 
+	@SideOnly(Side.CLIENT)
+	protected ItemStack clientSlotClick(Minecraft mc, int slotNum, int arg, int action, EntityPlayer par4EntityPlayer){
+		ItemStack ret = slotClick(slotNum, arg, action, par4EntityPlayer);
+		if (mc.currentScreen instanceof GuiContainerCreative){
+			mc.thePlayer.inventoryContainer.detectAndSendChanges();
+		} else {
+			mc.thePlayer.sendQueue.addToSendQueue((new PacketTipClick((Player)mc.thePlayer, boxSlot.slotNumber, hvrSltIndex, arg, action)).convertToPkt250());
+		}
+		return ret;
+	}
+		
+	public boolean revalidate(int mx, int my){
+		GuiScreen oc = FMLClientHandler.instance().getClient().currentScreen;
+		return oc instanceof GuiContainer &&
+				((GuiContainer)oc).inventorySlots.inventorySlots.contains(boxSlot) &&
+				(boxSlot != null && (Geometry.pointInRect(mx, my, gcBounds.xCoord + boxSlot.xDisplayPosition, gcBounds.yCoord + boxSlot.yDisplayPosition, 16, 16) || 
+				(interacting && Geometry.pointInRect(mx, my, tipBounds))) &&
+				boxSlot.getHasStack() && ItemStack.areItemStackTagsEqual(origStack, boxSlot.getStack())
+				) && (interacting || getIIB().getBoxData().canOpenContentPreview());
+	}
+		
+	protected ItemIBox getIIB(){
+		return new ItemIBox(boxSlot.getStack());
+	}
+	
+	public abstract int getSlotAtPosition(int pX, int pY);
+	
+	public ItemStack getStackAtPosition(int pX, int pY){
+		int sltNum = getSlotAtPosition(pX, pY);
+		BoxData bd = getIIB().getBoxData();
+		if (sltNum >= 0 && sltNum < bd.getSizeInventory()){
+			return bd.getStackInSlot(sltNum);
+		}
+		return null;
+	}
+	
+	public boolean isPointInTip(int pX, int pY){
+		return Geometry.pointInRect(pX, pY, tipBounds);
+	}
+	
     /* Actions
      * 0 - Standard action. Arg: mouseButton
      * 1 - Slot merge into my inventory
      * 2 - Move to Hotbar. Arg: targetSlot
      * 3 - Creative pick stack
      */
-    public ItemStack slotClick(BoxData bd, int slotNum, int arg, int action, EntityPlayer par4EntityPlayer)
+    public ItemStack slotClick(int slotNum, int arg, int action, EntityPlayer par4EntityPlayer)
     {
+    	ItemIBox ibox = getIIB();
+    	
         ItemStack var5 = null;
         InventoryPlayer invPl = par4EntityPlayer.inventory;
-        BoxSlot var7;
+        Slot var7;
         ItemStack var8;
         int var10;
         ItemStack var11;
@@ -108,7 +213,7 @@ public abstract class ContentTip {
                     return null;
                 }
 
-                var7 = (Slot)this.inventorySlots.get(slotNum);
+                var7 = ibox.getBoxData().getSlots().get(slotNum);
 
                 if (var7 != null)
                 {
@@ -208,9 +313,9 @@ public abstract class ContentTip {
                 }
             }
         }
-        else if (action == 2 && arg >= 0 && arg < 9) //Move to hotbar
+        else if (action == 2 && arg >= 0 && arg < 9 && arg != boxSlot.getSlotIndex()) //Move to hotbar
         {
-            var7 = (Slot)this.inventorySlots.get(slotNum);
+            var7 = ibox.getBoxData().getSlots().get(slotNum);
 
             if (var7.canTakeStack(par4EntityPlayer))
             {
@@ -255,7 +360,7 @@ public abstract class ContentTip {
         }
         else if (action == 3 && par4EntityPlayer.capabilities.isCreativeMode && invPl.getItemStack() == null && slotNum >= 0)
         {
-            var7 = (Slot)this.inventorySlots.get(slotNum);
+            var7 = ibox.getBoxData().getSlots().get(slotNum);
 
             if (var7 != null && var7.getHasStack())
             {
@@ -265,6 +370,10 @@ public abstract class ContentTip {
             }
         }
 
+        ibox.saveData();
+        ibox.boxClose();
+        origStack = ibox.stack;
+        
         return var5;
     }
     
