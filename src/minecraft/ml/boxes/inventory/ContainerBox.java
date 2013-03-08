@@ -9,6 +9,7 @@ import ml.boxes.data.BoxData;
 import ml.boxes.data.ItemIBox;
 import ml.boxes.item.ItemBox;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
@@ -50,7 +51,7 @@ public class ContainerBox extends Container {
 	@Override
 	public ItemStack slotClick(int slotNum, int mouseBtn, int action,
 			EntityPlayer par4EntityPlayer) {
-		if (box instanceof ItemIBox && slotNum>=0 && getSlot(slotNum).getSlotIndex() == par4EntityPlayer.inventory.currentItem) { //((ItemIBox)box).stack == getSlot(slotNum).getStack()){
+		if (box instanceof ItemIBox && slotNum>=0 && getSlot(slotNum).inventory == par4EntityPlayer.inventory && getSlot(slotNum).getSlotIndex() == par4EntityPlayer.inventory.currentItem) { //((ItemIBox)box).stack == getSlot(slotNum).getStack()){
 			//par4EntityPlayer.closeScreen();
 			return null;
 		}
