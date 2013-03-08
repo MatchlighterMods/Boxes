@@ -5,6 +5,7 @@ import java.io.IOException;
 import ml.boxes.Boxes;
 import ml.boxes.data.BoxData;
 import ml.boxes.data.ItemIBox;
+import ml.boxes.inventory.ContentTip;
 import ml.boxes.item.ItemBox;
 import ml.core.network.MLPacket;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,6 +20,8 @@ public class PacketTipClick extends MLPacket {
 	
 	public final int inventorySlot;
 	public final int boxInvSlot;
+	public final int arg;
+	public final int action;
 
 	public PacketTipClick(Player pl, int slotWithBox, int slotInBox, int arg, int action) {
 		super(pl);
@@ -26,9 +29,13 @@ public class PacketTipClick extends MLPacket {
 		
 		inventorySlot = slotWithBox;
 		boxInvSlot = slotInBox;
+		this.arg = arg;
+		this.action = action;
 		
 		writeInt(inventorySlot);
 		writeInt(boxInvSlot);
+		writeInt(arg);
+		writeInt(action);
 	}
 	
 	public PacketTipClick(Player pl, ByteArrayDataInput data) {
@@ -36,6 +43,8 @@ public class PacketTipClick extends MLPacket {
 		
 		inventorySlot = data.readInt();
 		boxInvSlot = data.readInt();
+		arg = data.readInt();
+		action = data.readInt();
 	}
 
 	@Override
@@ -45,15 +54,15 @@ public class PacketTipClick extends MLPacket {
 	public void handleServerSide() throws IOException {
 		EntityPlayer asEntPl = (EntityPlayer)player;
 
-		ItemStack isInSlot = asEntPl.inventory.getStackInSlot(inventorySlot);
-		if (isInSlot != null && isInSlot.getItem().itemID == Boxes.BlockBox.blockID) {
-			ItemIBox iib = new ItemIBox(isInSlot);
-			if (asEntPl.inventory.getItemStack() == null || iib.getBoxData().ISAllowedInBox(asEntPl.inventory.getItemStack())){
-				ItemStack isInBox = iib.getBoxData().getStackInSlot(boxInvSlot);
-				iib.getBoxData().setInventorySlotContents(boxInvSlot, asEntPl.inventory.getItemStack());
-				iib.saveData();
-				asEntPl.inventory.setItemStack(isInBox);
-				asEntPl.inventory.setInventorySlotContents(inventorySlot, isInSlot);
+		if (asEntPl.openContainer != null){
+			Slot slotWithBox = asEntPl.openContainer.getSlot(inventorySlot);
+			ItemStack isInSlot = slotWithBox.getStack();
+			
+			if (isInSlot != null && isInSlot.getItem() instanceof ItemBox) {
+				ItemIBox iib = new ItemIBox(isInSlot);
+				ContentTip ctip = iib.getBoxData().createContentTip(slotWithBox, null);
+				
+				ctip.slotClick(boxInvSlot, arg, action, asEntPl);
 			}
 		}
 	}
