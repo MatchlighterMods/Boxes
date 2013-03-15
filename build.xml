@@ -41,6 +41,7 @@
 		<property name="mcp.srcdir" location="${mcp.home}/src" />
 		
 		<property name="code.src.dir" location="${build.env}/src" />
+		<property name="res.dir" location="${build.env}/res" />
 		<property name="build.dest" location="${build.env}/build" />
 		
 		<!--<property name="resource.dir" location="${build.env}/resources" />-->
@@ -122,7 +123,8 @@
 		<jar destfile="${build.dest}/${jarname}.zip">
 			<fileset dir="${mcp.obfoutput.classes}" includes="**/ml/boxes/**/*.class" />
 			<fileset dir="${mcp.obfoutput.classes}" includes="**/buildcraft/api/**/*" />
-			<fileset dir="${code.src.dir}/minecraft" includes="**/ml/boxes/res/**/*" />
+			
+			<fileset dir="${res.dir}" includes="**" />
 			
 			<zipfileset dir="${build.env}" includes="version.properties"/>
 			<mappedresources>

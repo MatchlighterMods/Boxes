@@ -152,6 +152,6 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 
 		@Override
 		public void renderSlotOverlay(GuiContainer gui, Slot slot) {}
-		
+
 	}
 }

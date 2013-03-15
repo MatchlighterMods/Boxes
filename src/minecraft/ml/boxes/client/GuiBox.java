@@ -18,7 +18,8 @@ public class GuiBox extends GuiContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float var1, int var2,
 			int var3) {
-		this.mc.renderEngine.bindTexture(this.mc.renderEngine.getTexture("/ml/boxes/res/boxGui.png"));
+		
+		this.mc.renderEngine.func_98187_b("/mods/Boxes/textures/gui/boxGui.png");
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 
 	}

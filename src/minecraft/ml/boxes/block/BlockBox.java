@@ -8,10 +8,12 @@ import ml.boxes.data.ItemIBox;
 import ml.boxes.item.ItemBox;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 
@@ -50,16 +52,6 @@ public class BlockBox extends BlockContainer {
 	}
 
 	@Override
-	public int getBlockTextureFromSideAndMetadata(int par1, int par2) {
-		return 64;
-	}
-
-	@Override
-	public String getTextureFile() {
-		return "/ml/boxes/res/sprites.png";
-	}
-
-	@Override
 	public boolean onBlockActivated(World par1World, int x, int y,
 			int z, EntityPlayer player, int par6, float par7,
 			float par8, float par9) {
@@ -80,7 +72,7 @@ public class BlockBox extends BlockContainer {
 
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z,
-			EntityLiving entity) {
+			EntityLiving entity, ItemStack is) {
 	
 		int rot = Math.round((entity.rotationYaw*4F)/360F);
 		TileEntity te = world.getBlockTileEntity(x, y, z);
@@ -120,6 +112,11 @@ public class BlockBox extends BlockContainer {
 		}
 		world.setBlockWithNotify(x, y, z, 0);
 		return true;
+	}
+	
+	@Override
+	public void func_94332_a(IconRegister iconRegister){
+		field_94336_cN = iconRegister.func_94245_a("Boxes:box");
 	}
 	
 }

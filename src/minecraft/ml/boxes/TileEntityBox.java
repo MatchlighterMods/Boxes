@@ -6,6 +6,7 @@ import ml.boxes.network.packets.PacketUpdateData;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
@@ -72,7 +73,7 @@ public class TileEntityBox extends TileEntity implements IInventory, IBox, ISpec
 	}
 
 	@Override
-	public void receiveClientEvent(int par1, int par2) {
+	public boolean receiveClientEvent(int par1, int par2) {
 		switch (par1) {
 		case 1:
 			users = par2;
@@ -81,6 +82,7 @@ public class TileEntityBox extends TileEntity implements IInventory, IBox, ISpec
 			facing = par2;
 			break;
 		}
+		return true;
 	}
 
 	@Override
@@ -199,5 +201,17 @@ public class TileEntityBox extends TileEntity implements IInventory, IBox, ISpec
 			int maxItemCount) {
 
 		return getBoxData().pipeExtract(doRemove, from, maxItemCount);
+	}
+
+	@Override
+	public boolean func_94042_c() { //Inventory Named
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean func_94041_b(int i, ItemStack itemstack) { //Stack Allowed (YES!)
+		// TODO Auto-generated method stub
+		return false;
 	}
 }
