@@ -59,14 +59,14 @@ public class BoxTERenderer extends TileEntitySpecialRenderer {
 
 		GL11.glColor4f(red, green, blue, 1.0F);
 
-		bindTextureByName("/ml/boxes/res/boxColor.png");
+		bindTextureByName("/mods/Boxes/textures/models/boxColor.png");
 		boxModel.renderAll();
 		
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
 		GL11.glColor4f(0.7F, 0.47F, 0.3F, 1F);
-		bindTextureByName("/ml/boxes/res/box.png");
+		bindTextureByName("/mods/Boxes/textures/models/box.png");
 		boxModel.renderAll();
 
 		GL11.glDisable(GL11.GL_BLEND);

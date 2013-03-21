@@ -49,9 +49,9 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void load(){
 		
-		MinecraftForgeClient.preloadTexture("/ml/boxes/res/box.png");
-		MinecraftForgeClient.preloadTexture("/ml/boxes/res/boxColor.png");
-		MinecraftForgeClient.preloadTexture("/ml/boxes/res/sprites.png");
+//		MinecraftForgeClient.preloadTexture("/ml/boxes/res/box.png");
+//		MinecraftForgeClient.preloadTexture("/ml/boxes/res/boxColor.png");
+//		MinecraftForgeClient.preloadTexture("/ml/boxes/res/sprites.png");
 		
 		BoxTESR = new BoxTERenderer();
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBox.class, BoxTESR);
