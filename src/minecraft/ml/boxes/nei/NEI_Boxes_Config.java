@@ -101,6 +101,13 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 				int scrolled) {
 			
 		}
+		
+		@Override
+		public void onMouseDragged(GuiContainer gui, int mousex, int mousey,
+				int button, long heldTime) {
+			// TODO Auto-generated method stub
+			
+		}
 
 		//IContainerObjectHandler
 		@Override
@@ -152,13 +159,6 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 
 		@Override
 		public void renderSlotOverlay(GuiContainer gui, Slot slot) {}
-
-		@Override
-		public void onMouseDragged(GuiContainer gui, int mousex, int mousey,
-				int button, long heldTime) {
-			// TODO Auto-generated method stub
-			
-		}
 
 	}
 }
