@@ -11,7 +11,7 @@ public class ItemCardboard extends Item {
 	}
 
 	@Override
-	public void func_94581_a(IconRegister iconRegister){
-		iconIndex = iconRegister.func_94245_a("Boxes:cardboard");
+	public void updateIcons(IconRegister iconRegister){
+		iconIndex = iconRegister.registerIcon("Boxes:cardboard");
 	}
 }

@@ -204,13 +204,13 @@ public class TileEntityBox extends TileEntity implements IInventory, IBox, ISpec
 	}
 
 	@Override
-	public boolean func_94042_c() { //isInvNameLocalized
+	public boolean isInvNameLocalized() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean func_94041_b(int i, ItemStack itemstack) { //isStackValidForSlot
+	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
 		// TODO Auto-generated method stub
 		return false;
 	}

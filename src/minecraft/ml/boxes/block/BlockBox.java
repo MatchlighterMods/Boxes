@@ -110,13 +110,12 @@ public class BlockBox extends BlockContainer {
 		for (ItemStack is : getBlockDropped(world, x, y, z, meta, 0)){
 			super.dropBlockAsItem_do(world, x, y, z, is);
 		}
-		world.setBlockAndMetadataWithNotify(x, y, z, 0, 0, 3);
+		world.setBlock(x, y, z, 0, 0, 3);
 		return true;
 	}
 	
 	@Override
-	public void func_94332_a(IconRegister iconRegister){
-		field_94336_cN = iconRegister.func_94245_a("Boxes:box");
-	}
-	
+	public void registerIcons(IconRegister par1IconRegister) {
+		this.blockIcon = par1IconRegister.registerIcon("Boxes:box");
+	};
 }
