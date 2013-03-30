@@ -188,11 +188,6 @@ public class TileEntityBox extends TileEntity implements IInventory, IBox, ISpec
 
 	@Override
 	public int addItem(ItemStack stack, boolean doAdd, ForgeDirection from) {
-		if (!getBoxData().ISAllowedInBox(stack)){
-			doAdd = false;
-			return 0;
-		}
-		
 		return getBoxData().pipeTransferIn(stack, doAdd, from);
 	}
 
@@ -205,13 +200,11 @@ public class TileEntityBox extends TileEntity implements IInventory, IBox, ISpec
 
 	@Override
 	public boolean isInvNameLocalized() {
-		// TODO Auto-generated method stub
-		return false;
+		return getBoxData().isInvNameLocalized();
 	}
 
 	@Override
 	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
-		// TODO Auto-generated method stub
-		return false;
+		return getBoxData().isStackValidForSlot(i, itemstack);
 	}
 }

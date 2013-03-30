@@ -82,14 +82,6 @@ public class BoxData implements IInventory {
 		return tag;
 	}
 	
-	public boolean ISAllowedInBox(ItemStack is){
-		if (is == null)
-			return true;
-		if (is.getItem() instanceof ItemBox || ContentBlacklist.ItemBlacklisted(is))
-			return false;
-		return true;
-	}
-	
 	public List<ItemStack> getContainedItemStacks(){
 		List<ItemStack> iStacks = new ArrayList<ItemStack>();
 		for (int i=0; i<getSizeInventory(); i++){
@@ -150,7 +142,7 @@ public class BoxData implements IInventory {
 
 	@Override
 	public void setInventorySlotContents(int var1, ItemStack var2) {
-		if (ISAllowedInBox(var2)){
+		if (isStackValidForSlot(var1, var2)){
 			inventory[var1] = var2;
 			this.onInventoryChanged();
 		}else{
@@ -231,7 +223,7 @@ public class BoxData implements IInventory {
             {
                 stackOn = this.getStackInSlot(itI);
 
-                if (stackOn == null)
+                if (stackOn == null && this.isStackValidForSlot(itI, is))
                 {
                 	this.setInventorySlotContents(itI, is.copy());
                     is.stackSize = 0;
@@ -254,15 +246,10 @@ public class BoxData implements IInventory {
     }
     
 	public int pipeTransferIn(ItemStack stack, boolean doAdd, ForgeDirection from){
-		if (ISAllowedInBox(stack)){
-			int orig = stack.stackSize;
-			mergeItemStack(stack, 0, getSizeInventory());
-			onInventoryChanged();
-			return orig - stack.stackSize;
-		} else {
-			doAdd = false;
-			return 0;
-		}
+		int orig = stack.stackSize;
+		doAdd = mergeItemStack(stack, 0, getSizeInventory());
+		onInventoryChanged();
+		return orig - stack.stackSize;
 	}
 	
 	public ItemStack[] pipeExtract(boolean doRemove, ForgeDirection from, int maxItemCount){
@@ -318,7 +305,7 @@ public class BoxData implements IInventory {
 		
 		@Override
 		public boolean isItemValid(ItemStack par1ItemStack) {
-			return boxData.ISAllowedInBox(par1ItemStack);
+			return boxData.isStackValidForSlot(this.getSlotIndex(), par1ItemStack);
 		}
 	}
 
@@ -329,8 +316,11 @@ public class BoxData implements IInventory {
 	}
 
 	@Override
-	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean isStackValidForSlot(int i, ItemStack is) {
+		if (is == null)
+			return true;
+		if (is.getItem() instanceof ItemBox || ContentBlacklist.ItemBlacklisted(is))
+			return false;
+		return true;
 	}
 }
