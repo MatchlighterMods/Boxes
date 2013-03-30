@@ -9,9 +9,14 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL14;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
+@SideOnly(Side.CLIENT)
 public class BoxTERenderer extends TileEntitySpecialRenderer {
 
 	private ModelBox boxModel = new ModelBox();
+	public static BoxTERenderer instance = new BoxTERenderer();
 	
 	@Override
 	public void renderTileEntityAt(TileEntity var1, double var2, double var4,

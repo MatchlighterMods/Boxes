@@ -90,8 +90,7 @@ public class ItemBox extends ItemBlock {
 	}
 
 	@Override
-	public void getSubItems(int par1, CreativeTabs par2CreativeTabs,
-			List par3List) {
+	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List) {
 		for (int i=0; i<15; i++){
 			ItemStack is = new ItemStack(Boxes.BlockBox, 1);
 			ItemIBox iib = new ItemIBox(is);
@@ -118,8 +117,10 @@ public class ItemBox extends ItemBlock {
 	@Override
 	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World,
 			EntityPlayer par3EntityPlayer) {
+		
 		if (!par3EntityPlayer.isSneaking())
 			par3EntityPlayer.openGui(Boxes.instance, 2, par2World, 0,0,0);
+		
 		return super.onItemRightClick(par1ItemStack, par2World, par3EntityPlayer);
 	}
 	
