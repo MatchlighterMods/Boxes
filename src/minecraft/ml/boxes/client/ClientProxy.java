@@ -2,8 +2,8 @@ package ml.boxes.client;
 
 import ml.boxes.Boxes;
 import ml.boxes.CommonProxy;
-import ml.boxes.TileEntityBox;
 import ml.boxes.inventory.ContainerBox;
+import ml.boxes.tile.TileEntityBox;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;

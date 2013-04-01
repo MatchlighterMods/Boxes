@@ -1,6 +1,6 @@
 package ml.boxes.client;
 
-import ml.boxes.TileEntityBox;
+import ml.boxes.tile.TileEntityBox;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemDye;
 import net.minecraft.tileentity.TileEntity;

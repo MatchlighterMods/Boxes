@@ -3,9 +3,9 @@ package ml.boxes.item;
 import java.util.List;
 
 import ml.boxes.Boxes;
-import ml.boxes.TileEntityBox;
 import ml.boxes.data.BoxData;
 import ml.boxes.data.ItemIBox;
+import ml.boxes.tile.TileEntityBox;
 import ml.core.lib.PlayerLib;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;

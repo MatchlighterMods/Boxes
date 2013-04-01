@@ -6,8 +6,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
-import ml.boxes.TileEntityBox;
 import ml.boxes.data.BoxData;
+import ml.boxes.tile.TileEntityBox;
 import ml.core.network.MLPacket;
 
 import com.google.common.io.ByteArrayDataInput;

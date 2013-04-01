@@ -1,6 +1,8 @@
-package ml.boxes;
+package ml.boxes.tile;
 
 import buildcraft.api.inventory.ISpecialInventory;
+import ml.boxes.Boxes;
+import ml.boxes.IBox;
 import ml.boxes.data.BoxData;
 import ml.boxes.network.packets.PacketUpdateData;
 import net.minecraft.entity.item.EntityItem;

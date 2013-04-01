@@ -3,44 +3,43 @@ package ml.boxes.block;
 import java.util.ArrayList;
 
 import ml.boxes.Boxes;
-import ml.boxes.data.ItemIBox;
-import ml.boxes.item.ItemBox;
+import ml.boxes.tile.TileEntitySafe;
 import ml.boxes.tile.TileEntityBox;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 
-public class BlockBox extends BlockContainer {
+public class BlockSafe extends BlockContainer {
 
-	public BlockBox(int par1) {
-		super(par1, Material.rock);
-		setBlockBounds(0.0625F, 0F, 0.0625F, 0.9375F, 0.875F, 0.9375F);
-		//setRequiresSelfNotify();
+	protected BlockSafe(int par1) {
+		super(par1, Material.iron);
 		setCreativeTab(Boxes.BoxTab);
+		// TODO Auto-generated constructor stub
 	}
 
+	@Override
+	public TileEntity createNewTileEntity(World world) {
+		return null;
+	}
+	
 	@Override
 	public TileEntity createTileEntity(World world, int metadata) {
-		return new TileEntityBox();
-	}
-
-	@Override
-	public TileEntity createNewTileEntity(World var1) {
-		return null;
+		// TODO Auto-generated method stub
+		return super.createTileEntity(world, metadata);
 	}
 	
 	@Override
 	public int damageDropped(int meta) {
 		return meta;
 	}
-
+	
 	@Override
 	public int getRenderType() {
 		return Boxes.boxRendererID;
@@ -88,8 +87,21 @@ public class BlockBox extends BlockContainer {
 	}
 	
 	@Override
-	public void harvestBlock(World par1World, EntityPlayer par2EntityPlayer, int par3, int par4, int par5, int par6) {}
+	public float getExplosionResistance(Entity par1Entity, World world, int x,
+			int y, int z, double explosionX, double explosionY,
+			double explosionZ) {
 
+		return 18000000F;
+	}
+	
+	@Override
+	public float getPlayerRelativeBlockHardness(EntityPlayer par1EntityPlayer,
+			World par2World, int par3, int par4, int par5) {
+
+		// TODO Check safe owner
+		return -1;
+	}
+	
 	@Override
 	public ArrayList<ItemStack> getBlockDropped(World world, int x, int y,
 			int z, int metadata, int fortune) {
@@ -98,29 +110,25 @@ public class BlockBox extends BlockContainer {
 		ItemStack is = new ItemStack(world.getBlockId(x, y, z), 1, metadata);
 		TileEntity te = world.getBlockTileEntity(x, y, z);
 		
-		if (te instanceof TileEntityBox){
-			ItemBox.saveBoxData(is, ((TileEntityBox)te).getBoxData());
+		if (te instanceof TileEntitySafe){
+			
 		}
 		iss.add(is);
 		return iss;		
 	}
-
+	
 	@Override
-	public boolean removeBlockByPlayer(World world, EntityPlayer player, int x,
-			int y, int z) {
-		if (world.isRemote)
-			return true;
+	public void breakBlock(World par1World, int par2, int par3, int par4,
+			int par5, int par6) {
 		
-		int meta = world.getBlockMetadata(x, y, z);
-		for (ItemStack is : getBlockDropped(world, x, y, z, meta, 0)){
-			super.dropBlockAsItem_do(world, x, y, z, is); //Done here to ensure Creative drops.
-		}
-		world.setBlock(x, y, z, 0, 0, 3);
-		return true;
+		// TODO Drop contents
+		
+		super.breakBlock(par1World, par2, par3, par4, par5, par6);
 	}
 	
 	@Override
 	public void registerIcons(IconRegister par1IconRegister) {
 		this.blockIcon = par1IconRegister.registerIcon("Boxes:box");
 	};
+	
 }

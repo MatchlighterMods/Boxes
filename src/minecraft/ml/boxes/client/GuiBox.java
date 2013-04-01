@@ -1,9 +1,9 @@
 package ml.boxes.client;
 
-import ml.boxes.TileEntityBox;
 import ml.boxes.data.BoxData;
 import ml.boxes.data.ItemIBox;
 import ml.boxes.inventory.ContainerBox;
+import ml.boxes.tile.TileEntityBox;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;

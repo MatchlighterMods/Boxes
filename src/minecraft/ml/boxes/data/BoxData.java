@@ -152,7 +152,7 @@ public class BoxData implements IInventory {
 
 	@Override
 	public String getInvName() {
-		return "box";
+		return this.boxName;
 	}
 
 	@Override
@@ -311,8 +311,7 @@ public class BoxData implements IInventory {
 
 	@Override
 	public boolean isInvNameLocalized() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override

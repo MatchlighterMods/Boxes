@@ -5,6 +5,7 @@ import ml.boxes.item.ItemBox;
 import ml.boxes.item.ItemCardboard;
 import ml.boxes.network.PacketHandler;
 import ml.boxes.recipe.RecipeBox;
+import ml.boxes.tile.TileEntityBox;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
