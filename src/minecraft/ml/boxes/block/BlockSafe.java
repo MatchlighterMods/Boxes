@@ -18,10 +18,10 @@ import net.minecraftforge.common.ForgeDirection;
 
 public class BlockSafe extends BlockContainer {
 
-	protected BlockSafe(int par1) {
+	public BlockSafe(int par1) {
 		super(par1, Material.iron);
 		setCreativeTab(Boxes.BoxTab);
-		// TODO Auto-generated constructor stub
+		setUnlocalizedName("safe");
 	}
 
 	@Override
@@ -128,7 +128,7 @@ public class BlockSafe extends BlockContainer {
 	
 	@Override
 	public void registerIcons(IconRegister par1IconRegister) {
-		this.blockIcon = par1IconRegister.registerIcon("Boxes:box");
+		this.blockIcon = par1IconRegister.registerIcon("Boxes:safe");
 	};
 	
 }

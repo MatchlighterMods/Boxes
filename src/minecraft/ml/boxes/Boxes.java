@@ -1,6 +1,7 @@
 package ml.boxes;
 
 import ml.boxes.block.BlockBox;
+import ml.boxes.block.BlockSafe;
 import ml.boxes.item.ItemBox;
 import ml.boxes.item.ItemCardboard;
 import ml.boxes.network.PacketHandler;
@@ -34,6 +35,7 @@ public class Boxes {
 	public static Boolean neiInstalled = false;
 	
 	public static BlockBox BlockBox;
+	public static BlockSafe BlockSafe;
 	public static ItemCardboard ItemCardboard;
 	
 	public static int boxRendererID = -1;
@@ -53,11 +55,14 @@ public class Boxes {
 		
 		this.BlockBox = new BlockBox(config.boxBlockID);
 		GameRegistry.registerBlock(this.BlockBox, ItemBox.class, "box");
+		this.BlockSafe = new BlockSafe(config.safeBlockID);
+		GameRegistry.registerBlock(this.BlockSafe, "safe");
 		
 		this.ItemCardboard = new ItemCardboard(config.cardboardItemID-256);
 		GameRegistry.registerItem(ItemCardboard, "cardboard");
 		
 		LanguageRegistry.instance().addStringLocalization("item.box.name", "en_US", "Box");
+		LanguageRegistry.instance().addStringLocalization("tile.safe.name", "en_US", "Lockbox");
 		LanguageRegistry.instance().addStringLocalization("item.cardboard.name", "en_US", "Cardboard Sheet");
 		LanguageRegistry.instance().addStringLocalization("itemGroup.boxes", "en_US", "Boxes");
 		
