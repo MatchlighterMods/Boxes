@@ -1,9 +1,10 @@
 package ml.boxes;
 
 import ml.boxes.block.BlockBox;
-import ml.boxes.block.BlockSafe;
+import ml.boxes.block.BlockMeta;
 import ml.boxes.item.ItemBox;
 import ml.boxes.item.ItemCardboard;
+import ml.boxes.item.ItemMeta;
 import ml.boxes.network.PacketHandler;
 import ml.boxes.recipe.RecipeBox;
 import ml.boxes.tile.TileEntityBox;
@@ -35,10 +36,10 @@ public class Boxes {
 	public static Boolean neiInstalled = false;
 	
 	public static BlockBox BlockBox;
-	public static BlockSafe BlockSafe;
+	public static BlockMeta BlockMeta;
 	public static ItemCardboard ItemCardboard;
 	
-	public static int boxRendererID = -1;
+	public static int nullRendererID = -1;
 	public static CreativeTabs BoxTab = new BoxesCreativeTab("boxes");
 	
 	public static BoxesConfig config = new BoxesConfig();
@@ -55,8 +56,8 @@ public class Boxes {
 		
 		this.BlockBox = new BlockBox(config.boxBlockID);
 		GameRegistry.registerBlock(this.BlockBox, ItemBox.class, "box");
-		this.BlockSafe = new BlockSafe(config.safeBlockID);
-		GameRegistry.registerBlock(this.BlockSafe, "safe");
+		this.BlockMeta = new BlockMeta(config.metaBlockID);
+		GameRegistry.registerBlock(this.BlockMeta, ItemMeta.class, "boxesMeta");
 		
 		this.ItemCardboard = new ItemCardboard(config.cardboardItemID-256);
 		GameRegistry.registerItem(ItemCardboard, "cardboard");

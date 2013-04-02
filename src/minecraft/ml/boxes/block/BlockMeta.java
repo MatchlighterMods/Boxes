@@ -1,27 +1,47 @@
 package ml.boxes.block;
 
+import java.awt.List;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import ml.boxes.Boxes;
+import ml.boxes.tile.TileEntityCrate;
 import ml.boxes.tile.TileEntitySafe;
 import ml.boxes.tile.TileEntityBox;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 
-public class BlockSafe extends BlockContainer {
+public class BlockMeta extends BlockContainer {
+	
+	public static enum types {
+		UNKNOWN,
+		Crate,
+		Safe;
+		
+		public static types fromMeta(int meta){
+			if (meta >-1 && meta<types.values().length){
+				return types.values()[meta];
+			}
+			return types.UNKNOWN;
+		}
+	}
+	
+	public Map<types, Icon> icons = new HashMap<BlockMeta.types, Icon>();
 
-	public BlockSafe(int par1) {
+	public BlockMeta(int par1) {
 		super(par1, Material.iron);
 		setCreativeTab(Boxes.BoxTab);
-		setUnlocalizedName("safe");
 	}
 
 	@Override
@@ -30,9 +50,14 @@ public class BlockSafe extends BlockContainer {
 	}
 	
 	@Override
-	public TileEntity createTileEntity(World world, int metadata) {
-		// TODO Auto-generated method stub
-		return super.createTileEntity(world, metadata);
+	public TileEntity createTileEntity(World world, int meta) {
+		switch(types.fromMeta(meta)){
+		case Crate:
+			return new TileEntityCrate();
+		case Safe:
+			return new TileEntitySafe();
+		}
+		return null;
 	}
 	
 	@Override
@@ -42,7 +67,7 @@ public class BlockSafe extends BlockContainer {
 	
 	@Override
 	public int getRenderType() {
-		return Boxes.boxRendererID;
+		return Boxes.nullRendererID;
 	}
 
 	@Override
@@ -80,6 +105,7 @@ public class BlockSafe extends BlockContainer {
 	
 		int rot = Math.round((entity.rotationYaw*4F)/360F);
 		TileEntity te = world.getBlockTileEntity(x, y, z);
+		
 		if (te instanceof TileEntityBox){
 			((TileEntityBox) te).facing = 4-rot;
 			world.markBlockForUpdate(x, y, z);
@@ -91,15 +117,33 @@ public class BlockSafe extends BlockContainer {
 			int y, int z, double explosionX, double explosionY,
 			double explosionZ) {
 
-		return 18000000F;
+		int meta = world.getBlockMetadata(x, y, z);
+		switch(types.fromMeta(meta)){
+		case Crate:
+			return 20F;
+		case Safe:
+			return 18000000F;
+		}
+		
+		return 60F;
 	}
 	
 	@Override
 	public float getPlayerRelativeBlockHardness(EntityPlayer par1EntityPlayer,
-			World par2World, int par3, int par4, int par5) {
+			World world, int x, int y, int z) {
 
-		// TODO Check safe owner
-		return -1;
+		TileEntity te = world.getBlockTileEntity(x, y, z);
+		int meta = world.getBlockMetadata(x, y, z);
+		switch(types.fromMeta(meta)){
+		case Crate:
+			return 2.0F;
+		case Safe:
+			if (te instanceof TileEntitySafe && ((TileEntitySafe)te).safeOpen){
+				return 5.0F;
+			}
+			return -1;
+		}
+		return 2.0F;
 	}
 	
 	@Override
@@ -110,9 +154,6 @@ public class BlockSafe extends BlockContainer {
 		ItemStack is = new ItemStack(world.getBlockId(x, y, z), 1, metadata);
 		TileEntity te = world.getBlockTileEntity(x, y, z);
 		
-		if (te instanceof TileEntitySafe){
-			
-		}
 		iss.add(is);
 		return iss;		
 	}
@@ -128,7 +169,12 @@ public class BlockSafe extends BlockContainer {
 	
 	@Override
 	public void registerIcons(IconRegister par1IconRegister) {
-		this.blockIcon = par1IconRegister.registerIcon("Boxes:safe");
+		icons.put(types.Crate, par1IconRegister.registerIcon("Boxes:crate"));
+		icons.put(types.Safe, par1IconRegister.registerIcon("Boxes:safe"));
 	};
 	
+	@Override
+	public Icon getBlockTextureFromSideAndMetadata(int side, int meta) {
+		return icons.get(types.fromMeta(meta));
+	}
 }

@@ -1,6 +1,7 @@
-package ml.boxes.client;
+package ml.boxes.client.render.item;
 
 import ml.boxes.Boxes;
+import ml.boxes.client.render.tile.BoxTERenderer;
 import ml.boxes.data.ItemIBox;
 import ml.boxes.inventory.ContainerBox;
 import net.minecraft.block.Block;
@@ -30,7 +31,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class BoxItemRenderer implements IItemRenderer, ISimpleBlockRenderingHandler {
+public class BoxItemRenderer implements IItemRenderer {
 
 	@Override
 	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
@@ -198,26 +199,4 @@ public class BoxItemRenderer implements IItemRenderer, ISimpleBlockRenderingHand
 		BoxTERenderer.instance.renderBox(new ItemIBox(item).getBoxData().boxColor);
 		GL11.glPopMatrix();
 	}
-
-	//To prevent default rendering.
-	@Override
-	public void renderInventoryBlock(Block block, int metadata, int modelID,
-			RenderBlocks renderer) {}
-
-	@Override
-	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z,
-			Block block, int modelId, RenderBlocks renderer) {
-		return true;
-	}
-
-	@Override
-	public boolean shouldRender3DInInventory() {
-		return true;
-	}
-
-	@Override
-	public int getRenderId() {
-		return Boxes.boxRendererID;
-	}
-
 }

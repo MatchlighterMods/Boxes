@@ -6,7 +6,8 @@ import ml.core.Config;
 public class BoxesConfig extends Config {
 
 	public @prop(category=Configuration.CATEGORY_BLOCK) Integer boxBlockID = 540;
-	public @prop(category=Configuration.CATEGORY_BLOCK) Integer safeBlockID = 541;
+	public @prop(category=Configuration.CATEGORY_BLOCK) Integer metaBlockID = 541;
+	
 	public @prop(category=Configuration.CATEGORY_ITEM) Integer cardboardItemID = 3000;
 	
 	public @prop(comment="Set to true to require the use of the Shift key to show the content tip") boolean shiftForTip = false;

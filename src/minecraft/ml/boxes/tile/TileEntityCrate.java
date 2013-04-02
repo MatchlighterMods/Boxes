@@ -4,14 +4,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.ForgeDirection;
-import buildcraft.api.inventory.ISpecialInventory;
 
-public class TileEntitySafe extends TileEntity implements ISpecialInventory,
-		IInventory {
+public class TileEntityCrate extends TileEntity implements IInventory {
 
-	public boolean safeOpen;
-	
 	@Override
 	public int getSizeInventory() {
 		// TODO Auto-generated method stub
@@ -82,19 +77,6 @@ public class TileEntitySafe extends TileEntity implements ISpecialInventory,
 	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
 		// TODO Auto-generated method stub
 		return false;
-	}
-
-	@Override
-	public int addItem(ItemStack stack, boolean doAdd, ForgeDirection from) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public ItemStack[] extractItem(boolean doRemove, ForgeDirection from,
-			int maxItemCount) {
-		doRemove = false;
-		return null;
 	}
 
 }

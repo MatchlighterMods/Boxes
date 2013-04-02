@@ -1,5 +1,6 @@
-package ml.boxes.client;
+package ml.boxes.client.render.tile;
 
+import ml.boxes.client.ModelBox;
 import ml.boxes.tile.TileEntityBox;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemDye;
@@ -19,10 +20,12 @@ public class BoxTERenderer extends TileEntitySpecialRenderer {
 	public static BoxTERenderer instance = new BoxTERenderer();
 	
 	@Override
-	public void renderTileEntityAt(TileEntity var1, double var2, double var4,
+	public void renderTileEntityAt(TileEntity te, double var2, double var4,
 			double var6, float tickTime) {
+		
+		te.worldObj.theProfiler.startSection("box");
 				
-		TileEntityBox box = (TileEntityBox)var1;
+		TileEntityBox box = (TileEntityBox)te;
 		//int meta = box.worldObj.getBlockMetadata(box.xCoord, box.yCoord, box.zCoord);
 		
 		GL11.glPushMatrix();
@@ -47,6 +50,7 @@ public class BoxTERenderer extends TileEntitySpecialRenderer {
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
         GL11.glPopMatrix();
 
+        te.worldObj.theProfiler.endSection();
 	}
 
 	public void setBoxFlaps(int a, int b, int c, int d){
