@@ -23,6 +23,7 @@ public class BoxTERenderer extends TileEntitySpecialRenderer {
 	public void renderTileEntityAt(TileEntity te, double var2, double var4,
 			double var6, float tickTime) {
 		
+		te.worldObj.theProfiler.startSection("Boxes");
 		te.worldObj.theProfiler.startSection("box");
 				
 		TileEntityBox box = (TileEntityBox)te;
@@ -50,6 +51,7 @@ public class BoxTERenderer extends TileEntitySpecialRenderer {
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
         GL11.glPopMatrix();
 
+        te.worldObj.theProfiler.endSection();
         te.worldObj.theProfiler.endSection();
 	}
 

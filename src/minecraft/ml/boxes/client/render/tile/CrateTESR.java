@@ -25,6 +25,7 @@ public class CrateTESR extends TileEntitySpecialRenderer {
 	public void renderTileEntityAt(TileEntity te, double d0, double d1,
 			double d2, float f) {
 
+		te.worldObj.theProfiler.startSection("Boxes");
 		te.worldObj.theProfiler.startSection("crate");
 
 		GL11.glPushMatrix();
@@ -37,6 +38,7 @@ public class CrateTESR extends TileEntitySpecialRenderer {
 		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 		GL11.glPopMatrix();
 
+		te.worldObj.theProfiler.endSection();
 		te.worldObj.theProfiler.endSection();
 
 	}

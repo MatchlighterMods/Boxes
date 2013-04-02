@@ -3,9 +3,12 @@ package ml.boxes.client.render.item;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import com.jcraft.jorbis.Block;
+
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import ml.boxes.Boxes;
+import ml.boxes.block.BlockMeta;
 import ml.boxes.client.render.tile.BoxTERenderer;
 import ml.boxes.client.render.tile.CrateTESR;
 import ml.boxes.data.ItemIBox;
@@ -67,7 +70,13 @@ public class MetaItemRenderer implements IItemRenderer {
 			GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 			break;
 		}
-		CrateTESR.instance.render();
+		
+		switch (BlockMeta.types.fromMeta(item.getItemDamage())){
+		case Crate:
+			CrateTESR.instance.render();
+			break;
+		}
+		
 		GL11.glPopMatrix();
 
 	}
