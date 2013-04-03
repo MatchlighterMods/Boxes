@@ -8,7 +8,7 @@ import com.jcraft.jorbis.Block;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import ml.boxes.Boxes;
-import ml.boxes.block.BlockMeta;
+import ml.boxes.block.MetaType;
 import ml.boxes.client.render.tile.BoxTERenderer;
 import ml.boxes.client.render.tile.CrateTESR;
 import ml.boxes.data.ItemIBox;
@@ -71,7 +71,7 @@ public class MetaItemRenderer implements IItemRenderer {
 			break;
 		}
 		
-		switch (BlockMeta.types.fromMeta(item.getItemDamage())){
+		switch (MetaType.fromMeta(item.getItemDamage())){
 		case Crate:
 			CrateTESR.instance.render();
 			break;

@@ -24,21 +24,6 @@ import net.minecraftforge.common.ForgeDirection;
 
 public class BlockMeta extends BlockContainer {
 	
-	public static enum types {
-		UNKNOWN,
-		Crate,
-		Safe;
-		
-		public static types fromMeta(int meta){
-			if (meta >-1 && meta<types.values().length){
-				return types.values()[meta];
-			}
-			return types.UNKNOWN;
-		}
-	}
-	
-	public Map<types, Icon> icons = new HashMap<BlockMeta.types, Icon>();
-
 	public BlockMeta(int par1) {
 		super(par1, Material.iron);
 		setCreativeTab(Boxes.BoxTab);
@@ -51,7 +36,7 @@ public class BlockMeta extends BlockContainer {
 	
 	@Override
 	public TileEntity createTileEntity(World world, int meta) {
-		switch(types.fromMeta(meta)){
+		switch(MetaType.fromMeta(meta)){
 		case Crate:
 			return new TileEntityCrate();
 		case Safe:
@@ -118,45 +103,50 @@ public class BlockMeta extends BlockContainer {
 			double explosionZ) {
 
 		int meta = world.getBlockMetadata(x, y, z);
-		switch(types.fromMeta(meta)){
+		switch(MetaType.fromMeta(meta)){
 		case Crate:
-			return 20F;
+			return 4.0F;
 		case Safe:
 			return 18000000F;
 		}
 		
-		return 60F;
+		return 12F;
 	}
 	
 	@Override
 	public float getPlayerRelativeBlockHardness(EntityPlayer par1EntityPlayer,
 			World world, int x, int y, int z) {
-
+		
 		TileEntity te = world.getBlockTileEntity(x, y, z);
 		int meta = world.getBlockMetadata(x, y, z);
-		switch(types.fromMeta(meta)){
+		switch(MetaType.fromMeta(meta)){
 		case Crate:
-			return 2.0F;
+			return 0.1F;
 		case Safe:
 			if (te instanceof TileEntitySafe && ((TileEntitySafe)te).safeOpen){
-				return 5.0F;
+				return 0.05F;
 			}
 			return -1;
 		}
-		return 2.0F;
+		return 0.1F;
 	}
 	
 	@Override
-	public ArrayList<ItemStack> getBlockDropped(World world, int x, int y,
-			int z, int metadata, int fortune) {
-		
-		ArrayList<ItemStack> iss = new ArrayList<ItemStack>();
-		ItemStack is = new ItemStack(world.getBlockId(x, y, z), 1, metadata);
-		TileEntity te = world.getBlockTileEntity(x, y, z);
-		
-		iss.add(is);
-		return iss;		
+	public boolean canHarvestBlock(EntityPlayer player, int meta) {
+		return true;
 	}
+	
+//	@Override
+//	public ArrayList<ItemStack> getBlockDropped(World world, int x, int y,
+//			int z, int metadata, int fortune) {
+//		
+//		ArrayList<ItemStack> iss = new ArrayList<ItemStack>();
+//		ItemStack is = new ItemStack(world.getBlockId(x, y, z), 1, metadata);
+//		TileEntity te = world.getBlockTileEntity(x, y, z);
+//		
+//		iss.add(is);
+//		return iss;		
+//	}
 	
 	@Override
 	public void breakBlock(World par1World, int par2, int par3, int par4,
@@ -169,12 +159,13 @@ public class BlockMeta extends BlockContainer {
 	
 	@Override
 	public void registerIcons(IconRegister par1IconRegister) {
-		icons.put(types.Crate, par1IconRegister.registerIcon("Boxes:crate"));
-		icons.put(types.Safe, par1IconRegister.registerIcon("Boxes:safe"));
+		for (MetaType typ : MetaType.values()){
+			typ.ricon = par1IconRegister.registerIcon(typ.icon);
+		}
 	};
 	
 	@Override
 	public Icon getBlockTextureFromSideAndMetadata(int side, int meta) {
-		return icons.get(types.fromMeta(meta));
+		return MetaType.fromMeta(meta).ricon;
 	}
 }

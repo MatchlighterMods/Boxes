@@ -2,17 +2,21 @@ package ml.boxes;
 
 import ml.boxes.block.BlockBox;
 import ml.boxes.block.BlockMeta;
+import ml.boxes.block.MetaType;
 import ml.boxes.item.ItemBox;
 import ml.boxes.item.ItemCardboard;
 import ml.boxes.item.ItemMeta;
 import ml.boxes.network.PacketHandler;
 import ml.boxes.recipe.RecipeBox;
 import ml.boxes.tile.TileEntityBox;
+import ml.boxes.tile.TileEntityCrate;
+import ml.boxes.tile.TileEntitySafe;
+import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.Configuration;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
@@ -53,23 +57,28 @@ public class Boxes {
 	@Init
 	public void Init(FMLInitializationEvent evt){
 		GameRegistry.registerTileEntity(TileEntityBox.class, "box");
+		GameRegistry.registerTileEntity(TileEntityCrate.class, "crate");
+		GameRegistry.registerTileEntity(TileEntitySafe.class, "safe");
 		
 		this.BlockBox = new BlockBox(config.boxBlockID);
 		GameRegistry.registerBlock(this.BlockBox, ItemBox.class, "box");
-		this.BlockMeta = new BlockMeta(config.metaBlockID);
+		this.BlockMeta = new BlockMeta(config.generalBlockID);
 		GameRegistry.registerBlock(this.BlockMeta, ItemMeta.class, "boxesMeta");
 		
 		this.ItemCardboard = new ItemCardboard(config.cardboardItemID-256);
 		GameRegistry.registerItem(ItemCardboard, "cardboard");
 		
 		LanguageRegistry.instance().addStringLocalization("item.box.name", "en_US", "Box");
-		LanguageRegistry.instance().addStringLocalization("tile.safe.name", "en_US", "Lockbox");
 		LanguageRegistry.instance().addStringLocalization("item.cardboard.name", "en_US", "Cardboard Sheet");
 		LanguageRegistry.instance().addStringLocalization("itemGroup.boxes", "en_US", "Boxes");
+		
+		LanguageRegistry.instance().addStringLocalization("Boxes.safe.name", "en_US", "Lockbox");
+		LanguageRegistry.instance().addStringLocalization("Boxes.crate.name", "en_US", "Crate");
 		
 		NetworkRegistry.instance().registerGuiHandler(instance, proxy);
 		
 		GameRegistry.addRecipe(new ItemStack(ItemCardboard, 1), "ppp", 'p', Item.paper);
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockMeta, 1, MetaType.Crate.ordinal()), "wsw", "scs", "wsw", 'w', "logWood", 's', Item.stick, 'c', Block.chest));
 		GameRegistry.addRecipe(new RecipeBox());
 		
 		initDungeonLoot();

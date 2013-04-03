@@ -1,6 +1,7 @@
 package ml.boxes.nei;
 
 import ml.boxes.Boxes;
+import ml.boxes.block.MetaType;
 import ml.boxes.client.ContentTipHandler;
 import ml.boxes.data.BoxData;
 import ml.boxes.item.ItemBox;
@@ -24,19 +25,28 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 	@Override
 	public void loadConfig() {
 		Boxes.neiInstalled = true;
-		
+
 		NEIHandler handler = new NEIHandler();
 		GuiContainerManager.addInputHandler(handler);
 		GuiContainerManager.addObjectHandler(handler);
 		GuiContainerManager.addDrawHandler(handler);
-		
+
 		TemplateRecipeHandler recipeHandler = new BoxesRecipeHandler();
 		API.registerRecipeHandler(recipeHandler);
 		API.registerUsageHandler(recipeHandler);
+
+		MultiItemRange mainRng = new MultiItemRange();
+		mainRng.add(Boxes.ItemCardboard);
+		for (MetaType mt : MetaType.values()){
+			if (!mt.hidden){
+				mainRng.add(new ItemStack(Boxes.BlockMeta, 1, mt.ordinal()));
+			}
+		}
+		API.addSetRange("Boxes", mainRng);
 		
 		MultiItemRange range = new MultiItemRange();
 		range.add(Boxes.BlockBox);
-		API.addSetRange("Boxes", range);
+		API.addSetRange("Boxes.Boxes", range);
 	}
 
 	@Override
@@ -48,7 +58,7 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 	public String getVersion() {
 		return "1.0";
 	}
-	
+
 	private static class NEIHandler implements IContainerInputHandler, IContainerObjectHandler, IContainerDrawHandler{
 
 		@Override
@@ -61,7 +71,7 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 
 		@Override
 		public void onKeyTyped(GuiContainer gui, char keyChar, int keyID) {
-			
+
 		}
 
 		@Override
@@ -81,13 +91,13 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 		@Override
 		public void onMouseClicked(GuiContainer gui, int mousex, int mousey,
 				int button) {
-			
+
 		}
 
 		@Override
 		public void onMouseUp(GuiContainer gui, int mousex, int mousey,
 				int button) {
-			
+
 		}
 
 		@Override
@@ -99,14 +109,14 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 		@Override
 		public void onMouseScrolled(GuiContainer gui, int mousex, int mousey,
 				int scrolled) {
-			
+
 		}
-		
+
 		@Override
 		public void onMouseDragged(GuiContainer gui, int mousex, int mousey,
 				int button, long heldTime) {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		//IContainerObjectHandler
@@ -140,7 +150,7 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 		public boolean shouldShowTooltip(GuiContainer gui) {
 			return !hideTips;
 		}
-		
+
 		//IContainerDrawHandler
 		@Override
 		public void onPreDraw(GuiContainer gui) {}

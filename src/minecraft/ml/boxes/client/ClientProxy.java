@@ -42,7 +42,7 @@ public class ClientProxy extends CommonProxy {
 		TickRegistry.registerTickHandler(new ContentTipHandler(), Side.CLIENT);
 		
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCrate.class, CrateTESR.instance);
-		MinecraftForgeClient.registerItemRenderer(Boxes.config.metaBlockID, new MetaItemRenderer());
+		MinecraftForgeClient.registerItemRenderer(Boxes.config.generalBlockID, new MetaItemRenderer());
 		
 	}
 	
