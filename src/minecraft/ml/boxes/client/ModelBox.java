@@ -50,7 +50,7 @@ public class ModelBox extends ModelBase {
 			side.addBox(-7F, 0F, -7F, 1, 14, 14);
 			side.rotationPointX = 8F;
 			side.rotationPointY = 0F;
-			side.rotationPointZ = 8F;
+			side.rotationPointZ = 10F;
 			side.rotateAngleY = (float)(i*(Math.PI/2));
 			sides[i] = side;
 		}

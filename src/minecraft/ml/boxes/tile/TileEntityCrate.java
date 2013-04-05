@@ -73,18 +73,23 @@ public class TileEntityCrate extends TileEntity implements ISidedInventory {
 		}
 	}
 	
-	public void assessSlots(){
+	public void consolidateStacks(){
 		if (stacks[0] != null){
 			int amax = CRATE_SIZE-(2*stacks[0].getMaxStackSize());
-			if (stacks[0].stackSize > 0 && itemCount<amax){
-				int chg = Math.min(amax-itemCount, stacks[0].stackSize);
-				itemCount += chg;
-				stacks[0].stackSize -= chg;
-			}
 			
 			if (stacks[1] == null){
 				stacks[1] = stacks[0].copy();
 				stacks[1].stackSize = 0;
+			}
+			if (stacks[0].stackSize>0 && stacks[1].stackSize<stacks[1].getMaxStackSize()){
+				int chg = Math.min(stacks[0].stackSize, stacks[1].getMaxStackSize()-stacks[1].stackSize);
+				stacks[1].stackSize += chg;
+				stacks[0].stackSize -= chg;
+			}
+			if (stacks[0].stackSize > 0 && itemCount<amax){
+				int chg = Math.min(amax-itemCount, stacks[0].stackSize);
+				itemCount += chg;
+				stacks[0].stackSize -= chg;
 			}
 			if (stacks[1].stackSize < stacks[1].getMaxStackSize()){
 				int chg = Math.min(itemCount, stacks[1].getMaxStackSize()-stacks[1].stackSize);
@@ -97,7 +102,7 @@ public class TileEntityCrate extends TileEntity implements ISidedInventory {
 	@Override
 	public void updateEntity() {
 		updateFilter();
-		assessSlots();
+		consolidateStacks();
 		super.updateEntity();
 	}
 	

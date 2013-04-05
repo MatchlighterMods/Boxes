@@ -9,6 +9,7 @@ import ml.boxes.Boxes;
 import ml.boxes.tile.TileEntityCrate;
 import ml.boxes.tile.TileEntitySafe;
 import ml.boxes.tile.TileEntityBox;
+import ml.core.lib.BlockLib;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -87,14 +88,9 @@ public class BlockMeta extends BlockContainer {
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z,
 			EntityLiving entity, ItemStack is) {
-	
-		int rot = Math.round((entity.rotationYaw*4F)/360F);
+		
 		TileEntity te = world.getBlockTileEntity(x, y, z);
 		
-		if (te instanceof TileEntityBox){
-			((TileEntityBox) te).facing = 4-rot;
-			world.markBlockForUpdate(x, y, z);
-		}
 	}
 	
 	@Override

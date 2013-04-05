@@ -23,7 +23,7 @@ public class TileEntityBox extends TileEntity implements IInventory, IBox, ISpec
 	public float prevAngleInner = 0F; //Used for smoothness when FPS > 1 tick
 	public float flapAngleInner = 0F;
 	
-	public int facing = 0;
+	public ForgeDirection facing = ForgeDirection.NORTH;
 	private int syncTime = 0;
 	private int users = 0;
 	
@@ -38,7 +38,7 @@ public class TileEntityBox extends TileEntity implements IInventory, IBox, ISpec
 		
 		super.updateEntity();
 		if ((++syncTime % 20) == 0)
-			worldObj.addBlockEvent(xCoord, yCoord, zCoord, Boxes.config.boxBlockID, 2, facing);
+			worldObj.addBlockEvent(xCoord, yCoord, zCoord, Boxes.config.boxBlockID, 2, facing.ordinal());
 		
 		prevAngleOuter = flapAngleOuter;
 		prevAngleInner = flapAngleInner;
@@ -81,7 +81,7 @@ public class TileEntityBox extends TileEntity implements IInventory, IBox, ISpec
 			users = par2;
 			break;
 		case 2:
-			facing = par2;
+			facing = ForgeDirection.getOrientation(par2);
 			break;
 		}
 		return true;
@@ -91,17 +91,17 @@ public class TileEntityBox extends TileEntity implements IInventory, IBox, ISpec
 	public void readFromNBT(NBTTagCompound par1nbtTagCompound) {
 		super.readFromNBT(par1nbtTagCompound);
 		data=new BoxData(par1nbtTagCompound.getCompoundTag("box"), this);
-		facing=par1nbtTagCompound.getInteger("faceDir");
+		facing=ForgeDirection.getOrientation(par1nbtTagCompound.getInteger("faceDir"));
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound par1nbtTagCompound) {
 		super.writeToNBT(par1nbtTagCompound);
 		par1nbtTagCompound.setCompoundTag("box", data.asNBTTag());
-		par1nbtTagCompound.setInteger("faceDir", facing);
+		par1nbtTagCompound.setInteger("faceDir", facing.ordinal());
 	}
 
-	public void setFacing(int f){
+	public void setFacing(ForgeDirection f){
 		facing = f;
 	}
 	

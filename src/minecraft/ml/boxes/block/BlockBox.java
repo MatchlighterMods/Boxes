@@ -6,6 +6,7 @@ import ml.boxes.Boxes;
 import ml.boxes.data.ItemIBox;
 import ml.boxes.item.ItemBox;
 import ml.boxes.tile.TileEntityBox;
+import ml.core.lib.BlockLib;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -79,10 +80,9 @@ public class BlockBox extends BlockContainer {
 	public void onBlockPlacedBy(World world, int x, int y, int z,
 			EntityLiving entity, ItemStack is) {
 	
-		int rot = Math.round((entity.rotationYaw*4F)/360F);
 		TileEntity te = world.getBlockTileEntity(x, y, z);
 		if (te instanceof TileEntityBox){
-			((TileEntityBox) te).facing = 4-rot;
+			((TileEntityBox) te).facing = BlockLib.getPlacedForgeDir(entity, x, y, z, new ForgeDirection[]{ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.WEST, ForgeDirection.EAST});
 			world.markBlockForUpdate(x, y, z);
 		}
 	}

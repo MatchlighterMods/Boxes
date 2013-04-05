@@ -2,6 +2,7 @@ package ml.boxes.client.render.tile;
 
 import ml.boxes.client.ModelBox;
 import ml.boxes.tile.TileEntityBox;
+import ml.core.lib.BlockLib;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemDye;
 import net.minecraft.tileentity.TileEntity;
@@ -18,41 +19,41 @@ public class BoxTERenderer extends TileEntitySpecialRenderer {
 
 	private ModelBox boxModel = new ModelBox();
 	public static BoxTERenderer instance = new BoxTERenderer();
-	
+
 	@Override
 	public void renderTileEntityAt(TileEntity te, double var2, double var4,
 			double var6, float tickTime) {
-		
+
 		te.worldObj.theProfiler.startSection("Boxes");
 		te.worldObj.theProfiler.startSection("box");
-				
+
 		TileEntityBox box = (TileEntityBox)te;
 		//int meta = box.worldObj.getBlockMetadata(box.xCoord, box.yCoord, box.zCoord);
-		
+
 		GL11.glPushMatrix();
-        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        GL11.glTranslatef((float)var2, (float)var4, (float)var6);
-        GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-        GL11.glRotatef(box.facing*90F, 0F, 1F, 0F);
-        GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-        
-        float openAngleInner = box.prevAngleInner + (box.flapAngleInner-box.prevAngleInner)*tickTime;
-        openAngleInner = (float)Math.sin(openAngleInner*3.14/2);
-        int innerAngle = (int)(120 * openAngleInner);
-        
-        float openAngleOuter = box.prevAngleOuter + (box.flapAngleOuter-box.prevAngleOuter)*tickTime;
-        openAngleOuter = (float)Math.sin(openAngleOuter*3.14/2);
-        int outerAngle = (int)(120 * openAngleOuter); 
-        
-        setBoxFlaps(outerAngle + 3, outerAngle+1, innerAngle, innerAngle);
+		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+		GL11.glTranslatef((float)var2, (float)var4, (float)var6);
+		GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+		GL11.glRotatef(BlockLib.getRotationFromDirection(box.facing), 0F, 1F, 0F);
+		GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 
-        renderBox(box.getBoxData().boxColor);
+		float openAngleInner = box.prevAngleInner + (box.flapAngleInner-box.prevAngleInner)*tickTime;
+		openAngleInner = (float)Math.sin(openAngleInner*3.14/2);
+		int innerAngle = (int)(120 * openAngleInner);
 
-        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        GL11.glPopMatrix();
+		float openAngleOuter = box.prevAngleOuter + (box.flapAngleOuter-box.prevAngleOuter)*tickTime;
+		openAngleOuter = (float)Math.sin(openAngleOuter*3.14/2);
+		int outerAngle = (int)(120 * openAngleOuter); 
 
-        te.worldObj.theProfiler.endSection();
-        te.worldObj.theProfiler.endSection();
+		setBoxFlaps(outerAngle + 3, outerAngle+1, innerAngle, innerAngle);
+
+		renderBox(box.getBoxData().boxColor);
+
+		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+		GL11.glPopMatrix();
+
+		te.worldObj.theProfiler.endSection();
+		te.worldObj.theProfiler.endSection();
 	}
 
 	public void setBoxFlaps(int a, int b, int c, int d){
@@ -72,7 +73,7 @@ public class BoxTERenderer extends TileEntitySpecialRenderer {
 
 		bindTextureByName("/mods/Boxes/textures/models/boxColor.png");
 		boxModel.renderAll();
-		
+
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
