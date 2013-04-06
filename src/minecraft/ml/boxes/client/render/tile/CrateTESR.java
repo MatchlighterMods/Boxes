@@ -90,19 +90,20 @@ public class CrateTESR extends TileEntitySpecialRenderer {
 			
 			GL11.glRotatef(BlockLib.getRotationFromDirection(tec.facing), 0, 1.0F, 0F);
 			
-			if (Boxes.config.crateRenderMode == 0 || (Boxes.config.crateRenderMode==1 && tec.facing != ForgeDirection.UP && tec.facing != ForgeDirection.DOWN)){
-				if (tec.facing == ForgeDirection.UP || tec.facing == ForgeDirection.DOWN){
-					GL11.glRotatef(FMLClientHandler.instance().getClient().thePlayer.rotationYaw, 0F, -1.0F, 0F);
-				}
+			boolean isBlock = false; //tec.cItem.getItemSpriteNumber() == 0 && tec.cItem.itemID < Block.blocksList.length && (Block.blocksList[tec.cItem.itemID] != null) && RenderBlocks.renderItemIn3d(Block.blocksList[tec.cItem.itemID].getRenderType());
+			boolean upOrDwn = tec.facing == ForgeDirection.UP || tec.facing == ForgeDirection.DOWN;
+			
+			int rendMode = isBlock ? Boxes.config.crateBlockRenderMode : Boxes.config.crateItemRenderMode;
+			if (upOrDwn){
+				GL11.glRotatef(FMLClientHandler.instance().getClient().thePlayer.rotationYaw, 0F, -1.0F, 0F);
+			}
+			if (rendMode == 0 || (rendMode == 1 && !upOrDwn)){
+				if (!upOrDwn) GL11.glTranslatef(0, 0, 0.0625F);
 				renderItem(tec.cItem, false);
 			} else {
-				boolean isBlock = tec.cItem.getItemSpriteNumber() == 0 && tec.cItem.itemID < Block.blocksList.length && (Block.blocksList[tec.cItem.itemID] != null) && RenderBlocks.renderItemIn3d(Block.blocksList[tec.cItem.itemID].getRenderType());
 				if (isBlock){
 					GL11.glScalef(1.2F, 1.2F, 1.2F);
 				} else {
-					if (tec.facing == ForgeDirection.UP || tec.facing == ForgeDirection.DOWN){
-						GL11.glRotatef(FMLClientHandler.instance().getClient().thePlayer.rotationYaw, 0F, -1.0F, 0F);
-					}
 					GL11.glTranslatef(0F, -0.125F, 0F);
 				}
 				renderItem(tec.cItem, true);

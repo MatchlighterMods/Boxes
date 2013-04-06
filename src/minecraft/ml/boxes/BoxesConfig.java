@@ -15,7 +15,11 @@ public class BoxesConfig extends Config {
 	
 	public @prop(comment="When set to true, boxes will render like a map when opened in hand", category="appearance") boolean enableMapStyleRendering = true;
 	public @prop(comment="When set to true, map-style rendering will make the camera look down into the box", category="appearance") boolean mapRenderingView = true;
-	public @prop(comment="0) Always render items in 2D. 1) Render above and below 3D. 2) Render all 3D", category="appearance") int crateRenderMode = 1;
+	
+	public @prop(comment="For rendering items in crates. Higher settings can significantly impact performance\n" +
+			"0) Always render items in 2D. 1) Render above and below 3D. 2) Render all 3D", category="appearance") int crateItemRenderMode = 0;
+	public @prop(comment="For rendering blocks in crates. Does not impact performance.\n" +
+			"0) Always render blocks in 2D. 1) Render above and below 3D. 2) Render all 3D", category="appearance") int crateBlockRenderMode = 1;
 
 	@Override
 	public String getFailMsg() {
