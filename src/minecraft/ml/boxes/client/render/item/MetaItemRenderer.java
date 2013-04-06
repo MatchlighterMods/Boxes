@@ -7,6 +7,8 @@ import com.jcraft.jorbis.Block;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.ReflectionHelper;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import ml.boxes.Boxes;
 import ml.boxes.block.MetaType;
 import ml.boxes.client.render.tile.BoxTERenderer;
@@ -29,6 +31,7 @@ import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.IItemRenderer.ItemRenderType;
 import net.minecraftforge.client.IItemRenderer.ItemRendererHelper;
 
+@SideOnly(Side.CLIENT)
 public class MetaItemRenderer implements IItemRenderer {
 
 	@Override

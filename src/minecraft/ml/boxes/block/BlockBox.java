@@ -15,6 +15,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 
@@ -57,6 +58,13 @@ public class BlockBox extends BlockContainer {
 		return false;
 	}
 
+	@Override
+	public ItemStack getPickBlock(MovingObjectPosition target, World world,
+			int x, int y, int z) {
+		// TODO Auto-generated method stub
+		return super.getPickBlock(target, world, x, y, z);
+	}
+	
 	@Override
 	public boolean onBlockActivated(World par1World, int x, int y,
 			int z, EntityPlayer player, int par6, float par7,

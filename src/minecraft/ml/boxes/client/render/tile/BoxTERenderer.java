@@ -45,7 +45,7 @@ public class BoxTERenderer extends TileEntitySpecialRenderer {
 		openAngleOuter = (float)Math.sin(openAngleOuter*3.14/2);
 		int outerAngle = (int)(120 * openAngleOuter); 
 
-		setBoxFlaps(outerAngle + 3, outerAngle+1, innerAngle, innerAngle);
+		setBoxFlaps(outerAngle + 1, outerAngle+3, innerAngle, innerAngle);
 
 		renderBox(box.getBoxData().boxColor);
 

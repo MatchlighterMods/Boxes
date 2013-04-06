@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ml.boxes.Boxes;
+import ml.boxes.tile.IRotatableTE;
 import ml.boxes.tile.TileEntityCrate;
 import ml.boxes.tile.TileEntitySafe;
 import ml.boxes.tile.TileEntityBox;
@@ -90,7 +91,10 @@ public class BlockMeta extends BlockContainer {
 			EntityLiving entity, ItemStack is) {
 		
 		TileEntity te = world.getBlockTileEntity(x, y, z);
-		
+		if (te instanceof IRotatableTE){
+			((IRotatableTE) te).setFacing(BlockLib.getPlacedForgeDir(entity, x, y, z));
+			world.markBlockForUpdate(x, y, z);
+		}
 	}
 	
 	@Override
@@ -122,7 +126,7 @@ public class BlockMeta extends BlockContainer {
 			if (te instanceof TileEntitySafe && ((TileEntitySafe)te).safeOpen){
 				return 0.05F;
 			}
-			return -1;
+			return 0F;
 		}
 		return 0.1F;
 	}
