@@ -4,7 +4,7 @@ import java.util.List;
 
 import ml.boxes.Boxes;
 import ml.boxes.IBox;
-import ml.boxes.api.BoxContentBlacklist;
+import ml.boxes.api.ContentBlacklist;
 import ml.boxes.data.BoxData;
 import ml.boxes.data.ItemIBox;
 import ml.boxes.item.ItemBox;

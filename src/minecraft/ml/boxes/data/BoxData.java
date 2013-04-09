@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ml.boxes.IBox;
-import ml.boxes.api.BoxContentBlacklist;
+import ml.boxes.api.ContentBlacklist;
 import ml.boxes.inventory.ContentTip;
 import ml.boxes.inventory.GridContentTip;
 import ml.boxes.item.ItemBox;
@@ -318,7 +318,7 @@ public class BoxData implements IInventory {
 	public boolean isStackValidForSlot(int i, ItemStack is) {
 		if (is == null)
 			return true;
-		if (is.getItem() instanceof ItemBox || BoxContentBlacklist.ItemBlacklisted(is))
+		if (is.getItem() instanceof ItemBox || ContentBlacklist.ItemBlacklisted(is))
 			return false;
 		return true;
 	}
