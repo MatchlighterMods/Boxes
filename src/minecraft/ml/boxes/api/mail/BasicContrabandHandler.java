@@ -1,5 +1,7 @@
-package ml.boxes.api;
+package ml.boxes.api.mail;
 
+import ml.boxes.api.BasicItemFilter;
+import ml.boxes.api.IItemFilter;
 import net.minecraft.item.ItemStack;
 
 public class BasicContrabandHandler implements IContrabandHandler {

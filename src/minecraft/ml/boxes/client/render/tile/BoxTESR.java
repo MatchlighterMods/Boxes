@@ -15,17 +15,14 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class BoxTERenderer extends TileEntitySpecialRenderer {
+public class BoxTESR extends TileEntitySpecialRenderer {
 
 	private ModelBox boxModel = new ModelBox();
-	public static BoxTERenderer instance = new BoxTERenderer();
+	public static BoxTESR instance = new BoxTESR();
 
 	@Override
 	public void renderTileEntityAt(TileEntity te, double var2, double var4,
 			double var6, float tickTime) {
-
-		te.worldObj.theProfiler.startSection("Boxes");
-		te.worldObj.theProfiler.startSection("box");
 
 		TileEntityBox box = (TileEntityBox)te;
 		//int meta = box.worldObj.getBlockMetadata(box.xCoord, box.yCoord, box.zCoord);
@@ -51,9 +48,6 @@ public class BoxTERenderer extends TileEntitySpecialRenderer {
 
 		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 		GL11.glPopMatrix();
-
-		te.worldObj.theProfiler.endSection();
-		te.worldObj.theProfiler.endSection();
 	}
 
 	public void setBoxFlaps(int a, int b, int c, int d){

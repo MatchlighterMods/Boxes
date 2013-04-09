@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ml.boxes.Boxes;
+import ml.boxes.tile.IEventedTE;
 import ml.boxes.tile.IRotatableTE;
 import ml.boxes.tile.TileEntityCrate;
 import ml.boxes.tile.TileEntitySafe;
@@ -68,21 +69,27 @@ public class BlockMeta extends BlockContainer {
 	}
 
 	@Override
+	public void onBlockClicked(World world, int x, int y, int z,
+			EntityPlayer par5EntityPlayer) {
+		
+		TileEntity te = world.getBlockTileEntity(x, y, z);
+		if (te instanceof IEventedTE){
+			((IEventedTE)te).onLeftClicked(par5EntityPlayer);
+		}
+	}
+	
+	@Override
 	public boolean onBlockActivated(World par1World, int x, int y,
 			int z, EntityPlayer player, int par6, float par7,
 			float par8, float par9) {
 		
 		TileEntity te = par1World.getBlockTileEntity(x, y, z);
-		if (te == null || !(te instanceof TileEntityBox))
-			return true;
+		if (te instanceof IEventedTE){
+			if (((IEventedTE)te).onRightClicked(player, ForgeDirection.getOrientation(par6)))
+				return true;
+		}
 		
-		if (par1World.isBlockSolidOnSide(x, y+1, z, ForgeDirection.DOWN))
-			return true;
 		
-		if (par1World.isRemote)
-			return true;
-		
-		player.openGui(Boxes.instance, 1, par1World, x, y, z);
 		return true;
 	}
 
@@ -121,10 +128,10 @@ public class BlockMeta extends BlockContainer {
 		int meta = world.getBlockMetadata(x, y, z);
 		switch(MetaType.fromMeta(meta)){
 		case Crate:
-			return 0.1F;
+			return 0.05F;
 		case Safe:
 			if (te instanceof TileEntitySafe && ((TileEntitySafe)te).safeOpen){
-				return 0.05F;
+				return 0.01F;
 			}
 			return 0F;
 		}
@@ -149,12 +156,15 @@ public class BlockMeta extends BlockContainer {
 //	}
 	
 	@Override
-	public void breakBlock(World par1World, int par2, int par3, int par4,
-			int par5, int par6) {
+	public void breakBlock(World par1World, int x, int y, int z,
+			int par5, int meta) {
 		
-		// TODO Drop contents
+		TileEntity te = par1World.getBlockTileEntity(x, y, z);
+		if (te instanceof IEventedTE){
+			((IEventedTE)te).hostBroken();
+		}
 		
-		super.breakBlock(par1World, par2, par3, par4, par5, par6);
+		super.breakBlock(par1World, x, y, z, par5, meta);
 	}
 	
 	@Override

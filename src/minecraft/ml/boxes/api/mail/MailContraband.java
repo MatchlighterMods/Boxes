@@ -1,4 +1,4 @@
-package ml.boxes.api;
+package ml.boxes.api.mail;
 
 import java.util.ArrayList;
 import java.util.List;

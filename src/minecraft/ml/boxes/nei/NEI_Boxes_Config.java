@@ -36,7 +36,7 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 		API.registerUsageHandler(recipeHandler);
 
 		MultiItemRange mainRng = new MultiItemRange();
-		mainRng.add(Boxes.ItemCardboard);
+		mainRng.add(Boxes.ItemResources);
 		for (MetaType mt : MetaType.values()){
 			if (!mt.hidden){
 				mainRng.add(new ItemStack(Boxes.BlockMeta, 1, mt.ordinal()));

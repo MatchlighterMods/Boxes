@@ -2,9 +2,10 @@ package ml.boxes.network.packets;
 
 import java.io.IOException;
 
-import ml.boxes.tile.TileEntityBox;
 import ml.boxes.tile.TileEntityCrate;
 import ml.core.network.MLPacket;
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -67,6 +68,8 @@ public class PacketDescribeCrate extends MLPacket {
 			TileEntityCrate tec = (TileEntityCrate)te;
 			tec.cItem = hasStack ? is : null;
 			tec.facing = facing;
+			
+			tec.containedIsBlock = is != null && tec.cItem.getItemSpriteNumber() == 0 && is.itemID < Block.blocksList.length && (Block.blocksList[is.itemID] != null) && RenderBlocks.renderItemIn3d(Block.blocksList[is.itemID].getRenderType());
 		}
 	}
 

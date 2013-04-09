@@ -1,7 +1,7 @@
 package ml.boxes.client.render.item;
 
 import ml.boxes.Boxes;
-import ml.boxes.client.render.tile.BoxTERenderer;
+import ml.boxes.client.render.tile.BoxTESR;
 import ml.boxes.data.ItemIBox;
 import ml.boxes.inventory.ContainerBox;
 import net.minecraft.block.Block;
@@ -66,7 +66,7 @@ public class BoxItemRenderer implements IItemRenderer {
 		case ENTITY:
 			GL11.glPushMatrix();
 			GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-			BoxTERenderer.instance.setBoxFlaps(5, 2, 0, 0);
+			BoxTESR.instance.setBoxFlaps(5, 2, 0, 0);
 			break;
 		case EQUIPPED:
 			EntityLiving holder = (EntityLiving)data[1];
@@ -184,19 +184,19 @@ public class BoxItemRenderer implements IItemRenderer {
 				GL11.glScalef(2F, 2F, 2F);
 				GL11.glTranslatef(-1F, -1F, 0.0F);
 
-				BoxTERenderer.instance.setBoxFlaps(150, 150, 150, 150);
+				BoxTESR.instance.setBoxFlaps(150, 150, 150, 150);
 			} else {
 				GL11.glPushMatrix();
-				BoxTERenderer.instance.setBoxFlaps(5, 2, 0, 0);
+				BoxTESR.instance.setBoxFlaps(5, 2, 0, 0);
 			}
 			break;
 		case INVENTORY:
 			GL11.glPushMatrix();
 			GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-			BoxTERenderer.instance.setBoxFlaps(0, 0, 0, 0);
+			BoxTESR.instance.setBoxFlaps(0, 0, 0, 0);
 			break;
 		}
-		BoxTERenderer.instance.renderBox(new ItemIBox(item).getBoxData().boxColor);
+		BoxTESR.instance.renderBox(new ItemIBox(item).getBoxData().boxColor);
 		GL11.glPopMatrix();
 	}
 }

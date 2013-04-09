@@ -27,6 +27,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.profiler.Profiler;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.common.ForgeDirection;
 
 @SideOnly(Side.CLIENT)
@@ -34,7 +35,7 @@ public class CrateTESR extends TileEntitySpecialRenderer {
 
 	public ObjModel crateModel = ObjModel.loadFromResource("/mods/Boxes/models/crate.obj");
 	public static CrateTESR instance = new CrateTESR();
-	private static EntityItem renderEnt = new EntityItem(null);
+	private static EntityItem renderEnt;
 	private RenderItem renderItem = new RenderItem() {
 		@Override
 		public boolean shouldBob() {
@@ -45,24 +46,25 @@ public class CrateTESR extends TileEntitySpecialRenderer {
 			return false;
 		};
 	};
+	private RenderBlocks renderBlocks = new RenderBlocks();
 	
 	public CrateTESR() {
 		renderItem.setRenderManager(RenderManager.instance);
-	}
-	
-	private void drawBeam(Tessellator tes){
-
+		renderEnt = new EntityItem(null);
+		renderEnt.hoverStart = 0F;
 	}
 	
 	private void renderItem(ItemStack is, boolean render3D){
 		if (!render3D){
 			GL11.glTranslatef(0.25F, 0.25F, 0);
 			GL11.glRotatef(180F, 0, 0, 1.0F);
-			GL11.glScalef(0.03125F, 0.03125F, -0.04F);
-			GL11.glScalef(1F, 1F, 0.01F);
-			renderItem.renderItemIntoGUI(getFontRenderer(), RenderManager.instance.renderEngine, is, 0, 0);
+			GL11.glScalef(0.03125F, 0.03125F, -0.0004F);
+			
+			if (!ForgeHooksClient.renderInventoryItem(renderBlocks, RenderManager.instance.renderEngine, is, true, 0, 0F, 0F))
+            {
+                renderItem.renderItemIntoGUI(getFontRenderer(), RenderManager.instance.renderEngine, is, 0, 0);
+            }
 		} else {
-			renderEnt.hoverStart = 0F;
 			renderEnt.setEntityItemStack(is);
 			renderItem.doRenderItem(renderEnt, 0, 0, 0, 0, 0);
 		}
@@ -73,8 +75,6 @@ public class CrateTESR extends TileEntitySpecialRenderer {
 			double d2, float f) {
 
 		TileEntityCrate tec = (TileEntityCrate)te;
-		te.worldObj.theProfiler.startSection("Boxes");
-		te.worldObj.theProfiler.startSection("crate");
 
 		GL11.glPushMatrix();
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
@@ -85,12 +85,11 @@ public class CrateTESR extends TileEntitySpecialRenderer {
 			GL11.glPushMatrix();
 			GL11.glDisable(GL11.GL_LIGHTING);
 			GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-			
 			GL11.glTranslatef(tec.facing.offsetX*0.5F, tec.facing.offsetY*0.6F, tec.facing.offsetZ*0.5F);
 			
 			GL11.glRotatef(BlockLib.getRotationFromDirection(tec.facing), 0, 1.0F, 0F);
 			
-			boolean isBlock = false; //tec.cItem.getItemSpriteNumber() == 0 && tec.cItem.itemID < Block.blocksList.length && (Block.blocksList[tec.cItem.itemID] != null) && RenderBlocks.renderItemIn3d(Block.blocksList[tec.cItem.itemID].getRenderType());
+			boolean isBlock = tec.containedIsBlock;
 			boolean upOrDwn = tec.facing == ForgeDirection.UP || tec.facing == ForgeDirection.DOWN;
 			
 			int rendMode = isBlock ? Boxes.config.crateBlockRenderMode : Boxes.config.crateItemRenderMode;
@@ -103,6 +102,7 @@ public class CrateTESR extends TileEntitySpecialRenderer {
 			} else {
 				if (isBlock){
 					GL11.glScalef(1.2F, 1.2F, 1.2F);
+					GL11.glRotatef(90F, 0, 1F, 0);
 				} else {
 					GL11.glTranslatef(0F, -0.125F, 0F);
 				}
@@ -110,7 +110,6 @@ public class CrateTESR extends TileEntitySpecialRenderer {
 			}
 
 			GL11.glPopMatrix();
-			GL11.glEnable(GL11.GL_LIGHTING);
 		}
 		GL11.glPopAttrib();
 
@@ -122,15 +121,12 @@ public class CrateTESR extends TileEntitySpecialRenderer {
 		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 		GL11.glPopMatrix();
 
-		te.worldObj.theProfiler.endSection();
-		te.worldObj.theProfiler.endSection();
-
 	}
 
 	public void render() {
 		GL11.glScalef(0.0625F, 0.0625F, 0.0625F);
 		bindTextureByName("/mods/Boxes/textures/models/crate.png");
-		crateModel.renderAll();
+		crateModel.renderGroup("Crate");
 	}
 
 }

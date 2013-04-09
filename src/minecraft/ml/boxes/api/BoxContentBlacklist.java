@@ -11,7 +11,7 @@ import net.minecraft.item.ItemStack;
  * @author Matchlighter
  *
  */
-public class ContentBlacklist {
+public class BoxContentBlacklist {
 	private static List<IItemFilter> blacklist = new ArrayList<IItemFilter>();
 	
 	public static void addFilter(IItemFilter iif){

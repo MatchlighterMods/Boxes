@@ -39,7 +39,7 @@ public class BoxesRecipeHandler extends ShapedRecipeHandler {
 	private final CachedBoxesRecipe cached;
 	
 	public BoxesRecipeHandler() {
-		ItemStack cb = new ItemStack(Boxes.ItemCardboard);
+		ItemStack cb = new ItemStack(Boxes.ItemResources);
 		List<ItemStack> dyes = new ArrayList<ItemStack>();
 		for (int i=0; i<16; i++){
 			dyes.addAll(OreDictionary.getOres(OreDictionary.getOreID(new ItemStack(Item.dyePowder, 1, i))));

@@ -11,9 +11,9 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-public class ItemMeta extends ItemBlock {
+public class ItemBoxBlocks extends ItemBlock {
 
-	public ItemMeta(int par1) {
+	public ItemBoxBlocks(int par1) {
 		super(par1);
 		setHasSubtypes(true);
 		setCreativeTab(Boxes.BoxTab);

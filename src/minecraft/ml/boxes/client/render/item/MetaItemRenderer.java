@@ -11,7 +11,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ml.boxes.Boxes;
 import ml.boxes.block.MetaType;
-import ml.boxes.client.render.tile.BoxTERenderer;
+import ml.boxes.client.render.tile.BoxTESR;
 import ml.boxes.client.render.tile.CrateTESR;
 import ml.boxes.data.ItemIBox;
 import ml.boxes.inventory.ContainerBox;

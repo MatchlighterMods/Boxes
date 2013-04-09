@@ -1,4 +1,4 @@
-package ml.boxes.api;
+package ml.boxes.api.mail;
 
 import net.minecraft.item.ItemStack;
 

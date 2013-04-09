@@ -4,8 +4,8 @@ import ml.boxes.block.BlockBox;
 import ml.boxes.block.BlockMeta;
 import ml.boxes.block.MetaType;
 import ml.boxes.item.ItemBox;
-import ml.boxes.item.ItemCardboard;
-import ml.boxes.item.ItemMeta;
+import ml.boxes.item.ItemResources;
+import ml.boxes.item.ItemBoxBlocks;
 import ml.boxes.network.PacketHandler;
 import ml.boxes.recipe.RecipeBox;
 import ml.boxes.tile.TileEntityBox;
@@ -43,7 +43,7 @@ public class Boxes {
 	
 	public static BlockBox BlockBox;
 	public static BlockMeta BlockMeta;
-	public static ItemCardboard ItemCardboard;
+	public static ItemResources ItemResources;
 	
 	public static int nullRendererID = -1;
 	public static CreativeTabs BoxTab = new BoxesCreativeTab("boxes");
@@ -65,13 +65,14 @@ public class Boxes {
 		this.BlockBox = new BlockBox(config.boxBlockID);
 		GameRegistry.registerBlock(this.BlockBox, ItemBox.class, "box");
 		this.BlockMeta = new BlockMeta(config.generalBlockID);
-		GameRegistry.registerBlock(this.BlockMeta, ItemMeta.class, "boxesMeta");
+		GameRegistry.registerBlock(this.BlockMeta, ItemBoxBlocks.class, "boxesMeta");
 		
-		this.ItemCardboard = new ItemCardboard(config.cardboardItemID-256);
-		GameRegistry.registerItem(ItemCardboard, "cardboard");
+		this.ItemResources = new ItemResources(config.cardboardItemID-256);
+		GameRegistry.registerItem(ItemResources, "cardboard");
 		
 		LanguageRegistry.instance().addStringLocalization("item.box.name", "en_US", "Box");
 		LanguageRegistry.instance().addStringLocalization("item.cardboard.name", "en_US", "Cardboard Sheet");
+		LanguageRegistry.instance().addStringLocalization("item.label.name", "en_US", "Label");
 		LanguageRegistry.instance().addStringLocalization("itemGroup.boxes", "en_US", "Boxes");
 		
 		LanguageRegistry.instance().addStringLocalization("Boxes.safe.name", "en_US", "Lockbox");
@@ -79,7 +80,7 @@ public class Boxes {
 		
 		NetworkRegistry.instance().registerGuiHandler(instance, proxy);
 		
-		GameRegistry.addRecipe(new ItemStack(ItemCardboard, 1), "ppp", 'p', Item.paper);
+		GameRegistry.addRecipe(new ItemStack(ItemResources, 1), "ppp", 'p', Item.paper);
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockMeta, 1, MetaType.Crate.ordinal()), "wsw", "scs", "wsw", 'w', "logWood", 's', "plankWood", 'c', Block.chest));
 		GameRegistry.addRecipe(new RecipeBox());
 		
@@ -89,9 +90,9 @@ public class Boxes {
 	}
 	
 	public void initDungeonLoot(){
-		ChestGenHooks.addItem(ChestGenHooks.DUNGEON_CHEST, new WeightedRandomChestContent(new ItemStack(ItemCardboard), 1, 3, 100));
-		ChestGenHooks.addItem(ChestGenHooks.VILLAGE_BLACKSMITH, new WeightedRandomChestContent(new ItemStack(ItemCardboard), 1, 5, 12));
-		ChestGenHooks.addItem(ChestGenHooks.BONUS_CHEST, new WeightedRandomChestContent(new ItemStack(ItemCardboard), 1, 4, 7));
+		ChestGenHooks.addItem(ChestGenHooks.DUNGEON_CHEST, new WeightedRandomChestContent(new ItemStack(ItemResources), 1, 3, 100));
+		ChestGenHooks.addItem(ChestGenHooks.VILLAGE_BLACKSMITH, new WeightedRandomChestContent(new ItemStack(ItemResources), 1, 5, 12));
+		ChestGenHooks.addItem(ChestGenHooks.BONUS_CHEST, new WeightedRandomChestContent(new ItemStack(ItemResources), 1, 4, 7));
 	}
 	
 }

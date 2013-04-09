@@ -24,7 +24,7 @@ public class RecipeBox implements IRecipe {
 
 	@Override
 	public boolean matches(InventoryCrafting inv, World world){
-		ItemStack cb = new ItemStack(Boxes.ItemCardboard);
+		ItemStack cb = new ItemStack(Boxes.ItemResources);
 		
 		for (int i : new int[]{0,1,2, 3,5, 6,7,8}){
 			if (!checkItemEquals(cb, inv.getStackInSlot(i)))
