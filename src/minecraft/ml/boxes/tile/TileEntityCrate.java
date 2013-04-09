@@ -1,26 +1,22 @@
 package ml.boxes.tile;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import ml.boxes.api.CrateContentBlacklist;
-import ml.boxes.client.render.tile.CrateTESR;
+import ml.boxes.api.ContentBlacklist;
 import ml.boxes.network.packets.PacketDescribeCrate;
 import ml.core.lib.BlockLib;
 import ml.core.lib.ItemLib;
 import ml.core.lib.PlayerLib;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Timer;
 import net.minecraftforge.common.ForgeDirection;
+import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class TileEntityCrate extends TileEntity implements ISidedInventory, IRotatableTE, IEventedTE {
 
@@ -210,7 +206,7 @@ public class TileEntityCrate extends TileEntity implements ISidedInventory, IRot
 	public void closeChest() {}
 
 	public boolean allowItem(ItemStack is){
-		return is != null && !is.isItemDamaged() && !CrateContentBlacklist.ItemBlacklisted(is) && (stacks[0] == null || (ItemStack.areItemStackTagsEqual(stacks[0], is) && stacks[0].isItemEqual(is)));
+		return is != null && !is.isItemDamaged() && !ContentBlacklist.ItemBlacklisted(ContentBlacklist.LIST_CRATE, is) && (stacks[0] == null || (ItemStack.areItemStackTagsEqual(stacks[0], is) && stacks[0].isItemEqual(is)));
 	}
 
 	@Override

@@ -8,7 +8,7 @@ import java.util.Map;
 import net.minecraft.item.ItemStack;
 
 /**
- * This class is used to prevent your mod's items from being a placed in a box.
+ * This class is used to prevent your mod's items from being a placed in an inventory added by Boxes.
  * @author Matchlighter
  *
  */
@@ -30,7 +30,7 @@ public class ContentBlacklist {
 		if (blacklists.containsKey(list)){
 			for (IItemFilter iif : blacklists.get(list)){
 				if (iif.ISMatchesFilter(is))
-					return false;
+					return true;
 			}
 		}
 		

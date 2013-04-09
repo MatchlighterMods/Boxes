@@ -318,7 +318,7 @@ public class BoxData implements IInventory {
 	public boolean isStackValidForSlot(int i, ItemStack is) {
 		if (is == null)
 			return true;
-		if (is.getItem() instanceof ItemBox || ContentBlacklist.ItemBlacklisted(is))
+		if (is.getItem() instanceof ItemBox || ContentBlacklist.ItemBlacklisted(ContentBlacklist.LIST_BOX, is))
 			return false;
 		return true;
 	}
