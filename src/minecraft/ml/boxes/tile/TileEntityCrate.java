@@ -20,6 +20,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -33,6 +34,8 @@ public class TileEntityCrate extends TileEntity implements ISidedInventory, IRot
 	public ItemStack cItem; //Used by server to determine if it needs to send a packet. Used by client for which item to render
 	public int lItemCount;
 
+	@SideOnly(Side.CLIENT)
+	public boolean renderContentText;
 	@SideOnly(Side.CLIENT)
 	public boolean containedIsBlock;
 	@SideOnly(Side.CLIENT)
@@ -169,6 +172,11 @@ public class TileEntityCrate extends TileEntity implements ISidedInventory, IRot
 	public void updateEntity() {
 		if (!worldObj.isRemote){
 			consolidateStacks();
+		} else {
+			if (worldObj.getWorldTime() % 20 == 0){
+				EntityPlayer epl = FMLClientHandler.instance().getClient().thePlayer;
+				renderContentText = epl.dimension == worldObj.getWorldInfo().getDimension() && Math.sqrt(Math.pow(xCoord-epl.posX, 2) + Math.pow(yCoord-epl.posY, 2) + Math.pow(zCoord-epl.posZ, 2)) < 24;
+			}
 		}
 		super.updateEntity();
 	}
