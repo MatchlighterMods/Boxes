@@ -268,8 +268,7 @@ public class BoxData implements IInventory {
 	
 	@Override
 	public void onInventoryChanged() {
-		// TODO Auto-generated method stub
-
+		IBoxOwner.saveData();
 	}
 
 	@Override

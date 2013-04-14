@@ -1,10 +1,16 @@
 package ml.boxes.tile;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import ml.boxes.Boxes;
 import ml.boxes.api.ContentBlacklist;
 import ml.boxes.network.packets.PacketDescribeCrate;
 import ml.core.lib.BlockLib;
 import ml.core.lib.ItemLib;
 import ml.core.lib.PlayerLib;
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
@@ -25,11 +31,19 @@ public class TileEntityCrate extends TileEntity implements ISidedInventory, IRot
 	private long lastRClick = 0L;
 
 	public ItemStack cItem; //Used by server to determine if it needs to send a packet. Used by client for which item to render
+	public int lItemCount;
+
 	@SideOnly(Side.CLIENT)
 	public boolean containedIsBlock;
+	@SideOnly(Side.CLIENT)
+	public String contentString;
 
 	public int itemCount = 0;
-	public boolean labelled = false;
+
+	public List<upgrade> Upgrades = new ArrayList<TileEntityCrate.upgrade>();
+
+	public boolean upgrade_label = false;
+	public boolean upgrade_scale = false;
 
 	private ItemStack[] stacks;
 
@@ -38,9 +52,31 @@ public class TileEntityCrate extends TileEntity implements ISidedInventory, IRot
 	}
 
 	public void testTriggerPacket(){
-		if (cItem != stacks[0]) {
+		if (cItem != stacks[0] || lItemCount != getTotalItems()) {
 			cItem = stacks[0];
+			lItemCount = getTotalItems();
 			PacketDispatcher.sendPacketToAllInDimension(getDescriptionPacket(), worldObj.getWorldInfo().getDimension());
+		}
+	}
+
+	@SideOnly(Side.CLIENT)
+	public void updateClientDetails(){
+		if (cItem == null) return;
+
+		containedIsBlock = cItem.getItemSpriteNumber() == 0 && cItem.itemID < Block.blocksList.length && (Block.blocksList[cItem.itemID] != null) && RenderBlocks.renderItemIn3d(Block.blocksList[cItem.itemID].getRenderType());
+
+		contentString = "";
+		if (cItem.getMaxStackSize() != 1){
+			if (getTotalItems() >= cItem.getMaxStackSize()){
+				contentString += (int)Math.floor(getTotalItems()/cItem.getMaxStackSize()) + "x" + cItem.getMaxStackSize();
+				if (getTotalItems() % cItem.getMaxStackSize() != 0)
+					contentString += " + ";
+			}
+			if (getTotalItems() % cItem.getMaxStackSize() != 0){
+				contentString += getTotalItems() % cItem.getMaxStackSize();
+			}
+		} else {
+			contentString += getTotalItems();
 		}
 	}
 
@@ -54,7 +90,12 @@ public class TileEntityCrate extends TileEntity implements ISidedInventory, IRot
 		super.writeToNBT(tag);
 		tag.setInteger("containedCount", itemCount);
 		tag.setInteger("facing", facing.ordinal());
-		tag.setBoolean("labelled", labelled);
+
+		NBTTagCompound upgTag = new NBTTagCompound();
+		for (upgrade upg : upgrade.values()){
+			upgTag.setBoolean(upg.name(), Upgrades.contains(upg));
+		}
+		tag.setTag("Upgrades", upgTag);
 
 		NBTTagList nbttaglist = new NBTTagList();
 		for (int i = 0; i < stacks.length; i++)
@@ -76,7 +117,13 @@ public class TileEntityCrate extends TileEntity implements ISidedInventory, IRot
 		super.readFromNBT(tag);
 		itemCount = tag.getInteger("containedCount");
 		facing = ForgeDirection.getOrientation(tag.getInteger("facing"));
-		labelled = tag.getBoolean("labelled");
+
+		NBTTagCompound upgTag = tag.getCompoundTag("Upgrades");
+		for (upgrade upg : upgrade.values()){
+			if (upgTag.getBoolean(upg.name())){
+				Upgrades.add(upg);
+			}
+		}
 
 		NBTTagList nbttaglist = tag.getTagList("Items");
 		for (int i = 0; i < nbttaglist.tagCount(); i++)
@@ -95,9 +142,8 @@ public class TileEntityCrate extends TileEntity implements ISidedInventory, IRot
 	}
 
 	public void consolidateStacks(){
-
 		int tItems = getTotalItems();
-		if ((tItems > 0 || labelled) && (stacks[0] != null || stacks[1] != null)){
+		if ((tItems > 0 || Upgrades.contains(upgrade.Label)) && (stacks[0] != null || stacks[1] != null)){
 			ItemStack tis = stacks[0] != null ? stacks[0].copy() : stacks[1].copy();
 			tis.stackSize = 0;
 
@@ -115,6 +161,7 @@ public class TileEntityCrate extends TileEntity implements ISidedInventory, IRot
 			stacks[0] = null;
 			stacks[1] = null;
 		}
+		onInventoryChanged(); //TODO Maybe be smarter about this
 		testTriggerPacket();
 	}
 
@@ -177,6 +224,7 @@ public class TileEntityCrate extends TileEntity implements ISidedInventory, IRot
 	@Override
 	public void setInventorySlotContents(int i, ItemStack itemstack) {
 		stacks[i] = itemstack;
+		onInventoryChanged();
 	}
 
 	@Override
@@ -278,16 +326,16 @@ public class TileEntityCrate extends TileEntity implements ISidedInventory, IRot
 			ItemStack nis = stacks[0].copy();
 			nis.stackSize = exAmount;
 			itemCount -= nis.stackSize;
-			
+
 			ForgeDirection fd = BlockLib.getPlacedForgeDir(pl, xCoord, yCoord, zCoord);
-			
+
 			EntityItem ei = new EntityItem(worldObj, xCoord+0.5F+fd.offsetX*0.75F, yCoord+0.5F+fd.offsetY*0.75F, zCoord+0.5F+fd.offsetZ*0.75F, nis);
 			ei.motionX = fd.offsetX*0.2D;
 			ei.motionY = fd.offsetY*0.2D;
 			ei.motionZ = fd.offsetZ*0.2D;
 			ei.delayBeforeCanPickup = 10;
 			worldObj.spawnEntityInWorld(ei);
-			
+
 			consolidateStacks();
 		}
 	}
@@ -305,6 +353,31 @@ public class TileEntityCrate extends TileEntity implements ISidedInventory, IRot
 				titems -= nis.stackSize;
 				ItemLib.dropItemIntoWorld(worldObj, xCoord, yCoord, zCoord, nis, 0.7F);
 			}
+		}
+	}
+
+	@Override
+	public boolean onAttemptUpgrade(EntityPlayer pl, ItemStack is, int side) {
+		if (is != null){
+			for (upgrade upg : upgrade.values()){
+				if (!Upgrades.contains(upg) && is.isItemEqual(upg.item) && is.stackSize>= upg.item.stackSize){
+					is.stackSize -= upg.item.stackSize;
+					Upgrades.add(upg);
+					onInventoryChanged();
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public static enum upgrade {
+		Label(new ItemStack(Boxes.ItemResources, 1, 1)),
+		Scale(new ItemStack(Block.pressurePlateStone, 1));
+
+		public final ItemStack item;
+		private upgrade(ItemStack is) {
+			item = is;
 		}
 	}
 

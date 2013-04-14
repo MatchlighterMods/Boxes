@@ -103,6 +103,7 @@ public class TileEntityBox extends TileEntity implements IInventory, IBox, ISpec
 
 	public void setFacing(ForgeDirection f){
 		facing = f;
+		onInventoryChanged();
 	}
 	
 	@Override
@@ -158,7 +159,9 @@ public class TileEntityBox extends TileEntity implements IInventory, IBox, ISpec
 	}
 
 	@Override
-	public void saveData() {}
+	public void saveData() {
+		onInventoryChanged();
+	}
 
 	@Override
 	public void boxOpen() {

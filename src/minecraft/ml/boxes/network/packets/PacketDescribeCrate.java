@@ -24,6 +24,7 @@ public class PacketDescribeCrate extends MLPacket {
 	public boolean hasStack;
 	public ItemStack is;
 	public ForgeDirection facing;
+	public int itemCnt;
 	
 	public PacketDescribeCrate(TileEntityCrate tec) {
 		super(null);
@@ -35,6 +36,7 @@ public class PacketDescribeCrate extends MLPacket {
 		is = hasStack ? tec.getStackInSlot(0).copy() : new ItemStack(0, 0, 0);
 		is.stackSize = 1;
 		facing = tec.facing;
+		itemCnt = tec.getTotalItems();
 		
 		writeInt(x);
 		writeInt(y);
@@ -42,6 +44,7 @@ public class PacketDescribeCrate extends MLPacket {
 		writeBoolean(hasStack);
 		writeNBTTagCompound(is.writeToNBT(new NBTTagCompound()));
 		writeInt(facing.ordinal());
+		writeInt(itemCnt);
 	}
 	
 	public PacketDescribeCrate(Player pl, ByteArrayDataInput data) {
@@ -54,6 +57,7 @@ public class PacketDescribeCrate extends MLPacket {
 			hasStack = dataIn.readBoolean();
 			is = ItemStack.loadItemStackFromNBT(readNBTTagCompound());
 			facing = ForgeDirection.getOrientation(dataIn.readInt());
+			itemCnt = dataIn.readInt();
 		} catch (IOException e){
 			
 		}
@@ -68,8 +72,9 @@ public class PacketDescribeCrate extends MLPacket {
 			TileEntityCrate tec = (TileEntityCrate)te;
 			tec.cItem = hasStack ? is : null;
 			tec.facing = facing;
+			tec.itemCount = itemCnt;
 			
-			tec.containedIsBlock = is != null && tec.cItem.getItemSpriteNumber() == 0 && is.itemID < Block.blocksList.length && (Block.blocksList[is.itemID] != null) && RenderBlocks.renderItemIn3d(Block.blocksList[is.itemID].getRenderType());
+			tec.updateClientDetails();
 		}
 	}
 

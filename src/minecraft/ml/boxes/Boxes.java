@@ -80,7 +80,7 @@ public class Boxes {
 		
 		NetworkRegistry.instance().registerGuiHandler(instance, proxy);
 		
-		GameRegistry.addRecipe(new ItemStack(ItemResources, 1), "ppp", 'p', Item.paper);
+		GameRegistry.addRecipe(new ItemStack(ItemResources, 1, 0), "ppp", "sws", "ppp", 'p', Item.paper, 's', Item.silk, 'w', Item.bucketWater);
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockMeta, 1, MetaType.Crate.ordinal()), "wsw", "scs", "wsw", 'w', "logWood", 's', "plankWood", 'c', Block.chest));
 		GameRegistry.addRecipe(new RecipeBox());
 		

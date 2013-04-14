@@ -15,6 +15,7 @@ import ml.core.lib.BlockLib;
 import ml.core.lib.RenderLib;
 import ml.core.model.ObjModel;
 import net.minecraft.block.Block;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.RenderEngine;
@@ -95,6 +96,17 @@ public class CrateTESR extends TileEntitySpecialRenderer {
 			int rendMode = isBlock ? Boxes.config.crateBlockRenderMode : Boxes.config.crateItemRenderMode;
 			if (upOrDwn){
 				GL11.glRotatef(FMLClientHandler.instance().getClient().thePlayer.rotationYaw, 0F, -1.0F, 0F);
+			} else {
+				FontRenderer fr = getFontRenderer();
+				GL11.glPushMatrix();
+				GL11.glTranslatef(0, 0.46875F, 0);
+				GL11.glScalef(0.00926F, 0.00926F, 1F); //0.0625F/6.75F
+				
+				GL11.glRotatef(180, 0F, 0F, 1F);
+				GL11.glTranslatef(-fr.getStringWidth(tec.contentString)/2, 0, -0.001F);
+				fr.drawString(tec.contentString, 0, 0, 0);
+				
+				GL11.glPopMatrix();
 			}
 			if (rendMode == 0 || (rendMode == 1 && !upOrDwn)){
 				if (!upOrDwn) GL11.glTranslatef(0, 0, 0.0625F);
