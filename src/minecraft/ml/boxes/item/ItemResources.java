@@ -20,7 +20,7 @@ public class ItemResources extends Item {
 	}
 
 	@Override
-	public void updateIcons(IconRegister iconRegister){
+	public void registerIcons(IconRegister iconRegister){
 		for (ItemType ir : ItemType.values()){
 			ir.ico = iconRegister.registerIcon(ir.iconRef);
 		}

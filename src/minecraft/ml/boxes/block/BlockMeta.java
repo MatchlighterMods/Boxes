@@ -175,7 +175,7 @@ public class BlockMeta extends BlockContainer {
 	};
 	
 	@Override
-	public Icon getBlockTextureFromSideAndMetadata(int side, int meta) {
+	public Icon getIcon(int side, int meta) {
 		return MetaType.fromMeta(meta).ricon;
 	}
 }

@@ -1,5 +1,7 @@
 package ml.boxes.client;
 
+import org.lwjgl.opengl.GL11;
+
 import ml.boxes.data.BoxData;
 import ml.boxes.data.ItemIBox;
 import ml.boxes.inventory.ContainerBox;
@@ -25,6 +27,7 @@ public class GuiBox extends GuiContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float var1, int var2,
 			int var3) {
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		this.mc.renderEngine.bindTexture("/mods/Boxes/textures/gui/boxGui.png");
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 

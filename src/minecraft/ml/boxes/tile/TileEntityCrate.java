@@ -35,18 +35,14 @@ public class TileEntityCrate extends TileEntity implements ISidedInventory, IRot
 	public int lItemCount;
 
 	@SideOnly(Side.CLIENT)
-	public boolean renderContentText;
-	@SideOnly(Side.CLIENT)
 	public boolean containedIsBlock;
 	@SideOnly(Side.CLIENT)
 	public String contentString;
 
 	public int itemCount = 0;
 
-	public List<upgrade> Upgrades = new ArrayList<TileEntityCrate.upgrade>();
-
-	public boolean upgrade_label = false;
-	public boolean upgrade_scale = false;
+	//public List<upgrade> Upgrades = new ArrayList<TileEntityCrate.upgrade>();
+	public boolean upg_label;
 
 	private ItemStack[] stacks;
 
@@ -95,9 +91,7 @@ public class TileEntityCrate extends TileEntity implements ISidedInventory, IRot
 		tag.setInteger("facing", facing.ordinal());
 
 		NBTTagCompound upgTag = new NBTTagCompound();
-		for (upgrade upg : upgrade.values()){
-			upgTag.setBoolean(upg.name(), Upgrades.contains(upg));
-		}
+		upgTag.setBoolean("Label", upg_label);
 		tag.setTag("Upgrades", upgTag);
 
 		NBTTagList nbttaglist = new NBTTagList();
@@ -122,11 +116,7 @@ public class TileEntityCrate extends TileEntity implements ISidedInventory, IRot
 		facing = ForgeDirection.getOrientation(tag.getInteger("facing"));
 
 		NBTTagCompound upgTag = tag.getCompoundTag("Upgrades");
-		for (upgrade upg : upgrade.values()){
-			if (upgTag.getBoolean(upg.name())){
-				Upgrades.add(upg);
-			}
-		}
+		upg_label = upgTag.getBoolean("Label");
 
 		NBTTagList nbttaglist = tag.getTagList("Items");
 		for (int i = 0; i < nbttaglist.tagCount(); i++)
@@ -146,7 +136,7 @@ public class TileEntityCrate extends TileEntity implements ISidedInventory, IRot
 
 	public void consolidateStacks(){
 		int tItems = getTotalItems();
-		if ((tItems > 0 || Upgrades.contains(upgrade.Label)) && (stacks[0] != null || stacks[1] != null)){
+		if ((tItems > 0 || upg_label) && (stacks[0] != null || stacks[1] != null)){
 			ItemStack tis = stacks[0] != null ? stacks[0].copy() : stacks[1].copy();
 			tis.stackSize = 0;
 
@@ -173,10 +163,7 @@ public class TileEntityCrate extends TileEntity implements ISidedInventory, IRot
 		if (!worldObj.isRemote){
 			consolidateStacks();
 		} else {
-			if (worldObj.getWorldTime() % 20 == 0){
-				EntityPlayer epl = FMLClientHandler.instance().getClient().thePlayer;
-				renderContentText = epl.dimension == worldObj.getWorldInfo().getDimension() && Math.sqrt(Math.pow(xCoord-epl.posX, 2) + Math.pow(yCoord-epl.posY, 2) + Math.pow(zCoord-epl.posZ, 2)) < 24;
-			}
+			
 		}
 		super.updateEntity();
 	}
@@ -367,26 +354,12 @@ public class TileEntityCrate extends TileEntity implements ISidedInventory, IRot
 	@Override
 	public boolean onAttemptUpgrade(EntityPlayer pl, ItemStack is, int side) {
 		if (is != null){
-			for (upgrade upg : upgrade.values()){
-				if (!Upgrades.contains(upg) && is.isItemEqual(upg.item) && is.stackSize>= upg.item.stackSize){
-					is.stackSize -= upg.item.stackSize;
-					Upgrades.add(upg);
-					onInventoryChanged();
-					return true;
-				}
+			if (!upg_label && is.isItemEqual(new ItemStack(Boxes.ItemResources, 1, 1))){
+				is.stackSize -= 1;
+				upg_label = true;
+				return true;
 			}
 		}
 		return false;
 	}
-
-	public static enum upgrade {
-		Label(new ItemStack(Boxes.ItemResources, 1, 1)),
-		Scale(new ItemStack(Block.pressurePlateStone, 1));
-
-		public final ItemStack item;
-		private upgrade(ItemStack is) {
-			item = is;
-		}
-	}
-
 }
