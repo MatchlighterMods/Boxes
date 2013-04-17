@@ -50,11 +50,15 @@ public class TileEntityCrate extends TileEntity implements ISidedInventory, IRot
 		stacks = new ItemStack[2];
 	}
 
+	public void sendPacket(){
+		PacketDispatcher.sendPacketToAllInDimension(getDescriptionPacket(), worldObj.getWorldInfo().getDimension());
+	}
+	
 	public void testTriggerPacket(){
 		if (cItem != stacks[0] || lItemCount != getTotalItems()) {
 			cItem = stacks[0];
 			lItemCount = getTotalItems();
-			PacketDispatcher.sendPacketToAllInDimension(getDescriptionPacket(), worldObj.getWorldInfo().getDimension());
+			sendPacket();
 		}
 	}
 
@@ -357,6 +361,7 @@ public class TileEntityCrate extends TileEntity implements ISidedInventory, IRot
 			if (!upg_label && is.isItemEqual(new ItemStack(Boxes.ItemResources, 1, 1))){
 				is.stackSize -= 1;
 				upg_label = true;
+				sendPacket();
 				return true;
 			}
 		}
