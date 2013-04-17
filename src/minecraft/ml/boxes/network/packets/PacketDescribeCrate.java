@@ -26,6 +26,8 @@ public class PacketDescribeCrate extends MLPacket {
 	public ForgeDirection facing;
 	public int itemCnt;
 	
+	public boolean upg_label;
+	
 	public PacketDescribeCrate(TileEntityCrate tec) {
 		super(null);
 
@@ -37,6 +39,7 @@ public class PacketDescribeCrate extends MLPacket {
 		is.stackSize = 1;
 		facing = tec.facing;
 		itemCnt = tec.getTotalItems();
+		upg_label = tec.upg_label;
 		
 		writeInt(x);
 		writeInt(y);
@@ -45,6 +48,8 @@ public class PacketDescribeCrate extends MLPacket {
 		writeNBTTagCompound(is.writeToNBT(new NBTTagCompound()));
 		writeInt(facing.ordinal());
 		writeInt(itemCnt);
+		
+		writeBoolean(upg_label);
 	}
 	
 	public PacketDescribeCrate(Player pl, ByteArrayDataInput data) {
@@ -58,6 +63,8 @@ public class PacketDescribeCrate extends MLPacket {
 			is = ItemStack.loadItemStackFromNBT(readNBTTagCompound());
 			facing = ForgeDirection.getOrientation(dataIn.readInt());
 			itemCnt = dataIn.readInt();
+			
+			upg_label = dataIn.readBoolean();
 		} catch (IOException e){
 			
 		}
@@ -73,6 +80,8 @@ public class PacketDescribeCrate extends MLPacket {
 			tec.cItem = hasStack ? is : null;
 			tec.facing = facing;
 			tec.itemCount = itemCnt;
+			
+			tec.upg_label = upg_label;
 			
 			tec.updateClientDetails();
 		}

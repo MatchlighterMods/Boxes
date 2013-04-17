@@ -6,6 +6,7 @@ import ml.boxes.block.MetaType;
 import ml.boxes.item.ItemBox;
 import ml.boxes.item.ItemResources;
 import ml.boxes.item.ItemBoxBlocks;
+import ml.boxes.item.ItemType;
 import ml.boxes.network.PacketHandler;
 import ml.boxes.recipe.RecipeBox;
 import ml.boxes.tile.TileEntityBox;
@@ -81,6 +82,7 @@ public class Boxes {
 		NetworkRegistry.instance().registerGuiHandler(instance, proxy);
 		
 		GameRegistry.addRecipe(new ItemStack(ItemResources, 1, 0), "ppp", "sws", "ppp", 'p', Item.paper, 's', Item.silk, 'w', Item.bucketWater);
+		GameRegistry.addRecipe(ItemType.ISFromType(ItemType.Label, 3), "ppp", " s ", 'p', Item.paper, 's', Item.slimeBall);
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockMeta, 1, MetaType.Crate.ordinal()), "wsw", "scs", "wsw", 'w', "logWood", 's', "plankWood", 'c', Block.chest));
 		GameRegistry.addRecipe(new RecipeBox());
 		
