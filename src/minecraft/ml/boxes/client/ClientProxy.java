@@ -7,9 +7,11 @@ import ml.boxes.client.render.item.BoxItemRenderer;
 import ml.boxes.client.render.item.MetaItemRenderer;
 import ml.boxes.client.render.tile.BoxTESR;
 import ml.boxes.client.render.tile.CrateTESR;
+import ml.boxes.client.render.tile.SafeTESR;
 import ml.boxes.inventory.ContainerBox;
 import ml.boxes.tile.TileEntityBox;
 import ml.boxes.tile.TileEntityCrate;
+import ml.boxes.tile.TileEntitySafe;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
@@ -46,6 +48,7 @@ public class ClientProxy extends CommonProxy {
 		TickRegistry.registerTickHandler(new ContentTipHandler(), Side.CLIENT);
 		
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCrate.class, CrateTESR.instance);
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySafe.class, SafeTESR.instance);
 		MinecraftForgeClient.registerItemRenderer(Boxes.config.generalBlockID, new MetaItemRenderer());
 		
 	}

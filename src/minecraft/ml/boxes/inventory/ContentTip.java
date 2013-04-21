@@ -5,9 +5,9 @@ import java.util.Iterator;
 import java.util.Set;
 
 import ml.boxes.Boxes;
-import ml.boxes.IBox;
-import ml.boxes.data.BoxData;
-import ml.boxes.data.ItemIBox;
+import ml.boxes.data.Box;
+import ml.boxes.data.IBoxContainer;
+import ml.boxes.data.ItemBoxContainer;
 import ml.boxes.network.packets.PacketTipClick;
 import ml.core.Geometry;
 import ml.core.Geometry.XYPair;
@@ -171,18 +171,18 @@ public abstract class ContentTip {
 				(boxSlot != null && (Geometry.pointInRect(mx, my, gcBounds.xCoord + boxSlot.xDisplayPosition, gcBounds.yCoord + boxSlot.yDisplayPosition, 16, 16) || 
 				(interacting && Geometry.pointInRect(mx, my, tipBounds))) &&
 				boxSlot.getHasStack() && ItemStack.areItemStackTagsEqual(origStack, boxSlot.getStack())
-				) && (interacting || getIIB().getBoxData().canOpenContentPreview());
+				) && (interacting || getIIB().getBox().canOpenContentPreview());
 	}
 		
-	protected ItemIBox getIIB(){
-		return new ItemIBox(boxSlot.getStack());
+	protected ItemBoxContainer getIIB(){
+		return new ItemBoxContainer(boxSlot.getStack());
 	}
 	
 	public abstract int getSlotAtPosition(int pX, int pY);
 	
 	public ItemStack getStackAtPosition(int pX, int pY){
 		int sltNum = getSlotAtPosition(pX, pY);
-		BoxData bd = getIIB().getBoxData();
+		Box bd = getIIB().getBox();
 		if (sltNum >= 0 && sltNum < bd.getSizeInventory()){
 			return bd.getStackInSlot(sltNum);
 		}
@@ -195,7 +195,7 @@ public abstract class ContentTip {
 	
     public ItemStack slotClickOld(int slotNum, int arg, int action, EntityPlayer par4EntityPlayer)
     {
-    	ItemIBox ibox = getIIB();
+    	ItemBoxContainer ibox = getIIB();
     	
         ItemStack var5 = null;
         InventoryPlayer invPl = par4EntityPlayer.inventory;
@@ -213,7 +213,7 @@ public abstract class ContentTip {
                     return null;
                 }
 
-                var7 = ibox.getBoxData().getSlots().get(slotNum);
+                var7 = ibox.getBox().getSlots().get(slotNum);
 
                 if (var7 != null)
                 {
@@ -315,7 +315,7 @@ public abstract class ContentTip {
         }
         else if (action == 2 && arg >= 0 && arg < 9 && arg != boxSlot.getSlotIndex()) //Move to hotbar
         {
-            var7 = ibox.getBoxData().getSlots().get(slotNum);
+            var7 = ibox.getBox().getSlots().get(slotNum);
 
             if (var7.canTakeStack(par4EntityPlayer))
             {
@@ -360,7 +360,7 @@ public abstract class ContentTip {
         }
         else if (action == 3 && par4EntityPlayer.capabilities.isCreativeMode && invPl.getItemStack() == null && slotNum >= 0)
         {
-            var7 = ibox.getBoxData().getSlots().get(slotNum);
+            var7 = ibox.getBox().getSlots().get(slotNum);
 
             if (var7 != null && var7.getHasStack())
             {
@@ -391,7 +391,7 @@ public abstract class ContentTip {
     private final Set field_94537_h = new HashSet();
     public ItemStack slotClick(int slotNum, int arg, int action, EntityPlayer par4EntityPlayer)
     {
-    	ItemIBox ibox = getIIB();
+    	ItemBoxContainer ibox = getIIB();
     	
         ItemStack itemstack = null;
         InventoryPlayer inventoryplayer = par4EntityPlayer.inventory;
@@ -427,7 +427,7 @@ public abstract class ContentTip {
             }
             else if (this.field_94536_g == 1)
             {
-                Slot slot = ibox.getBoxData().getSlots().get(slotNum);
+                Slot slot = ibox.getBox().getSlots().get(slotNum);
 
                 if (slot != null && Container.func_94527_a(slot, inventoryplayer.getItemStack(), true) && slot.isItemValid(inventoryplayer.getItemStack()) && inventoryplayer.getItemStack().stackSize > this.field_94537_h.size() && this.func_94531_b(slot))
                 {
@@ -549,7 +549,7 @@ public abstract class ContentTip {
                         return null;
                     }
 
-                    slot2 = ibox.getBoxData().getSlots().get(slotNum);
+                    slot2 = ibox.getBox().getSlots().get(slotNum);
 
                     if (slot2 != null)
                     {
@@ -651,7 +651,7 @@ public abstract class ContentTip {
             }
             else if (action == 2 && arg >= 0 && arg < 9)
             {
-                slot2 = ibox.getBoxData().getSlots().get(slotNum);
+                slot2 = ibox.getBox().getSlots().get(slotNum);
 
                 if (slot2.canTakeStack(par4EntityPlayer))
                 {
@@ -696,7 +696,7 @@ public abstract class ContentTip {
             }
             else if (action == 3 && par4EntityPlayer.capabilities.isCreativeMode && inventoryplayer.getItemStack() == null && slotNum >= 0)
             {
-                slot2 = ibox.getBoxData().getSlots().get(slotNum);
+                slot2 = ibox.getBox().getSlots().get(slotNum);
 
                 if (slot2 != null && slot2.getHasStack())
                 {
@@ -707,7 +707,7 @@ public abstract class ContentTip {
             }
             else if (action == 4 && inventoryplayer.getItemStack() == null && slotNum >= 0)
             {
-                slot2 = ibox.getBoxData().getSlots().get(slotNum);
+                slot2 = ibox.getBox().getSlots().get(slotNum);
 
                 if (slot2 != null && slot2.getHasStack())
                 {
@@ -718,19 +718,19 @@ public abstract class ContentTip {
             }
             else if (action == 6 && slotNum >= 0)
             {
-                slot2 = ibox.getBoxData().getSlots().get(slotNum);
+                slot2 = ibox.getBox().getSlots().get(slotNum);
                 itemstack1 = inventoryplayer.getItemStack();
 
                 if (itemstack1 != null && (slot2 == null || !slot2.getHasStack() || !slot2.canTakeStack(par4EntityPlayer)))
                 {
-                    l = arg == 0 ? 0 : ibox.getBoxData().getSlots().size() - 1;
+                    l = arg == 0 ? 0 : ibox.getBox().getSlots().size() - 1;
                     k1 = arg == 0 ? 1 : -1;
 
                     for (int l1 = 0; l1 < 2; ++l1)
                     {
-                        for (int i2 = l; i2 >= 0 && i2 < ibox.getBoxData().getSlots().size() && itemstack1.stackSize < itemstack1.getMaxStackSize(); i2 += k1)
+                        for (int i2 = l; i2 >= 0 && i2 < ibox.getBox().getSlots().size() && itemstack1.stackSize < itemstack1.getMaxStackSize(); i2 += k1)
                         {
-                            Slot slot3 = ibox.getBoxData().getSlots().get(i2);
+                            Slot slot3 = ibox.getBox().getSlots().get(i2);
 
                             if (slot3.getHasStack() && Container.func_94527_a(slot3, itemstack1, true) && slot3.canTakeStack(par4EntityPlayer) && this.func_94530_a(itemstack1, slot3) && (l1 != 0 || slot3.getStack().stackSize != slot3.getStack().getMaxStackSize()))
                             {

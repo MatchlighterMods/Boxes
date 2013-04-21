@@ -3,8 +3,8 @@ package ml.boxes.network.packets;
 import java.io.IOException;
 
 import ml.boxes.Boxes;
-import ml.boxes.data.BoxData;
-import ml.boxes.data.ItemIBox;
+import ml.boxes.data.Box;
+import ml.boxes.data.ItemBoxContainer;
 import ml.boxes.inventory.ContentTip;
 import ml.boxes.item.ItemBox;
 import ml.core.network.MLPacket;
@@ -59,8 +59,8 @@ public class PacketTipClick extends MLPacket {
 			ItemStack isInSlot = slotWithBox.getStack();
 			
 			if (isInSlot != null && isInSlot.getItem() instanceof ItemBox) {
-				ItemIBox iib = new ItemIBox(isInSlot);
-				ContentTip ctip = iib.getBoxData().createContentTip(slotWithBox, null);
+				ItemBoxContainer iib = new ItemBoxContainer(isInSlot);
+				ContentTip ctip = iib.getBox().createContentTip(slotWithBox, null);
 				
 				ctip.slotClick(boxInvSlot, arg, action, asEntPl);
 			}

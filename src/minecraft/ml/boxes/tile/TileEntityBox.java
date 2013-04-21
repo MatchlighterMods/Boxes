@@ -2,8 +2,8 @@ package ml.boxes.tile;
 
 import buildcraft.api.inventory.ISpecialInventory;
 import ml.boxes.Boxes;
-import ml.boxes.IBox;
-import ml.boxes.data.BoxData;
+import ml.boxes.data.Box;
+import ml.boxes.data.IBoxContainer;
 import ml.boxes.network.packets.PacketUpdateData;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,7 +15,7 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 
-public class TileEntityBox extends TileEntity implements IInventory, IBox, ISpecialInventory {
+public class TileEntityBox extends TileEntity implements IInventory, IBoxContainer, ISpecialInventory {
 
 	public float prevAngleOuter = 0F; //Used for smoothness when FPS > 1 tick
 	public float flapAngleOuter = 0F;
@@ -27,7 +27,7 @@ public class TileEntityBox extends TileEntity implements IInventory, IBox, ISpec
 	private int syncTime = 0;
 	private int users = 0;
 	
-	private BoxData data = new BoxData(this);
+	private Box data = new Box(this);
 	
 	public TileEntityBox() {
 		
@@ -90,7 +90,7 @@ public class TileEntityBox extends TileEntity implements IInventory, IBox, ISpec
 	@Override
 	public void readFromNBT(NBTTagCompound par1nbtTagCompound) {
 		super.readFromNBT(par1nbtTagCompound);
-		data=new BoxData(par1nbtTagCompound.getCompoundTag("box"), this);
+		data=new Box(par1nbtTagCompound.getCompoundTag("box"), this);
 		facing=ForgeDirection.getOrientation(par1nbtTagCompound.getInteger("faceDir"));
 	}
 
@@ -174,7 +174,7 @@ public class TileEntityBox extends TileEntity implements IInventory, IBox, ISpec
 	}
 
 	@Override
-	public BoxData getBoxData() {
+	public Box getBox() {
 		return data;
 	}
 
@@ -193,23 +193,23 @@ public class TileEntityBox extends TileEntity implements IInventory, IBox, ISpec
 
 	@Override
 	public int addItem(ItemStack stack, boolean doAdd, ForgeDirection from) {
-		return getBoxData().pipeTransferIn(stack, doAdd, from);
+		return getBox().pipeTransferIn(stack, doAdd, from);
 	}
 
 	@Override
 	public ItemStack[] extractItem(boolean doRemove, ForgeDirection from,
 			int maxItemCount) {
 
-		return getBoxData().pipeExtract(doRemove, from, maxItemCount);
+		return getBox().pipeExtract(doRemove, from, maxItemCount);
 	}
 
 	@Override
 	public boolean isInvNameLocalized() {
-		return getBoxData().isInvNameLocalized();
+		return getBox().isInvNameLocalized();
 	}
 
 	@Override
 	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
-		return getBoxData().isStackValidForSlot(i, itemstack);
+		return getBox().isStackValidForSlot(i, itemstack);
 	}
 }

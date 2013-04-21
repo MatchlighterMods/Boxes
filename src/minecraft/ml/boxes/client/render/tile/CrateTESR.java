@@ -3,6 +3,7 @@ package ml.boxes.client.render.tile;
 import ml.boxes.Boxes;
 import ml.boxes.tile.TileEntityCrate;
 import ml.core.lib.BlockLib;
+import ml.core.lib.render.WorldRenderLib;
 import ml.core.model.ObjModel;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -29,44 +30,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class CrateTESR extends TileEntitySpecialRenderer {
 
-	public IModelCustom crateModel = AdvancedModelLoader.loadModel("/mods/Boxes/models/crate.obj");
+	private IModelCustom crateModel = AdvancedModelLoader.loadModel("/mods/Boxes/models/crate.obj");
 	public static CrateTESR instance = new CrateTESR();
-	private static EntityItem renderEnt;
-	private RenderItem renderItem = new RenderItem() {
-		@Override
-		public boolean shouldBob() {
-			return false;
-		}
-		@Override
-		public boolean shouldSpreadItems() {
-			return false;
-		};
-	};
-	private RenderBlocks renderBlocks = new RenderBlocks();
-
-	public CrateTESR() {
-		renderItem.setRenderManager(RenderManager.instance);
-		renderEnt = new EntityItem(null);
-		renderEnt.hoverStart = 0F;
-	}
-
-	private void renderItem(ItemStack is, boolean render3D){
-		if (!render3D){
-			GL11.glPushMatrix();
-			GL11.glScalef(0.03125F, 0.03125F, -0.0004F);
-			GL11.glTranslatef(8, 8, 0);
-			GL11.glRotatef(180F, 0, 0, 1.0F);
-
-			if (!ForgeHooksClient.renderInventoryItem(renderBlocks, RenderManager.instance.renderEngine, is, true, 0, 0F, 0F))
-			{
-				renderItem.renderItemIntoGUI(getFontRenderer(), RenderManager.instance.renderEngine, is, 0, 0);
-			}
-			GL11.glPopMatrix();
-		} else {
-			renderEnt.setEntityItemStack(is);
-			renderItem.doRenderItem(renderEnt, 0, 0, 0, 0, 0);
-		}
-	}
 
 	@Override
 	public void renderTileEntityAt(TileEntity te, double d0, double d1,
@@ -105,9 +70,10 @@ public class CrateTESR extends TileEntitySpecialRenderer {
 			}
 
 			GL11.glPushMatrix();
+			WorldRenderLib.shouldSpreadItems = false;
 			if (rendMode == 0 || (rendMode == 1 && !upOrDwn)){
 				if (!upOrDwn) GL11.glTranslatef(0, 0, 0.0625F);
-				renderItem(tec.cItem, false);
+				WorldRenderLib.renderItemIntoWorld(tec.cItem, false);
 			} else {
 				if (isBlock){
 					GL11.glScalef(1.2F, 1.2F, 1.2F);
@@ -115,7 +81,7 @@ public class CrateTESR extends TileEntitySpecialRenderer {
 				} else {
 					GL11.glTranslatef(0F, -0.125F, 0F);
 				}
-				renderItem(tec.cItem, true);
+				WorldRenderLib.renderItemIntoWorld(tec.cItem, true);
 			}
 			GL11.glPopMatrix();
 

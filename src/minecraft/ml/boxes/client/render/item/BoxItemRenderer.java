@@ -2,7 +2,7 @@ package ml.boxes.client.render.item;
 
 import ml.boxes.Boxes;
 import ml.boxes.client.render.tile.BoxTESR;
-import ml.boxes.data.ItemIBox;
+import ml.boxes.data.ItemBoxContainer;
 import ml.boxes.inventory.ContainerBox;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -75,7 +75,7 @@ public class BoxItemRenderer implements IItemRenderer {
 					holder instanceof EntityPlayer &&
 					holder == mc.thePlayer &&
 					((EntityPlayer) holder).openContainer instanceof ContainerBox &&
-					((ContainerBox)((EntityPlayer)holder).openContainer).box instanceof ItemIBox &&
+					((ContainerBox)((EntityPlayer)holder).openContainer).box instanceof ItemBoxContainer &&
 					mc.gameSettings.thirdPersonView == 0 &&
 					!mc.renderViewEntity.isPlayerSleeping() &&
 					!mc.gameSettings.hideGUI &&
@@ -196,7 +196,7 @@ public class BoxItemRenderer implements IItemRenderer {
 			BoxTESR.instance.setBoxFlaps(0, 0, 0, 0);
 			break;
 		}
-		BoxTESR.instance.renderBox(new ItemIBox(item).getBoxData().boxColor);
+		BoxTESR.instance.renderBox(new ItemBoxContainer(item).getBox().boxColor);
 		GL11.glPopMatrix();
 	}
 }

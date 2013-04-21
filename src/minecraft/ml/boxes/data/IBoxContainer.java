@@ -1,9 +1,8 @@
-package ml.boxes;
+package ml.boxes.data;
 
-import ml.boxes.data.BoxData;
 import net.minecraft.item.ItemStack;
 
-public interface IBox {
+public interface IBoxContainer {
 
 	public void saveData();
 	
@@ -11,7 +10,7 @@ public interface IBox {
 	
 	public void boxClose();
 	
-	public BoxData getBoxData();
+	public Box getBox();
 	
 	public void ejectItem(ItemStack is);
 }

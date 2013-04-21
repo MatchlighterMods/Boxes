@@ -5,8 +5,8 @@ import java.util.EnumSet;
 import java.util.List;
 
 import ml.boxes.Boxes;
-import ml.boxes.data.BoxData;
-import ml.boxes.data.ItemIBox;
+import ml.boxes.data.Box;
+import ml.boxes.data.ItemBoxContainer;
 import ml.boxes.inventory.ContainerBox;
 import ml.boxes.inventory.ContentTip;
 import ml.boxes.item.ItemBox;
@@ -14,8 +14,8 @@ import ml.boxes.network.packets.PacketTipClick;
 import ml.core.Geometry;
 import ml.core.Geometry.XYPair;
 import ml.core.Geometry.rectangle;
-import ml.core.lib.RenderLib;
 import ml.core.lib.StringLib;
+import ml.core.lib.render.GuiRenderLib;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -111,12 +111,12 @@ public class ContentTipHandler implements ITickHandler {
 					(hoverSlot.getStack().getItem() instanceof ItemBox) &&
 					(!Boxes.config.shiftForTip || asGuiContainer.isShiftKeyDown()) &&
 					(mc.getSystemTime() - tickerTime > Boxes.config.tipReactionTime || asGuiContainer.isShiftKeyDown()) &&
-					!(asGuiContainer instanceof GuiBox && ((ContainerBox)asGuiContainer.inventorySlots).box instanceof ItemIBox && mc.thePlayer.inventory.currentItem == hoverSlot.getSlotIndex()) && //((ItemIBox)((ContainerBox)asGuiContainer.inventorySlots).box).stack == hoverSlot.getStack()
+					!(asGuiContainer instanceof GuiBox && ((ContainerBox)asGuiContainer.inventorySlots).box instanceof ItemBoxContainer && mc.thePlayer.inventory.currentItem == hoverSlot.getSlotIndex()) && //((ItemIBox)((ContainerBox)asGuiContainer.inventorySlots).box).stack == hoverSlot.getStack()
 					openTip == null
 					)
 			{
-				ItemIBox iib = getItemIBox();
-				BoxData bd = iib.getBoxData();
+				ItemBoxContainer iib = getItemIBox();
+				Box bd = iib.getBox();
 				
 				if (bd.canOpenContentTip() && (bd.canOpenContentPreview() || canBeInteractive(mc))){
 					openTip = bd.createContentTip(hoverSlot, gcBounds);
@@ -141,8 +141,8 @@ public class ContentTipHandler implements ITickHandler {
 		return (Boxes.neiInstalled && mc.currentScreen.isShiftKeyDown() && hoverSlot.inventory instanceof InventoryPlayer);
 	}
 
-	private static ItemIBox getItemIBox(){
-		return new ItemIBox(hoverSlot.getStack());
+	private static ItemBoxContainer getItemIBox(){
+		return new ItemBoxContainer(hoverSlot.getStack());
 	}
 
 	//Render the tip

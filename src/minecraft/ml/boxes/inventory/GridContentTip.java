@@ -7,13 +7,13 @@ import org.lwjgl.opengl.GL11;
 
 import ml.boxes.Boxes;
 import ml.boxes.client.GuiBox;
-import ml.boxes.data.BoxData;
-import ml.boxes.data.ItemIBox;
+import ml.boxes.data.Box;
+import ml.boxes.data.ItemBoxContainer;
 import ml.core.Geometry;
 import ml.core.Geometry.XYPair;
 import ml.core.Geometry.rectangle;
-import ml.core.lib.RenderLib;
 import ml.core.lib.StringLib;
+import ml.core.lib.render.GuiRenderLib;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -40,7 +40,7 @@ public class GridContentTip extends ContentTip {
 			int slotY = 10+row*18;
 			
 			ItemStack is = contentStacks.get(i);
-			RenderLib.drawSpecialStackAt(mc, slotX, slotY, is, is.stackSize> 1 ? StringLib.toGroupedString(is.stackSize,1) : "");
+			GuiRenderLib.drawSpecialStackAt(mc, slotX, slotY, is, is.stackSize> 1 ? StringLib.toGroupedString(is.stackSize,1) : "");
 		}
 	}
 
@@ -55,14 +55,14 @@ public class GridContentTip extends ContentTip {
 
 			ItemStack is = contentStacks.get(i);
 			mc.renderEngine.bindTexture("/mods/Boxes/textures/gui/contentTipGui2.png");
-			RenderLib.drawTexturedModalRect(slotX-1, slotY-1, 0, 106, 18, 18);
+			GuiRenderLib.drawTexturedModalRect(slotX-1, slotY-1, 0, 106, 18, 18);
 
-			RenderLib.drawStackAt(mc, slotX, slotY, is);
+			GuiRenderLib.drawStackAt(mc, slotX, slotY, is);
 
 			GL11.glDisable(GL11.GL_LIGHTING);
 			if (Geometry.pointInRect(mx - tipBounds.xCoord, my - tipBounds.yCoord, slotX, slotY, 16, 16)){
 				GL11.glDisable(GL11.GL_DEPTH_TEST);
-				RenderLib.drawGradientRect(slotX, slotY, slotX + 16, slotY + 16, -2130706433, -2130706433);
+				GuiRenderLib.drawGradientRect(slotX, slotY, slotX + 16, slotY + 16, -2130706433, -2130706433);
 				GL11.glEnable(GL11.GL_DEPTH_TEST);
 			}
 		}
@@ -71,13 +71,13 @@ public class GridContentTip extends ContentTip {
 	@Override
 	protected void renderBackground(Minecraft mc, int mx, int my) {
 		mc.renderEngine.bindTexture("/mods/Boxes/textures/gui/contentTipGui2.png");
-		RenderLib.drawSlicedRect(0, 0, tipBounds.width, tipBounds.height, 0, 0, 178, 106, 9, 9, 7, 7);
+		GuiRenderLib.drawSlicedRect(0, 0, tipBounds.width, tipBounds.height, 0, 0, 178, 106, 9, 9, 7, 7);
 	}
 	
 	@Override
 	public void tick(Minecraft mc) {
-		ItemIBox iib = getIIB();
-		BoxData bd = iib.getBoxData();
+		ItemBoxContainer iib = getIIB();
+		Box bd = iib.getBox();
 		
 		contentStacks.clear();
 		if (interacting){
@@ -110,7 +110,7 @@ public class GridContentTip extends ContentTip {
 	@Override
 	public int getSlotAtPosition(int pX, int pY) {
 		if (interacting && renderContents){
-			for (int i=0; i< getIIB().getBoxData().getSizeInventory(); i++){
+			for (int i=0; i< getIIB().getBox().getSizeInventory(); i++){
 				int col = i%gridDimensions.X;
 				int row = i/gridDimensions.X;
 

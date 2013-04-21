@@ -3,7 +3,6 @@ package ml.boxes.data;
 import java.util.ArrayList;
 import java.util.List;
 
-import ml.boxes.IBox;
 import ml.boxes.api.ContentBlacklist;
 import ml.boxes.inventory.ContentTip;
 import ml.boxes.inventory.GridContentTip;
@@ -18,20 +17,25 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.ForgeDirection;
 
-public class BoxData implements IInventory {
+/**
+ * This class is where interaction occurs and all data is stored
+ * @author Matchlighter
+ *
+ */
+public class Box implements IInventory {
 
 	private ItemStack[] inventory;
 	public String boxName = "";
 	public int boxColor = 5;
-	public final IBox IBoxOwner;
+	public final IBoxContainer boxContainer;
 	
-	public BoxData(IBox owner) {
+	public Box(IBoxContainer owner) {
 		inventory=new ItemStack[this.getSizeInventory()];
-		IBoxOwner = owner;
+		boxContainer = owner;
 	}
 	
-	public BoxData(NBTTagCompound data, IBox owner){
-		IBoxOwner = owner;
+	public Box(NBTTagCompound data, IBoxContainer owner){
+		boxContainer = owner;
 		loadNBT(data);
 	}
 	
@@ -146,7 +150,7 @@ public class BoxData implements IInventory {
 			inventory[var1] = var2;
 			this.onInventoryChanged();
 		}else{
-			IBoxOwner.ejectItem(var2);
+			boxContainer.ejectItem(var2);
 		}
 	}
 
@@ -268,7 +272,7 @@ public class BoxData implements IInventory {
 	
 	@Override
 	public void onInventoryChanged() {
-		IBoxOwner.saveData();
+		boxContainer.saveData();
 	}
 
 	@Override
@@ -295,9 +299,9 @@ public class BoxData implements IInventory {
 	}
 	
 	public static class BoxSlot extends Slot {
-		private final BoxData boxData;
+		private final Box boxData;
 		
-		public BoxSlot(BoxData bd, int par2, int par3, int par4) {
+		public BoxSlot(Box bd, int par2, int par3, int par4) {
 			super(bd, par2, par3, par4);
 			boxData = bd;
 		}

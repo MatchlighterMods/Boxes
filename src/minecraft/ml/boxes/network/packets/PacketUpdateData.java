@@ -6,7 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
-import ml.boxes.data.BoxData;
+import ml.boxes.data.Box;
 import ml.boxes.tile.TileEntityBox;
 import ml.core.network.MLPacket;
 
@@ -27,7 +27,7 @@ public class PacketUpdateData extends MLPacket {
 		x = te.xCoord;
 		y = te.yCoord;
 		z = te.zCoord;
-		pktData = te.getBoxData().asNBTTag();
+		pktData = te.getBox().asNBTTag();
 		
 		writeInt(x);
 		writeInt(y);
@@ -53,7 +53,7 @@ public class PacketUpdateData extends MLPacket {
 		TileEntity te = asEntPl.worldObj.getBlockTileEntity(x, y, z);
 		
 		if (te instanceof TileEntityBox){
-			((TileEntityBox)te).getBoxData().loadNBT(pktData);
+			((TileEntityBox)te).getBox().loadNBT(pktData);
 		}
 	}
 

@@ -3,7 +3,7 @@ package ml.boxes.nei;
 import ml.boxes.Boxes;
 import ml.boxes.block.MetaType;
 import ml.boxes.client.ContentTipHandler;
-import ml.boxes.data.BoxData;
+import ml.boxes.data.Box;
 import ml.boxes.item.ItemBox;
 import ml.boxes.network.packets.PacketTipClick;
 import net.minecraft.client.gui.inventory.GuiContainer;

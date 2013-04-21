@@ -9,6 +9,7 @@ import ml.boxes.network.packets.PacketDescribeCrate;
 import ml.core.lib.BlockLib;
 import ml.core.lib.ItemLib;
 import ml.core.lib.PlayerLib;
+import ml.core.tile.IRotatableTE;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.item.EntityItem;
@@ -281,10 +282,20 @@ public class TileEntityCrate extends TileEntity implements ISidedInventory, IRot
 	}
 
 	@Override
+	public ForgeDirection getFacing() {
+		return facing;
+	}
+	
+	@Override
 	public void setFacing(ForgeDirection fd) {
 		facing = fd;
 	}
 
+	@Override
+	public ForgeDirection[] getValidFacingDirections() {
+		return ForgeDirection.VALID_DIRECTIONS;
+	}
+	
 	@Override
 	public boolean onRightClicked(EntityPlayer pl, ForgeDirection side) {
 		if (worldObj.isRemote)

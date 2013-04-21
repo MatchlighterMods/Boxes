@@ -7,11 +7,11 @@ import java.util.Map;
 
 import ml.boxes.Boxes;
 import ml.boxes.tile.IEventedTE;
-import ml.boxes.tile.IRotatableTE;
 import ml.boxes.tile.TileEntityCrate;
 import ml.boxes.tile.TileEntitySafe;
 import ml.boxes.tile.TileEntityBox;
 import ml.core.lib.BlockLib;
+import ml.core.tile.IRotatableTE;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -22,6 +22,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 
@@ -99,7 +101,7 @@ public class BlockMeta extends BlockContainer {
 		
 		TileEntity te = world.getBlockTileEntity(x, y, z);
 		if (te instanceof IRotatableTE){
-			((IRotatableTE) te).setFacing(BlockLib.getPlacedForgeDir(entity, x, y, z));
+			((IRotatableTE) te).setFacing(BlockLib.getPlacedForgeDir(entity, x, y, z, ((IRotatableTE) te).getValidFacingDirections()));
 			world.markBlockForUpdate(x, y, z);
 		}
 	}
@@ -165,6 +167,13 @@ public class BlockMeta extends BlockContainer {
 		}
 		
 		super.breakBlock(par1World, x, y, z, par5, meta);
+	}
+	
+	@Override
+	public MovingObjectPosition collisionRayTrace(World par1World, int par2,
+			int par3, int par4, Vec3 par5Vec3, Vec3 par6Vec3) {
+		// TODO Auto-generated method stub
+		return super.collisionRayTrace(par1World, par2, par3, par4, par5Vec3, par6Vec3);
 	}
 	
 	@Override

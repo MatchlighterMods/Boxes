@@ -44,7 +44,7 @@ public class BoxTESR extends TileEntitySpecialRenderer {
 
 		setBoxFlaps(outerAngle + 1, outerAngle+3, innerAngle, innerAngle);
 
-		renderBox(box.getBoxData().boxColor);
+		renderBox(box.getBox().boxColor);
 
 		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 		GL11.glPopMatrix();

@@ -6,7 +6,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 
 import ml.boxes.Boxes;
 import ml.boxes.block.MetaType;
-import ml.boxes.data.ItemIBox;
+import ml.boxes.data.ItemBoxContainer;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;

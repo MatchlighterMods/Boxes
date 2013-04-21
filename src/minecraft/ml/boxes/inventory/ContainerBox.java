@@ -3,10 +3,10 @@ package ml.boxes.inventory;
 import java.util.List;
 
 import ml.boxes.Boxes;
-import ml.boxes.IBox;
 import ml.boxes.api.ContentBlacklist;
-import ml.boxes.data.BoxData;
-import ml.boxes.data.ItemIBox;
+import ml.boxes.data.Box;
+import ml.boxes.data.IBoxContainer;
+import ml.boxes.data.ItemBoxContainer;
 import ml.boxes.item.ItemBox;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -17,10 +17,10 @@ import net.minecraft.item.ItemStack;
 
 public class ContainerBox extends Container {
 
-	public final IBox box;
+	public final IBoxContainer box;
 	public final EntityPlayer player;
 	
-	public ContainerBox(IBox box, EntityPlayer pl) {
+	public ContainerBox(IBoxContainer box, EntityPlayer pl) {
 		this.box = box;
 		this.player = pl;
 		box.boxOpen();
@@ -37,7 +37,7 @@ public class ContainerBox extends Container {
             addSlotToContainer(new Slot(pl.inventory, hotbarSlot, leftCol + hotbarSlot * 18, ySize - 25));
         }
         
-        List<Slot> boxSlots = box.getBoxData().getSlots();
+        List<Slot> boxSlots = box.getBox().getSlots();
         for (Slot slt : boxSlots){
         	addSlotToContainer(slt);
         }
@@ -45,13 +45,13 @@ public class ContainerBox extends Container {
 	
 	@Override
 	public boolean canInteractWith(EntityPlayer var1) {
-		return box.getBoxData().isUseableByPlayer(var1) && (!(box instanceof ItemIBox) || ((ItemIBox)box).stack == var1.getCurrentEquippedItem());
+		return box.getBox().isUseableByPlayer(var1) && (!(box instanceof ItemBoxContainer) || ((ItemBoxContainer)box).stack == var1.getCurrentEquippedItem());
 	}
 	
 	@Override
 	public ItemStack slotClick(int slotNum, int mouseBtn, int action,
 			EntityPlayer par4EntityPlayer) {
-		if (box instanceof ItemIBox && slotNum>=0 && getSlot(slotNum).inventory == par4EntityPlayer.inventory && getSlot(slotNum).getSlotIndex() == par4EntityPlayer.inventory.currentItem) { //((ItemIBox)box).stack == getSlot(slotNum).getStack()){
+		if (box instanceof ItemBoxContainer && slotNum>=0 && getSlot(slotNum).inventory == par4EntityPlayer.inventory && getSlot(slotNum).getSlotIndex() == par4EntityPlayer.inventory.currentItem) { //((ItemIBox)box).stack == getSlot(slotNum).getStack()){
 			//par4EntityPlayer.closeScreen();
 			return null;
 		}

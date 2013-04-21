@@ -3,8 +3,8 @@ package ml.boxes.item;
 import java.util.List;
 
 import ml.boxes.Boxes;
-import ml.boxes.data.BoxData;
-import ml.boxes.data.ItemIBox;
+import ml.boxes.data.Box;
+import ml.boxes.data.ItemBoxContainer;
 import ml.boxes.tile.TileEntityBox;
 import ml.core.lib.PlayerLib;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -42,7 +42,7 @@ public class ItemBox extends ItemBlock {
 		return new NBTTagCompound();
 	}
 	
-	public static void saveBoxData(ItemStack is, BoxData bd){
+	public static void saveBoxData(ItemStack is, Box bd){
 		NBTTagCompound isTag = is.hasTagCompound() ? is.getTagCompound() : new NBTTagCompound();
 		isTag.setCompoundTag("boxData", bd.asNBTTag());
 		is.setTagCompound(isTag);
@@ -57,11 +57,11 @@ public class ItemBox extends ItemBlock {
 
 	@Override
 	public String getItemDisplayName(ItemStack par1ItemStack) {
-		ItemIBox iib = new ItemIBox(par1ItemStack);
+		ItemBoxContainer iib = new ItemBoxContainer(par1ItemStack);
 		
-		if (iib.getBoxData() != null){
-			if (iib.getBoxData().boxName != null && !iib.getBoxData().boxName.isEmpty()){
-				return iib.getBoxData().boxName;
+		if (iib.getBox() != null){
+			if (iib.getBox().boxName != null && !iib.getBox().boxName.isEmpty()){
+				return iib.getBox().boxName;
 			}
 		}
 		
@@ -82,7 +82,7 @@ public class ItemBox extends ItemBlock {
 			if (world.getBlockId(x, y, z) == this.blockID)
 			{
 				TileEntityBox te = (TileEntityBox)world.getBlockTileEntity(x, y, z);
-				te.getBoxData().loadNBT(ItemBox.getBoxNBT(stack));
+				te.getBox().loadNBT(ItemBox.getBoxNBT(stack));
 			}
 		}
 		
@@ -93,9 +93,9 @@ public class ItemBox extends ItemBlock {
 	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List) {
 		for (int i=0; i<15; i++){
 			ItemStack is = new ItemStack(Boxes.BlockBox, 1);
-			ItemIBox iib = new ItemIBox(is);
-			iib.getBoxData().boxName = getColoredBoxName(i);
-			iib.getBoxData().boxColor = ItemDye.dyeColors[i];
+			ItemBoxContainer iib = new ItemBoxContainer(is);
+			iib.getBox().boxName = getColoredBoxName(i);
+			iib.getBox().boxColor = ItemDye.dyeColors[i];
 			iib.saveData();
 			par3List.add(is);
 		}

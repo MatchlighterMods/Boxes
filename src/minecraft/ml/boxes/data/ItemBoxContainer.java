@@ -1,23 +1,22 @@
 package ml.boxes.data;
 
-import ml.boxes.IBox;
 import ml.boxes.item.ItemBox;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class ItemIBox implements IBox {
+public class ItemBoxContainer implements IBoxContainer {
 
 	public final ItemStack stack;
-	private final BoxData data;
+	private final Box data;
 	
-	public ItemIBox(ItemStack stack) {
+	public ItemBoxContainer(ItemStack stack) {
 		this.stack = stack;
-		data = new BoxData(ItemBox.getBoxNBT(stack), this);
+		data = new Box(ItemBox.getBoxNBT(stack), this);
 	}
 	
 	@Override
 	public void saveData() {
-		ItemBox.saveBoxData(stack, getBoxData());
+		ItemBox.saveBoxData(stack, getBox());
 	}
 
 	@Override
@@ -27,7 +26,7 @@ public class ItemIBox implements IBox {
 	public void boxClose() {}
 
 	@Override
-	public BoxData getBoxData() {
+	public Box getBox() {
 		return data;
 	}
 

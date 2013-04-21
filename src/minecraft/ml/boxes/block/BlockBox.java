@@ -3,7 +3,7 @@ package ml.boxes.block;
 import java.util.ArrayList;
 
 import ml.boxes.Boxes;
-import ml.boxes.data.ItemIBox;
+import ml.boxes.data.ItemBoxContainer;
 import ml.boxes.item.ItemBox;
 import ml.boxes.tile.TileEntityBox;
 import ml.core.lib.BlockLib;
@@ -107,7 +107,7 @@ public class BlockBox extends BlockContainer {
 		TileEntity te = world.getBlockTileEntity(x, y, z);
 		
 		if (te instanceof TileEntityBox){
-			ItemBox.saveBoxData(is, ((TileEntityBox)te).getBoxData());
+			ItemBox.saveBoxData(is, ((TileEntityBox)te).getBox());
 		}
 		iss.add(is);
 		return iss;		

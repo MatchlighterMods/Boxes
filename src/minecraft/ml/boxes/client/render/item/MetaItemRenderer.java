@@ -13,7 +13,8 @@ import ml.boxes.Boxes;
 import ml.boxes.block.MetaType;
 import ml.boxes.client.render.tile.BoxTESR;
 import ml.boxes.client.render.tile.CrateTESR;
-import ml.boxes.data.ItemIBox;
+import ml.boxes.client.render.tile.SafeTESR;
+import ml.boxes.data.ItemBoxContainer;
 import ml.boxes.inventory.ContainerBox;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
@@ -68,6 +69,9 @@ public class MetaItemRenderer implements IItemRenderer {
 			GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 			break;
 		case EQUIPPED:
+//			GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+//			GL11.glRotatef(-90F, 0F, 1F, 0F);
+//			GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 			break;
 		case INVENTORY:
 			GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
@@ -77,6 +81,9 @@ public class MetaItemRenderer implements IItemRenderer {
 		switch (MetaType.fromMeta(item.getItemDamage())){
 		case Crate:
 			CrateTESR.instance.render();
+			break;
+		case Safe:
+			SafeTESR.instance.renderAsItem();
 			break;
 		}
 		
