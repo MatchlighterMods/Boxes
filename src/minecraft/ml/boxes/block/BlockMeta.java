@@ -91,7 +91,6 @@ public class BlockMeta extends BlockContainer {
 				return true;
 		}
 		
-		
 		return true;
 	}
 
@@ -103,6 +102,9 @@ public class BlockMeta extends BlockContainer {
 		if (te instanceof IRotatableTE){
 			((IRotatableTE) te).setFacing(BlockLib.getPlacedForgeDir(entity, x, y, z, ((IRotatableTE) te).getValidFacingDirections()));
 			world.markBlockForUpdate(x, y, z);
+		}
+		if (te instanceof IEventedTE){
+			((IEventedTE)te).hostPlaced(entity, is);
 		}
 	}
 	
@@ -156,6 +158,17 @@ public class BlockMeta extends BlockContainer {
 //		iss.add(is);
 //		return iss;		
 //	}
+	
+	@Override
+	public void onNeighborBlockChange(World par1World, int x, int y,
+			int z, int neighborID) {
+		super.onNeighborBlockChange(par1World, x, y, z, neighborID);
+		
+		TileEntity te = par1World.getBlockTileEntity(x, y, z);
+		if (te instanceof IEventedTE){
+			((IEventedTE)te).onNeighborBlockChange();
+		}
+	}
 	
 	@Override
 	public void breakBlock(World par1World, int x, int y, int z,

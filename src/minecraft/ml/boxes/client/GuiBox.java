@@ -1,5 +1,7 @@
 package ml.boxes.client;
 
+import invtweaks.api.ContainerGUI;
+
 import org.lwjgl.opengl.GL11;
 
 import ml.boxes.data.Box;
@@ -10,6 +12,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 
+@ContainerGUI
 public class GuiBox extends GuiContainer {
 
 	float cPitch;

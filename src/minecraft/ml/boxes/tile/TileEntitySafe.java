@@ -1,7 +1,15 @@
 package ml.boxes.tile;
 
+import java.util.Arrays;
+
+import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import ml.boxes.Boxes;
 import ml.boxes.network.packets.PacketDescribeSafe;
+import ml.core.lib.BlockLib;
 import ml.core.tile.IRotatableTE;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -17,14 +25,23 @@ public class TileEntitySafe extends TileEntity implements IEventedTE, IRotatable
 
 	public boolean safeOpen = true;
 	public ForgeDirection facing = ForgeDirection.NORTH;
+	public ForgeDirection linkedDir = ForgeDirection.UNKNOWN;
+	
+	public static int COMBO_LENGTH = 3;
 	
 	private ItemStack[] stacks;
 	
 	public int[] combination;
 	public int[] dispCombination;
 	
+	@SideOnly(Side.CLIENT)
+	public float doorAng = 0F;
+	@SideOnly(Side.CLIENT)
+	public float prevDoorAng = 0F;
+	
 	public TileEntitySafe() {
 		stacks = new ItemStack[getSizeInventory()];
+		combination = new int[COMBO_LENGTH];
 	}
 	
 	@Override
@@ -32,6 +49,7 @@ public class TileEntitySafe extends TileEntity implements IEventedTE, IRotatable
 		super.readFromNBT(tag);
 		
 		facing = ForgeDirection.getOrientation(tag.getInteger("facing"));
+		linkedDir = ForgeDirection.getOrientation(tag.getInteger("linked"));
 
 		NBTTagList nbttaglist = tag.getTagList("Items");
 		for (int i = 0; i < nbttaglist.tagCount(); i++)
@@ -50,6 +68,7 @@ public class TileEntitySafe extends TileEntity implements IEventedTE, IRotatable
 		super.writeToNBT(tag);
 		
 		tag.setInteger("facing", facing.ordinal());
+		tag.setInteger("linked", linkedDir.ordinal());
 
 		NBTTagList nbttaglist = new NBTTagList();
 		for (int i = 0; i < stacks.length; i++)
@@ -66,9 +85,77 @@ public class TileEntitySafe extends TileEntity implements IEventedTE, IRotatable
 		tag.setTag("Items", nbttaglist);
 	}
 	
+	public void sendPacket(){
+		PacketDispatcher.sendPacketToAllInDimension(getDescriptionPacket(), worldObj.getWorldInfo().getDimension());
+	}
+	
 	@Override
 	public Packet getDescriptionPacket() {
 		return new PacketDescribeSafe(this).convertToPkt250();
+	}
+	
+	private boolean tryConnection(ForgeDirection fd){
+		TileEntity te = worldObj.getBlockTileEntity(xCoord+fd.offsetX, yCoord+fd.offsetY, zCoord+fd.offsetZ);
+		if (te instanceof TileEntitySafe){
+			TileEntitySafe tes = (TileEntitySafe)te;
+			if (tes.facing == this.facing && tes.linkedDir == ForgeDirection.UNKNOWN && Arrays.equals(tes.combination, this.combination)){
+				linkedDir = fd;
+				tes.linkedDir = fd.getOpposite();
+				tes.sendPacket();
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	public void tryConnection(){
+		if (!tryConnection(ForgeDirection.UP)) tryConnection(ForgeDirection.DOWN);
+		sendPacket();
+	}
+	
+	public void refreshConnection(){
+		TileEntity te = worldObj.getBlockTileEntity(xCoord, yCoord + linkedDir.offsetY, zCoord);
+		if (!(te instanceof TileEntitySafe) || ((TileEntitySafe)te).linkedDir != linkedDir.getOpposite()){
+			linkedDir = ForgeDirection.UNKNOWN;
+		}
+		
+		sendPacket();
+	}
+	
+	@Override
+	public void updateEntity() {
+		super.updateEntity();
+		
+		prevDoorAng = doorAng;
+		float fc = 0.1F;
+		if (safeOpen && doorAng == 0F){
+			// TODO Sound
+		}
+		if (!safeOpen && doorAng > 0 || safeOpen && doorAng < 1F){
+						
+			if (safeOpen){
+				doorAng += fc;
+			} else {
+				doorAng -= fc;
+			}
+			
+			if (doorAng>1.0F)
+				doorAng = 1.0F;
+			
+			if (doorAng < 0.5 && prevDoorAng >= 0.5){
+				// TODO Sound
+			}
+			
+			if (doorAng<0F)
+				doorAng = 0F;
+		}
+	}
+	
+	@Override
+	public boolean receiveClientEvent(int par1, int par2) {
+		
+		return true;
 	}
 	
 	@Override
@@ -125,16 +212,10 @@ public class TileEntitySafe extends TileEntity implements IEventedTE, IRotatable
 	}
 
 	@Override
-	public void openChest() {
-		// TODO Auto-generated method stub
-
-	}
+	public void openChest() {}
 
 	@Override
-	public void closeChest() {
-		// TODO Auto-generated method stub
-
-	}
+	public void closeChest() {}
 
 	@Override
 	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
@@ -172,20 +253,27 @@ public class TileEntitySafe extends TileEntity implements IEventedTE, IRotatable
 	
 	@Override
 	public boolean onRightClicked(EntityPlayer pl, ForgeDirection side) {
-		// TODO Auto-generated method stub
-		return false;
+		if (worldObj.isRemote) pl.openGui(Boxes.instance, 3, worldObj, xCoord, yCoord, zCoord);
+		return true;
 	}
 
 	@Override
-	public void onLeftClicked(EntityPlayer pl) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void onLeftClicked(EntityPlayer pl) {}
 
+	@Override
+	public void onNeighborBlockChange() {
+		refreshConnection();
+	}
+	
 	@Override
 	public void hostBroken() {
-		// TODO Auto-generated method stub
-		
+		// TODO Drop Contents
+	}
+	
+	@Override
+	public void hostPlaced(EntityLiving pl, ItemStack is) {
+		// TODO copy combo from IS
+		tryConnection();
 	}
 
 	@Override
@@ -199,6 +287,8 @@ public class TileEntitySafe extends TileEntity implements IEventedTE, IRotatable
 		if (safeOpen){
 			cbb = cbb.expand(1, 0, 1);
 		}
+		if (linkedDir == ForgeDirection.UP)
+			cbb.maxY+=1;
 		return cbb;
 	}
 }

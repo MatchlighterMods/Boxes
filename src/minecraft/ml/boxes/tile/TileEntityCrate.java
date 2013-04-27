@@ -12,6 +12,7 @@ import ml.core.lib.PlayerLib;
 import ml.core.tile.IRotatableTE;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
@@ -367,6 +368,9 @@ public class TileEntityCrate extends TileEntity implements ISidedInventory, IRot
 	}
 
 	@Override
+	public void hostPlaced(EntityLiving pl, ItemStack is) {}
+	
+	@Override
 	public boolean onAttemptUpgrade(EntityPlayer pl, ItemStack is, int side) {
 		if (is != null){
 			if (!upg_label && is.isItemEqual(new ItemStack(Boxes.ItemResources, 1, 1))){
@@ -378,4 +382,7 @@ public class TileEntityCrate extends TileEntity implements ISidedInventory, IRot
 		}
 		return false;
 	}
+
+	@Override
+	public void onNeighborBlockChange() {}
 }

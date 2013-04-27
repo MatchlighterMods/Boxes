@@ -30,6 +30,8 @@ public class CommonProxy implements IGuiHandler {
 				return new ContainerBox(new ItemBoxContainer(is), player);
 			}
 			break;
+		case 3: //Safe
+			break;
 		}
 		
 		return null;

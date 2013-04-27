@@ -34,6 +34,9 @@ public class ClientProxy extends CommonProxy {
 			if (container != null)
 				return new GuiBox(container, player);
 			break;
+		case 3: //Safe
+			return new GuiCombination();
+			//break;
 		}
 		return null;
 	}

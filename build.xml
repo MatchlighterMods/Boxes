@@ -123,6 +123,7 @@
 		<jar destfile="${build.dest}/${jarname}.zip">
 			<fileset dir="${mcp.obfoutput.classes}" includes="**/ml/boxes/**/*.class" />
 			<fileset dir="${mcp.obfoutput.classes}" includes="**/buildcraft/api/**/*" />
+			<fileset dir="${mcp.obfoutput.classes}" includes="**/invtweaks/api/**/*" />
 			
 			<fileset dir="${res.dir}" includes="**" />
 			

@@ -8,6 +8,7 @@ import ml.boxes.Boxes;
 import ml.boxes.block.MetaType;
 import ml.boxes.data.ItemBoxContainer;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
@@ -32,6 +33,16 @@ public class ItemBoxBlocks extends ItemBlock {
 	public String getItemDisplayName(ItemStack is) {
 		MetaType mt = MetaType.fromMeta(is.getItemDamage());
 		return mt != null ? LanguageRegistry.instance().getStringLocalization(mt.ulName, "en_US") : "";
+	}
+	
+	@Override
+	public void addInformation(ItemStack is, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
+		MetaType mt = MetaType.fromMeta(is.getItemDamage());
+		switch(mt){
+		case Safe:
+			par3List.add("Combo: 3-5-2");
+			return;
+		}
 	}
 
 	@Override
