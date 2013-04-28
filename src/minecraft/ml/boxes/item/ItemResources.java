@@ -16,6 +16,7 @@ public class ItemResources extends Item {
 
 	public ItemResources(int par1) {
 		super(par1);
+		setHasSubtypes(true);
 		setCreativeTab(CreativeTabs.tabMaterials);
 	}
 
