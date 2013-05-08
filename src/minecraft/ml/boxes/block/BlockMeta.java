@@ -10,6 +10,7 @@ import ml.boxes.tile.IEventedTE;
 import ml.boxes.tile.TileEntityCrate;
 import ml.boxes.tile.TileEntitySafe;
 import ml.boxes.tile.TileEntityBox;
+import ml.boxes.tile.TileEntitySafeCombo;
 import ml.core.lib.BlockLib;
 import ml.core.tile.IRotatableTE;
 import net.minecraft.block.BlockContainer;
@@ -45,7 +46,7 @@ public class BlockMeta extends BlockContainer {
 		case Crate:
 			return new TileEntityCrate();
 		case Safe:
-			return new TileEntitySafe();
+			return new TileEntitySafeCombo();
 		}
 		return null;
 	}

@@ -4,6 +4,7 @@ import buildcraft.api.inventory.ISpecialInventory;
 import ml.boxes.Boxes;
 import ml.boxes.data.Box;
 import ml.boxes.data.IBoxContainer;
+import ml.boxes.inventory.ContainerBox;
 import ml.boxes.network.packets.PacketUpdateData;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -211,5 +212,11 @@ public class TileEntityBox extends TileEntity implements IInventory, IBoxContain
 	@Override
 	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
 		return getBox().isStackValidForSlot(i, itemstack);
+	}
+
+	@Override
+	public boolean slotPreClick(ContainerBox cb, int slotNum, int mouseBtn,
+			int action, EntityPlayer par4EntityPlayer) {
+		return true;
 	}
 }

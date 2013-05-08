@@ -26,7 +26,7 @@ public class ContainerBox extends Container {
 		box.boxOpen();
 
 		int leftCol = 9;
-		int ySize = 152;
+		int ySize = 168;
 
 		List<Slot> boxSlots = box.getBox().getSlots();
 		for (Slot slt : boxSlots){
@@ -51,10 +51,10 @@ public class ContainerBox extends Container {
 	@Override
 	public ItemStack slotClick(int slotNum, int mouseBtn, int action,
 			EntityPlayer par4EntityPlayer) {
-		if (box instanceof ItemBoxContainer && slotNum>=0 && getSlot(slotNum).inventory == par4EntityPlayer.inventory && getSlot(slotNum).getSlotIndex() == par4EntityPlayer.inventory.currentItem) { //((ItemIBox)box).stack == getSlot(slotNum).getStack()){
-			//par4EntityPlayer.closeScreen();
+		
+		if (!box.slotPreClick(this, slotNum, mouseBtn, action, par4EntityPlayer))
 			return null;
-		}
+		
 		ItemStack ret = super.slotClick(slotNum, mouseBtn, action, par4EntityPlayer);
 		save(par4EntityPlayer);
 		return ret;

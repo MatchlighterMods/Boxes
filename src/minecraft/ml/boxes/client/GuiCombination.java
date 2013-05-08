@@ -28,6 +28,10 @@ public class GuiCombination extends GuiScreen {
 		super.initGui();
 		this.guiLeft = (this.width - this.xSize) / 2;
 		this.guiTop = (this.height - this.ySize) / 2;
+		
+		for (int i=0; i<3; i++){
+			
+		}
 	}
 
 	@Override

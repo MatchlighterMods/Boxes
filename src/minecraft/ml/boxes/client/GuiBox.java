@@ -21,7 +21,7 @@ public class GuiBox extends GuiContainer {
 	public GuiBox(ContainerBox container, EntityPlayer pl) {
 		super(container);
 		this.xSize = 178;
-		this.ySize = 152;
+		this.ySize = 168;
 
 		epl = pl;
 		cPitch = pl.rotationPitch;

@@ -59,7 +59,7 @@ public class Box implements IInventory {
 	public List<Slot> getSlots(){
 		List<Slot> slots = new ArrayList<Slot>();
 		for (int sln = 0; sln < getSizeInventory(); sln++){
-			slots.add(new BoxSlot(this, sln, 8 + (sln%9)*18, 10 + (int)Math.floor(sln/9)*18));
+			slots.add(new BoxSlot(this, sln, 8 + (sln%9)*18, 26 + (int)Math.floor(sln/9)*18));
         }
 		return slots;
 	}

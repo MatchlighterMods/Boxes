@@ -21,18 +21,13 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.ForgeDirection;
 import buildcraft.api.inventory.ISpecialInventory;
 
-public class TileEntitySafe extends TileEntity implements IEventedTE, IRotatableTE, ISpecialInventory, IInventory {
+public abstract class TileEntitySafe extends TileEntity implements IEventedTE, IRotatableTE, ISpecialInventory, IInventory {
 
 	public boolean safeOpen = true;
 	public ForgeDirection facing = ForgeDirection.NORTH;
 	public ForgeDirection linkedDir = ForgeDirection.UNKNOWN;
-	
-	public static int COMBO_LENGTH = 3;
-	
+		
 	private ItemStack[] stacks;
-	
-	public int[] combination;
-	public int[] dispCombination;
 	
 	@SideOnly(Side.CLIENT)
 	public float doorAng = 0F;
@@ -41,7 +36,6 @@ public class TileEntitySafe extends TileEntity implements IEventedTE, IRotatable
 	
 	public TileEntitySafe() {
 		stacks = new ItemStack[getSizeInventory()];
-		combination = new int[COMBO_LENGTH];
 	}
 	
 	@Override
@@ -94,14 +88,20 @@ public class TileEntitySafe extends TileEntity implements IEventedTE, IRotatable
 		return new PacketDescribeSafe(this).convertToPkt250();
 	}
 	
+	protected abstract boolean canConnectWith(TileEntitySafe remoteTes);
+	
 	private boolean tryConnection(ForgeDirection fd){
 		TileEntity te = worldObj.getBlockTileEntity(xCoord+fd.offsetX, yCoord+fd.offsetY, zCoord+fd.offsetZ);
 		if (te instanceof TileEntitySafe){
-			TileEntitySafe tes = (TileEntitySafe)te;
-			if (tes.facing == this.facing && tes.linkedDir == ForgeDirection.UNKNOWN && Arrays.equals(tes.combination, this.combination)){
+			TileEntitySafe rtes = (TileEntitySafe)te;
+			if (rtes.facing == this.facing &&
+					rtes.linkedDir == ForgeDirection.UNKNOWN &&
+					rtes.getClass() == this.getClass() &&
+					canConnectWith(rtes)){
+				
 				linkedDir = fd;
-				tes.linkedDir = fd.getOpposite();
-				tes.sendPacket();
+				rtes.linkedDir = fd.getOpposite();
+				rtes.sendPacket();
 				return true;
 			}
 		}
@@ -116,7 +116,9 @@ public class TileEntitySafe extends TileEntity implements IEventedTE, IRotatable
 	
 	public void refreshConnection(){
 		TileEntity te = worldObj.getBlockTileEntity(xCoord, yCoord + linkedDir.offsetY, zCoord);
-		if (!(te instanceof TileEntitySafe) || ((TileEntitySafe)te).linkedDir != linkedDir.getOpposite()){
+		if (te.getClass() != this.getClass() ||
+				!canConnectWith((TileEntitySafe)te) ||
+				((TileEntitySafe)te).linkedDir != linkedDir.getOpposite()){
 			linkedDir = ForgeDirection.UNKNOWN;
 		}
 		
@@ -252,10 +254,7 @@ public class TileEntitySafe extends TileEntity implements IEventedTE, IRotatable
 	}
 	
 	@Override
-	public boolean onRightClicked(EntityPlayer pl, ForgeDirection side) {
-		if (worldObj.isRemote) pl.openGui(Boxes.instance, 3, worldObj, xCoord, yCoord, zCoord);
-		return true;
-	}
+	public abstract boolean onRightClicked(EntityPlayer pl, ForgeDirection side);
 
 	@Override
 	public void onLeftClicked(EntityPlayer pl) {}

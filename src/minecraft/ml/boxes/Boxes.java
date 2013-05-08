@@ -61,7 +61,7 @@ public class Boxes {
 	public void Init(FMLInitializationEvent evt){
 		GameRegistry.registerTileEntity(TileEntityBox.class, "box");
 		GameRegistry.registerTileEntity(TileEntityCrate.class, "crate");
-		GameRegistry.registerTileEntity(TileEntitySafe.class, "safe");
+		//GameRegistry.registerTileEntity(TileEntitySafe.class, "safe");
 		
 		this.BlockBox = new BlockBox(config.boxBlockID);
 		GameRegistry.registerBlock(this.BlockBox, ItemBox.class, "box");
@@ -76,7 +76,7 @@ public class Boxes {
 		LanguageRegistry.instance().addStringLocalization("item.label.name", "en_US", "Label");
 		LanguageRegistry.instance().addStringLocalization("itemGroup.boxes", "en_US", "Boxes");
 		
-		LanguageRegistry.instance().addStringLocalization("Boxes.safe.name", "en_US", "Lockbox (WIP)");
+		LanguageRegistry.instance().addStringLocalization("Boxes.safe.name", "en_US", "Lockbox");
 		LanguageRegistry.instance().addStringLocalization("Boxes.crate.name", "en_US", "Crate");
 		
 		NetworkRegistry.instance().registerGuiHandler(instance, proxy);
