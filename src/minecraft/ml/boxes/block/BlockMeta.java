@@ -1,22 +1,14 @@
 package ml.boxes.block;
 
-import java.awt.List;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 import ml.boxes.Boxes;
 import ml.boxes.tile.IEventedTE;
 import ml.boxes.tile.TileEntityCrate;
 import ml.boxes.tile.TileEntitySafe;
-import ml.boxes.tile.TileEntityBox;
-import ml.boxes.tile.TileEntitySafeCombo;
 import ml.core.lib.BlockLib;
 import ml.core.tile.IRotatableTE;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
@@ -46,7 +38,7 @@ public class BlockMeta extends BlockContainer {
 		case Crate:
 			return new TileEntityCrate();
 		case Safe:
-			return new TileEntitySafeCombo();
+			return new TileEntitySafe();
 		}
 		return null;
 	}

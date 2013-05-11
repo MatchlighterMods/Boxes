@@ -7,6 +7,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ml.boxes.Boxes;
 import ml.boxes.network.packets.PacketDescribeSafe;
+import ml.boxes.tile.safe.SafeMechanism;
 import ml.core.lib.BlockLib;
 import ml.core.tile.IRotatableTE;
 import net.minecraft.entity.EntityLiving;
@@ -21,13 +22,15 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.ForgeDirection;
 import buildcraft.api.inventory.ISpecialInventory;
 
-public abstract class TileEntitySafe extends TileEntity implements IEventedTE, IRotatableTE, ISpecialInventory, IInventory {
+public class TileEntitySafe extends TileEntity implements IEventedTE, IRotatableTE, ISpecialInventory, IInventory {
 
 	public boolean safeOpen = true;
 	public ForgeDirection facing = ForgeDirection.NORTH;
 	public ForgeDirection linkedDir = ForgeDirection.UNKNOWN;
 		
 	private ItemStack[] stacks;
+	
+	public SafeMechanism mech;
 	
 	@SideOnly(Side.CLIENT)
 	public float doorAng = 0F;
@@ -88,7 +91,9 @@ public abstract class TileEntitySafe extends TileEntity implements IEventedTE, I
 		return new PacketDescribeSafe(this).convertToPkt250();
 	}
 	
-	protected abstract boolean canConnectWith(TileEntitySafe remoteTes);
+	protected boolean canConnectWith(TileEntitySafe remoteTes) {
+		return (mech.getClass() == remoteTes.mech.getClass()  && mech.matches(remoteTes.mech));
+	}
 	
 	private boolean tryConnection(ForgeDirection fd){
 		TileEntity te = worldObj.getBlockTileEntity(xCoord+fd.offsetX, yCoord+fd.offsetY, zCoord+fd.offsetZ);
@@ -96,7 +101,6 @@ public abstract class TileEntitySafe extends TileEntity implements IEventedTE, I
 			TileEntitySafe rtes = (TileEntitySafe)te;
 			if (rtes.facing == this.facing &&
 					rtes.linkedDir == ForgeDirection.UNKNOWN &&
-					rtes.getClass() == this.getClass() &&
 					canConnectWith(rtes)){
 				
 				linkedDir = fd;
@@ -116,8 +120,7 @@ public abstract class TileEntitySafe extends TileEntity implements IEventedTE, I
 	
 	public void refreshConnection(){
 		TileEntity te = worldObj.getBlockTileEntity(xCoord, yCoord + linkedDir.offsetY, zCoord);
-		if (te.getClass() != this.getClass() ||
-				!canConnectWith((TileEntitySafe)te) ||
+		if (!canConnectWith((TileEntitySafe)te) ||
 				((TileEntitySafe)te).linkedDir != linkedDir.getOpposite()){
 			linkedDir = ForgeDirection.UNKNOWN;
 		}
@@ -254,7 +257,9 @@ public abstract class TileEntitySafe extends TileEntity implements IEventedTE, I
 	}
 	
 	@Override
-	public abstract boolean onRightClicked(EntityPlayer pl, ForgeDirection side);
+	public boolean onRightClicked(EntityPlayer pl, ForgeDirection side) {
+		return true;
+	}
 
 	@Override
 	public void onLeftClicked(EntityPlayer pl) {}
