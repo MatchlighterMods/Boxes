@@ -7,14 +7,14 @@ import ml.boxes.tile.TileEntitySafe;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class mechCombo extends SafeMechanism {
+public class MechCombo extends SafeMechanism {
 
 	public static int COMBO_LENGTH = 3;
 	
 	public int[] combination;
 	public int[] dispCombination;
 	
-	public mechCombo(TileEntitySafe tsafe) {
+	public MechCombo(TileEntitySafe tsafe) {
 		super(tsafe);
 		combination = new int[COMBO_LENGTH];
 	}
@@ -38,6 +38,6 @@ public class mechCombo extends SafeMechanism {
 
 	@Override
 	public boolean matches(SafeMechanism tmech) {
-		return Arrays.equals(((mechCombo)tmech).combination, this.combination);
+		return Arrays.equals(((MechCombo)tmech).combination, this.combination);
 	}
 }

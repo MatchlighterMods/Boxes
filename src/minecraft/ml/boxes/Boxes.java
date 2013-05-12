@@ -61,7 +61,7 @@ public class Boxes {
 	public void Init(FMLInitializationEvent evt){
 		GameRegistry.registerTileEntity(TileEntityBox.class, "box");
 		GameRegistry.registerTileEntity(TileEntityCrate.class, "crate");
-		//GameRegistry.registerTileEntity(TileEntitySafe.class, "safe");
+		GameRegistry.registerTileEntity(TileEntitySafe.class, "safe");
 		
 		this.BlockBox = new BlockBox(config.boxBlockID);
 		GameRegistry.registerBlock(this.BlockBox, ItemBox.class, "box");

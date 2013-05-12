@@ -7,6 +7,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ml.boxes.Boxes;
 import ml.boxes.network.packets.PacketDescribeSafe;
+import ml.boxes.tile.safe.MechFallback;
 import ml.boxes.tile.safe.SafeMechanism;
 import ml.core.lib.BlockLib;
 import ml.core.tile.IRotatableTE;
@@ -47,6 +48,10 @@ public class TileEntitySafe extends TileEntity implements IEventedTE, IRotatable
 		
 		facing = ForgeDirection.getOrientation(tag.getInteger("facing"));
 		linkedDir = ForgeDirection.getOrientation(tag.getInteger("linked"));
+		
+		mech = SafeMechanism.tryInstantialize(tag.getString("mechType"), this);
+		System.out.println(mech);
+		mech.loadNBT(tag.getCompoundTag("mechProps"));
 
 		NBTTagList nbttaglist = tag.getTagList("Items");
 		for (int i = 0; i < nbttaglist.tagCount(); i++)
@@ -66,6 +71,9 @@ public class TileEntitySafe extends TileEntity implements IEventedTE, IRotatable
 		
 		tag.setInteger("facing", facing.ordinal());
 		tag.setInteger("linked", linkedDir.ordinal());
+		
+		tag.setString("mechType", mech.getClass().getName());
+		tag.setCompoundTag("mechProps", mech.saveNBT());
 
 		NBTTagList nbttaglist = new NBTTagList();
 		for (int i = 0; i < stacks.length; i++)
@@ -91,8 +99,12 @@ public class TileEntitySafe extends TileEntity implements IEventedTE, IRotatable
 		return new PacketDescribeSafe(this).convertToPkt250();
 	}
 	
+	public void unlock() {
+		// TODO Crack 'er open!
+	}
+	
 	protected boolean canConnectWith(TileEntitySafe remoteTes) {
-		return (mech.getClass() == remoteTes.mech.getClass()  && mech.matches(remoteTes.mech));
+		return remoteTes != null && mech.getClass() == remoteTes.mech.getClass() && mech.matches(remoteTes.mech);
 	}
 	
 	private boolean tryConnection(ForgeDirection fd){
@@ -194,8 +206,7 @@ public class TileEntitySafe extends TileEntity implements IEventedTE, IRotatable
 
 	@Override
 	public String getInvName() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Boxes.safe";
 	}
 
 	@Override
@@ -206,8 +217,7 @@ public class TileEntitySafe extends TileEntity implements IEventedTE, IRotatable
 
 	@Override
 	public int getInventoryStackLimit() {
-		// TODO Auto-generated method stub
-		return 0;
+		return 64;
 	}
 
 	@Override
@@ -258,6 +268,8 @@ public class TileEntitySafe extends TileEntity implements IEventedTE, IRotatable
 	
 	@Override
 	public boolean onRightClicked(EntityPlayer pl, ForgeDirection side) {
+		if (!worldObj.isRemote)
+			mech.beginUnlock(pl);
 		return true;
 	}
 
@@ -276,8 +288,11 @@ public class TileEntitySafe extends TileEntity implements IEventedTE, IRotatable
 	
 	@Override
 	public void hostPlaced(EntityLiving pl, ItemStack is) {
-		// TODO copy combo from IS
-		tryConnection();
+		// TODO Copy mechanism data from ItemStack
+		if (!worldObj.isRemote) {
+			mech = new MechFallback(this);
+			tryConnection();
+		}
 	}
 
 	@Override
