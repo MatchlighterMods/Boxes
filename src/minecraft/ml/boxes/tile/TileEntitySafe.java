@@ -25,7 +25,6 @@ import buildcraft.api.inventory.ISpecialInventory;
 
 public class TileEntitySafe extends TileEntity implements IEventedTE, IRotatableTE, ISpecialInventory, IInventory {
 
-	public boolean safeOpen = true;
 	public ForgeDirection facing = ForgeDirection.NORTH;
 	public ForgeDirection linkedDir = ForgeDirection.UNKNOWN;
 		
@@ -37,6 +36,9 @@ public class TileEntitySafe extends TileEntity implements IEventedTE, IRotatable
 	public float doorAng = 0F;
 	@SideOnly(Side.CLIENT)
 	public float prevDoorAng = 0F;
+	
+	public boolean unlocked = false;
+	public int users = 0;
 	
 	public TileEntitySafe() {
 		stacks = new ItemStack[getSizeInventory()];
@@ -50,7 +52,6 @@ public class TileEntitySafe extends TileEntity implements IEventedTE, IRotatable
 		linkedDir = ForgeDirection.getOrientation(tag.getInteger("linked"));
 		
 		mech = SafeMechanism.tryInstantialize(tag.getString("mechType"), this);
-		System.out.println(mech);
 		mech.loadNBT(tag.getCompoundTag("mechProps"));
 
 		NBTTagList nbttaglist = tag.getTagList("Items");
@@ -100,7 +101,13 @@ public class TileEntitySafe extends TileEntity implements IEventedTE, IRotatable
 	}
 	
 	public void unlock() {
-		// TODO Crack 'er open!
+		unlocked = true;
+		worldObj.addBlockEvent(xCoord, yCoord, zCoord, Boxes.BlockMeta.blockID, 1, 1);
+	}
+	
+	public void lock() {
+		unlocked = false;
+		worldObj.addBlockEvent(xCoord, yCoord, zCoord, Boxes.BlockMeta.blockID, 1, 0);
 	}
 	
 	protected boolean canConnectWith(TileEntitySafe remoteTes) {
@@ -146,32 +153,44 @@ public class TileEntitySafe extends TileEntity implements IEventedTE, IRotatable
 		
 		prevDoorAng = doorAng;
 		float fc = 0.1F;
-		if (safeOpen && doorAng == 0F){
+		if (unlocked && doorAng == 0F){
 			// TODO Sound
 		}
-		if (!safeOpen && doorAng > 0 || safeOpen && doorAng < 1F){
-						
-			if (safeOpen){
-				doorAng += fc;
-			} else {
-				doorAng -= fc;
+		
+		float cangle = unlocked ? (users>0 ? 1F : 0.1F) : 0F;
+		
+		if (doorAng > cangle) {
+			if (doorAng == 1F && cangle == 0.1F){
+				// TODO Close sound
+			} else if (doorAng == 0.1F && cangle == 0F) {
+				// TODO Lock sound
 			}
 			
-			if (doorAng>1.0F)
-				doorAng = 1.0F;
-			
-			if (doorAng < 0.5 && prevDoorAng >= 0.5){
-				// TODO Sound
+			doorAng -= fc;
+			if (doorAng < cangle)
+				doorAng = cangle;
+		} else if (doorAng < cangle) {
+			if (doorAng == 0 && cangle == 0.1F){
+				// TODO Unlock sound
+			} else if (doorAng == 0.1F && cangle == 1F) {
+				// TODO Open sound
 			}
 			
-			if (doorAng<0F)
-				doorAng = 0F;
+			doorAng += fc;
+			if (doorAng > cangle)
+				doorAng = cangle;
 		}
 	}
 	
 	@Override
-	public boolean receiveClientEvent(int par1, int par2) {
-		
+	public boolean receiveClientEvent(int evt, int arg) {
+		switch (evt) {
+		case 1:
+			unlocked = arg==1;
+			break;
+		case 2:
+			users = arg;
+		}
 		return true;
 	}
 	
@@ -227,10 +246,16 @@ public class TileEntitySafe extends TileEntity implements IEventedTE, IRotatable
 	}
 
 	@Override
-	public void openChest() {}
+	public void openChest() {
+		users +=1;
+		worldObj.addBlockEvent(xCoord, yCoord, zCoord, Boxes.BlockMeta.blockID, 2, users);
+	}
 
 	@Override
-	public void closeChest() {}
+	public void closeChest() {
+		users -=1;
+		worldObj.addBlockEvent(xCoord, yCoord, zCoord, Boxes.BlockMeta.blockID, 2, users);
+	}
 
 	@Override
 	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
@@ -266,10 +291,26 @@ public class TileEntitySafe extends TileEntity implements IEventedTE, IRotatable
 		return new ForgeDirection[]{ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.EAST, ForgeDirection.WEST,};
 	}
 	
+	public void playerOpened(EntityPlayer pl) {
+		pl.openGui(Boxes.instance, 4, worldObj, xCoord, yCoord, zCoord);
+	}
+	
 	@Override
 	public boolean onRightClicked(EntityPlayer pl, ForgeDirection side) {
-		if (!worldObj.isRemote)
-			mech.beginUnlock(pl);
+		if (!worldObj.isRemote) {
+			if (linkedDir==ForgeDirection.DOWN) {
+				TileEntity te = worldObj.getBlockTileEntity(xCoord, yCoord-1, zCoord);
+				if (te instanceof TileEntitySafe) {
+					((TileEntitySafe)te).onRightClicked(pl, side);
+				}
+			} else {
+				if (unlocked) {
+					playerOpened(pl);
+				} else {
+					mech.beginUnlock(pl);
+				}
+			}
+		}
 		return true;
 	}
 
@@ -303,7 +344,7 @@ public class TileEntitySafe extends TileEntity implements IEventedTE, IRotatable
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		AxisAlignedBB cbb = getBlockType().getCollisionBoundingBoxFromPool(worldObj, xCoord, yCoord, zCoord);
-		if (safeOpen){
+		if (unlocked){
 			cbb = cbb.expand(1, 0, 1);
 		}
 		if (linkedDir == ForgeDirection.UP)

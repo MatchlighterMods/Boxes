@@ -1,12 +1,19 @@
 package ml.boxes.network.packets;
 
 import java.io.IOException;
+import java.util.Arrays;
+
+import javax.rmi.CORBA.Tie;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
 
 import com.google.common.io.ByteArrayDataInput;
 
 import cpw.mods.fml.common.network.Player;
 
 import ml.boxes.tile.TileEntitySafe;
+import ml.boxes.tile.safe.MechCombo;
 import ml.core.network.MLPacket;
 
 public class PacketComboEntered extends MLPacket {
@@ -56,8 +63,14 @@ public class PacketComboEntered extends MLPacket {
 
 	@Override
 	public void handleServerSide() throws IOException {
-		// TODO Auto-generated method stub
-
+		EntityPlayer asEntPl = (EntityPlayer)player;
+		TileEntity te = asEntPl.worldObj.getBlockTileEntity(tex, tey, tez);
+		if (te instanceof TileEntitySafe) {
+			TileEntitySafe tes = (TileEntitySafe)te;
+			if (tes.mech instanceof MechCombo && Arrays.equals(((MechCombo)tes.mech).combination, combo)) {
+				tes.unlock();
+				tes.playerOpened(asEntPl);
+			}
+		}
 	}
-
 }

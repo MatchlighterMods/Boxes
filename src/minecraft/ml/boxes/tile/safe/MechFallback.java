@@ -6,6 +6,8 @@ import net.minecraft.nbt.NBTTagCompound;
 
 /**
  * A fall-back mechanism that will be loaded if a safe fails to save or load properly.
+ * Shouldn't ever happen, but neither should NPEs
+ * 
  * @author Matchlighter
  */
 public class MechFallback extends SafeMechanism {

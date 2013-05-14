@@ -127,7 +127,7 @@ public class BlockMeta extends BlockContainer {
 		case Crate:
 			return 0.05F;
 		case Safe:
-			if (te instanceof TileEntitySafe && ((TileEntitySafe)te).safeOpen){
+			if (te instanceof TileEntitySafe && ((TileEntitySafe)te).unlocked){
 				return 0.01F;
 			}
 			return 0F;
