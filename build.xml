@@ -109,6 +109,7 @@
 	<target name="reobfuscate" depends="initVersion">
 		<exec executable="${python.exe}" dir="${mcp.home}">
 			<arg value="${mcp.home}/runtime/reobfuscate.py" />
+			<arg value="--srgnames"/>
 		</exec>
 	</target>
 
