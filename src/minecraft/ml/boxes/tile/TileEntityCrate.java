@@ -264,7 +264,7 @@ public class TileEntityCrate extends TileEntity implements ISidedInventory, IRot
 	}
 
 	@Override
-	public int[] getSizeInventorySide(int var1) { //Get slots accessible from side
+	public int[] getAccessibleSlotsFromSide(int var1) {
 		switch (ForgeDirection.getOrientation(var1)) {
 		case DOWN:
 			return new int[]{1};
@@ -273,12 +273,12 @@ public class TileEntityCrate extends TileEntity implements ISidedInventory, IRot
 	}
 
 	@Override
-	public boolean func_102007_a(int i, ItemStack itemstack, int j) { //Can insert to slot from side
+	public boolean canInsertItem(int i, ItemStack itemstack, int j) {
 		return j!=0;
 	}
 
 	@Override
-	public boolean func_102008_b(int i, ItemStack itemstack, int j) { //Can extract from slot from side
+	public boolean canExtractItem(int i, ItemStack itemstack, int j) {
 		return j==0;
 	}
 
