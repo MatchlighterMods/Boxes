@@ -5,6 +5,7 @@ import java.util.EnumSet;
 import java.util.List;
 
 import ml.boxes.Boxes;
+import ml.boxes.client.gui.GuiBox;
 import ml.boxes.data.Box;
 import ml.boxes.data.ItemBoxContainer;
 import ml.boxes.inventory.ContainerBox;

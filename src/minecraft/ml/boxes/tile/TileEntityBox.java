@@ -16,7 +16,7 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 
-public class TileEntityBox extends TileEntity implements IInventory, IBoxContainer, ISpecialInventory {
+public class TileEntityBox extends TileEntity implements IInventory, IBoxContainer {
 
 	public float prevAngleOuter = 0F; //Used for smoothness when FPS > 1 tick
 	public float flapAngleOuter = 0F;
@@ -190,18 +190,6 @@ public class TileEntityBox extends TileEntity implements IInventory, IBoxContain
 			EntityItem ei = new EntityItem(worldObj, 0.5F + xCoord, 1F + yCoord, 0.5F + zCoord, is);
 			worldObj.spawnEntityInWorld(ei);
 		}
-	}
-
-	@Override
-	public int addItem(ItemStack stack, boolean doAdd, ForgeDirection from) {
-		return getBox().pipeTransferIn(stack, doAdd, from);
-	}
-
-	@Override
-	public ItemStack[] extractItem(boolean doRemove, ForgeDirection from,
-			int maxItemCount) {
-
-		return getBox().pipeExtract(doRemove, from, maxItemCount);
 	}
 
 	@Override

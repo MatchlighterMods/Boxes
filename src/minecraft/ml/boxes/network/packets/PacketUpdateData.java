@@ -22,7 +22,7 @@ public class PacketUpdateData extends MLPacket {
 	public NBTTagCompound pktData;
 	
 	public PacketUpdateData(TileEntityBox te) {
-		super(null);
+		super(null, "Boxes");
 		
 		x = te.xCoord;
 		y = te.yCoord;

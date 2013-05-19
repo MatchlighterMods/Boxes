@@ -6,7 +6,7 @@ import java.util.List;
 import org.lwjgl.opengl.GL11;
 
 import ml.boxes.Boxes;
-import ml.boxes.client.GuiBox;
+import ml.boxes.client.gui.GuiBox;
 import ml.boxes.data.Box;
 import ml.boxes.data.ItemBoxContainer;
 import ml.core.Geometry;

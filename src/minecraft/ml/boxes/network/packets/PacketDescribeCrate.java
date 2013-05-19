@@ -21,7 +21,7 @@ public class PacketDescribeCrate extends PacketDescribe {
 	public boolean upg_label;
 	
 	public PacketDescribeCrate(TileEntityCrate tec) {
-		super(tec);
+		super(tec, "Boxes");
 
 		hasStack = tec.getStackInSlot(0) != null;
 		is = hasStack ? tec.getStackInSlot(0).copy() : new ItemStack(0, 0, 0);

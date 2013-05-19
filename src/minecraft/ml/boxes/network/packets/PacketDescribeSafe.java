@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import ml.boxes.tile.TileEntitySafe;
 import ml.core.network.PacketDescribe;
+import ml.core.network.PacketDescribeConnectable;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -13,12 +14,12 @@ import com.google.common.io.ByteArrayDataInput;
 
 import cpw.mods.fml.common.network.Player;
 
-public class PacketDescribeSafe extends PacketDescribe {
+public class PacketDescribeSafe extends PacketDescribeConnectable {
 
 	ForgeDirection linkDir;
 	
 	public PacketDescribeSafe(TileEntitySafe tes) {
-		super(tes);
+		super(tes, "Boxes");
 		linkDir = tes.linkedDir;
 		
 		writeInt(linkDir.ordinal());

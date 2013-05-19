@@ -2,6 +2,8 @@ package ml.boxes.client;
 
 import ml.boxes.Boxes;
 import ml.boxes.CommonProxy;
+import ml.boxes.client.gui.GuiBox;
+import ml.boxes.client.gui.GuiCombination;
 import ml.boxes.client.render.NullBlockRenderer;
 import ml.boxes.client.render.item.BoxItemRenderer;
 import ml.boxes.client.render.item.MetaItemRenderer;

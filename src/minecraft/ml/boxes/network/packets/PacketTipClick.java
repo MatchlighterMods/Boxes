@@ -24,7 +24,7 @@ public class PacketTipClick extends MLPacket {
 	public final int action;
 
 	public PacketTipClick(Player pl, int slotWithBox, int slotInBox, int arg, int action) {
-		super(pl);
+		super(pl, "Boxes");
 		chunkDataPacket = false;
 		
 		inventorySlot = slotWithBox;

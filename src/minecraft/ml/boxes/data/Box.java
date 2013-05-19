@@ -28,64 +28,64 @@ public class Box implements IInventory {
 	public String boxName = "";
 	public int boxColor = 5;
 	public final IBoxContainer boxContainer;
-	
+
 	public Box(IBoxContainer owner) {
 		inventory=new ItemStack[this.getSizeInventory()];
 		boxContainer = owner;
 	}
-	
+
 	public Box(NBTTagCompound data, IBoxContainer owner){
 		boxContainer = owner;
 		loadNBT(data);
 	}
-	
+
 	public void loadNBT(NBTTagCompound nbt){
 		boxName = nbt.getString("name");
 		boxColor = nbt.getInteger("color");
-		
+
 		NBTTagList nbttaglist = nbt.getTagList("Items");
-        inventory = new ItemStack[getSizeInventory()];
-        for (int i = 0; i < nbttaglist.tagCount(); i++)
-        {
-            NBTTagCompound nbttagcompound1 = (NBTTagCompound) nbttaglist.tagAt(i);
-            int j = nbttagcompound1.getByte("Slot") & 0xff;
-            if (j >= 0 && j < inventory.length)
-            {
-            	inventory[j] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
-            }
-        }
+		inventory = new ItemStack[getSizeInventory()];
+		for (int i = 0; i < nbttaglist.tagCount(); i++)
+		{
+			NBTTagCompound nbttagcompound1 = (NBTTagCompound) nbttaglist.tagAt(i);
+			int j = nbttagcompound1.getByte("Slot") & 0xff;
+			if (j >= 0 && j < inventory.length)
+			{
+				inventory[j] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
+			}
+		}
 	}
-	
+
 	public List<Slot> getSlots(){
 		List<Slot> slots = new ArrayList<Slot>();
 		for (int sln = 0; sln < getSizeInventory(); sln++){
 			slots.add(new BoxSlot(this, sln, 8 + (sln%9)*18, 26 + (int)Math.floor(sln/9)*18));
-        }
+		}
 		return slots;
 	}
-	
+
 	public NBTTagCompound asNBTTag(){
 		NBTTagCompound tag = new NBTTagCompound();
 		tag.setString("name", boxName);
 		tag.setInteger("color", boxColor);
-		
+
 		NBTTagList nbttaglist = new NBTTagList();
-        for (int i = 0; i < inventory.length; i++)
-        {
-            if (inventory[i] != null)
-            {
-                NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-                nbttagcompound1.setByte("Slot", (byte) i);
-                inventory[i].writeToNBT(nbttagcompound1);
-                nbttaglist.appendTag(nbttagcompound1);
-            }
-        }
-        
-        tag.setTag("Items", nbttaglist);
-		
+		for (int i = 0; i < inventory.length; i++)
+		{
+			if (inventory[i] != null)
+			{
+				NBTTagCompound nbttagcompound1 = new NBTTagCompound();
+				nbttagcompound1.setByte("Slot", (byte) i);
+				inventory[i].writeToNBT(nbttagcompound1);
+				nbttaglist.appendTag(nbttagcompound1);
+			}
+		}
+
+		tag.setTag("Items", nbttaglist);
+
 		return tag;
 	}
-	
+
 	public List<ItemStack> getContainedItemStacks(){
 		List<ItemStack> iStacks = new ArrayList<ItemStack>();
 		for (int i=0; i<getSizeInventory(); i++){
@@ -95,7 +95,7 @@ public class Box implements IInventory {
 		}
 		return iStacks;
 	}
-			
+
 	@Override
 	public int getSizeInventory() {
 		return 18;
@@ -108,34 +108,34 @@ public class Box implements IInventory {
 
 	@Override
 	public ItemStack decrStackSize(int slotIndex, int var2) {
-        if (this.inventory[slotIndex] != null)
-        {
-            ItemStack var3;
+		if (this.inventory[slotIndex] != null)
+		{
+			ItemStack var3;
 
-            if (this.inventory[slotIndex].stackSize <= var2)
-            {
-                var3 = this.inventory[slotIndex];
-                this.inventory[slotIndex] = null;
-                this.onInventoryChanged();
-                return var3;
-            }
-            else
-            {
-                var3 = this.inventory[slotIndex].splitStack(var2);
+			if (this.inventory[slotIndex].stackSize <= var2)
+			{
+				var3 = this.inventory[slotIndex];
+				this.inventory[slotIndex] = null;
+				this.onInventoryChanged();
+				return var3;
+			}
+			else
+			{
+				var3 = this.inventory[slotIndex].splitStack(var2);
 
-                if (this.inventory[slotIndex].stackSize == 0)
-                {
-                    this.inventory[slotIndex] = null;
-                }
+				if (this.inventory[slotIndex].stackSize == 0)
+				{
+					this.inventory[slotIndex] = null;
+				}
 
-                this.onInventoryChanged();
-                return var3;
-            }
-        }
-        else
-        {
-            return null;
-        }
+				this.onInventoryChanged();
+				return var3;
+			}
+		}
+		else
+		{
+			return null;
+		}
 	}
 
 	@Override
@@ -163,113 +163,92 @@ public class Box implements IInventory {
 	public int getInventoryStackLimit() {
 		return 64;
 	}
-	
-    public boolean mergeItemStack(ItemStack is, int lbound, int ubound)
-    {
-        boolean var5 = false;
-        int itI = lbound;
 
-        boolean direction = lbound > ubound;
-        if (direction)
-        {
-            itI = ubound - 1;
-        }
+	public boolean mergeItemStack(ItemStack is, int lbound, int ubound)
+	{
+		boolean var5 = false;
+		int itI = lbound;
 
-        ItemStack stackOn;
+		boolean direction = lbound > ubound;
+		if (direction)
+		{
+			itI = ubound - 1;
+		}
 
-        if (is.isStackable())
-        {
-            while (is.stackSize > 0 && (!direction && itI < ubound || direction && itI >= lbound))
-            {
-                stackOn = this.getStackInSlot(itI);
+		ItemStack stackOn;
 
-                if (stackOn != null && stackOn.itemID == is.itemID && (!is.getHasSubtypes() || is.getItemDamage() == stackOn.getItemDamage()) && ItemStack.areItemStackTagsEqual(is, stackOn))
-                {
-                	int var9 = stackOn.stackSize + is.stackSize;
+		if (is.isStackable())
+		{
+			while (is.stackSize > 0 && (!direction && itI < ubound || direction && itI >= lbound))
+			{
+				stackOn = this.getStackInSlot(itI);
 
-                    if (var9 <= is.getMaxStackSize())
-                    {
-                        is.stackSize = 0;
-                        stackOn.stackSize = var9;
-                        var5 = true;
-                    }
-                    else if (stackOn.stackSize < is.getMaxStackSize())
-                    {
-                        is.stackSize -= is.getMaxStackSize() - stackOn.stackSize;
-                        stackOn.stackSize = is.getMaxStackSize();
-                        var5 = true;
-                    }
-                }
+				if (stackOn != null && stackOn.itemID == is.itemID && (!is.getHasSubtypes() || is.getItemDamage() == stackOn.getItemDamage()) && ItemStack.areItemStackTagsEqual(is, stackOn))
+				{
+					int var9 = stackOn.stackSize + is.stackSize;
 
-                if (direction)
-                {
-                    --itI;
-                }
-                else
-                {
-                    ++itI;
-                }
-            }
-        }
+					if (var9 <= is.getMaxStackSize())
+					{
+						is.stackSize = 0;
+						stackOn.stackSize = var9;
+						var5 = true;
+					}
+					else if (stackOn.stackSize < is.getMaxStackSize())
+					{
+						is.stackSize -= is.getMaxStackSize() - stackOn.stackSize;
+						stackOn.stackSize = is.getMaxStackSize();
+						var5 = true;
+					}
+				}
 
-        if (is.stackSize > 0)
-        {
-            if (direction)
-            {
-                itI = ubound - 1;
-            }
-            else
-            {
-                itI = lbound;
-            }
-
-            while (!direction && itI < ubound || direction && itI >= lbound)
-            {
-                stackOn = this.getStackInSlot(itI);
-
-                if (stackOn == null && this.isStackValidForSlot(itI, is))
-                {
-                	this.setInventorySlotContents(itI, is.copy());
-                    is.stackSize = 0;
-                    var5 = true;
-                    break;
-                }
-
-                if (direction)
-                {
-                    --itI;
-                }
-                else
-                {
-                    ++itI;
-                }
-            }
-        }
-
-        return var5;
-    }
-    
-	public int pipeTransferIn(ItemStack stack, boolean doAdd, ForgeDirection from){
-		int orig = stack.stackSize;
-		doAdd = mergeItemStack(stack, 0, getSizeInventory());
-		onInventoryChanged();
-		return orig - stack.stackSize;
-	}
-	
-	public ItemStack[] pipeExtract(boolean doRemove, ForgeDirection from, int maxItemCount){
-		for (int i=0; i<this.getSizeInventory(); i++){
-			ItemStack is = getStackInSlot(i);
-			if (is != null){
-				int take = Math.min(maxItemCount, is.stackSize);
-				ItemStack ret = is.copy();
-				ret.stackSize = take;
-				decrStackSize(i, take);
-				return new ItemStack[]{ret};
+				if (direction)
+				{
+					--itI;
+				}
+				else
+				{
+					++itI;
+				}
 			}
 		}
-		return null;
+
+		if (is.stackSize > 0)
+		{
+			if (direction)
+			{
+				itI = ubound - 1;
+			}
+			else
+			{
+				itI = lbound;
+			}
+
+			while (!direction && itI < ubound || direction && itI >= lbound)
+			{
+				stackOn = this.getStackInSlot(itI);
+
+				if (stackOn == null && this.isStackValidForSlot(itI, is))
+				{
+					this.setInventorySlotContents(itI, is.copy());
+					is.stackSize = 0;
+					var5 = true;
+					break;
+				}
+
+				if (direction)
+				{
+					--itI;
+				}
+				else
+				{
+					++itI;
+				}
+			}
+		}
+
+		return var5;
 	}
-	
+
 	@Override
 	public void onInventoryChanged() {
 		boxContainer.saveData();
@@ -285,27 +264,27 @@ public class Box implements IInventory {
 
 	@Override
 	public void closeChest() {}
-	
+
 	public ContentTip createContentTip(Slot bSlot, rectangle guiBounds){
 		return new GridContentTip(bSlot, guiBounds);
 	}
-	
+
 	public boolean canOpenContentTip(){
 		return true;
 	}
-	
+
 	public boolean canOpenContentPreview(){
 		return getContainedItemStacks().size() > 0;
 	}
-	
+
 	public static class BoxSlot extends Slot {
 		private final Box boxData;
-		
+
 		public BoxSlot(Box bd, int par2, int par3, int par4) {
 			super(bd, par2, par3, par4);
 			boxData = bd;
 		}
-		
+
 		@Override
 		public boolean isItemValid(ItemStack par1ItemStack) {
 			return boxData.isStackValidForSlot(this.getSlotIndex(), par1ItemStack);

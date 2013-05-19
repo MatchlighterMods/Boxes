@@ -12,10 +12,12 @@ import ml.boxes.tile.safe.MechFallback;
 import ml.boxes.tile.safe.SafeMechanism;
 import ml.core.lib.BlockLib;
 import ml.core.tile.IRotatableTE;
+import ml.core.tile.TileEntityConnectable;
 import ml.core.tile.TileEntityMultiBlock;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -25,10 +27,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.ForgeDirection;
 import buildcraft.api.inventory.ISpecialInventory;
 
-public class TileEntitySafe extends TileEntity implements IEventedTE, IRotatableTE, ISpecialInventory, IInventory {
-
-	public ForgeDirection facing = ForgeDirection.NORTH;
-	public ForgeDirection linkedDir = ForgeDirection.UNKNOWN;
+public class TileEntitySafe extends TileEntityConnectable implements IEventedTE, IRotatableTE, IInventory, ISidedInventory {
 		
 	private ItemStack[] stacks;
 	
@@ -49,11 +48,10 @@ public class TileEntitySafe extends TileEntity implements IEventedTE, IRotatable
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
 		
-		facing = ForgeDirection.getOrientation(tag.getInteger("facing"));
-		linkedDir = ForgeDirection.getOrientation(tag.getInteger("linked"));
-		
 		mech = SafeMechanism.tryInstantialize(tag.getString("mechType"), this);
 		mech.loadNBT(tag.getCompoundTag("mechProps"));
+		
+		unlocked = tag.getBoolean("unlocked");
 
 		NBTTagList nbttaglist = tag.getTagList("Items");
 		for (int i = 0; i < nbttaglist.tagCount(); i++)
@@ -71,12 +69,11 @@ public class TileEntitySafe extends TileEntity implements IEventedTE, IRotatable
 	public void writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
 		
-		tag.setInteger("facing", facing.ordinal());
-		tag.setInteger("linked", linkedDir.ordinal());
-		
 		tag.setString("mechType", mech.getClass().getName());
 		tag.setCompoundTag("mechProps", mech.saveNBT());
 
+		tag.setBoolean("unlocked", unlocked);
+		
 		NBTTagList nbttaglist = new NBTTagList();
 		for (int i = 0; i < stacks.length; i++)
 		{
@@ -90,10 +87,6 @@ public class TileEntitySafe extends TileEntity implements IEventedTE, IRotatable
 		}
 
 		tag.setTag("Items", nbttaglist);
-	}
-	
-	public void sendPacket(){
-		PacketDispatcher.sendPacketToAllInDimension(getDescriptionPacket(), worldObj.getWorldInfo().getDimension());
 	}
 	
 	@Override
@@ -111,98 +104,12 @@ public class TileEntitySafe extends TileEntity implements IEventedTE, IRotatable
 		worldObj.addBlockEvent(xCoord, yCoord, zCoord, Boxes.BlockMeta.blockID, 1, 0);
 	}
 	
-	protected boolean canConnectWith(TileEntitySafe remoteTes) {
-		return remoteTes != null && mech.getClass() == remoteTes.mech.getClass() && mech.matches(remoteTes.mech);
+	@Override
+	public boolean canConnectWith(TileEntityConnectable remoteTec) {
+		TileEntitySafe rtes = (TileEntitySafe)remoteTec;
+		return mech.getClass() == rtes.mech.getClass() && mech.matches(rtes.mech);
 	}
-	
-//	@Override
-//	public void onCreation(boolean ismaster) {
-//		linkedDir = ForgeDirection.DOWN;
-//		sendPacket();
-//		super.onCreation(ismaster);
-//	}
-//	
-//	@Override
-//	public void onDestruction(boolean ismaster) {
-//		linkedDir = ForgeDirection.UNKNOWN;
-//		sendPacket();
-//		super.onDestruction(ismaster);
-//	}
-//	
-//	@Override
-//	public void getRemotes(List<TileEntityMultiBlock> remotes) {
-//		remotes.add((TileEntityMultiBlock)worldObj.getBlockTileEntity(xCoord, yCoord+1, zCoord));
-//	}
-//	
-//	@Override
-//	public boolean canCreateMulti() {
-//		TileEntity rte = worldObj.getBlockTileEntity(xCoord, yCoord+1, zCoord);
-//		if (rte instanceof TileEntitySafe) {
-//			TileEntitySafe rtes = (TileEntitySafe)rte;
-//			return rtes.facing == this.facing &&
-//					(rtes.linkedDir == ForgeDirection.UNKNOWN || rtes.linkedDir == ForgeDirection.DOWN) &&
-//					mech.getClass() == rtes.mech.getClass() && mech.matches(rtes.mech);
-//		}
-//		return false;
-//	}
-//
-//	@Override
-//	public boolean onMBRightClicked(EntityPlayer epl, int sx, int sy, int sz) {
-//		if (!worldObj.isRemote) {
-//			if (unlocked) {
-//				playerOpened(epl);
-//			} else {
-//				mech.beginUnlock(epl);
-//			}
-//		}
-//		return true;
-//	}
-//
-//	@Override
-//	public TileEntityMultiBlock getMaster() {
-//		if (linkedDir == ForgeDirection.DOWN) {
-//			TileEntity te = worldObj.getBlockTileEntity(xCoord, yCoord-1, zCoord);
-//			if (te instanceof TileEntitySafe) {
-//				return (TileEntitySafe)te;
-//			}
-//		}
-//		return this;
-//	}
-	
-	private boolean tryConnection(ForgeDirection fd){
-		TileEntity te = worldObj.getBlockTileEntity(xCoord+fd.offsetX, yCoord+fd.offsetY, zCoord+fd.offsetZ);
-		if (te instanceof TileEntitySafe){
-			TileEntitySafe rtes = (TileEntitySafe)te;
-			if (rtes.facing == this.facing &&
-					rtes.linkedDir == ForgeDirection.UNKNOWN &&
-					canConnectWith(rtes)){
-				
-				linkedDir = fd;
-				rtes.linkedDir = fd.getOpposite();
-				rtes.sendPacket();
-				return true;
-			}
-		}
 		
-		return false;
-	}
-	
-	public void tryConnection(){
-		if (!tryConnection(ForgeDirection.UP)) tryConnection(ForgeDirection.DOWN);
-		sendPacket();
-	}
-	
-	public void refreshConnection(){
-		if (linkedDir != ForgeDirection.UNKNOWN) {
-			TileEntity te = worldObj.getBlockTileEntity(xCoord, yCoord + linkedDir.offsetY, zCoord);
-			if (!canConnectWith((TileEntitySafe)te) ||
-					((TileEntitySafe)te).linkedDir != linkedDir.getOpposite()){
-				linkedDir = ForgeDirection.UNKNOWN;
-				sendPacket();
-			}
-		}
-	}
-	
 	@Override
 	public void updateEntity() {
 		super.updateEntity();
@@ -257,26 +164,50 @@ public class TileEntitySafe extends TileEntity implements IEventedTE, IRotatable
 
 	@Override
 	public ItemStack getStackInSlot(int i) {
-		// TODO Auto-generated method stub
-		return null;
+		return stacks[i];
 	}
 
 	@Override
 	public ItemStack decrStackSize(int i, int j) {
-		// TODO Auto-generated method stub
-		return null;
+		if (this.stacks[i] != null)
+		{
+			ItemStack var3;
+
+			if (this.stacks[i].stackSize <= j)
+			{
+				var3 = this.stacks[i];
+				this.stacks[i] = null;
+				this.onInventoryChanged();
+				return var3;
+			}
+			else
+			{
+				var3 = this.stacks[i].splitStack(j);
+
+				if (this.stacks[i].stackSize == 0)
+				{
+					this.stacks[i] = null;
+				}
+
+				this.onInventoryChanged();
+				return var3;
+			}
+		}
+		else
+		{
+			return null;
+		}
 	}
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int i) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void setInventorySlotContents(int i, ItemStack itemstack) {
-		// TODO Auto-generated method stub
-
+		stacks[i] = itemstack;
+		onInventoryChanged();
 	}
 
 	@Override
@@ -286,7 +217,6 @@ public class TileEntitySafe extends TileEntity implements IEventedTE, IRotatable
 
 	@Override
 	public boolean isInvNameLocalized() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -297,8 +227,7 @@ public class TileEntitySafe extends TileEntity implements IEventedTE, IRotatable
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
-		// TODO Auto-generated method stub
-		return false;
+		return unlocked;
 	}
 
 	@Override
@@ -314,22 +243,23 @@ public class TileEntitySafe extends TileEntity implements IEventedTE, IRotatable
 	}
 
 	@Override
+	public int[] getAccessibleSlotsFromSide(int var1) {
+		return new int[]{};
+	}
+	
+	@Override
 	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
-		// TODO Auto-generated method stub
+		return true;
+	}
+	
+	@Override
+	public boolean canExtractItem(int i, ItemStack itemstack, int j) {
 		return false;
 	}
 
 	@Override
-	public int addItem(ItemStack stack, boolean doAdd, ForgeDirection from) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public ItemStack[] extractItem(boolean doRemove, ForgeDirection from,
-			int maxItemCount) {
-		doRemove = false;
-		return null;
+	public boolean canInsertItem(int i, ItemStack itemstack, int j) {
+		return false;
 	}
 
 	@Override
@@ -355,26 +285,26 @@ public class TileEntitySafe extends TileEntity implements IEventedTE, IRotatable
 		pl.openGui(Boxes.instance, 4, worldObj, xCoord, yCoord, zCoord);
 	}
 	
+	public boolean onMasterRightClicked(EntityPlayer epl, ForgeDirection side) {
+		TileEntitySafe connected = (TileEntitySafe)getConnected();
+
+		if (canInteract() && connected.canInteract()) {
+			if (unlocked) {
+				playerOpened(epl);
+			} else {
+				mech.beginUnlock(epl);
+			}
+		} else {
+			epl.sendChatToPlayer("\u00A77\u00A7oThe door is blocked.");
+		}
+		return true;
+	}
+	
 	@Override
 	public boolean onRightClicked(EntityPlayer epl, ForgeDirection side) {
 		if (!worldObj.isRemote) {
-			if (linkedDir == ForgeDirection.DOWN) {
-				TileEntity rte = worldObj.getBlockTileEntity(xCoord, yCoord-1, zCoord);
-				if (rte instanceof TileEntitySafe) {
-					((TileEntitySafe)rte).onRightClicked(epl, side);
-				}
-			} else {
-				TileEntity rte = worldObj.getBlockTileEntity(xCoord, yCoord+1, zCoord);
-				if ((linkedDir!=ForgeDirection.UP || (rte instanceof TileEntitySafe && ((TileEntitySafe)rte).canInteract())) && canInteract()) {
-					if (unlocked) {
-						playerOpened(epl);
-					} else {
-						mech.beginUnlock(epl);
-					}
-				} else {
-					epl.sendChatToPlayer("\u00A77\u00A7oThe door is blocked.");
-				}
-			}
+			TileEntitySafe master = (TileEntitySafe)getMaster();
+			return master.onMasterRightClicked(epl, side);
 		}
 		return true;
 	}

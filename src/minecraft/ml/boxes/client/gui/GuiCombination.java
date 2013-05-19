@@ -1,4 +1,4 @@
-package ml.boxes.client;
+package ml.boxes.client.gui;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;

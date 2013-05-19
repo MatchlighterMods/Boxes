@@ -25,7 +25,7 @@ public class PacketComboEntered extends MLPacket {
 	public int[] combo;
 	
 	public PacketComboEntered(Player pl, TileEntitySafe tes, int[] combo) {
-		super(pl);
+		super(pl, "Boxes");
 		chunkDataPacket = false;
 		
 		tex = tes.xCoord;

@@ -1,4 +1,4 @@
-package ml.boxes.client;
+package ml.boxes.client.gui;
 
 import invtweaks.api.ContainerGUI;
 
