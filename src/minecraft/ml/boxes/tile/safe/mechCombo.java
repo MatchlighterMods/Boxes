@@ -21,13 +21,25 @@ public class MechCombo extends SafeMechanism {
 	
 	@Override
 	public NBTTagCompound saveNBT() {
-		// TODO Auto-generated method stub
-		return null;
+		NBTTagCompound tag = new NBTTagCompound();
+		tag.setIntArray("combination", combination);
+		tag.setIntArray("dispCombo", dispCombination);
+		return tag;
 	}
 	@Override
 	public void loadNBT(NBTTagCompound mechKey) {
-		// TODO Auto-generated method stub
+		combination = mechKey.getIntArray("combination");
+		dispCombination = mechKey.getIntArray("dispCombo");
 		
+		if (combination.length != COMBO_LENGTH) combination = new int[3];
+		if (dispCombination.length != COMBO_LENGTH) dispCombination = new int[3];
+	}
+	
+	@Override
+	public NBTTagCompound writeNBTPacket() {
+		NBTTagCompound tag = new NBTTagCompound();
+		tag.setIntArray("dispCombo", dispCombination);
+		return tag;
 	}
 
 	@Override

@@ -7,6 +7,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 import ml.boxes.Boxes;
 import ml.boxes.block.MetaType;
 import ml.boxes.data.ItemBoxContainer;
+import ml.boxes.tile.safe.SafeMechanism;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
@@ -40,7 +41,7 @@ public class ItemBoxBlocks extends ItemBlock {
 		MetaType mt = MetaType.fromMeta(is.getItemDamage());
 		switch(mt){
 		case Safe:
-			par3List.add("Combo: 3-5-2");
+			SafeMechanism.attemptGetISInfo(is, par3List);
 			return;
 		}
 	}

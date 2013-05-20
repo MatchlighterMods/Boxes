@@ -218,7 +218,6 @@ public class TileEntityCrate extends TileEntity implements ISidedInventory, IRot
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int i) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

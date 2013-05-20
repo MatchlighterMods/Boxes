@@ -26,7 +26,7 @@ public class MechFallback extends SafeMechanism {
 
 	@Override
 	public void beginUnlock(EntityPlayer epl) {
-		epl.sendChatToPlayer("\u00A77\u00A7oWarning: The safe has been corrupted and can no longer be locked!");
+		epl.sendChatToPlayer("\u00A77\u00A7oWarning: The safe has been corrupted and can no longer be locked properly!");
 		safe.unlock();
 	}
 

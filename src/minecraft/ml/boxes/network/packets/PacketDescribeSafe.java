@@ -15,27 +15,33 @@ import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.network.Player;
 
 public class PacketDescribeSafe extends PacketDescribeConnectable {
-
-	ForgeDirection linkDir;
+	
+	public boolean sUnlocked;
+	public NBTTagCompound mechData;
 	
 	public PacketDescribeSafe(TileEntitySafe tes) {
 		super(tes, "Boxes");
-		linkDir = tes.linkedDir;
 		
-		writeInt(linkDir.ordinal());
+		sUnlocked = tes.unlocked;
+		mechData = tes.mech.writeNBTPacket();
+		
+		writeBoolean(sUnlocked);
+		writeNBTTagCompound(mechData);
 	}
 	
-	public PacketDescribeSafe(Player pl, ByteArrayDataInput data) {
+	public PacketDescribeSafe(Player pl, ByteArrayDataInput data) throws IOException {
 		super(pl, data);
 		
-		linkDir = ForgeDirection.getOrientation(data.readInt());
+		sUnlocked = data.readBoolean();
+		mechData = readNBTTagCompound();
 	}
 	
 	@Override
 	public void handleClientSide(TileEntity te) throws IOException {
+		super.handleClientSide(te);
 		TileEntitySafe tes = (TileEntitySafe)te;
 
-		tes.linkedDir = linkDir;
+		tes.unlocked = sUnlocked;
+		tes.mech.loadNBT(mechData);
 	}
-
 }

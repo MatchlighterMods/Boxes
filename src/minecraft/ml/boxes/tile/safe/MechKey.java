@@ -1,5 +1,7 @@
 package ml.boxes.tile.safe;
 
+import java.util.List;
+
 import ml.boxes.tile.TileEntitySafe;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -14,6 +16,10 @@ public class MechKey extends SafeMechanism {
 		super(tsafe);
 	}
 
+	public static void getISInfo(ItemStack is, List infos) {
+		infos.add("KeyId: " + is.stackTagCompound.getInteger("keyId"));
+	}
+	
 	@Override
 	public NBTTagCompound saveNBT() {
 		NBTTagCompound tag = new NBTTagCompound();
@@ -25,7 +31,7 @@ public class MechKey extends SafeMechanism {
 	public void loadNBT(NBTTagCompound mechKey) {
 		keyId = mechKey.getInteger("keyId");
 	}
-
+	
 	@Override
 	public void beginUnlock(EntityPlayer epl) {
 		ItemStack is = epl.getHeldItem();

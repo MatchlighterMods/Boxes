@@ -11,6 +11,7 @@ import ml.boxes.network.packets.PacketDescribeSafe;
 import ml.boxes.tile.safe.MechFallback;
 import ml.boxes.tile.safe.SafeMechanism;
 import ml.core.lib.BlockLib;
+import ml.core.lib.ItemLib;
 import ml.core.tile.IRotatableTE;
 import ml.core.tile.TileEntityConnectable;
 import ml.core.tile.TileEntityMultiBlock;
@@ -288,14 +289,18 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 	public boolean onMasterRightClicked(EntityPlayer epl, ForgeDirection side) {
 		TileEntitySafe connected = (TileEntitySafe)getConnected();
 
-		if (canInteract() && connected.canInteract()) {
-			if (unlocked) {
-				playerOpened(epl);
+		if (facing==side) {
+			if (canInteract() && connected.canInteract()) {
+				if (unlocked) {
+					playerOpened(epl);
+				} else {
+					mech.beginUnlock(epl);
+				}
 			} else {
-				mech.beginUnlock(epl);
+				epl.sendChatToPlayer("\u00A77\u00A7oThe door is blocked.");
 			}
 		} else {
-			epl.sendChatToPlayer("\u00A77\u00A7oThe door is blocked.");
+			//epl.sendChatToPlayer("\u00A77\u00A7oNever seen anyone open a safe from a side without a door.");
 		}
 		return true;
 	}
@@ -324,14 +329,17 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 	
 	@Override
 	public void hostBroken() {
-		// TODO Drop Contents
+		for (int i=0; i<this.getSizeInventory(); i++){
+			ItemLib.dropItemIntoWorld(worldObj, xCoord, yCoord, zCoord, getStackInSlot(i));
+		}
 	}
 	
 	@Override
 	public void hostPlaced(EntityLiving pl, ItemStack is) {
-		// TODO Copy mechanism data from ItemStack
 		if (!worldObj.isRemote) {
-			mech = new MechFallback(this);
+			NBTTagCompound tag = is.getTagCompound() != null ? is.getTagCompound() : new NBTTagCompound();
+			mech = SafeMechanism.tryInstantialize(tag.getString("mechType"), this);
+			mech.loadNBT(tag.getCompoundTag("mechProps"));
 			tryConnection();
 		}
 	}
