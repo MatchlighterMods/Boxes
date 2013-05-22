@@ -33,6 +33,7 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 	private ItemStack[] stacks;
 	
 	public SafeMechanism mech;
+	public NBTTagCompound mechTag;
 	
 	public float doorAng = 0F;
 	public float prevDoorAng = 0F;
@@ -42,7 +43,7 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 	
 	public TileEntitySafe() {
 		stacks = new ItemStack[getSizeInventory()];
-		mech = new MechFallback(this);
+		mech = new MechFallback();
 	}
 	
 	@Override
@@ -50,7 +51,8 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 		super.readFromNBT(tag);
 		
 		mech = SafeMechanism.tryInstantialize(tag.getString("mechType"), this);
-		mech.loadNBT(tag.getCompoundTag("mechProps"));
+		mechTag = tag.getCompoundTag("mechProps");
+		//mech.loadNBT(tag.getCompoundTag("mechProps"));
 		
 		unlocked = tag.getBoolean("unlocked");
 
@@ -71,7 +73,8 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 		super.writeToNBT(tag);
 		
 		tag.setString("mechType", mech.getClass().getName());
-		tag.setCompoundTag("mechProps", mech.saveNBT());
+		//tag.setCompoundTag("mechProps", mech.saveNBT());
+		tag.setCompoundTag("mechProps", mechTag);
 
 		tag.setBoolean("unlocked", unlocked);
 		
@@ -108,7 +111,7 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 	@Override
 	public boolean canConnectWith(TileEntityConnectable remoteTec) {
 		TileEntitySafe rtes = (TileEntitySafe)remoteTec;
-		return mech.getClass() == rtes.mech.getClass() && mech.matches(rtes.mech);
+		return mech.getClass() == rtes.mech.getClass() && mech.matches(mechTag, rtes.mechTag);
 	}
 		
 	@Override
@@ -294,7 +297,7 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 				if (unlocked) {
 					playerOpened(epl);
 				} else {
-					mech.beginUnlock(epl);
+					mech.beginUnlock(this, epl);
 				}
 			} else {
 				epl.sendChatToPlayer("\u00A77\u00A7oThe door is blocked.");
@@ -339,7 +342,8 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 		if (!worldObj.isRemote) {
 			NBTTagCompound tag = is.getTagCompound() != null ? is.getTagCompound() : new NBTTagCompound();
 			mech = SafeMechanism.tryInstantialize(tag.getString("mechType"), this);
-			mech.loadNBT(tag.getCompoundTag("mechProps"));
+			//mech.loadNBT(tag.getCompoundTag("mechProps"));
+			mechTag = tag.getCompoundTag("mechProps");
 			tryConnection();
 		}
 	}

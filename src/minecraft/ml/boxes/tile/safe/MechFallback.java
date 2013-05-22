@@ -1,7 +1,10 @@
 package ml.boxes.tile.safe;
 
+import java.util.List;
+
 import ml.boxes.tile.TileEntitySafe;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 /**
@@ -12,26 +15,24 @@ import net.minecraft.nbt.NBTTagCompound;
  */
 public class MechFallback extends SafeMechanism {
 
-	public MechFallback(TileEntitySafe tsafe) {
-		super(tsafe);
+	public MechFallback() {
+		super();
 	}
 
 	@Override
-	public NBTTagCompound saveNBT() {
-		return new NBTTagCompound();
-	}
-
-	@Override
-	public void loadNBT(NBTTagCompound mechKey) {}
-
-	@Override
-	public void beginUnlock(EntityPlayer epl) {
+	public void beginUnlock(TileEntitySafe tes, EntityPlayer epl) {
 		epl.sendChatToPlayer("\u00A77\u00A7oWarning: The safe has been corrupted and can no longer be locked properly!");
-		safe.unlock();
+		tes.unlock();
 	}
 
 	@Override
-	public boolean matches(SafeMechanism tmech) {
+	public boolean matches(NBTTagCompound mech1, NBTTagCompound mech2) {
 		return true;
+	}
+
+	@Override
+	public void addISInfo(ItemStack is, List infos) {
+		// TODO Auto-generated method stub
+		
 	}
 }

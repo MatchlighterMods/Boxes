@@ -23,7 +23,7 @@ public class PacketDescribeSafe extends PacketDescribeConnectable {
 		super(tes, "Boxes");
 		
 		sUnlocked = tes.unlocked;
-		mechData = tes.mech.writeNBTPacket();
+		mechData = tes.mech.writeNBTPacket(tes);
 		
 		writeBoolean(sUnlocked);
 		writeNBTTagCompound(mechData);
@@ -42,6 +42,7 @@ public class PacketDescribeSafe extends PacketDescribeConnectable {
 		TileEntitySafe tes = (TileEntitySafe)te;
 
 		tes.unlocked = sUnlocked;
-		tes.mech.loadNBT(mechData);
+		//tes.mech.loadNBT(mechData);
+		tes.mechTag = mechData;
 	}
 }

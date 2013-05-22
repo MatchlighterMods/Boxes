@@ -12,41 +12,30 @@ import net.minecraft.nbt.NBTTagCompound;
 public class MechKey extends SafeMechanism {
 
 	static {
-		SafeMechanism.registerMechansim(MechKey.class);
+		SafeMechanism.registerMechansim(new MechKey());
 	}
 	
 	public int keyId = 0;
 	
-	public MechKey(TileEntitySafe tsafe) {
-		super(tsafe);
-	}
-
-	public static void getISInfo(ItemStack is, List infos) {
-		infos.add("KeyId: " + is.stackTagCompound.getInteger("keyId"));
+	public MechKey() {
+		super();
 	}
 	
 	@Override
-	public NBTTagCompound saveNBT() {
-		NBTTagCompound tag = new NBTTagCompound();
-		tag.setInteger("keyId", keyId);
-		return tag;
-	}
-
-	@Override
-	public void loadNBT(NBTTagCompound mechKey) {
-		keyId = mechKey.getInteger("keyId");
-	}
-	
-	@Override
-	public void beginUnlock(EntityPlayer epl) {
+	public void beginUnlock(TileEntitySafe tes, EntityPlayer epl) {
 		ItemStack is = epl.getHeldItem();
 		if (is.getItem() instanceof ItemKey && is.getItemDamage() == keyId) {
-			this.safe.unlock();
+			tes.unlock();
 		}
 	}
 
 	@Override
-	public boolean matches(SafeMechanism tmech) {
-		return ((MechKey)tmech).keyId == keyId;
+	public boolean matches(NBTTagCompound mech1, NBTTagCompound mech2) {
+		return mech1.equals(mech2);
+	}
+
+	@Override
+	public void addISInfo(ItemStack is, List infos) {
+		infos.add("KeyId: " + is.stackTagCompound.getInteger("keyId"));
 	}
 }

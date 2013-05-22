@@ -13,22 +13,24 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public abstract class SafeMechanism {
 	
-	public static Map<String, Class<? extends SafeMechanism>> mechs = new HashMap<String, Class<? extends SafeMechanism>>();
+	private static MechFallback fallback = new MechFallback();
+	public static Map<String, SafeMechanism> mechs = new HashMap<String, SafeMechanism>();
 	
-	public static void registerMechansim(Class mechCls) {
-		mechs.put(mechCls.getName(), mechCls);
+	public static void registerMechansim(SafeMechanism mech) {
+		mechs.put(mech.getClass().getName(), mech);
 	}
 	
 	public static SafeMechanism tryInstantialize(String mechName, TileEntitySafe safe) {
 		if (mechs.containsKey(mechName)){
-			Class clazz = mechs.get(mechName);
-			try {
-				return (SafeMechanism)clazz.getConstructor(TileEntitySafe.class).newInstance(safe);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+//			Class clazz = mechs.get(mechName);
+//			try {
+//				return (SafeMechanism)clazz.getConstructor(TileEntitySafe.class).newInstance(safe);
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+			return mechs.get(mechName);
 		}
-		return new MechFallback(safe);
+		return fallback;
 	}
 	
 	public static void attemptGetISInfo(ItemStack is, List infos) {
@@ -36,40 +38,28 @@ public abstract class SafeMechanism {
 		//if (tag != null) {
 			String mechN = tag.getString("mechType");
 			if (mechs.containsKey(mechN)) {
-				Class smech = mechs.get(mechN);
+				SafeMechanism smech = mechs.get(mechN);
 				infos.add("Mechanism: " + LanguageRegistry.instance().getStringLocalization(mechN));
-				try {
-					Method getInfo = smech.getMethod("getISInfo", ItemStack.class, List.class);
-					getInfo.invoke(null, is, infos);
-				} catch (Exception e) {
-
-				}
+				smech.addISInfo(is, infos);
 			} else {
 				infos.add("Mechanism: \u00A7c\u00A7oInvalid");
 			}
 		//}
 	}
 	
-	public final TileEntitySafe safe;
-	
-	public SafeMechanism(TileEntitySafe tsafe) {
-		this.safe = tsafe;
+	public NBTTagCompound writeNBTPacket(TileEntitySafe tes) {
+		return tes.mechTag;
 	}
 	
-	public abstract NBTTagCompound saveNBT();
-	public abstract void loadNBT(NBTTagCompound mechKey);
-	
-	public NBTTagCompound writeNBTPacket() {
-		return saveNBT();
+	public NBTTagCompound saveNBTForIS(TileEntitySafe tes) {
+		return tes.mechTag;
 	}
 	
-	public NBTTagCompound saveNBTForIS() {
-		return saveNBT();
-	}
+	public abstract void addISInfo(ItemStack is, List infos);
 	
-	public abstract void beginUnlock(EntityPlayer epl);
+	public abstract void beginUnlock(TileEntitySafe tes, EntityPlayer epl);
 	
-	public abstract boolean matches(SafeMechanism tmech);
+	public abstract boolean matches(NBTTagCompound mech1, NBTTagCompound mech2);
 	
-	public void onClosed(){};
+	public void onClosed(TileEntitySafe tes){};
 }
