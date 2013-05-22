@@ -5,7 +5,7 @@ import org.lwjgl.opengl.GL12;
 
 import ml.boxes.Boxes;
 import ml.boxes.client.render.tile.SafeTESR;
-import ml.core.lib.render.GuiRenderLib;
+import ml.core.render.GuiRenderLib;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;

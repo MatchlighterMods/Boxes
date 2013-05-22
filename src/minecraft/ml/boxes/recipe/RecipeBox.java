@@ -74,6 +74,6 @@ public class RecipeBox implements IRecipe {
 		{
 			return false;
 		}
-		return (target.itemID == input.itemID && (target.getItemDamage() == -1 || target.getItemDamage() == input.getItemDamage()));
+		return (target.itemID == input.itemID && (target.getItemDamage() == Short.MAX_VALUE || target.getItemDamage() == input.getItemDamage()));
 	}
 }

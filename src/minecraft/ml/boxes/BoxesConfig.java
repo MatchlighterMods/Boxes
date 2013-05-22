@@ -9,6 +9,7 @@ public class BoxesConfig extends Config {
 	public @prop(category=Configuration.CATEGORY_BLOCK) int generalBlockID = 541;
 	
 	public @prop(category=Configuration.CATEGORY_ITEM) int cardboardItemID = 3000;
+	public @prop(category=Configuration.CATEGORY_ITEM) int keyItemID = 3001;
 	
 	public @prop(comment="Set to true to require the use of the Shift key to show the content tip") boolean shiftForTip = false;
 	public @prop(comment="The number of Milliseconds that you need to hover over a box item befor it shows its contents tip") Integer tipReactionTime = 200;

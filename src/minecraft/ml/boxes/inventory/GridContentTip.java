@@ -10,10 +10,10 @@ import ml.boxes.client.gui.GuiBox;
 import ml.boxes.data.Box;
 import ml.boxes.data.ItemBoxContainer;
 import ml.core.Geometry;
+import ml.core.StringUtils;
 import ml.core.Geometry.XYPair;
 import ml.core.Geometry.rectangle;
-import ml.core.lib.StringLib;
-import ml.core.lib.render.GuiRenderLib;
+import ml.core.render.GuiRenderLib;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -40,7 +40,7 @@ public class GridContentTip extends ContentTip {
 			int slotY = 10+row*18;
 			
 			ItemStack is = contentStacks.get(i);
-			GuiRenderLib.drawSpecialStackAt(mc, slotX, slotY, is, is.stackSize> 1 ? StringLib.toGroupedString(is.stackSize,1) : "");
+			GuiRenderLib.drawSpecialStackAt(mc, slotX, slotY, is, is.stackSize> 1 ? StringUtils.toGroupedString(is.stackSize,1) : "");
 		}
 	}
 

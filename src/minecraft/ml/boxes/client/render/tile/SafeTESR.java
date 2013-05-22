@@ -6,7 +6,7 @@ import org.lwjgl.opengl.GL12;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ml.boxes.tile.TileEntitySafe;
-import ml.core.lib.BlockLib;
+import ml.core.block.BlockUtils;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.client.model.AdvancedModelLoader;
@@ -31,7 +31,7 @@ public class SafeTESR extends TileEntitySpecialRenderer {
 			GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 			GL11.glTranslatef((float)d0, (float)d1, (float)d2);
 
-			BlockLib.glRotateForFaceDir(tes.facing);
+			BlockUtils.glRotateForFaceDir(tes.facing);
 
 			GL11.glScalef(0.0625F, 0.0625F, 0.0625F);
 			bindTextureByName("/mods/Boxes/textures/models/safe.png");

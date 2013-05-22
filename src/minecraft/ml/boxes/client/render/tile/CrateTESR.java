@@ -2,9 +2,9 @@ package ml.boxes.client.render.tile;
 
 import ml.boxes.Boxes;
 import ml.boxes.tile.TileEntityCrate;
-import ml.core.lib.BlockLib;
-import ml.core.lib.render.WorldRenderLib;
+import ml.core.block.BlockUtils;
 import ml.core.model.ObjModel;
+import ml.core.render.WorldRenderLib;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -46,7 +46,7 @@ public class CrateTESR extends TileEntitySpecialRenderer {
 
 		GL11.glPushMatrix();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		BlockLib.glRotateForFaceDir(tec.facing);
+		BlockUtils.glRotateForFaceDir(tec.facing);
 		render();
 		if (tec.upg_label) crateModel.renderPart("Label");
 		GL11.glPopMatrix();
@@ -57,7 +57,7 @@ public class CrateTESR extends TileEntitySpecialRenderer {
 			GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 			GL11.glTranslatef(tec.facing.offsetX*0.5F, tec.facing.offsetY*0.6F, tec.facing.offsetZ*0.5F);
 
-			GL11.glRotatef(BlockLib.getRotationFromDirection(tec.facing), 0, 1.0F, 0F);
+			GL11.glRotatef(BlockUtils.getRotationFromDirection(tec.facing), 0, 1.0F, 0F);
 
 			boolean isBlock = tec.containedIsBlock;
 			boolean upOrDwn = tec.facing == ForgeDirection.UP || tec.facing == ForgeDirection.DOWN;

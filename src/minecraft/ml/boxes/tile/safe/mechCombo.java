@@ -14,6 +14,10 @@ public class MechCombo extends SafeMechanism {
 	public int[] combination;
 	public int[] dispCombination;
 	
+	static {
+		SafeMechanism.registerMechansim(MechCombo.class);
+	}
+	
 	public MechCombo(TileEntitySafe tsafe) {
 		super(tsafe);
 		combination = new int[COMBO_LENGTH];

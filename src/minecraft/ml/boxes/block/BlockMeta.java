@@ -4,7 +4,7 @@ import ml.boxes.Boxes;
 import ml.boxes.tile.IEventedTE;
 import ml.boxes.tile.TileEntityCrate;
 import ml.boxes.tile.TileEntitySafe;
-import ml.core.lib.BlockLib;
+import ml.core.block.BlockUtils;
 import ml.core.tile.IRotatableTE;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -93,7 +93,7 @@ public class BlockMeta extends BlockContainer {
 		
 		TileEntity te = world.getBlockTileEntity(x, y, z);
 		if (te instanceof IRotatableTE){
-			((IRotatableTE) te).setFacing(BlockLib.getPlacedForgeDir(entity, x, y, z, ((IRotatableTE) te).getValidFacingDirections()));
+			((IRotatableTE) te).setFacing(BlockUtils.getPlacedForgeDir(entity, x, y, z, ((IRotatableTE) te).getValidFacingDirections()));
 			world.markBlockForUpdate(x, y, z);
 		}
 		if (te instanceof IEventedTE){

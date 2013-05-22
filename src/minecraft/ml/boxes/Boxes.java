@@ -4,11 +4,13 @@ import ml.boxes.block.BlockBox;
 import ml.boxes.block.BlockMeta;
 import ml.boxes.block.MetaType;
 import ml.boxes.item.ItemBox;
-import ml.boxes.item.ItemResources;
 import ml.boxes.item.ItemBoxBlocks;
+import ml.boxes.item.ItemKey;
+import ml.boxes.item.ItemResources;
 import ml.boxes.item.ItemType;
 import ml.boxes.network.PacketHandler;
 import ml.boxes.recipe.RecipeBox;
+import ml.boxes.recipe.RecipeKey;
 import ml.boxes.tile.TileEntityBox;
 import ml.boxes.tile.TileEntityCrate;
 import ml.boxes.tile.TileEntitySafe;
@@ -45,6 +47,7 @@ public class Boxes {
 	public static BlockBox BlockBox;
 	public static BlockMeta BlockMeta;
 	public static ItemResources ItemResources;
+	public static ItemKey ItemKey;
 	
 	public static int nullRendererID = -1;
 	public static CreativeTabs BoxTab = new BoxesCreativeTab("boxes");
@@ -71,9 +74,13 @@ public class Boxes {
 		this.ItemResources = new ItemResources(config.cardboardItemID-256);
 		GameRegistry.registerItem(ItemResources, "cardboard");
 		
+		this.ItemKey = new ItemKey(config.keyItemID-256);
+		GameRegistry.registerItem(ItemKey, "key");
+		
 		LanguageRegistry.instance().addStringLocalization("item.box.name", "en_US", "Box");
 		LanguageRegistry.instance().addStringLocalization("item.cardboard.name", "en_US", "Cardboard Sheet");
 		LanguageRegistry.instance().addStringLocalization("item.label.name", "en_US", "Label");
+		LanguageRegistry.instance().addStringLocalization("item.key.name", "en_US", "Key");
 		LanguageRegistry.instance().addStringLocalization("itemGroup.boxes", "en_US", "Boxes");
 		
 		LanguageRegistry.instance().addStringLocalization("Boxes.safe.name", "en_US", "Lockbox");
@@ -85,6 +92,7 @@ public class Boxes {
 		GameRegistry.addRecipe(ItemType.ISFromType(ItemType.Label, 3), "ppp", " s ", 'p', Item.paper, 's', Item.slimeBall);
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockMeta, 1, MetaType.Crate.ordinal()), "wsw", "scs", "wsw", 'w', "logWood", 's', "plankWood", 'c', Block.chest));
 		GameRegistry.addRecipe(new RecipeBox());
+		GameRegistry.addRecipe(new RecipeKey(" m ", "nm ", "nm ", 'n', Item.goldNugget, 'm', Item.ingotGold));
 		
 		initDungeonLoot();
 		

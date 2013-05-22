@@ -2,6 +2,7 @@ package ml.boxes.tile.safe;
 
 import java.util.List;
 
+import ml.boxes.item.ItemKey;
 import ml.boxes.tile.TileEntitySafe;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -10,6 +11,10 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class MechKey extends SafeMechanism {
 
+	static {
+		SafeMechanism.registerMechansim(MechKey.class);
+	}
+	
 	public int keyId = 0;
 	
 	public MechKey(TileEntitySafe tsafe) {
@@ -35,8 +40,7 @@ public class MechKey extends SafeMechanism {
 	@Override
 	public void beginUnlock(EntityPlayer epl) {
 		ItemStack is = epl.getHeldItem();
-		// TODO Finish
-		if (is.getItem() instanceof Item && is.getItemDamage() == keyId) {
+		if (is.getItem() instanceof ItemKey && is.getItemDamage() == keyId) {
 			this.safe.unlock();
 		}
 	}

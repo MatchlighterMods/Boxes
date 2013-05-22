@@ -10,8 +10,8 @@ import ml.boxes.Boxes;
 import ml.boxes.network.packets.PacketDescribeSafe;
 import ml.boxes.tile.safe.MechFallback;
 import ml.boxes.tile.safe.SafeMechanism;
-import ml.core.lib.BlockLib;
-import ml.core.lib.ItemLib;
+import ml.core.block.BlockUtils;
+import ml.core.item.ItemUtils;
 import ml.core.tile.IRotatableTE;
 import ml.core.tile.TileEntityConnectable;
 import ml.core.tile.TileEntityMultiBlock;
@@ -330,7 +330,7 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 	@Override
 	public void hostBroken() {
 		for (int i=0; i<this.getSizeInventory(); i++){
-			ItemLib.dropItemIntoWorld(worldObj, xCoord, yCoord, zCoord, getStackInSlot(i));
+			ItemUtils.dropItemIntoWorld(worldObj, xCoord, yCoord, zCoord, getStackInSlot(i));
 		}
 	}
 	

@@ -6,7 +6,7 @@ import ml.boxes.Boxes;
 import ml.boxes.data.Box;
 import ml.boxes.data.ItemBoxContainer;
 import ml.boxes.tile.TileEntityBox;
-import ml.core.lib.PlayerLib;
+import ml.core.PlayerUtils;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -106,7 +106,7 @@ public class ItemBox extends ItemBlock {
 			EntityPlayer par2EntityPlayer, World par3World, int par4, int par5,
 			int par6, int par7, float par8, float par9, float par10) {
 		
-		if (par2EntityPlayer.isSneaking() || !PlayerLib.isRealPlayer(par2EntityPlayer)){
+		if (par2EntityPlayer.isSneaking() || !PlayerUtils.isRealPlayer(par2EntityPlayer)){
 			return super.onItemUse(par1ItemStack, par2EntityPlayer, par3World, par4, par5,
 					par6, par7, par8, par9, par10);
 		}

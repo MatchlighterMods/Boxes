@@ -1,25 +1,22 @@
 package ml.boxes.tile.safe;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import cpw.mods.fml.common.registry.LanguageRegistry;
 
 import ml.boxes.tile.TileEntitySafe;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public abstract class SafeMechanism {
 	
 	public static Map<String, Class<? extends SafeMechanism>> mechs = new HashMap<String, Class<? extends SafeMechanism>>();
-	static {
-		mechs.put(MechCombo.class.getName(), MechCombo.class);
-		mechs.put(MechKey.class.getName(), MechKey.class);
+	
+	public static void registerMechansim(Class mechCls) {
+		mechs.put(mechCls.getName(), mechCls);
 	}
 	
 	public static SafeMechanism tryInstantialize(String mechName, TileEntitySafe safe) {

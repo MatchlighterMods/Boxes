@@ -2,7 +2,7 @@ package ml.boxes.client.render.tile;
 
 import ml.boxes.client.ModelBox;
 import ml.boxes.tile.TileEntityBox;
-import ml.core.lib.BlockLib;
+import ml.core.block.BlockUtils;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemDye;
 import net.minecraft.tileentity.TileEntity;
@@ -31,7 +31,7 @@ public class BoxTESR extends TileEntitySpecialRenderer {
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		GL11.glTranslatef((float)var2, (float)var4, (float)var6);
 		GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-		GL11.glRotatef(BlockLib.getRotationFromDirection(box.facing), 0F, 1F, 0F);
+		GL11.glRotatef(BlockUtils.getRotationFromDirection(box.facing), 0F, 1F, 0F);
 		GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 
 		float openAngleInner = box.prevAngleInner + (box.flapAngleInner-box.prevAngleInner)*tickTime;

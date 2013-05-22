@@ -6,9 +6,9 @@ import java.util.List;
 import ml.boxes.Boxes;
 import ml.boxes.api.ContentBlacklist;
 import ml.boxes.network.packets.PacketDescribeCrate;
-import ml.core.lib.BlockLib;
-import ml.core.lib.ItemLib;
-import ml.core.lib.PlayerLib;
+import ml.core.PlayerUtils;
+import ml.core.block.BlockUtils;
+import ml.core.item.ItemUtils;
 import ml.core.tile.IRotatableTE;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -310,7 +310,7 @@ public class TileEntityCrate extends TileEntity implements ISidedInventory, IRot
 						itemCount += pl.inventory.decrStackSize(i, chg).stackSize;
 					}
 				}
-				PlayerLib.syncClientInventory(pl);
+				PlayerUtils.syncClientInventory(pl);
 				consolidateStacks();
 			}
 		} else {
@@ -337,7 +337,7 @@ public class TileEntityCrate extends TileEntity implements ISidedInventory, IRot
 			nis.stackSize = exAmount;
 			itemCount -= nis.stackSize;
 
-			ForgeDirection fd = BlockLib.getPlacedForgeDir(pl, xCoord, yCoord, zCoord);
+			ForgeDirection fd = BlockUtils.getPlacedForgeDir(pl, xCoord, yCoord, zCoord);
 
 			EntityItem ei = new EntityItem(worldObj, xCoord+0.5F+fd.offsetX*0.75F, yCoord+0.5F+fd.offsetY*0.75F, zCoord+0.5F+fd.offsetZ*0.75F, nis);
 			ei.motionX = fd.offsetX*0.2D;
@@ -361,7 +361,7 @@ public class TileEntityCrate extends TileEntity implements ISidedInventory, IRot
 				ItemStack nis = stacks[0].copy();
 				nis.stackSize = Math.min(nis.getMaxStackSize(), titems);
 				titems -= nis.stackSize;
-				ItemLib.dropItemIntoWorld(worldObj, xCoord, yCoord, zCoord, nis, 0.7F);
+				ItemUtils.dropItemIntoWorld(worldObj, xCoord, yCoord, zCoord, nis, 0.7F);
 			}
 		}
 	}
