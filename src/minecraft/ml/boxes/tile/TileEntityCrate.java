@@ -151,8 +151,9 @@ public class TileEntityCrate extends TileEntity implements ISidedInventory, IRot
 			if (stacks[1] == null)
 				stacks[1] = tis.copy();
 
-			stacks[0].stackSize = 0;
+			stacks[0].stackSize = Math.max(0, tItems-(CRATE_SIZE-64));
 			stacks[1].stackSize = Math.min(tItems, stacks[1].getMaxStackSize());
+			tItems -= stacks[0].stackSize;
 			tItems -= stacks[1].stackSize;
 			itemCount = tItems;
 		} else {
@@ -160,8 +161,16 @@ public class TileEntityCrate extends TileEntity implements ISidedInventory, IRot
 			stacks[0] = null;
 			stacks[1] = null;
 		}
-		onInventoryChanged(); //TODO Maybe be smarter about this
+		//onInventoryChanged(); //TODO Maybe be smarter about this
 		testTriggerPacket();
+	}
+	
+	@Override
+	public void onInventoryChanged() {
+		System.out.println(stacks[0]);
+		consolidateStacks();
+		System.out.println(stacks[0]);
+		super.onInventoryChanged();
 	}
 
 	@Override
@@ -317,7 +326,12 @@ public class TileEntityCrate extends TileEntity implements ISidedInventory, IRot
 			ItemStack is = pl.inventory.getCurrentItem();
 			if (is != null && allowItem(is)){
 				int chg = Math.min(is.stackSize, CRATE_SIZE-getTotalItems());
-				stacks[0] = pl.inventory.decrStackSize(pl.inventory.currentItem, chg);
+				if (stacks[0] == null) {
+					stacks[0] = pl.inventory.decrStackSize(pl.inventory.currentItem, chg);;
+				} else {
+					stacks[0].stackSize += chg;
+					pl.inventory.decrStackSize(pl.inventory.currentItem, chg);
+				}
 				consolidateStacks();
 			}
 		}
