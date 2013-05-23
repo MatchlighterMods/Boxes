@@ -2,16 +2,14 @@ package ml.boxes.item;
 
 import java.util.List;
 
-import cpw.mods.fml.common.registry.LanguageRegistry;
-
 import ml.boxes.Boxes;
 import ml.boxes.block.MetaType;
-import ml.boxes.data.ItemBoxContainer;
 import ml.boxes.tile.safe.SafeMechanism;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class ItemBoxBlocks extends ItemBlock {
 

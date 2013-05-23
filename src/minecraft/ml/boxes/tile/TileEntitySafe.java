@@ -1,20 +1,12 @@
 package ml.boxes.tile;
 
-import java.util.Arrays;
-import java.util.List;
-
-import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import ml.boxes.Boxes;
 import ml.boxes.network.packets.PacketDescribeSafe;
 import ml.boxes.tile.safe.MechFallback;
 import ml.boxes.tile.safe.SafeMechanism;
-import ml.core.block.BlockUtils;
 import ml.core.item.ItemUtils;
 import ml.core.tile.IRotatableTE;
 import ml.core.tile.TileEntityConnectable;
-import ml.core.tile.TileEntityMultiBlock;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -26,7 +18,6 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.ForgeDirection;
-import buildcraft.api.inventory.ISpecialInventory;
 
 public class TileEntitySafe extends TileEntityConnectable implements IEventedTE, IRotatableTE, IInventory, ISidedInventory {
 		
@@ -49,7 +40,7 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
 		
-		mech = SafeMechanism.tryInstantialize(tag.getString("mechType"), this);
+		mech = SafeMechanism.tryInstantiate(tag.getString("mechType"), this);
 		mech.loadNBT(tag.getCompoundTag("mechProps"));
 		
 		unlocked = tag.getBoolean("unlocked");
@@ -330,7 +321,8 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 	@Override
 	public void hostBroken() {
 		for (int i=0; i<this.getSizeInventory(); i++){
-			ItemUtils.dropItemIntoWorld(worldObj, xCoord, yCoord, zCoord, getStackInSlot(i));
+			if (getStackInSlot(i) != null)
+				ItemUtils.dropItemIntoWorld(worldObj, xCoord, yCoord, zCoord, getStackInSlot(i));
 		}
 	}
 	
@@ -338,7 +330,7 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 	public void hostPlaced(EntityLiving pl, ItemStack is) {
 		if (!worldObj.isRemote) {
 			NBTTagCompound tag = is.getTagCompound() != null ? is.getTagCompound() : new NBTTagCompound();
-			mech = SafeMechanism.tryInstantialize(tag.getString("mechType"), this);
+			mech = SafeMechanism.tryInstantiate(tag.getString("mechType"), this);
 			mech.loadNBT(tag.getCompoundTag("mechProps"));
 			tryConnection();
 		}

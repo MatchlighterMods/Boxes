@@ -14,8 +14,8 @@ import net.minecraft.item.ItemStack;
  */
 public class ContentBlacklist {
 	
-	public static String LIST_BOX = "blBox";
-	public static String LIST_CRATE = "blCrate";
+	public final static String LIST_BOX = "blBox";
+	public final static String LIST_CRATE = "blCrate";
 	
 	private static Map<String, List<IItemFilter>> blacklists = new HashMap<String, List<IItemFilter>>();
 	

@@ -10,10 +10,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class MechKey extends SafeMechanism {
-
-	static {
-		SafeMechanism.registerMechansim(MechKey.class);
-	}
 	
 	public int keyId = 0;
 	
@@ -21,6 +17,7 @@ public class MechKey extends SafeMechanism {
 		super(tsafe);
 	}
 
+	@methodAddInfo()
 	public static void getISInfo(ItemStack is, List infos) {
 		infos.add("KeyId: " + is.stackTagCompound.getInteger("keyId"));
 	}

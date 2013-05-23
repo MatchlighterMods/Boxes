@@ -1,10 +1,14 @@
 package ml.boxes.tile.safe;
 
 import java.util.Arrays;
+import java.util.List;
 
 import ml.boxes.Boxes;
 import ml.boxes.tile.TileEntitySafe;
+import ml.boxes.tile.safe.SafeMechanism.methodAddInfo;
+import ml.core.StringUtils;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class MechCombo extends SafeMechanism {
@@ -14,13 +18,14 @@ public class MechCombo extends SafeMechanism {
 	public int[] combination;
 	public int[] dispCombination;
 	
-	static {
-		SafeMechanism.registerMechansim(MechCombo.class);
-	}
-	
 	public MechCombo(TileEntitySafe tsafe) {
 		super(tsafe);
 		combination = new int[COMBO_LENGTH];
+	}
+	
+	@methodAddInfo()
+	public static void getISInfo(ItemStack is, List infos) {
+		infos.add("Combination: " + StringUtils.join(is.stackTagCompound.getIntArray("combination"), "-"));
 	}
 	
 	@Override

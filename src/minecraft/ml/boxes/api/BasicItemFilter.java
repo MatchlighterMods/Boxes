@@ -19,7 +19,7 @@ public class BasicItemFilter implements IItemFilter {
 	
 	@Override
 	public boolean ISMatchesFilter(ItemStack is) {
-		return isFilter.isItemEqual(is) || (isFilter.itemID == is.itemID && isFilter.getItemDamage() == -1);
+		return isFilter.isItemEqual(is) || (isFilter.itemID == is.itemID && isFilter.getItemDamage() == Short.MAX_VALUE);
 	}
 
 }

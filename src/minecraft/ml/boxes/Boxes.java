@@ -64,7 +64,7 @@ public class Boxes {
 	public void Init(FMLInitializationEvent evt){
 		GameRegistry.registerTileEntity(TileEntityBox.class, "box");
 		GameRegistry.registerTileEntity(TileEntityCrate.class, "crate");
-		GameRegistry.registerTileEntity(TileEntitySafe.class, "safe");
+		//GameRegistry.registerTileEntity(TileEntitySafe.class, "safe");
 		
 		this.BlockBox = new BlockBox(config.boxBlockID);
 		GameRegistry.registerBlock(this.BlockBox, ItemBox.class, "box");
@@ -74,8 +74,8 @@ public class Boxes {
 		this.ItemResources = new ItemResources(config.cardboardItemID-256);
 		GameRegistry.registerItem(ItemResources, "cardboard");
 		
-		this.ItemKey = new ItemKey(config.keyItemID-256);
-		GameRegistry.registerItem(ItemKey, "key");
+		//this.ItemKey = new ItemKey(config.keyItemID-256);
+		//GameRegistry.registerItem(ItemKey, "key");
 		
 		LanguageRegistry.instance().addStringLocalization("item.box.name", "en_US", "Box");
 		LanguageRegistry.instance().addStringLocalization("item.cardboard.name", "en_US", "Cardboard Sheet");
@@ -92,7 +92,7 @@ public class Boxes {
 		GameRegistry.addRecipe(ItemType.ISFromType(ItemType.Label, 3), "ppp", " s ", 'p', Item.paper, 's', Item.slimeBall);
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockMeta, 1, MetaType.Crate.ordinal()), "wsw", "scs", "wsw", 'w', "logWood", 's', "plankWood", 'c', Block.chest));
 		GameRegistry.addRecipe(new RecipeBox());
-		GameRegistry.addRecipe(new RecipeKey(" m ", "nm ", "nm ", 'n', Item.goldNugget, 'm', Item.ingotGold));
+		//GameRegistry.addRecipe(new RecipeKey(" m", "nm", "nm", 'n', Item.goldNugget, 'm', Item.ingotGold));
 		
 		initDungeonLoot();
 		
