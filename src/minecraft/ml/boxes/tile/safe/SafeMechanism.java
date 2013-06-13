@@ -4,65 +4,51 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 import ml.boxes.tile.TileEntitySafe;
-import ml.core.ReflectionUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 public abstract class SafeMechanism {
 
+	/**
+	 * <b>(Optional)</b> Annotate your MechanismInfo static method with this annotation.<br>
+	 * Used to get Tooltip info for safes with the mechanism installed.<br>
+	 * Must accept 2 parameters: {@link ItemStack} safeStack, List toolTipLines
+	 */
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.METHOD)
-	public static @interface methodAddInfo {}
-
-	public static Map<String, RegMech> mechs = new HashMap<String, RegMech>();
-
-	public final static void registerMechanism(IItemMech itm, Class mechCls) {
-		mechs.put(mechCls.getName(), new RegMech(itm, mechCls));
-	}
+	public static @interface MethodAddInfo {}
 	
-	public final static SafeMechanism tryInstantiate(String mechName, TileEntitySafe safe) {
-		if (SafeMechanism.mechs.containsKey(mechName)){
-			Class clazz = SafeMechanism.mechs.get(mechName).mechClass;
-			try {
-				return (SafeMechanism)clazz.getConstructor(TileEntitySafe.class).newInstance(safe);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return new MechFallback(safe);
-	}
+	/**
+	 * <b>(Optional)</b> Annotate your OnSafeCraftedWith static method with this annotation.<br>
+	 * Used to copy necessary NBT tags to the safeStack from the IItemMechs ItemStack.<br>
+	 * Must accept 2 parameters: {@link ItemStack} mechStack, {@link NBTTagCompound} safeMechData
+	 */
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target(ElementType.METHOD)
+	public static @interface OnUsedInCrafting {}
+	
+	/**
+	 * <b>(Required)</b> Annotate your OnSafeDecrafted static method with this annotation.<br>
+	 * Used to remove the Mechanism from a safe and return the ItemStack of the Mechanism<br>
+	 * Must accept 1 parameter: {@link NBTTagCompound} safeMechData<br>
+	 * Must return an {@link ItemStack} of the Mechanism
+	 */
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target(ElementType.METHOD)
+	public static @interface MethodGetItemStack {}
 
-	public final static void attemptGetISInfo(ItemStack is, List infos) {
-		NBTTagCompound tag = is.getTagCompound() != null ? is.getTagCompound() : new NBTTagCompound();
-		String mechN = tag.getString("mechType");
-		if (SafeMechanism.mechs.containsKey(mechN)) {
-			Class smech = SafeMechanism.mechs.get(mechN).mechClass;
-			infos.add("Mechanism: " + LanguageRegistry.instance().getStringLocalization(mechN));
-			List<Method> anns = ReflectionUtils.getMethodsAnnotatedWith(smech, SafeMechanism.methodAddInfo.class);
-			for (Method mthd : anns) {
-				if (Modifier.isStatic(mthd.getModifiers())) {
-					try {
-						mthd.invoke(null, is, infos);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				} else {
-					throw new IllegalStateException("Method in class \"" + smech.getName() + "\" has the \"methodAddInfo\" annotation, but is not static.");
-				}
-			}
-		} else {
-			infos.add("Mechanism: \u00A7c\u00A7oInvalid");
-		}
+	public final static Map<String, RegMech> mechs = new HashMap<String, RegMech>();
+
+	public final static void registerMechanism(IItemMech itm, Class<? extends SafeMechanism> mechCls) {
+		mechs.put(mechCls.getName(), new RegMech(itm, mechCls));
 	}
 	
 	public final TileEntitySafe safe;
@@ -101,13 +87,16 @@ public abstract class SafeMechanism {
 	public void onLocked(){};
 	
 	/**
-	 * The decrafter calls IItemMech.getMechStackForNBT(), this should too.
+	 * Render any additions to the safe.
+	 * @param pass Indicates what the GLMatrix is currently transformed for.
+	 * @param stacked True if the safe is a double-safe
 	 */
-	public final ItemStack getOldMechStack() {
-		if (mechs.containsKey(this.getClass().getName())) {
-			return mechs.get(getClass().getName()).craftingItem.getMechStackFromNBT(saveNBT());
-		}
-		return null;
+	@SideOnly(Side.CLIENT)
+	public abstract void render(RenderPass pass, boolean stacked); 
+	
+	public static enum RenderPass {
+		SafeBody,
+		SafeDoor;
 	}
 	
 	public static class RegMech {

@@ -7,7 +7,7 @@ import ml.boxes.api.ContentBlacklist;
 import ml.boxes.inventory.ContentTip;
 import ml.boxes.inventory.GridContentTip;
 import ml.boxes.item.ItemBox;
-import ml.core.Geometry.rectangle;
+import ml.core.geo.Rectangle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -265,7 +265,7 @@ public class Box implements IInventory {
 	@Override
 	public void closeChest() {}
 
-	public ContentTip createContentTip(Slot bSlot, rectangle guiBounds){
+	public ContentTip createContentTip(Slot bSlot, Rectangle guiBounds){
 		return new GridContentTip(bSlot, guiBounds);
 	}
 

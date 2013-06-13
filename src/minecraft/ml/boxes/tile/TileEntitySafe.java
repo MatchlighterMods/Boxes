@@ -1,8 +1,10 @@
 package ml.boxes.tile;
 
 import ml.boxes.Boxes;
+import ml.boxes.Registry;
 import ml.boxes.network.packets.PacketDescribeSafe;
 import ml.boxes.tile.safe.MechFallback;
+import ml.boxes.tile.safe.MechsHelper;
 import ml.boxes.tile.safe.SafeMechanism;
 import ml.core.item.ItemUtils;
 import ml.core.tile.IRotatableTE;
@@ -40,7 +42,7 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
 		
-		mech = SafeMechanism.tryInstantiate(tag.getString("mechType"), this);
+		mech = MechsHelper.tryInstantiate(tag.getString("mechType"), this);
 		mech.loadNBT(tag.getCompoundTag("mechProps"));
 		
 		unlocked = tag.getBoolean("unlocked");
@@ -88,12 +90,12 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 	
 	public void unlock() {
 		unlocked = true;
-		worldObj.addBlockEvent(xCoord, yCoord, zCoord, Boxes.BlockMeta.blockID, 1, 1);
+		worldObj.addBlockEvent(xCoord, yCoord, zCoord, Registry.BlockMeta.blockID, 1, 1);
 	}
 	
 	public void lock() {
 		unlocked = false;
-		worldObj.addBlockEvent(xCoord, yCoord, zCoord, Boxes.BlockMeta.blockID, 1, 0);
+		worldObj.addBlockEvent(xCoord, yCoord, zCoord, Registry.BlockMeta.blockID, 1, 0);
 	}
 	
 	@Override
@@ -225,13 +227,13 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 	@Override
 	public void openChest() {
 		users +=1;
-		worldObj.addBlockEvent(xCoord, yCoord, zCoord, Boxes.BlockMeta.blockID, 2, users);
+		worldObj.addBlockEvent(xCoord, yCoord, zCoord, Registry.BlockMeta.blockID, 2, users);
 	}
 
 	@Override
 	public void closeChest() {
 		users -=1;
-		worldObj.addBlockEvent(xCoord, yCoord, zCoord, Boxes.BlockMeta.blockID, 2, users);
+		worldObj.addBlockEvent(xCoord, yCoord, zCoord, Registry.BlockMeta.blockID, 2, users);
 	}
 
 	@Override
@@ -330,7 +332,7 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 	public void hostPlaced(EntityLiving pl, ItemStack is) {
 		if (!worldObj.isRemote) {
 			NBTTagCompound tag = is.getTagCompound() != null ? is.getTagCompound() : new NBTTagCompound();
-			mech = SafeMechanism.tryInstantiate(tag.getString("mechType"), this);
+			mech = MechsHelper.tryInstantiate(tag.getString("mechType"), this);
 			mech.loadNBT(tag.getCompoundTag("mechProps"));
 			tryConnection();
 		}

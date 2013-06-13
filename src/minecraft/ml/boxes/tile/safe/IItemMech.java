@@ -12,10 +12,4 @@ public interface IItemMech {
 	 */
 	public String getMechID(InventoryCrafting inv, ItemStack mechStack, ItemStack safeStack);
 	
-	/**
-	 * Should transfer any necessary NBT settings from the mechStack to the safeStack.
-	 */
-	public void onSafeCraftedWith(InventoryCrafting inv, ItemStack mechStack, ItemStack safeStack);
-	
-	public ItemStack getMechStackFromNBT(NBTTagCompound tag);
 }

@@ -9,10 +9,10 @@ import ml.boxes.Boxes;
 import ml.boxes.client.gui.GuiBox;
 import ml.boxes.data.Box;
 import ml.boxes.data.ItemBoxContainer;
-import ml.core.Geometry;
 import ml.core.StringUtils;
-import ml.core.Geometry.XYPair;
-import ml.core.Geometry.rectangle;
+import ml.core.geo.GeoMath;
+import ml.core.geo.GeoMath.XYPair;
+import ml.core.geo.Rectangle;
 import ml.core.render.GuiRenderLib;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -25,7 +25,7 @@ public class GridContentTip extends ContentTip {
 	protected static XYPair gridDimensions;
 	private static List<ItemStack> contentStacks = new ArrayList<ItemStack>();
 	
-	public GridContentTip(Slot slt, rectangle gcRect) {
+	public GridContentTip(Slot slt, Rectangle gcRect) {
 		super(slt, gcRect);
 		
 	}
@@ -60,7 +60,7 @@ public class GridContentTip extends ContentTip {
 			GuiRenderLib.drawStackAt(mc, slotX, slotY, is);
 
 			GL11.glDisable(GL11.GL_LIGHTING);
-			if (Geometry.pointInRect(mx - tipBounds.xCoord, my - tipBounds.yCoord, slotX, slotY, 16, 16)){
+			if (GeoMath.pointInRect(mx - tipBounds.xCoord, my - tipBounds.yCoord, slotX, slotY, 16, 16)){
 				GL11.glDisable(GL11.GL_DEPTH_TEST);
 				GuiRenderLib.drawGradientRect(slotX, slotY, slotX + 16, slotY + 16, -2130706433, -2130706433);
 				GL11.glEnable(GL11.GL_DEPTH_TEST);
@@ -84,7 +84,7 @@ public class GridContentTip extends ContentTip {
 			for (int i=0; i<bd.getSizeInventory(); i++){
 				contentStacks.add(bd.getStackInSlot(i));
 			}
-			gridDimensions = Geometry.determineSquarestGrid(bd.getSizeInventory());
+			gridDimensions = GeoMath.determineSquarestGrid(bd.getSizeInventory());
 		} else {
 			List<ItemStack> iss = bd.getContainedItemStacks();
 			for (ItemStack is : iss){
@@ -99,7 +99,7 @@ public class GridContentTip extends ContentTip {
 				if (!matched)
 					contentStacks.add(is.copy());
 			}
-			gridDimensions = Geometry.determineSquarestGrid(contentStacks.size());
+			gridDimensions = GeoMath.determineSquarestGrid(contentStacks.size());
 		}
 		targetSize.X = gridDimensions.X*18 +16;
 		targetSize.Y = gridDimensions.Y*18 +16;
@@ -117,7 +117,7 @@ public class GridContentTip extends ContentTip {
 				int slotX = 8+col*18 + tipBounds.xCoord;
 				int slotY = 10+row*18 + tipBounds.yCoord;
 
-				if (Geometry.pointInRect(pX, pY, slotX, slotY, 16, 16)){
+				if (GeoMath.pointInRect(pX, pY, slotX, slotY, 16, 16)){
 					return i;
 				}
 			}

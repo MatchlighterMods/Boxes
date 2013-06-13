@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.client.ForgeHooksClient;
@@ -59,7 +60,7 @@ public class CrateTESR extends TileEntitySpecialRenderer {
 
 			GL11.glRotatef(BlockUtils.getRotationFromDirection(tec.facing), 0, 1.0F, 0F);
 
-			boolean isBlock = tec.containedIsBlock;
+			boolean isBlock = tec.cItem.getItem() instanceof ItemBlock;
 			boolean upOrDwn = tec.facing == ForgeDirection.UP || tec.facing == ForgeDirection.DOWN;
 
 			int rendMode = isBlock ? Boxes.config.crateBlockRenderMode : Boxes.config.crateItemRenderMode;
@@ -71,18 +72,8 @@ public class CrateTESR extends TileEntitySpecialRenderer {
 
 			GL11.glPushMatrix();
 			WorldRenderLib.shouldSpreadItems = false;
-			if (rendMode == 0 || (rendMode == 1 && !upOrDwn)){
-				if (!upOrDwn) GL11.glTranslatef(0, 0, 0.0625F);
-				WorldRenderLib.renderItemIntoWorld(tec.cItem, false);
-			} else {
-				if (isBlock){
-					GL11.glScalef(1.2F, 1.2F, 1.2F);
-					GL11.glRotatef(90F, 0, 1F, 0);
-				} else {
-					GL11.glTranslatef(0F, -0.125F, 0F);
-				}
-				WorldRenderLib.renderItemIntoWorld(tec.cItem, true);
-			}
+			if (!upOrDwn) GL11.glTranslatef(0, 0, 0.0625F);
+			WorldRenderLib.renderItemIntoWorldCenteredAt(tec.cItem, !(rendMode == 0 || (rendMode == 1 && !upOrDwn)));
 			GL11.glPopMatrix();
 
 			GL11.glPushMatrix();

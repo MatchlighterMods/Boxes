@@ -3,7 +3,7 @@ package ml.boxes.tile;
 import java.util.ArrayList;
 import java.util.List;
 
-import ml.boxes.Boxes;
+import ml.boxes.Registry;
 import ml.boxes.api.ContentBlacklist;
 import ml.boxes.network.packets.PacketDescribeCrate;
 import ml.core.PlayerUtils;
@@ -16,6 +16,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -36,8 +37,6 @@ public class TileEntityCrate extends TileEntity implements ISidedInventory, IRot
 	public ItemStack cItem; //Used by server to determine if it needs to send a packet. Used by client for which item to render
 	public int lItemCount;
 
-	@SideOnly(Side.CLIENT)
-	public boolean containedIsBlock;
 	@SideOnly(Side.CLIENT)
 	public String contentString;
 
@@ -67,8 +66,6 @@ public class TileEntityCrate extends TileEntity implements ISidedInventory, IRot
 	@SideOnly(Side.CLIENT)
 	public void updateClientDetails(){
 		if (cItem == null) return;
-
-		containedIsBlock = cItem.getItemSpriteNumber() == 0 && cItem.itemID < Block.blocksList.length && (Block.blocksList[cItem.itemID] != null) && RenderBlocks.renderItemIn3d(Block.blocksList[cItem.itemID].getRenderType());
 
 		contentString = "";
 		if (cItem.getMaxStackSize() != 1){
@@ -161,16 +158,8 @@ public class TileEntityCrate extends TileEntity implements ISidedInventory, IRot
 			stacks[0] = null;
 			stacks[1] = null;
 		}
-		//onInventoryChanged(); //TODO Maybe be smarter about this
-		testTriggerPacket();
-	}
-	
-	@Override
-	public void onInventoryChanged() {
-		System.out.println(stacks[0]);
-		consolidateStacks();
-		System.out.println(stacks[0]);
 		super.onInventoryChanged();
+		testTriggerPacket();
 	}
 
 	@Override
@@ -386,7 +375,7 @@ public class TileEntityCrate extends TileEntity implements ISidedInventory, IRot
 	@Override
 	public boolean onAttemptUpgrade(EntityPlayer pl, ItemStack is, int side) {
 		if (is != null){
-			if (!upg_label && is.isItemEqual(new ItemStack(Boxes.ItemResources, 1, 1))){
+			if (!upg_label && is.isItemEqual(new ItemStack(Registry.ItemResources, 1, 1))){
 				is.stackSize -= 1;
 				upg_label = true;
 				sendPacket();

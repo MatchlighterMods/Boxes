@@ -9,9 +9,9 @@ import ml.boxes.data.Box;
 import ml.boxes.data.IBoxContainer;
 import ml.boxes.data.ItemBoxContainer;
 import ml.boxes.network.packets.PacketTipClick;
-import ml.core.Geometry;
-import ml.core.Geometry.XYPair;
-import ml.core.Geometry.rectangle;
+import ml.core.geo.GeoMath;
+import ml.core.geo.GeoMath.XYPair;
+import ml.core.geo.Rectangle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -34,8 +34,8 @@ public abstract class ContentTip {
 	
 	protected final Slot boxSlot;
 	
-	protected rectangle tipBounds = new rectangle(0, 0, 0, 0);
-	protected rectangle gcBounds;
+	protected Rectangle tipBounds = new Rectangle(0, 0, 0, 0);
+	protected Rectangle gcBounds;
 	protected int hvrSltIndex;
 	
 	protected XYPair targetSize = new XYPair(0, 0);
@@ -48,7 +48,7 @@ public abstract class ContentTip {
 	
 	private ItemStack origStack;
 	
-	public ContentTip(Slot slt, rectangle gcRect) {
+	public ContentTip(Slot slt, Rectangle gcRect) {
 		boxSlot = slt;
 		gcBounds = gcRect;
 		origStack = boxSlot.getStack();
@@ -168,8 +168,8 @@ public abstract class ContentTip {
 		GuiScreen oc = FMLClientHandler.instance().getClient().currentScreen;
 		return oc instanceof GuiContainer &&
 				((GuiContainer)oc).inventorySlots.inventorySlots.contains(boxSlot) &&
-				(boxSlot != null && (Geometry.pointInRect(mx, my, gcBounds.xCoord + boxSlot.xDisplayPosition, gcBounds.yCoord + boxSlot.yDisplayPosition, 16, 16) || 
-				(interacting && Geometry.pointInRect(mx, my, tipBounds))) &&
+				(boxSlot != null && (GeoMath.pointInRect(mx, my, gcBounds.xCoord + boxSlot.xDisplayPosition, gcBounds.yCoord + boxSlot.yDisplayPosition, 16, 16) || 
+				(interacting && tipBounds.isPointInside(mx, my))) &&
 				boxSlot.getHasStack() && ItemStack.areItemStackTagsEqual(origStack, boxSlot.getStack())
 				) && (interacting || getIIB().getBox().canOpenContentPreview());
 	}
@@ -190,7 +190,7 @@ public abstract class ContentTip {
 	}
 	
 	public boolean isPointInTip(int pX, int pY){
-		return Geometry.pointInRect(pX, pY, tipBounds);
+		return tipBounds.isPointInside(pX, pY);
 	}
 	
     public ItemStack slotClickOld(int slotNum, int arg, int action, EntityPlayer par4EntityPlayer)

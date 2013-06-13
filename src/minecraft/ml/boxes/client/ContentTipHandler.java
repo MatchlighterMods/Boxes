@@ -12,10 +12,10 @@ import ml.boxes.inventory.ContainerBox;
 import ml.boxes.inventory.ContentTip;
 import ml.boxes.item.ItemBox;
 import ml.boxes.network.packets.PacketTipClick;
-import ml.core.Geometry;
 import ml.core.StringUtils;
-import ml.core.Geometry.XYPair;
-import ml.core.Geometry.rectangle;
+import ml.core.geo.GeoMath;
+import ml.core.geo.GeoMath.XYPair;
+import ml.core.geo.Rectangle;
 import ml.core.render.GuiRenderLib;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
@@ -45,7 +45,7 @@ public class ContentTipHandler implements ITickHandler {
 	private static Slot hoverSlot;
 	private static long tickerTime = 0;
 
-	private static rectangle gcBounds = new rectangle(0, 0, 0, 0);
+	private static Rectangle gcBounds = new Rectangle(0, 0, 0, 0);
 	
 	@Override
 	public void tickStart(EnumSet<TickType> type, Object... tickData) {
@@ -57,7 +57,7 @@ public class ContentTipHandler implements ITickHandler {
 		if (type.contains(TickType.RENDER) && !Boxes.neiInstalled){ //NEI Provides a better place for doing this. Use it if we can
 			Minecraft mc = FMLClientHandler.instance().getClient();
 			if (mc.currentScreen instanceof GuiContainer){
-				Geometry.XYPair m = Geometry.getScaledMouse();
+				GeoMath.XYPair m = GeoMath.getScaledMouse();
 				GL11.glPushMatrix();
 				GL11.glTranslatef(0F, 0F, 200F);
 				renderContentTip(mc, m.X, m.Y, (Float)tickData[0]);
@@ -77,7 +77,7 @@ public class ContentTipHandler implements ITickHandler {
 			int guiXSize = ObfuscationReflectionHelper.getPrivateValue(GuiContainer.class, (GuiContainer)mc.currentScreen, 1);
 			int guiYSize = ObfuscationReflectionHelper.getPrivateValue(GuiContainer.class, (GuiContainer)mc.currentScreen, 2);
 
-			Geometry.XYPair m = Geometry.getScaledMouse();
+			GeoMath.XYPair m = GeoMath.getScaledMouse();
 
 			gcBounds.width = asGuiContainer.width;
 			gcBounds.height = asGuiContainer.height;
@@ -91,7 +91,7 @@ public class ContentTipHandler implements ITickHandler {
 				boolean thoverSlot = false;
 				for (Object objSlt : asGuiContainer.inventorySlots.inventorySlots){
 					Slot slt = (Slot)objSlt;
-					if (Geometry.pointInRect(m.X, m.Y, gcBounds.xCoord + slt.xDisplayPosition, gcBounds.yCoord + slt.yDisplayPosition, 16, 16)){
+					if (GeoMath.pointInRect(m.X, m.Y, gcBounds.xCoord + slt.xDisplayPosition, gcBounds.yCoord + slt.yDisplayPosition, 16, 16)){
 						thoverSlot = true;
 						if (hoverSlot != slt)
 							tickerTime = mc.getSystemTime();

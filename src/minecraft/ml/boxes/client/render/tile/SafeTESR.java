@@ -6,6 +6,7 @@ import org.lwjgl.opengl.GL12;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ml.boxes.tile.TileEntitySafe;
+import ml.boxes.tile.safe.SafeMechanism.RenderPass;
 import ml.core.block.BlockUtils;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
@@ -39,6 +40,8 @@ public class SafeTESR extends TileEntitySpecialRenderer {
 			sModel.renderPart(renderTall ? "Safe_Tall":"Safe_Small");
 			if (renderTall) sModel.renderPart("Safe_Shelf");
 			
+			tes.mech.render(RenderPass.SafeBody, renderTall);
+			
 			float doorAng1 = tes.prevDoorAng + (tes.doorAng-tes.prevDoorAng)*tickTime;
 			doorAng1 = (float)Math.sin(doorAng1*3.14/2);
 			int doorAng = (int)(120 * doorAng1);
@@ -49,18 +52,7 @@ public class SafeTESR extends TileEntitySpecialRenderer {
 
 			sModel.renderPart(renderTall ? "Door_Tall":"Door_Small");
 
-			GL11.glTranslatef(5F, renderTall ? 16F:8F, 1F);
-			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			bindTextureByName("/mods/Boxes/textures/models/dials.png");
-			sModel.renderPart("ComboBack");
-			for (int i=0; i<3; i++){
-				GL11.glPushMatrix();
-				GL11.glTranslatef(-0.75F*(float)i, 0F, 0F);
-				GL11.glRotatef(-36*(i+1), 1F, 0, 0);
-				sModel.renderPart("Wheel_Sides");
-				sModel.renderPart("Wheel_Num");
-				GL11.glPopMatrix();
-			}
+			tes.mech.render(RenderPass.SafeDoor, renderTall);
 
 			GL11.glPopMatrix();
 		}

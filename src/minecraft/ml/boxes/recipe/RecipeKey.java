@@ -2,7 +2,7 @@ package ml.boxes.recipe;
 
 import java.util.List;
 
-import ml.boxes.Boxes;
+import ml.boxes.Registry;
 import ml.core.inventory.InventoryUtils;
 import ml.core.item.RecipeMixed;
 import net.minecraft.inventory.InventoryCrafting;
@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 public class RecipeKey extends RecipeMixed {
 
 	public RecipeKey(Object... recipe) {
-		super(Boxes.ItemKey, recipe);
+		super(Registry.ItemKey, recipe);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -23,11 +23,11 @@ public class RecipeKey extends RecipeMixed {
 	public boolean shapelessItemsValid(InventoryCrafting inv,
 			List<ItemStack> items) {
 		
-		List<ItemStack> keys = InventoryUtils.findItems(inv, Boxes.ItemKey);
+		List<ItemStack> keys = InventoryUtils.findItems(inv, Registry.ItemKey);
 		if (keys.size()>1) return false;
 		
 		for (ItemStack is : items) {
-			if (is.getItem() != Boxes.ItemKey &&
+			if (is.getItem() != Registry.ItemKey &&
 				is.getItem() != Item.dyePowder) {
 				return false;
 			}
@@ -38,9 +38,9 @@ public class RecipeKey extends RecipeMixed {
 
 	@Override
 	public ItemStack getCraftingResult(InventoryCrafting inventorycrafting) {
-		ItemStack keyStack = new ItemStack(Boxes.ItemKey);
+		ItemStack keyStack = new ItemStack(Registry.ItemKey);
 		
-		ItemStack dkey = InventoryUtils.findItem(inventorycrafting, Boxes.ItemKey);
+		ItemStack dkey = InventoryUtils.findItem(inventorycrafting, Registry.ItemKey);
 		if (dkey != null) keyStack.setItemDamage(dkey.getItemDamage());
 		
 		NBTTagCompound dataTag = new NBTTagCompound();

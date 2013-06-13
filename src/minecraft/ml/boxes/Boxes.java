@@ -6,6 +6,7 @@ import ml.boxes.block.MetaType;
 import ml.boxes.item.ItemBox;
 import ml.boxes.item.ItemBoxBlocks;
 import ml.boxes.item.ItemKey;
+import ml.boxes.item.ItemMechs;
 import ml.boxes.item.ItemResources;
 import ml.boxes.item.ItemType;
 import ml.boxes.network.PacketHandler;
@@ -40,14 +41,10 @@ public class Boxes {
 	
 	@SidedProxy(serverSide="ml.boxes.CommonProxy", clientSide="ml.boxes.client.ClientProxy")
 	public static CommonProxy proxy;
+	
 	@Instance("Boxes")
 	public static Boxes instance;
 	public static Boolean neiInstalled = false;
-	
-	public static BlockBox BlockBox;
-	public static BlockMeta BlockMeta;
-	public static ItemResources ItemResources;
-	public static ItemKey ItemKey;
 	
 	public static int nullRendererID = -1;
 	public static CreativeTabs BoxTab = new BoxesCreativeTab("boxes");
@@ -64,18 +61,11 @@ public class Boxes {
 	public void Init(FMLInitializationEvent evt){
 		GameRegistry.registerTileEntity(TileEntityBox.class, "box");
 		GameRegistry.registerTileEntity(TileEntityCrate.class, "crate");
-		//GameRegistry.registerTileEntity(TileEntitySafe.class, "safe");
+		GameRegistry.registerTileEntity(TileEntitySafe.class, "safe");
 		
-		this.BlockBox = new BlockBox(config.boxBlockID);
-		GameRegistry.registerBlock(this.BlockBox, ItemBox.class, "box");
-		this.BlockMeta = new BlockMeta(config.generalBlockID);
-		GameRegistry.registerBlock(this.BlockMeta, ItemBoxBlocks.class, "boxesMeta");
+		Registry.registerBlocks();
 		
-		this.ItemResources = new ItemResources(config.cardboardItemID-256);
-		GameRegistry.registerItem(ItemResources, "cardboard");
-		
-		//this.ItemKey = new ItemKey(config.keyItemID-256);
-		//GameRegistry.registerItem(ItemKey, "key");
+		Registry.registerItems();
 		
 		LanguageRegistry.instance().addStringLocalization("item.box.name", "en_US", "Box");
 		LanguageRegistry.instance().addStringLocalization("item.cardboard.name", "en_US", "Cardboard Sheet");
@@ -88,11 +78,11 @@ public class Boxes {
 		
 		NetworkRegistry.instance().registerGuiHandler(instance, proxy);
 		
-		GameRegistry.addRecipe(new ItemStack(ItemResources, 1, 0), "ppp", "sws", "ppp", 'p', Item.paper, 's', Item.silk, 'w', Item.bucketWater);
+		GameRegistry.addRecipe(new ItemStack(Registry.ItemResources, 1, 0), "ppp", "sws", "ppp", 'p', Item.paper, 's', Item.silk, 'w', Item.bucketWater);
 		GameRegistry.addRecipe(ItemType.ISFromType(ItemType.Label, 3), "ppp", " s ", 'p', Item.paper, 's', Item.slimeBall);
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockMeta, 1, MetaType.Crate.ordinal()), "wsw", "scs", "wsw", 'w', "logWood", 's', "plankWood", 'c', Block.chest));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Registry.BlockMeta, 1, MetaType.Crate.ordinal()), "wsw", "scs", "wsw", 'w', "logWood", 's', "plankWood", 'c', Block.chest));
 		GameRegistry.addRecipe(new RecipeBox());
-		//GameRegistry.addRecipe(new RecipeKey(" m", "nm", "nm", 'n', Item.goldNugget, 'm', Item.ingotGold));
+		GameRegistry.addRecipe(new RecipeKey(" m", "nm", "nm", 'n', Item.goldNugget, 'm', Item.ingotGold));
 		
 		initDungeonLoot();
 		
@@ -100,9 +90,9 @@ public class Boxes {
 	}
 	
 	public void initDungeonLoot(){
-		ChestGenHooks.addItem(ChestGenHooks.DUNGEON_CHEST, new WeightedRandomChestContent(new ItemStack(ItemResources), 1, 3, 100));
-		ChestGenHooks.addItem(ChestGenHooks.VILLAGE_BLACKSMITH, new WeightedRandomChestContent(new ItemStack(ItemResources), 1, 5, 12));
-		ChestGenHooks.addItem(ChestGenHooks.BONUS_CHEST, new WeightedRandomChestContent(new ItemStack(ItemResources), 1, 4, 7));
+		ChestGenHooks.addItem(ChestGenHooks.DUNGEON_CHEST, new WeightedRandomChestContent(new ItemStack(Registry.ItemResources), 1, 3, 100));
+		ChestGenHooks.addItem(ChestGenHooks.VILLAGE_BLACKSMITH, new WeightedRandomChestContent(new ItemStack(Registry.ItemResources), 1, 5, 12));
+		ChestGenHooks.addItem(ChestGenHooks.BONUS_CHEST, new WeightedRandomChestContent(new ItemStack(Registry.ItemResources), 1, 4, 7));
 	}
 	
 }

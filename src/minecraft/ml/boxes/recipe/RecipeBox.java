@@ -1,7 +1,7 @@
 package ml.boxes.recipe;
 
 import cpw.mods.fml.common.registry.LanguageRegistry;
-import ml.boxes.Boxes;
+import ml.boxes.Registry;
 import ml.boxes.data.Box;
 import ml.boxes.data.ItemBoxContainer;
 import ml.boxes.item.ItemBox;
@@ -24,7 +24,7 @@ public class RecipeBox implements IRecipe {
 
 	@Override
 	public boolean matches(InventoryCrafting inv, World world){
-		ItemStack cb = new ItemStack(Boxes.ItemResources);
+		ItemStack cb = new ItemStack(Registry.ItemResources);
 		
 		for (int i : new int[]{0,1,2, 3,5, 6,7,8}){
 			if (!checkItemEquals(cb, inv.getStackInSlot(i)))
@@ -41,7 +41,7 @@ public class RecipeBox implements IRecipe {
 
 	@Override
 	public ItemStack getCraftingResult(InventoryCrafting var1) {
-		ItemStack is = new ItemStack(Boxes.BlockBox, 1);
+		ItemStack is = new ItemStack(Registry.BlockBox, 1);
 		ItemBoxContainer iib = new ItemBoxContainer(is);
 		
 		ItemStack dyeStack = var1.getStackInRowAndColumn(1, 1);
@@ -65,7 +65,7 @@ public class RecipeBox implements IRecipe {
 
 	@Override
 	public ItemStack getRecipeOutput() {
-		return new ItemStack(Boxes.BlockBox, 1, 0);
+		return new ItemStack(Registry.BlockBox, 1, 0);
 	}
 	
 	private boolean checkItemEquals(ItemStack target, ItemStack input)

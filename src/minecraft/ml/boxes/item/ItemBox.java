@@ -3,6 +3,7 @@ package ml.boxes.item;
 import java.util.List;
 
 import ml.boxes.Boxes;
+import ml.boxes.Registry;
 import ml.boxes.data.Box;
 import ml.boxes.data.ItemBoxContainer;
 import ml.boxes.tile.TileEntityBox;
@@ -92,7 +93,7 @@ public class ItemBox extends ItemBlock {
 	@Override
 	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List) {
 		for (int i=0; i<15; i++){
-			ItemStack is = new ItemStack(Boxes.BlockBox, 1);
+			ItemStack is = new ItemStack(Registry.BlockBox, 1);
 			ItemBoxContainer iib = new ItemBoxContainer(is);
 			iib.getBox().boxName = getColoredBoxName(i);
 			iib.getBox().boxColor = ItemDye.dyeColors[i];

@@ -1,6 +1,6 @@
 package ml.boxes.item;
 
-import ml.boxes.Boxes;
+import ml.boxes.Registry;
 import ml.boxes.block.MetaType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
@@ -24,6 +24,6 @@ public enum ItemType {
 	}
 	
 	public static ItemStack ISFromType(ItemType it, int stackSize){
-		return new ItemStack(Boxes.ItemResources, stackSize, it.ordinal());
+		return new ItemStack(Registry.ItemResources, stackSize, it.ordinal());
 	}
 }

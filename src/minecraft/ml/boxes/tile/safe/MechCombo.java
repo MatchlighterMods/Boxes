@@ -3,10 +3,17 @@ package ml.boxes.tile.safe;
 import java.util.Arrays;
 import java.util.List;
 
+import org.lwjgl.opengl.GL11;
+
 import ml.boxes.Boxes;
+import ml.boxes.Registry;
+import ml.boxes.client.render.tile.SafeTESR;
 import ml.boxes.tile.TileEntitySafe;
-import ml.boxes.tile.safe.SafeMechanism.methodAddInfo;
+import ml.boxes.tile.safe.SafeMechanism.MethodAddInfo;
+import ml.boxes.tile.safe.SafeMechanism.MethodGetItemStack;
+import ml.boxes.tile.safe.SafeMechanism.OnUsedInCrafting;
 import ml.core.StringUtils;
+import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -23,9 +30,19 @@ public class MechCombo extends SafeMechanism {
 		combination = new int[COMBO_LENGTH];
 	}
 	
-	@methodAddInfo()
+	@MethodAddInfo()
 	public static void getISInfo(ItemStack is, List infos) {
 		infos.add("Combination: " + StringUtils.join(is.stackTagCompound.getIntArray("combination"), "-"));
+	}
+		
+	@OnUsedInCrafting
+	public static void OnUsedInCrafting(ItemStack mechStack, NBTTagCompound safeMechTag) {
+		
+	}
+	
+	@MethodGetItemStack
+	public static ItemStack GetDecraftedStack(NBTTagCompound safeMechTag) {
+		return new ItemStack(Registry.ItemMechs, 1, 0);
 	}
 	
 	@Override
@@ -60,5 +77,26 @@ public class MechCombo extends SafeMechanism {
 	@Override
 	public boolean matches(SafeMechanism tmech) {
 		return Arrays.equals(((MechCombo)tmech).combination, this.combination);
+	}
+
+	@Override
+	public void render(RenderPass pass, boolean stacked) {
+		switch(pass){
+		case SafeDoor:
+			GL11.glTranslatef(5F, stacked ? 16F:8F, 1F);
+			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+			
+			TileEntityRenderer.instance.renderEngine.bindTexture("/mods/Boxes/textures/models/dials.png");
+			SafeTESR.instance.sModel.renderPart("ComboBack");
+			for (int i=0; i<3; i++){
+				GL11.glPushMatrix();
+				GL11.glTranslatef(-0.75F*(float)i, 0F, 0F);
+				GL11.glRotatef(-36*(dispCombination[i]), 1F, 0, 0);
+				SafeTESR.instance.sModel.renderPart("Wheel_Sides");
+				SafeTESR.instance.sModel.renderPart("Wheel_Num");
+				GL11.glPopMatrix();
+			}
+			break;
+		}
 	}
 }

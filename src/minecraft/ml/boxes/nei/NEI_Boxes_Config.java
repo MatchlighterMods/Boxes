@@ -1,6 +1,7 @@
 package ml.boxes.nei;
 
 import ml.boxes.Boxes;
+import ml.boxes.Registry;
 import ml.boxes.block.MetaType;
 import ml.boxes.client.ContentTipHandler;
 import ml.boxes.data.Box;
@@ -36,16 +37,16 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 		API.registerUsageHandler(recipeHandler);
 
 		MultiItemRange mainRng = new MultiItemRange();
-		mainRng.add(Boxes.ItemResources);
+		mainRng.add(Registry.ItemResources);
 		for (MetaType mt : MetaType.values()){
 			if (!mt.hidden){
-				mainRng.add(new ItemStack(Boxes.BlockMeta, 1, mt.ordinal()));
+				mainRng.add(new ItemStack(Registry.BlockMeta, 1, mt.ordinal()));
 			}
 		}
 		API.addSetRange("Boxes", mainRng);
 		
 		MultiItemRange range = new MultiItemRange();
-		range.add(Boxes.BlockBox);
+		range.add(Registry.BlockBox);
 		API.addSetRange("Boxes.Boxes", range);
 	}
 

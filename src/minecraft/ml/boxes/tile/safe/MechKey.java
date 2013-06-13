@@ -2,6 +2,7 @@ package ml.boxes.tile.safe;
 
 import java.util.List;
 
+import ml.boxes.Registry;
 import ml.boxes.item.ItemKey;
 import ml.boxes.tile.TileEntitySafe;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,9 +18,19 @@ public class MechKey extends SafeMechanism {
 		super(tsafe);
 	}
 
-	@methodAddInfo()
+	@MethodAddInfo
 	public static void getISInfo(ItemStack is, List infos) {
 		infos.add("KeyId: " + is.stackTagCompound.getInteger("keyId"));
+	}
+	
+	@OnUsedInCrafting
+	public static void OnUsedInCrafting(ItemStack mechStack, NBTTagCompound safeMechTag) {
+		
+	}
+	
+	@MethodGetItemStack
+	public static ItemStack GetDecraftedStack(NBTTagCompound safeMechTag) {
+		return new ItemStack(Registry.ItemMechs, 1, 1);
 	}
 	
 	@Override
@@ -45,5 +56,11 @@ public class MechKey extends SafeMechanism {
 	@Override
 	public boolean matches(SafeMechanism tmech) {
 		return ((MechKey)tmech).keyId == keyId;
+	}
+
+	@Override
+	public void render(RenderPass pass, boolean stacked) {
+		// TODO Auto-generated method stub
+		
 	}
 }

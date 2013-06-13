@@ -15,7 +15,7 @@ public class BoxesCreativeTab extends CreativeTabs {
 
 	@Override
 	public ItemStack getIconItemStack() {
-		ItemStack is = new ItemStack(Boxes.BlockBox);
+		ItemStack is = new ItemStack(Registry.BlockBox);
 		ItemBoxContainer iib = new ItemBoxContainer(is);
 		iib.getBox().boxColor = ItemDye.dyeColors[12];
 		iib.saveData();

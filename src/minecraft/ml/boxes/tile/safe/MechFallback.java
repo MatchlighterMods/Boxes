@@ -34,4 +34,10 @@ public class MechFallback extends SafeMechanism {
 	public boolean matches(SafeMechanism tmech) {
 		return true;
 	}
+
+	@Override
+	public void render(RenderPass pass, boolean stacked) {
+		// TODO Auto-generated method stub
+		
+	}
 }

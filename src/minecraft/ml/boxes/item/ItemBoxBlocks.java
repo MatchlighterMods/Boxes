@@ -4,7 +4,7 @@ import java.util.List;
 
 import ml.boxes.Boxes;
 import ml.boxes.block.MetaType;
-import ml.boxes.tile.safe.SafeMechanism;
+import ml.boxes.tile.safe.MechsHelper;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
@@ -16,6 +16,7 @@ public class ItemBoxBlocks extends ItemBlock {
 	public ItemBoxBlocks(int par1) {
 		super(par1);
 		setHasSubtypes(true);
+		setMaxDamage(0);
 		setCreativeTab(Boxes.BoxTab);
 	}
 
@@ -39,7 +40,7 @@ public class ItemBoxBlocks extends ItemBlock {
 		MetaType mt = MetaType.fromMeta(is.getItemDamage());
 		switch(mt){
 		case Safe:
-			SafeMechanism.attemptGetISInfo(is, par3List);
+			MechsHelper.attemptGetISInfo(is, par3List);
 			return;
 		}
 	}
