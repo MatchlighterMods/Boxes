@@ -14,9 +14,9 @@ import ml.boxes.item.ItemBox;
 import ml.boxes.network.packets.PacketTipClick;
 import ml.core.StringUtils;
 import ml.core.geo.GeoMath;
-import ml.core.geo.GeoMath.XYPair;
 import ml.core.geo.Rectangle;
-import ml.core.render.GuiRenderLib;
+import ml.core.geo.Vector2;
+import ml.core.gui.GuiRenderUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -57,7 +57,7 @@ public class ContentTipHandler implements ITickHandler {
 		if (type.contains(TickType.RENDER) && !Boxes.neiInstalled){ //NEI Provides a better place for doing this. Use it if we can
 			Minecraft mc = FMLClientHandler.instance().getClient();
 			if (mc.currentScreen instanceof GuiContainer){
-				GeoMath.XYPair m = GeoMath.getScaledMouse();
+				Vector2<Integer> m = GeoMath.getScaledMouse();
 				GL11.glPushMatrix();
 				GL11.glTranslatef(0F, 0F, 200F);
 				renderContentTip(mc, m.X, m.Y, (Float)tickData[0]);
@@ -77,7 +77,7 @@ public class ContentTipHandler implements ITickHandler {
 			int guiXSize = ObfuscationReflectionHelper.getPrivateValue(GuiContainer.class, (GuiContainer)mc.currentScreen, 1);
 			int guiYSize = ObfuscationReflectionHelper.getPrivateValue(GuiContainer.class, (GuiContainer)mc.currentScreen, 2);
 
-			GeoMath.XYPair m = GeoMath.getScaledMouse();
+			Vector2<Integer> m = GeoMath.getScaledMouse();
 
 			gcBounds.width = asGuiContainer.width;
 			gcBounds.height = asGuiContainer.height;

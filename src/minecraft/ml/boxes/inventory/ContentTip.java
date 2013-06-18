@@ -10,8 +10,8 @@ import ml.boxes.data.IBoxContainer;
 import ml.boxes.data.ItemBoxContainer;
 import ml.boxes.network.packets.PacketTipClick;
 import ml.core.geo.GeoMath;
-import ml.core.geo.GeoMath.XYPair;
 import ml.core.geo.Rectangle;
+import ml.core.geo.Vector2;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -38,7 +38,7 @@ public abstract class ContentTip {
 	protected Rectangle gcBounds;
 	protected int hvrSltIndex;
 	
-	protected XYPair targetSize = new XYPair(0, 0);
+	protected Vector2<Integer> targetSize = new Vector2(0, 0);
 	
 	protected boolean renderContents;
 	public boolean interacting = false;

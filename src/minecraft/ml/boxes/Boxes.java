@@ -1,13 +1,6 @@
 package ml.boxes;
 
-import ml.boxes.block.BlockBox;
-import ml.boxes.block.BlockMeta;
 import ml.boxes.block.MetaType;
-import ml.boxes.item.ItemBox;
-import ml.boxes.item.ItemBoxBlocks;
-import ml.boxes.item.ItemKey;
-import ml.boxes.item.ItemMechs;
-import ml.boxes.item.ItemResources;
 import ml.boxes.item.ItemType;
 import ml.boxes.network.PacketHandler;
 import ml.boxes.recipe.RecipeBox;
@@ -26,9 +19,11 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.Mod.PostInit;
 import cpw.mods.fml.common.Mod.PreInit;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
@@ -50,7 +45,7 @@ public class Boxes {
 	public static CreativeTabs BoxTab = new BoxesCreativeTab("boxes");
 	
 	public static BoxesConfig config = new BoxesConfig();
-	
+
 	@PreInit
 	public void PreInit(FMLPreInitializationEvent evt){
 		Configuration cfg = new Configuration(evt.getSuggestedConfigurationFile());
@@ -87,6 +82,11 @@ public class Boxes {
 		initDungeonLoot();
 		
 		proxy.load();
+	}
+	
+	@PostInit
+	public void PostInit(FMLPostInitializationEvent e) {
+
 	}
 	
 	public void initDungeonLoot(){

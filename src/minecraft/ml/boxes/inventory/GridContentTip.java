@@ -11,9 +11,9 @@ import ml.boxes.data.Box;
 import ml.boxes.data.ItemBoxContainer;
 import ml.core.StringUtils;
 import ml.core.geo.GeoMath;
-import ml.core.geo.GeoMath.XYPair;
 import ml.core.geo.Rectangle;
-import ml.core.render.GuiRenderLib;
+import ml.core.geo.Vector2;
+import ml.core.gui.GuiRenderUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -22,7 +22,7 @@ import net.minecraft.item.ItemStack;
 
 public class GridContentTip extends ContentTip {
 
-	protected static XYPair gridDimensions;
+	protected static Vector2<Integer> gridDimensions;
 	private static List<ItemStack> contentStacks = new ArrayList<ItemStack>();
 	
 	public GridContentTip(Slot slt, Rectangle gcRect) {
@@ -40,7 +40,7 @@ public class GridContentTip extends ContentTip {
 			int slotY = 10+row*18;
 			
 			ItemStack is = contentStacks.get(i);
-			GuiRenderLib.drawSpecialStackAt(mc, slotX, slotY, is, is.stackSize> 1 ? StringUtils.toGroupedString(is.stackSize,1) : "");
+			GuiRenderUtils.drawSpecialStackAt(mc, slotX, slotY, is, is.stackSize> 1 ? StringUtils.toGroupedString(is.stackSize,1) : "");
 		}
 	}
 
@@ -55,14 +55,14 @@ public class GridContentTip extends ContentTip {
 
 			ItemStack is = contentStacks.get(i);
 			mc.renderEngine.bindTexture("/mods/Boxes/textures/gui/contentTipGui2.png");
-			GuiRenderLib.drawTexturedModalRect(slotX-1, slotY-1, 0, 106, 18, 18);
+			GuiRenderUtils.drawTexturedModalRect(slotX-1, slotY-1, 0, 106, 18, 18);
 
-			GuiRenderLib.drawStackAt(mc, slotX, slotY, is);
+			GuiRenderUtils.drawStackAt(mc, slotX, slotY, is);
 
 			GL11.glDisable(GL11.GL_LIGHTING);
 			if (GeoMath.pointInRect(mx - tipBounds.xCoord, my - tipBounds.yCoord, slotX, slotY, 16, 16)){
 				GL11.glDisable(GL11.GL_DEPTH_TEST);
-				GuiRenderLib.drawGradientRect(slotX, slotY, slotX + 16, slotY + 16, -2130706433, -2130706433);
+				GuiRenderUtils.drawGradientRect(slotX, slotY, slotX + 16, slotY + 16, -2130706433, -2130706433);
 				GL11.glEnable(GL11.GL_DEPTH_TEST);
 			}
 		}
@@ -71,7 +71,7 @@ public class GridContentTip extends ContentTip {
 	@Override
 	protected void renderBackground(Minecraft mc, int mx, int my) {
 		mc.renderEngine.bindTexture("/mods/Boxes/textures/gui/contentTipGui2.png");
-		GuiRenderLib.drawSlicedRect(0, 0, tipBounds.width, tipBounds.height, 0, 0, 178, 106, 9, 9, 7, 7);
+		GuiRenderUtils.drawSlicedRect(0, 0, tipBounds.width, tipBounds.height, 0, 0, 178, 106, 9, 9, 7, 7);
 	}
 	
 	@Override

@@ -35,7 +35,7 @@ public class Registry {
 		ItemKey = new ItemKey(Boxes.config.keyItemID-256);
 		GameRegistry.registerItem(ItemKey, "key");
 		
-		ItemMechs = new ItemMechs(Boxes.config.boxBlockID-256);
+		ItemMechs = new ItemMechs(Boxes.config.mechsItemID-256);
 		GameRegistry.registerItem(ItemMechs, "mechs");
 	}
 
