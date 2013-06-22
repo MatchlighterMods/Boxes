@@ -2,6 +2,7 @@ package ml.boxes;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import ml.boxes.block.BlockBox;
+import ml.boxes.block.BlockCT;
 import ml.boxes.block.BlockMeta;
 import ml.boxes.item.ItemBox;
 import ml.boxes.item.ItemBoxBlocks;
@@ -21,6 +22,7 @@ public class Registry {
 		
 		BlockMeta = new BlockMeta(Boxes.config.generalBlockID);
 		GameRegistry.registerBlock(BlockMeta, ItemBoxBlocks.class, "boxesMeta");
+		
 	}
 	
 	// Items //

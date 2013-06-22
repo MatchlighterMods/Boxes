@@ -10,6 +10,7 @@ import ml.boxes.tile.safe.IItemMech;
 import ml.boxes.tile.safe.MechCombo;
 import ml.boxes.tile.safe.MechKey;
 import ml.boxes.tile.safe.SafeMechanism;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
@@ -41,6 +42,11 @@ public class ItemMechs extends Item implements IItemMech {
 	public void addInformation(ItemStack par1ItemStack,
 			EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
 		super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
+	}
+	
+	@Override
+	public void registerIcons(IconRegister par1IconRegister) {
+		
 	}
 
 	@Override

@@ -68,6 +68,7 @@ public class MetaItemRenderer implements IItemRenderer {
 		case ENTITY:
 			GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 			break;
+		case EQUIPPED_FIRST_PERSON:
 		case EQUIPPED:
 //			GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 //			GL11.glRotatef(-90F, 0F, 1F, 0F);

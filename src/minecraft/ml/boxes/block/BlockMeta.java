@@ -190,6 +190,16 @@ public class BlockMeta extends BlockContainer {
 	};
 	
 	@Override
+	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
+		switch (MetaType.fromMeta(world.getBlockMetadata(x, y, z))) {
+		case Crate:
+			
+			break;
+		}
+		return super.getPickBlock(target, world, x, y, z);
+	}
+	
+	@Override
 	public Icon getIcon(int side, int meta) {
 		return MetaType.fromMeta(meta).ricon;
 	}

@@ -39,6 +39,7 @@ public class BoxItemRenderer implements IItemRenderer {
 		case ENTITY:
 		case EQUIPPED:
 		case INVENTORY:
+		case EQUIPPED_FIRST_PERSON:
 			return true;
 		case FIRST_PERSON_MAP:
 		}
@@ -68,7 +69,7 @@ public class BoxItemRenderer implements IItemRenderer {
 			GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 			BoxTESR.instance.setBoxFlaps(5, 2, 0, 0);
 			break;
-		case EQUIPPED:
+		case EQUIPPED_FIRST_PERSON:
 			EntityLiving holder = (EntityLiving)data[1];
 			Minecraft mc = FMLClientHandler.instance().getClient();
 			if (Boxes.config.enableMapStyleRendering &&
@@ -185,10 +186,10 @@ public class BoxItemRenderer implements IItemRenderer {
 				GL11.glTranslatef(-1F, -1F, 0.0F);
 
 				BoxTESR.instance.setBoxFlaps(150, 150, 150, 150);
-			} else {
+			}
+		case EQUIPPED:
 				GL11.glPushMatrix();
 				BoxTESR.instance.setBoxFlaps(5, 2, 0, 0);
-			}
 			break;
 		case INVENTORY:
 			GL11.glPushMatrix();
