@@ -1,14 +1,13 @@
 package ml.boxes;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import ml.boxes.block.BlockBox;
-import ml.boxes.block.BlockCT;
 import ml.boxes.block.BlockMeta;
 import ml.boxes.item.ItemBox;
 import ml.boxes.item.ItemBoxBlocks;
 import ml.boxes.item.ItemKey;
 import ml.boxes.item.ItemMechs;
 import ml.boxes.item.ItemResources;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 public class Registry {
 
@@ -31,7 +30,7 @@ public class Registry {
 	public static ItemKey ItemKey;
 	
 	public static void registerItems() {
-		ItemResources = new ItemResources(Boxes.config.cardboardItemID-256);
+		ItemResources = new ItemResources(Boxes.config.materialsItemID-256);
 		GameRegistry.registerItem(ItemResources, "cardboard");
 		
 		ItemKey = new ItemKey(Boxes.config.keyItemID-256);
