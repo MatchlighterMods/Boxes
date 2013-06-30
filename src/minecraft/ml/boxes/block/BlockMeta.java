@@ -8,6 +8,7 @@ import ml.core.block.BlockUtils;
 import ml.core.tile.IRotatableTE;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -193,7 +194,10 @@ public class BlockMeta extends BlockContainer {
 	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
 		switch (MetaType.fromMeta(world.getBlockMetadata(x, y, z))) {
 		case Crate:
-			
+			TileEntityCrate tec = (TileEntityCrate)world.getBlockTileEntity(x, y, z);
+			if (!Minecraft.getMinecraft().thePlayer.isSneaking() && tec != null && tec.cItem != null) {
+				return tec.cItem;
+			}
 			break;
 		}
 		return super.getPickBlock(target, world, x, y, z);

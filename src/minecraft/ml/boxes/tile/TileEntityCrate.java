@@ -136,6 +136,15 @@ public class TileEntityCrate extends TileEntity implements ISidedInventory, IRot
 	public int getTotalItems(){
 		return itemCount + (stacks[0] != null ? stacks[0].stackSize : 0) + (stacks[1] != null ? stacks[1].stackSize : 0);
 	}
+	
+	public ItemStack getContainedItem() {
+		if (stacks[0] != null) {
+			ItemStack ris = stacks[0].copy();
+			ris.stackSize = 1;
+			return ris;
+		}
+		return null;
+	}
 
 	public void consolidateStacks(){
 		int tItems = getTotalItems();
