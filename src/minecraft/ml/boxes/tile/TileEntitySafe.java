@@ -22,31 +22,31 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.ForgeDirection;
 
 public class TileEntitySafe extends TileEntityConnectable implements IEventedTE, IRotatableTE, IInventory, ISidedInventory {
-		
+
 	private ItemStack[] stacks;
-	
+
 	public String mechId;
 	public SafeMechanism mech;
-	
+
 	public float doorAng = 0F;
 	public float prevDoorAng = 0F;
-	
+
 	public boolean unlocked = false;
 	public int users = 0;
-	
+
 	public TileEntitySafe() {
 		stacks = new ItemStack[getSizeInventory()];
 		mech = new MechFallback(this);
 	}
-	
+
 	@Override
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
-		
+
 		mechId = tag.getString("mechType");
 		mech = MechsHelper.tryInstantiate(mechId, this);
 		mech.loadNBT(tag.getCompoundTag("mechProps"));
-		
+
 		unlocked = tag.getBoolean("unlocked");
 
 		NBTTagList nbttaglist = tag.getTagList("Items");
@@ -60,16 +60,16 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 			}
 		}
 	}
-	
+
 	@Override
 	public void writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
-		
+
 		tag.setString("mechType", mechId);
 		tag.setCompoundTag("mechProps", mech.saveNBT());
 
 		tag.setBoolean("unlocked", unlocked);
-		
+
 		NBTTagList nbttaglist = new NBTTagList();
 		for (int i = 0; i < stacks.length; i++)
 		{
@@ -84,53 +84,53 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 
 		tag.setTag("Items", nbttaglist);
 	}
-	
+
 	@Override
 	public Packet getDescriptionPacket() {
 		return new PacketDescribeSafe(this).convertToPkt250();
 	}
-	
+
 	public void unlock() {
 		unlocked = true;
 		worldObj.addBlockEvent(xCoord, yCoord, zCoord, Registry.BlockMeta.blockID, 1, 1);
 	}
-	
+
 	public void lock() {
 		unlocked = false;
 		worldObj.addBlockEvent(xCoord, yCoord, zCoord, Registry.BlockMeta.blockID, 1, 0);
 	}
-	
+
 	@Override
 	public boolean canConnectWith(TileEntityConnectable remoteTec) {
 		TileEntitySafe rtes = (TileEntitySafe)remoteTec;
 		return mech.getClass() == rtes.mech.getClass() && mech.canConnectWith(rtes.mech);
 	}
-	
+
 	@Override
 	public void onConnect(boolean isMaster, TileEntityConnectable remote) {
 		if (isMaster)
 			((TileEntitySafe)remote).mech = mech;
 	}
-		
+
 	@Override
 	public void updateEntity() {
 		super.updateEntity();
-		
+
 		prevDoorAng = doorAng;
 		float fc = 0.1F;
 		if (unlocked && doorAng == 0F){
 			// TODO Sound
 		}
-		
+
 		float cangle = unlocked ? (users>0 ? 1F : 0.1F) : 0F;
-		
+
 		if (doorAng > cangle) {
 			if (doorAng == 1F && cangle == 0.1F){
 				// TODO Close sound
 			} else if (doorAng == 0.1F && cangle == 0F) {
 				// TODO Lock sound
 			}
-			
+
 			doorAng -= fc;
 			if (doorAng < cangle)
 				doorAng = cangle;
@@ -140,13 +140,13 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 			} else if (doorAng == 0.1F && cangle == 1F) {
 				// TODO Open sound
 			}
-			
+
 			doorAng += fc;
 			if (doorAng > cangle)
 				doorAng = cangle;
 		}
 	}
-	
+
 	@Override
 	public boolean receiveClientEvent(int evt, int arg) {
 		switch (evt) {
@@ -158,7 +158,7 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 		}
 		return true;
 	}
-	
+
 	@Override
 	public int getSizeInventory() {
 		return 27;
@@ -248,12 +248,12 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 	public int[] getAccessibleSlotsFromSide(int var1) {
 		return new int[]{};
 	}
-	
+
 	@Override
 	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
 		return true;
 	}
-	
+
 	@Override
 	public boolean canExtractItem(int i, ItemStack itemstack, int j) {
 		return false;
@@ -268,7 +268,7 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 	public ForgeDirection getFacing() {
 		return facing;
 	}
-	
+
 	@Override
 	public void setFacing(ForgeDirection fd) {
 		facing = fd;
@@ -278,15 +278,15 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 	public ForgeDirection[] getValidFacingDirections() {
 		return new ForgeDirection[]{ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.EAST, ForgeDirection.WEST,};
 	}
-	
+
 	public boolean canInteract() {
 		return !worldObj.isBlockSolidOnSide(xCoord+facing.offsetX, yCoord+facing.offsetY, zCoord+facing.offsetZ, facing.getOpposite());
 	}
-	
+
 	public void playerOpened(EntityPlayer pl) {
 		pl.openGui(Boxes.instance, 4, worldObj, xCoord, yCoord, zCoord);
 	}
-	
+
 	public boolean onMasterRightClicked(EntityPlayer epl, ForgeDirection side) {
 		TileEntitySafe connected = (TileEntitySafe)getConnected();
 
@@ -305,7 +305,7 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 		}
 		return true;
 	}
-	
+
 	@Override
 	public boolean onRightClicked(EntityPlayer epl, ForgeDirection side) {
 		if (!worldObj.isRemote) {
@@ -321,13 +321,13 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 	@Override
 	public void onNeighborBlockChange() {
 		refreshConnection();
-		
+
 		TileEntity rte = worldObj.getBlockTileEntity(xCoord, yCoord+1, zCoord);
 		if ((linkedDir==ForgeDirection.UP && !((TileEntitySafe)rte).canInteract()) || !canInteract()) {
 			lock();
 		}
 	}
-	
+
 	@Override
 	public void hostBroken() {
 		for (int i=0; i<this.getSizeInventory(); i++){
@@ -335,7 +335,7 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 				ItemUtils.dropItemIntoWorld(worldObj, xCoord, yCoord, zCoord, getStackInSlot(i));
 		}
 	}
-	
+
 	@Override
 	public void hostPlaced(EntityLiving pl, ItemStack is) {
 		if (!worldObj.isRemote) {
@@ -350,7 +350,7 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 	public boolean onAttemptUpgrade(EntityPlayer pl, ItemStack is, int side) {
 		return false;
 	}
-	
+
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		AxisAlignedBB cbb = getBlockType().getCollisionBoundingBoxFromPool(worldObj, xCoord, yCoord, zCoord);

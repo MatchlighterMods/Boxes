@@ -3,7 +3,6 @@ package ml.boxes.block;
 import java.util.ArrayList;
 
 import ml.boxes.Boxes;
-import ml.boxes.data.ItemBoxContainer;
 import ml.boxes.item.ItemBox;
 import ml.boxes.tile.TileEntityBox;
 import ml.core.block.BlockUtils;
@@ -14,7 +13,6 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;

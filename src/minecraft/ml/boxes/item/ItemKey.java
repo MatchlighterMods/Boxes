@@ -1,7 +1,5 @@
 package ml.boxes.item;
 
-import java.util.Random;
-
 import ml.core.RandomUtils;
 import ml.core.item.StackUtils;
 import net.minecraft.client.renderer.texture.IconRegister;

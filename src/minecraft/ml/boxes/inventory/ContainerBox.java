@@ -2,16 +2,10 @@ package ml.boxes.inventory;
 
 import java.util.List;
 
-import ml.boxes.Boxes;
-import ml.boxes.api.ContentBlacklist;
-import ml.boxes.data.Box;
 import ml.boxes.data.IBoxContainer;
 import ml.boxes.data.ItemBoxContainer;
-import ml.boxes.item.ItemBox;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 

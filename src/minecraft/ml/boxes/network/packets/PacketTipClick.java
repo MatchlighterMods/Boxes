@@ -2,8 +2,6 @@ package ml.boxes.network.packets;
 
 import java.io.IOException;
 
-import ml.boxes.Boxes;
-import ml.boxes.data.Box;
 import ml.boxes.data.ItemBoxContainer;
 import ml.boxes.inventory.ContentTip;
 import ml.boxes.item.ItemBox;

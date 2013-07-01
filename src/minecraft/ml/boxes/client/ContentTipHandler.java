@@ -1,8 +1,6 @@
 package ml.boxes.client;
 
-import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.List;
 
 import ml.boxes.Boxes;
 import ml.boxes.client.gui.GuiBox;
@@ -11,21 +9,13 @@ import ml.boxes.data.ItemBoxContainer;
 import ml.boxes.inventory.ContainerBox;
 import ml.boxes.inventory.ContentTip;
 import ml.boxes.item.ItemBox;
-import ml.boxes.network.packets.PacketTipClick;
-import ml.core.StringUtils;
 import ml.core.geo.GeoMath;
 import ml.core.geo.Rectangle;
 import ml.core.geo.Vector2;
-import ml.core.gui.GuiRenderUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.gui.inventory.GuiContainerCreative;
-import net.minecraft.client.renderer.RenderEngine;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.packet.Packet250CustomPayload;
 
 import org.lwjgl.opengl.GL11;
 
@@ -33,7 +23,6 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.common.TickType;
-import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

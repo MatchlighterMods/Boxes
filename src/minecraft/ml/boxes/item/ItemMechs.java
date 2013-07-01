@@ -2,9 +2,6 @@ package ml.boxes.item;
 
 import java.util.List;
 
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
-
 import ml.boxes.Boxes;
 import ml.boxes.tile.safe.IItemMech;
 import ml.boxes.tile.safe.MechCombo;
@@ -15,7 +12,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 
 public class ItemMechs extends Item implements IItemMech {
 	

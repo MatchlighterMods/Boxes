@@ -1,10 +1,5 @@
 package ml.boxes.client.render.tile;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import ml.boxes.tile.TileEntitySafe;
 import ml.boxes.tile.safe.SafeMechanism.RenderPass;
 import ml.core.block.BlockUtils;
@@ -13,6 +8,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 import net.minecraftforge.common.ForgeDirection;
+
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class SafeTESR extends TileEntitySpecialRenderer {

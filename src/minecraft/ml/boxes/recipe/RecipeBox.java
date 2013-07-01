@@ -1,8 +1,6 @@
 package ml.boxes.recipe;
 
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import ml.boxes.Registry;
-import ml.boxes.data.Box;
 import ml.boxes.data.ItemBoxContainer;
 import ml.boxes.item.ItemBox;
 import net.minecraft.inventory.InventoryCrafting;
@@ -10,7 +8,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.util.StringTranslate;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 

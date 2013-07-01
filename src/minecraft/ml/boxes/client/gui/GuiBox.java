@@ -1,16 +1,11 @@
 package ml.boxes.client.gui;
 
 import invtweaks.api.ContainerGUI;
-
-import org.lwjgl.opengl.GL11;
-
-import ml.boxes.data.Box;
-import ml.boxes.data.ItemBoxContainer;
 import ml.boxes.inventory.ContainerBox;
-import ml.boxes.tile.TileEntityBox;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
+
+import org.lwjgl.opengl.GL11;
 
 @ContainerGUI
 public class GuiBox extends GuiContainer {

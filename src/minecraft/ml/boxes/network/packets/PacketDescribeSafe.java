@@ -3,12 +3,9 @@ package ml.boxes.network.packets;
 import java.io.IOException;
 
 import ml.boxes.tile.TileEntitySafe;
-import ml.core.network.PacketDescribe;
 import ml.core.network.PacketDescribeConnectable;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.ForgeDirection;
 
 import com.google.common.io.ByteArrayDataInput;
 

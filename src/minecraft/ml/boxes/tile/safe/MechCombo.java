@@ -3,20 +3,17 @@ package ml.boxes.tile.safe;
 import java.util.Arrays;
 import java.util.List;
 
-import org.lwjgl.opengl.GL11;
-
 import ml.boxes.Boxes;
 import ml.boxes.Registry;
 import ml.boxes.client.render.tile.SafeTESR;
 import ml.boxes.tile.TileEntitySafe;
-import ml.boxes.tile.safe.SafeMechanism.MethodAddInfo;
-import ml.boxes.tile.safe.SafeMechanism.MethodGetItemStack;
-import ml.boxes.tile.safe.SafeMechanism.OnUsedInCrafting;
 import ml.core.StringUtils;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+
+import org.lwjgl.opengl.GL11;
 
 public class MechCombo extends SafeMechanism {
 

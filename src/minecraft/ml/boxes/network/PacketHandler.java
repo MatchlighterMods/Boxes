@@ -7,7 +7,6 @@ import ml.boxes.network.packets.PacketDescribeSafe;
 import ml.boxes.network.packets.PacketTipClick;
 import ml.boxes.network.packets.PacketUpdateData;
 import ml.core.network.MLPacket;
-import ml.core.network.PacketDescribeConnectable;
 import cpw.mods.fml.common.FMLLog;
 
 public class PacketHandler extends ml.core.network.PacketHandler {

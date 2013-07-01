@@ -1,9 +1,7 @@
 package ml.boxes;
 
 import ml.boxes.data.ItemBoxContainer;
-import ml.boxes.item.ItemBox;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 

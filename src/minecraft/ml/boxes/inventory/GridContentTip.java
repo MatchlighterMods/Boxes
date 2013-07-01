@@ -3,10 +3,6 @@ package ml.boxes.inventory;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.lwjgl.opengl.GL11;
-
-import ml.boxes.Boxes;
-import ml.boxes.client.gui.GuiBox;
 import ml.boxes.data.Box;
 import ml.boxes.data.ItemBoxContainer;
 import ml.core.StringUtils;
@@ -15,10 +11,10 @@ import ml.core.geo.Rectangle;
 import ml.core.geo.Vector2;
 import ml.core.gui.GuiRenderUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+
+import org.lwjgl.opengl.GL11;
 
 public class GridContentTip extends ContentTip {
 

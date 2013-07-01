@@ -4,13 +4,9 @@ import ml.boxes.Boxes;
 import ml.boxes.Registry;
 import ml.boxes.block.MetaType;
 import ml.boxes.client.ContentTipHandler;
-import ml.boxes.data.Box;
-import ml.boxes.item.ItemBox;
-import ml.boxes.network.packets.PacketTipClick;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.packet.Packet250CustomPayload;
 import codechicken.nei.MultiItemRange;
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
@@ -19,7 +15,6 @@ import codechicken.nei.forge.IContainerDrawHandler;
 import codechicken.nei.forge.IContainerInputHandler;
 import codechicken.nei.forge.IContainerObjectHandler;
 import codechicken.nei.recipe.TemplateRecipeHandler;
-import cpw.mods.fml.common.network.Player;
 
 public class NEI_Boxes_Config implements IConfigureNEI {
 

@@ -4,9 +4,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import ml.boxes.Boxes;
 import ml.boxes.data.Box;
-import ml.boxes.data.IBoxContainer;
 import ml.boxes.data.ItemBoxContainer;
 import ml.boxes.network.packets.PacketTipClick;
 import ml.core.geo.GeoMath;
@@ -21,7 +19,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.MathHelper;
 
 import org.lwjgl.opengl.GL11;
 
