@@ -60,8 +60,6 @@ public abstract class SafeMechanism {
 		 */
 		public void onLocked(){};
 		
-		public abstract SafeMechanism getSingleton();
-		
 		/**
 		 * Render any additions to the safe.
 		 * @param pass Indicates what the GLMatrix is currently transformed for.

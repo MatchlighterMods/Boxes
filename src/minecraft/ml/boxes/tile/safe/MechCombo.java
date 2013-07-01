@@ -13,7 +13,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import org.lwjgl.opengl.GL11;
 
 public class MechCombo extends SafeMechanism {
-	public class combomech extends MechanismInstance {
+	public static class combomech extends MechanismInstance {
 	
 		public static final int COMBO_LENGTH = 3;
 		
@@ -78,11 +78,6 @@ public class MechCombo extends SafeMechanism {
 				}
 				break;
 			}
-		}
-
-		@Override
-		public SafeMechanism getSingleton() {
-			return MechCombo.this;
 		}
 	}
 

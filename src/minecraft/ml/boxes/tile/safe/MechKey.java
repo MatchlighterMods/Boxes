@@ -11,8 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 public class MechKey extends SafeMechanism {
-	
-	public class keymech extends MechanismInstance {
+	public static class keymech extends MechanismInstance {
 		
 		public int keyId = 0;
 		
@@ -49,11 +48,6 @@ public class MechKey extends SafeMechanism {
 		public void render(RenderPass pass, boolean stacked) {
 			// TODO Auto-generated method stub
 			
-		}
-
-		@Override
-		public SafeMechanism getSingleton() {
-			return MechKey.this;
 		}
 	}
 
