@@ -25,6 +25,7 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 		
 	private ItemStack[] stacks;
 	
+	public String mechId;
 	public SafeMechanism mech;
 	
 	public float doorAng = 0F;
@@ -42,7 +43,8 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
 		
-		mech = MechsHelper.tryInstantiate(tag.getString("mechType"), this);
+		mechId = tag.getString("mechType");
+		mech = MechsHelper.tryInstantiate(mechId, this);
 		mech.loadNBT(tag.getCompoundTag("mechProps"));
 		
 		unlocked = tag.getBoolean("unlocked");
@@ -63,7 +65,7 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 	public void writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
 		
-		tag.setString("mechType", mech.getClass().getName());
+		tag.setString("mechType", mechId);
 		tag.setCompoundTag("mechProps", mech.saveNBT());
 
 		tag.setBoolean("unlocked", unlocked);

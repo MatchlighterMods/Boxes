@@ -12,17 +12,21 @@ import net.minecraft.nbt.NBTTagCompound;
  */
 public class MechFallback extends SafeMechanism {
 
+	protected NBTTagCompound loadedTag = new NBTTagCompound();
+	
 	public MechFallback(TileEntitySafe tsafe) {
 		super(tsafe);
 	}
 
 	@Override
 	public NBTTagCompound saveNBT() {
-		return new NBTTagCompound();
+		return loadedTag;
 	}
 
 	@Override
-	public void loadNBT(NBTTagCompound mechKey) {}
+	public void loadNBT(NBTTagCompound mechTag) {
+		loadedTag = mechTag;
+	}
 
 	@Override
 	public void beginUnlock(EntityPlayer epl) {

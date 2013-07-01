@@ -15,9 +15,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-	public abstract class SafeMechanism {
+public abstract class SafeMechanism {
 	
-		/**
+	/**
 	 * <b>(Optional)</b> Annotate your MechanismInfo static method with this annotation.<br>
 	 * Used to get Tooltip info for safes with the mechanism installed.<br>
 	 * Must accept 2 parameters: {@link ItemStack} safeStack, List toolTipLines
@@ -58,7 +58,7 @@ import net.minecraft.nbt.NBTTagCompound;
 	}
 
 	public abstract NBTTagCompound saveNBT();
-	public abstract void loadNBT(NBTTagCompound mechKey);
+	public abstract void loadNBT(NBTTagCompound mechTag);
 
 	/**
 	 * @return NBTData specifically for when Mechanism is sent to client. Proper security dictates that combinations and the like should NOT be sent.
