@@ -5,6 +5,7 @@ import java.lang.reflect.Modifier;
 import java.util.List;
 
 import ml.boxes.tile.TileEntitySafe;
+import ml.boxes.tile.safe.SafeMechanism.MechanismInstance;
 import ml.core.ReflectionUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -12,11 +13,11 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class MechsHelper {
 	
-	public static SafeMechanism tryInstantiate(String mechName, TileEntitySafe safe) {
-		if (SafeMechanism.mechs.containsKey(mechName)){
-			Class clazz = SafeMechanism.mechs.get(mechName).mechClass;
+	public static MechanismInstance tryInstantiate(String mechName, TileEntitySafe safe) {
+		if (MechanismInstance.mechs.containsKey(mechName)){
+			Class clazz = MechanismInstance.mechs.get(mechName).mechClass;
 			try {
-				return (SafeMechanism)clazz.getConstructor(TileEntitySafe.class).newInstance(safe);
+				return (MechanismInstance)clazz.getConstructor(TileEntitySafe.class).newInstance(safe);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -27,10 +28,10 @@ public class MechsHelper {
 	public static void attemptGetISInfo(ItemStack is, List infos) {
 		NBTTagCompound tag = is.getTagCompound() != null ? is.getTagCompound() : new NBTTagCompound();
 		String mechN = tag.getString("mechType");
-		if (SafeMechanism.mechs.containsKey(mechN)) {
-			Class smech = SafeMechanism.mechs.get(mechN).mechClass;
+		if (MechanismInstance.mechs.containsKey(mechN)) {
+			Class smech = MechanismInstance.mechs.get(mechN).mechClass;
 			infos.add("Mechanism: " + LanguageRegistry.instance().getStringLocalization(mechN));
-			List<Method> anns = ReflectionUtils.getMethodsAnnotatedWith(smech, SafeMechanism.MethodAddInfo.class);
+			List<Method> anns = ReflectionUtils.getMethodsAnnotatedWith(smech, MechanismInstance.MethodAddInfo.class);
 			for (Method mthd : anns) {
 				if (Modifier.isStatic(mthd.getModifiers())) {
 					try {
@@ -48,9 +49,9 @@ public class MechsHelper {
 	}
 	
 	public static void copyNBTDataToSafe(String MechID, ItemStack mechStack, NBTTagCompound safeMechTag) {
-		if (SafeMechanism.mechs.containsKey(MechID)) {
-			Class smech = SafeMechanism.mechs.get(MechID).mechClass;
-			List<Method> anns = ReflectionUtils.getMethodsAnnotatedWith(smech, SafeMechanism.MethodAddInfo.class);
+		if (MechanismInstance.mechs.containsKey(MechID)) {
+			Class smech = MechanismInstance.mechs.get(MechID).mechClass;
+			List<Method> anns = ReflectionUtils.getMethodsAnnotatedWith(smech, MechanismInstance.MethodAddInfo.class);
 			for (Method mthd : anns) {
 				if (Modifier.isStatic(mthd.getModifiers())) {
 					try {
@@ -66,9 +67,9 @@ public class MechsHelper {
 	}
 
 	public static ItemStack getDecraftedMechStack(String MechID, NBTTagCompound safeMechTag) {
-		if (SafeMechanism.mechs.containsKey(MechID)) {
-			Class smech = SafeMechanism.mechs.get(MechID).mechClass;
-			List<Method> anns = ReflectionUtils.getMethodsAnnotatedWith(smech, SafeMechanism.MethodAddInfo.class);
+		if (MechanismInstance.mechs.containsKey(MechID)) {
+			Class smech = MechanismInstance.mechs.get(MechID).mechClass;
+			List<Method> anns = ReflectionUtils.getMethodsAnnotatedWith(smech, MechanismInstance.MethodAddInfo.class);
 			for (Method mthd : anns) {
 				if (Modifier.isStatic(mthd.getModifiers())) {
 					try {

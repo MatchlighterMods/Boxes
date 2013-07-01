@@ -2,25 +2,24 @@ package ml.boxes.item;
 
 import java.util.List;
 
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
-
 import ml.boxes.Boxes;
 import ml.boxes.tile.safe.IItemMech;
 import ml.boxes.tile.safe.MechCombo;
 import ml.boxes.tile.safe.MechKey;
-import ml.boxes.tile.safe.SafeMechanism;
+import ml.boxes.tile.safe.SafeMechanism.MechanismInstance;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 
 public class ItemMechs extends Item implements IItemMech {
 	
 	//Used for DRY internal mapping of Metadata to the SafeMechanism subclass
-	private static BiMap<Integer, Class<? extends SafeMechanism>> ourMechs = HashBiMap.create();
+	private static BiMap<Integer, Class<? extends MechanismInstance>> ourMechs = HashBiMap.create();
 	static {
 		ourMechs.put(0, MechCombo.class);
 		ourMechs.put(1, MechKey.class);
@@ -33,8 +32,8 @@ public class ItemMechs extends Item implements IItemMech {
 		setCreativeTab(Boxes.BoxTab);
 		
 		//Register our Mechanisms now that we have an Item instance for association
-		for (Class<? extends SafeMechanism> clazz : ourMechs.values()) {
-			SafeMechanism.registerMechanism(this, clazz);
+		for (Class<? extends MechanismInstance> clazz : ourMechs.values()) {
+			MechanismInstance.registerMechanism(this, clazz);
 		}
 	}
 	

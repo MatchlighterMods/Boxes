@@ -2,13 +2,11 @@ package ml.boxes.network.packets;
 
 import java.io.IOException;
 
+import ml.boxes.tile.TileEntityBox;
+import ml.core.network.MLPacket;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-
-import ml.boxes.data.Box;
-import ml.boxes.tile.TileEntityBox;
-import ml.core.network.MLPacket;
 
 import com.google.common.io.ByteArrayDataInput;
 

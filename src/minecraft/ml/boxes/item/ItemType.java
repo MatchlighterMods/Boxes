@@ -1,7 +1,6 @@
 package ml.boxes.item;
 
 import ml.boxes.Registry;
-import ml.boxes.block.MetaType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 

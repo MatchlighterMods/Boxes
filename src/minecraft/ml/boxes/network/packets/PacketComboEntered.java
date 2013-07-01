@@ -3,18 +3,15 @@ package ml.boxes.network.packets;
 import java.io.IOException;
 import java.util.Arrays;
 
-import javax.rmi.CORBA.Tie;
-
+import ml.boxes.tile.TileEntitySafe;
+import ml.boxes.tile.safe.MechCombo;
+import ml.core.network.MLPacket;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 
 import com.google.common.io.ByteArrayDataInput;
 
 import cpw.mods.fml.common.network.Player;
-
-import ml.boxes.tile.TileEntitySafe;
-import ml.boxes.tile.safe.MechCombo;
-import ml.core.network.MLPacket;
 
 public class PacketComboEntered extends MLPacket {
 

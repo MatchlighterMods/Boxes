@@ -1,6 +1,8 @@
 package ml.boxes.tile.safe;
 
 import ml.boxes.tile.TileEntitySafe;
+import ml.boxes.tile.safe.SafeMechanism.MechanismInstance;
+import ml.boxes.tile.safe.SafeMechanism.RenderPass;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -10,7 +12,7 @@ import net.minecraft.nbt.NBTTagCompound;
  * 
  * @author Matchlighter
  */
-public class MechFallback extends SafeMechanism {
+public class MechFallback extends MechanismInstance {
 
 	public MechFallback(TileEntitySafe tsafe) {
 		super(tsafe);
@@ -31,13 +33,18 @@ public class MechFallback extends SafeMechanism {
 	}
 
 	@Override
-	public boolean canConnectWith(SafeMechanism tmech) {
-		return true;
+	public boolean canConnectWith(MechanismInstance tmech) {
+		return false;
 	}
 
 	@Override
 	public void render(RenderPass pass, boolean stacked) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public SafeMechanism getSingleton() {
+		return null;
 	}
 }

@@ -5,7 +5,7 @@ import ml.boxes.Registry;
 import ml.boxes.network.packets.PacketDescribeSafe;
 import ml.boxes.tile.safe.MechFallback;
 import ml.boxes.tile.safe.MechsHelper;
-import ml.boxes.tile.safe.SafeMechanism;
+import ml.boxes.tile.safe.SafeMechanism.MechanismInstance;
 import ml.core.item.ItemUtils;
 import ml.core.tile.IRotatableTE;
 import ml.core.tile.TileEntityConnectable;
@@ -25,7 +25,7 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 		
 	private ItemStack[] stacks;
 	
-	public SafeMechanism mech;
+	public MechanismInstance mech;
 	
 	public float doorAng = 0F;
 	public float prevDoorAng = 0F;

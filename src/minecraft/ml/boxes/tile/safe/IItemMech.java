@@ -2,7 +2,6 @@ package ml.boxes.tile.safe;
 
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 public interface IItemMech {
 
