@@ -1,14 +1,11 @@
 package ml.boxes.tile.safe;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.List;
 
 import ml.boxes.tile.TileEntitySafe;
-import ml.boxes.tile.safe.SafeMechanism.MethodAddInfo;
 import ml.core.ReflectionUtils;
-import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import cpw.mods.fml.common.registry.LanguageRegistry;

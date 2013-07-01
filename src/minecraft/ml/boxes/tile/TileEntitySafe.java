@@ -101,7 +101,13 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 	@Override
 	public boolean canConnectWith(TileEntityConnectable remoteTec) {
 		TileEntitySafe rtes = (TileEntitySafe)remoteTec;
-		return mech.getClass() == rtes.mech.getClass() && mech.matches(rtes.mech);
+		return mech.getClass() == rtes.mech.getClass() && mech.canConnectWith(rtes.mech);
+	}
+	
+	@Override
+	public void onConnect(boolean isMaster, TileEntityConnectable remote) {
+		if (isMaster)
+			((TileEntitySafe)remote).mech = mech;
 	}
 		
 	@Override

@@ -75,7 +75,7 @@ public class MechCombo extends SafeMechanism {
 	}
 
 	@Override
-	public boolean matches(SafeMechanism tmech) {
+	public boolean canConnectWith(SafeMechanism tmech) {
 		return Arrays.equals(((MechCombo)tmech).combination, this.combination);
 	}
 

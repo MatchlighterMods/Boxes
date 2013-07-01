@@ -31,7 +31,7 @@ public class MechFallback extends SafeMechanism {
 	}
 
 	@Override
-	public boolean matches(SafeMechanism tmech) {
+	public boolean canConnectWith(SafeMechanism tmech) {
 		return true;
 	}
 

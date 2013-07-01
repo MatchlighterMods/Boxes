@@ -34,7 +34,7 @@ public class TileEntityCrate extends TileEntity implements ISidedInventory, IRot
 	public ForgeDirection facing = ForgeDirection.NORTH;
 	private long lastRClick = 0L;
 
-	public ItemStack cItem; //Used by server to determine if it needs to send a packet. Used by client for which item to render
+	public ItemStack cItem; //Used by server to determine if it needs to send a packet. Used by client for which item to render and PickBlock
 	public int lItemCount;
 
 	@SideOnly(Side.CLIENT)

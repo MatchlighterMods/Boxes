@@ -54,7 +54,7 @@ public class MechKey extends SafeMechanism {
 	}
 
 	@Override
-	public boolean matches(SafeMechanism tmech) {
+	public boolean canConnectWith(SafeMechanism tmech) {
 		return ((MechKey)tmech).keyId == keyId;
 	}
 

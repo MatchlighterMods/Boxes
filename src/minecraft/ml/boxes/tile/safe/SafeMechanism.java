@@ -15,9 +15,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-public abstract class SafeMechanism {
-
-	/**
+	public abstract class SafeMechanism {
+	
+		/**
 	 * <b>(Optional)</b> Annotate your MechanismInfo static method with this annotation.<br>
 	 * Used to get Tooltip info for safes with the mechanism installed.<br>
 	 * Must accept 2 parameters: {@link ItemStack} safeStack, List toolTipLines
@@ -69,7 +69,7 @@ public abstract class SafeMechanism {
 
 	/**
 	 * Begin the unlock process. e.g. Check if its the right key or open Gui<br>
-	 * May or may not call Safe.unlock()
+	 * Should eventually call Safe.unlock() if the auth process succeeds
 	 * 
 	 * @param epl The player attempting to open the safe
 	 */
@@ -77,9 +77,9 @@ public abstract class SafeMechanism {
 
 	/**
 	 * Used for determining if two safes can connect.
-	 * You don't need to Type check.
+	 * You don't need to Type check
 	 */
-	public abstract boolean matches(SafeMechanism tmech);
+	public abstract boolean canConnectWith(SafeMechanism tmech);
 
 	/**
 	 * Called when the safe is locked 
