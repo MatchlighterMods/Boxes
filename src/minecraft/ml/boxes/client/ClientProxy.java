@@ -4,6 +4,7 @@ import ml.boxes.Boxes;
 import ml.boxes.CommonProxy;
 import ml.boxes.client.gui.GuiBox;
 import ml.boxes.client.gui.GuiCombination;
+import ml.boxes.client.gui.GuiSafe;
 import ml.boxes.client.render.NullBlockRenderer;
 import ml.boxes.client.render.item.BoxItemRenderer;
 import ml.boxes.client.render.item.MetaItemRenderer;
@@ -11,6 +12,7 @@ import ml.boxes.client.render.tile.BoxTESR;
 import ml.boxes.client.render.tile.CrateTESR;
 import ml.boxes.client.render.tile.SafeTESR;
 import ml.boxes.inventory.ContainerBox;
+import ml.boxes.inventory.ContainerSafe;
 import ml.boxes.tile.TileEntityBox;
 import ml.boxes.tile.TileEntityCrate;
 import ml.boxes.tile.TileEntitySafe;
@@ -37,7 +39,7 @@ public class ClientProxy extends CommonProxy {
 				return new GuiBox(container, player);
 			break;
 		case 3: //Safe
-			return new GuiCombination();
+			return new GuiSafe((ContainerSafe)getServerGuiElement(ID, player, world, x, y, z));
 			//break;
 		}
 		return null;

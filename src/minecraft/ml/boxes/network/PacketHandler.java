@@ -18,8 +18,4 @@ public class PacketHandler extends ml.core.network.PacketHandler {
 		addHandler(PacketDescribeSafe.class);
 	}
 
-	@Override
-	protected void onError(Throwable e, MLPacket mlPkt) {
-		FMLLog.log(Level.SEVERE, e, "Boxes failed to process packet");
-	}
 }

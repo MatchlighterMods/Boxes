@@ -6,7 +6,7 @@ import net.minecraft.inventory.Container;
 
 public class ContainerSafe extends Container {
 
-	TileEntitySafe safe;
+	public TileEntitySafe safe;
 	
 	public ContainerSafe(TileEntitySafe tes) {
 		safe = tes;
