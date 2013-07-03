@@ -18,7 +18,7 @@ public class BoxesConfig extends Config {
 	public @Prop(comment="The number of Milliseconds that you need to hover over a box item befor it shows its contents tip") int tipReactionTime = 200;
 	
 	public @Prop(comment="When set to true, boxes will render like a map when opened in hand", category="appearance") boolean enableMapStyleRendering = true;
-	public @Prop(comment="When set to true, map-style rendering will make the camera look down into the box", category="appearance") boolean mapRenderingView = true;
+	public @Prop(comment="When set to true, map-style rendering will make the camera look down into the box", category="appearance") boolean mapRenderingView = false;
 	
 	public @Prop(comment="For rendering items in crates. Higher settings can significantly impact performance\n" +
 			"0) Always render items in 2D. 1) Render above and below 3D. 2) Render all 3D", category="appearance") int crateItemRenderMode = 0;
