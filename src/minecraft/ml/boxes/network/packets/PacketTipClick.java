@@ -16,10 +16,10 @@ import cpw.mods.fml.common.network.Player;
 
 public class PacketTipClick extends MLPacket {
 	
-	public final int inventorySlot;
-	public final int boxInvSlot;
-	public final int arg;
-	public final int action;
+	public @data int inventorySlot;
+	public @data int boxInvSlot;
+	public @data int arg;
+	public @data int action;
 
 	public PacketTipClick(Player pl, int slotWithBox, int slotInBox, int arg, int action) {
 		super(pl, "Boxes");
@@ -29,20 +29,10 @@ public class PacketTipClick extends MLPacket {
 		boxInvSlot = slotInBox;
 		this.arg = arg;
 		this.action = action;
-		
-		writeInt(inventorySlot);
-		writeInt(boxInvSlot);
-		writeInt(arg);
-		writeInt(action);
 	}
 	
 	public PacketTipClick(Player pl, ByteArrayDataInput data) {
 		super(pl, data);
-		
-		inventorySlot = data.readInt();
-		boxInvSlot = data.readInt();
-		arg = data.readInt();
-		action = data.readInt();
 	}
 
 	@Override
