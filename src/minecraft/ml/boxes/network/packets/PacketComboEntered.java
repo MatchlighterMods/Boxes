@@ -6,6 +6,7 @@ import java.util.Arrays;
 import ml.boxes.tile.TileEntitySafe;
 import ml.boxes.tile.safe.MechCombo;
 import ml.core.network.MLPacket;
+import ml.core.network.MLPacket.data;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 
@@ -15,9 +16,9 @@ import cpw.mods.fml.common.network.Player;
 
 public class PacketComboEntered extends MLPacket {
 
-	public int tex;
-	public int tey;
-	public int tez;
+	public @data int tex;
+	public @data int tey;
+	public @data int tez;
 	
 	public int[] combo;
 	
@@ -31,28 +32,20 @@ public class PacketComboEntered extends MLPacket {
 		
 		this.combo = combo;
 		
-		writeInt(tex);
-		writeInt(tey);
-		writeInt(tez);
-		
-		writeInt(combo.length);
-		for (int i : combo){
-			writeInt(i);
-		}
+//		writeInt(combo.length);
+//		for (int i : combo){
+//			writeInt(i);
+//		}
 	}
 	
 	public PacketComboEntered(Player pl, ByteArrayDataInput data) {
 		super(pl, data);
 		
-		tex = data.readInt();
-		tey = data.readInt();
-		tez = data.readInt();
-		
-		int len = data.readInt();
-		combo = new int[len];
-		for (int i=0; i<len; i++){
-			combo[i] = data.readInt();
-		}
+//		int len = data.readInt();
+//		combo = new int[len];
+//		for (int i=0; i<len; i++){
+//			combo[i] = data.readInt();
+//		}
 	}
 	
 	@Override

@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import ml.boxes.tile.TileEntitySafe;
 import ml.core.network.PacketDescribeConnectable;
+import ml.core.network.MLPacket.data;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
@@ -13,24 +14,18 @@ import cpw.mods.fml.common.network.Player;
 
 public class PacketDescribeSafe extends PacketDescribeConnectable {
 	
-	public boolean sUnlocked;
-	public NBTTagCompound mechData;
+	public @data boolean sUnlocked;
+	public @data NBTTagCompound mechData;
 	
 	public PacketDescribeSafe(TileEntitySafe tes) {
 		super(tes, "Boxes");
 		
 		sUnlocked = tes.unlocked;
 		mechData = tes.mech.writeNBTPacket();
-		
-		writeBoolean(sUnlocked);
-		writeNBTTagCompound(mechData);
 	}
 	
 	public PacketDescribeSafe(Player pl, ByteArrayDataInput data) throws IOException {
 		super(pl, data);
-		
-		sUnlocked = data.readBoolean();
-		mechData = readNBTTagCompound();
 	}
 	
 	@Override

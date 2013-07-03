@@ -25,7 +25,7 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 
 	private ItemStack[] stacks;
 
-	public String mechId;
+	public String mechId = "";
 	public SafeMechanism mech;
 
 	public float doorAng = 0F;
