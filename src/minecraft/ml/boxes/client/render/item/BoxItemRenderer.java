@@ -182,6 +182,7 @@ public class BoxItemRenderer implements IItemRenderer {
 				GL11.glTranslatef(-1F, -1F, 0.0F);
 
 				BoxTESR.instance.setBoxFlaps(150, 150, 150, 150);
+				break;
 			}
 		case EQUIPPED:
 				GL11.glPushMatrix();
