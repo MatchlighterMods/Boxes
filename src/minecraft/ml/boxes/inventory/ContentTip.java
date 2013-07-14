@@ -156,7 +156,7 @@ public abstract class ContentTip {
 		if (mc.currentScreen instanceof GuiContainerCreative){
 			mc.thePlayer.inventoryContainer.detectAndSendChanges();
 		} else {
-			mc.thePlayer.sendQueue.addToSendQueue((new PacketTipClick((Player)mc.thePlayer, boxSlot.slotNumber, hvrSltIndex, arg, action)).convertToPkt250());
+			mc.thePlayer.sendQueue.addToSendQueue((new PacketTipClick(mc.thePlayer, boxSlot.slotNumber, hvrSltIndex, arg, action)).convertToPkt250());
 		}
 		return ret;
 	}

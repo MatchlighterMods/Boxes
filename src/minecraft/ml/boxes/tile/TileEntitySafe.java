@@ -92,11 +92,13 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 
 	public void unlock() {
 		unlocked = true;
+		if (isMaster() && isConnected()) ((TileEntitySafe)getConnected()).unlock();
 		worldObj.addBlockEvent(xCoord, yCoord, zCoord, Registry.BlockMeta.blockID, 1, 1);
 	}
 
 	public void lock() {
 		unlocked = false;
+		if (isMaster() && isConnected()) ((TileEntitySafe)getConnected()).lock();
 		worldObj.addBlockEvent(xCoord, yCoord, zCoord, Registry.BlockMeta.blockID, 1, 0);
 	}
 
@@ -229,7 +231,7 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
-		return unlocked;
+		return isMaster() ? unlocked : ((TileEntitySafe)getMaster()).unlocked;
 	}
 
 	@Override
@@ -284,14 +286,14 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 	}
 
 	public void playerOpened(EntityPlayer pl) {
-		pl.openGui(Boxes.instance, 4, worldObj, xCoord, yCoord, zCoord);
+		pl.openGui(Boxes.instance, 3, worldObj, xCoord, yCoord, zCoord);
 	}
 
 	public boolean onMasterRightClicked(EntityPlayer epl, ForgeDirection side) {
 		TileEntitySafe connected = (TileEntitySafe)getConnected();
 
 		if (facing==side) {
-			if (canInteract() && connected.canInteract()) {
+			if (canInteract() && (connected == null || connected.canInteract())) {
 				if (unlocked) {
 					playerOpened(epl);
 				} else {

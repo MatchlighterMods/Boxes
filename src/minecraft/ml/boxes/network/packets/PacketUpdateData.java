@@ -15,36 +15,27 @@ import cpw.mods.fml.common.network.Player;
 
 public class PacketUpdateData extends MLPacket {
 
-	public @data int x;
-	public @data int y;
-	public @data int z;
+	public @data TileEntityBox teb;
 	public @data NBTTagCompound pktData;
 	
 	public PacketUpdateData(TileEntityBox te) {
-		super(null, "Boxes");
-		
-		x = te.xCoord;
-		y = te.yCoord;
-		z = te.zCoord;
+		super("Boxes");
+
+		this.teb = te;
 		pktData = te.getBox().asNBTTag();
 	}
 	
-	public PacketUpdateData(Player pl, ByteArrayDataInput data) {
+	public PacketUpdateData(EntityPlayer pl, ByteArrayDataInput data) {
 		super(pl, data);
 
 	}
 
 	@Override
-	public void handleClientSide() throws IOException {
-		EntityPlayer asEntPl = (EntityPlayer)player;
-		TileEntity te = asEntPl.worldObj.getBlockTileEntity(x, y, z);
-		
-		if (te instanceof TileEntityBox){
-			((TileEntityBox)te).getBox().loadNBT(pktData);
-		}
+	public void handleClientSide(EntityPlayer epl) throws IOException {
+		teb.getBox().loadNBT(pktData);
 	}
 
 	@Override
-	public void handleServerSide() throws IOException {}
+	public void handleServerSide(EntityPlayer epl) throws IOException {}
 
 }

@@ -6,13 +6,10 @@ import java.util.Arrays;
 import ml.boxes.tile.TileEntitySafe;
 import ml.boxes.tile.safe.MechCombo;
 import ml.core.network.MLPacket;
-import ml.core.network.MLPacket.data;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 
 import com.google.common.io.ByteArrayDataInput;
-
-import cpw.mods.fml.common.network.Player;
 
 public class PacketComboEntered extends MLPacket {
 
@@ -22,8 +19,8 @@ public class PacketComboEntered extends MLPacket {
 	
 	public int[] combo;
 	
-	public PacketComboEntered(Player pl, TileEntitySafe tes, int[] combo) {
-		super(pl, "Boxes");
+	public PacketComboEntered(EntityPlayer pl, TileEntitySafe tes, int[] combo) {
+		super("Boxes");
 		chunkDataPacket = false;
 		
 		tex = tes.xCoord;
@@ -38,7 +35,7 @@ public class PacketComboEntered extends MLPacket {
 //		}
 	}
 	
-	public PacketComboEntered(Player pl, ByteArrayDataInput data) {
+	public PacketComboEntered(EntityPlayer pl, ByteArrayDataInput data) {
 		super(pl, data);
 		
 //		int len = data.readInt();
@@ -49,17 +46,16 @@ public class PacketComboEntered extends MLPacket {
 	}
 	
 	@Override
-	public void handleClientSide() throws IOException {}
+	public void handleClientSide(EntityPlayer epl) throws IOException {}
 
 	@Override
-	public void handleServerSide() throws IOException {
-		EntityPlayer asEntPl = (EntityPlayer)player;
-		TileEntity te = asEntPl.worldObj.getBlockTileEntity(tex, tey, tez);
+	public void handleServerSide(EntityPlayer epl) throws IOException {
+		TileEntity te = epl.worldObj.getBlockTileEntity(tex, tey, tez);
 		if (te instanceof TileEntitySafe) {
 			TileEntitySafe tes = (TileEntitySafe)te;
 			if (tes.mech instanceof MechCombo && Arrays.equals(((MechCombo)tes.mech).combination, combo)) {
 				tes.unlock();
-				tes.playerOpened(asEntPl);
+				tes.playerOpened(epl);
 			}
 		}
 	}

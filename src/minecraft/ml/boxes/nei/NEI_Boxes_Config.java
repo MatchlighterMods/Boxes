@@ -111,7 +111,6 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 		@Override
 		public void onMouseDragged(GuiContainer gui, int mousex, int mousey,
 				int button, long heldTime) {
-			// TODO Auto-generated method stub
 
 		}
 
