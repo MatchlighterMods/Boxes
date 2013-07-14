@@ -7,6 +7,7 @@ import ml.boxes.item.ItemBox;
 import ml.boxes.tile.TileEntityBox;
 import ml.boxes.tile.TileEntitySafe;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.InventoryLargeChest;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -33,8 +34,10 @@ public class CommonProxy implements IGuiHandler {
 			}
 			break;
 		case 3: //Safe
-			if (te instanceof TileEntitySafe)
-				return new ContainerSafe((TileEntitySafe)te);
+			if (te instanceof TileEntitySafe) {
+				TileEntitySafe tes = (TileEntitySafe)te;
+				return new ContainerSafe(player, tes.isConnected() ? new InventoryLargeChest("", (TileEntitySafe)tes.getConnected(), tes) : tes);
+			}
 			break;
 		}
 		

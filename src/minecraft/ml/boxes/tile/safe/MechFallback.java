@@ -41,7 +41,6 @@ public class MechFallback extends SafeMechanism {
 
 	@Override
 	public void render(RenderPass pass, boolean stacked) {
-		// TODO Auto-generated method stub
 		
 	}
 }

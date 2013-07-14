@@ -2,6 +2,7 @@ package ml.boxes.client;
 
 import ml.boxes.Boxes;
 import ml.boxes.CommonProxy;
+import ml.boxes.Icons;
 import ml.boxes.client.gui.GuiBox;
 import ml.boxes.client.gui.GuiCombination;
 import ml.boxes.client.gui.GuiSafe;
@@ -16,6 +17,7 @@ import ml.boxes.inventory.ContainerSafe;
 import ml.boxes.tile.TileEntityBox;
 import ml.boxes.tile.TileEntityCrate;
 import ml.boxes.tile.TileEntitySafe;
+import ml.core.texture.maps.BasicCustomTextureMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
@@ -58,6 +60,7 @@ public class ClientProxy extends CommonProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySafe.class, SafeTESR.instance);
 		MinecraftForgeClient.registerItemRenderer(Boxes.config.generalBlockID, new MetaItemRenderer());
 		
+		BasicCustomTextureMap.GUI.addProvider(new Icons());
 	}
 	
 }

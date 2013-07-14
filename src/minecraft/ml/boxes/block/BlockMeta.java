@@ -177,13 +177,6 @@ public class BlockMeta extends BlockContainer {
 	}
 	
 	@Override
-	public MovingObjectPosition collisionRayTrace(World par1World, int par2,
-			int par3, int par4, Vec3 par5Vec3, Vec3 par6Vec3) {
-		// TODO Auto-generated method stub
-		return super.collisionRayTrace(par1World, par2, par3, par4, par5Vec3, par6Vec3);
-	}
-	
-	@Override
 	public void registerIcons(IconRegister par1IconRegister) {
 		for (MetaType typ : MetaType.values()){
 			typ.ricon = par1IconRegister.registerIcon(typ.icon);

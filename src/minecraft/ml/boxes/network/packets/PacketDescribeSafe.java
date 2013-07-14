@@ -3,37 +3,48 @@ package ml.boxes.network.packets;
 import java.io.IOException;
 
 import ml.boxes.tile.TileEntitySafe;
-import ml.core.network.PacketDescribeConnectable;
-import ml.core.network.MLPacket.data;
+import ml.core.network.MLPacket;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.ForgeDirection;
 
 import com.google.common.io.ByteArrayDataInput;
 
-import cpw.mods.fml.common.network.Player;
-
-public class PacketDescribeSafe extends PacketDescribeConnectable {
+public class PacketDescribeSafe extends MLPacket {
+	
+	public @data TileEntitySafe tes;
+	public @data ForgeDirection facing;
+	public @data ForgeDirection linkDir;
 	
 	public @data boolean sUnlocked;
 	public @data NBTTagCompound mechData;
 	
 	public PacketDescribeSafe(TileEntitySafe tes) {
-		super(tes, "Boxes");
+		super("Boxes");
+		
+		this.tes = tes;
+		this.facing = tes.facing;
+		this.linkDir = tes.linkedDir;
 		
 		sUnlocked = tes.unlocked;
 		mechData = tes.mech.writeNBTPacket();
 	}
 	
-	public PacketDescribeSafe(Player pl, ByteArrayDataInput data) throws IOException {
+	public PacketDescribeSafe(EntityPlayer pl, ByteArrayDataInput data) throws IOException {
 		super(pl, data);
 	}
 	
 	@Override
-	public void handleClientSide(TileEntity te) throws IOException {
-		super.handleClientSide(te);
-		TileEntitySafe tes = (TileEntitySafe)te;
+	public void handleClientSide(EntityPlayer epl) throws IOException {
 
+		tes.facing = facing;
+		tes.linkedDir = linkDir;
+		
 		tes.unlocked = sUnlocked;
 		tes.mech.loadNBT(mechData);
 	}
+
+	@Override
+	public void handleServerSide(EntityPlayer epl) throws IOException {}
+	
 }

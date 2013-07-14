@@ -3,18 +3,18 @@ package ml.boxes.network.packets;
 import java.io.IOException;
 
 import ml.boxes.tile.TileEntityCrate;
-import ml.core.network.PacketDescribe;
-import ml.core.network.MLPacket.data;
+import ml.core.network.MLPacket;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.ForgeDirection;
 
 import com.google.common.io.ByteArrayDataInput;
 
-import cpw.mods.fml.common.network.Player;
+public class PacketDescribeCrate extends MLPacket {
 
-public class PacketDescribeCrate extends PacketDescribe {
-
+	public @data TileEntityCrate tec;
+	public @data ForgeDirection facing;
+	
 	public @data boolean hasStack;
 	public @data ItemStack is;
 	public @data int itemCnt;
@@ -22,7 +22,10 @@ public class PacketDescribeCrate extends PacketDescribe {
 	public @data boolean upg_label;
 	
 	public PacketDescribeCrate(TileEntityCrate tec) {
-		super(tec, "Boxes");
+		super("Boxes");
+		
+		this.tec = tec;
+		this.facing = tec.facing;
 
 		hasStack = tec.getStackInSlot(0) != null;
 		is = hasStack ? tec.getStackInSlot(0).copy() : null;
@@ -32,27 +35,22 @@ public class PacketDescribeCrate extends PacketDescribe {
 		
 	}
 	
-	public PacketDescribeCrate(Player pl, ByteArrayDataInput data) {
+	public PacketDescribeCrate(EntityPlayer pl, ByteArrayDataInput data) {
 		super(pl, data);
-
 	}
 	
 	@Override
-	public void handleServerSide() throws IOException {
-		
-	}
+	public void handleServerSide(EntityPlayer epl) throws IOException {}
 
 	@Override
-	public void handleClientSide(TileEntity te) throws IOException {
-		if (te instanceof TileEntityCrate){
-			TileEntityCrate tec = (TileEntityCrate)te;
-			tec.cItem = hasStack ? is : null;
-			tec.itemCount = itemCnt;
-			
-			tec.upg_label = upg_label;
-			
-			tec.updateClientDetails();
-		}
+	public void handleClientSide(EntityPlayer epl) throws IOException {
+		tec.facing = facing;
+		tec.cItem = hasStack ? is : null;
+		tec.itemCount = itemCnt;
+		
+		tec.upg_label = upg_label;
+		
+		tec.updateClientDetails();
 	}
 
 }

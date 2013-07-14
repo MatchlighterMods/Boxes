@@ -21,8 +21,8 @@ public class PacketTipClick extends MLPacket {
 	public @data int arg;
 	public @data int action;
 
-	public PacketTipClick(Player pl, int slotWithBox, int slotInBox, int arg, int action) {
-		super(pl, "Boxes");
+	public PacketTipClick(EntityPlayer pl, int slotWithBox, int slotInBox, int arg, int action) {
+		super("Boxes");
 		chunkDataPacket = false;
 		
 		inventorySlot = slotWithBox;
@@ -31,26 +31,25 @@ public class PacketTipClick extends MLPacket {
 		this.action = action;
 	}
 	
-	public PacketTipClick(Player pl, ByteArrayDataInput data) {
+	public PacketTipClick(EntityPlayer pl, ByteArrayDataInput data) {
 		super(pl, data);
 	}
 
 	@Override
-	public void handleClientSide() throws IOException {}
+	public void handleClientSide(EntityPlayer epl) throws IOException {}
 
 	@Override
-	public void handleServerSide() throws IOException {
-		EntityPlayer asEntPl = (EntityPlayer)player;
-
-		if (asEntPl.openContainer != null){
-			Slot slotWithBox = asEntPl.openContainer.getSlot(inventorySlot);
+	public void handleServerSide(EntityPlayer epl) throws IOException {
+		
+		if (epl.openContainer != null){
+			Slot slotWithBox = epl.openContainer.getSlot(inventorySlot);
 			ItemStack isInSlot = slotWithBox.getStack();
 			
 			if (isInSlot != null && isInSlot.getItem() instanceof ItemBox) {
 				ItemBoxContainer iib = new ItemBoxContainer(isInSlot);
 				ContentTip ctip = iib.getBox().createContentTip(slotWithBox, null);
 				
-				ctip.slotClick(boxInvSlot, arg, action, asEntPl);
+				ctip.slotClick(boxInvSlot, arg, action, epl);
 			}
 		}
 	}
