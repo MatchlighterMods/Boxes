@@ -2,6 +2,8 @@ package ml.boxes.inventory;
 
 import java.util.List;
 
+import org.omg.PortableServer.IdUniquenessPolicyValue;
+
 import ml.boxes.tile.TileEntitySafe;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -12,19 +14,21 @@ import net.minecraft.item.ItemStack;
 
 public class ContainerSafe extends Container {
 
+	public TileEntitySafe masterSafe;
 	public IInventory sInv;
-	public boolean isLarge;
+	public int invRows;
 	
-	public ContainerSafe(EntityPlayer pl, IInventory safeInv) {
-		sInv = safeInv;
-		isLarge = safeInv instanceof InventoryLargeChest;
+	public ContainerSafe(EntityPlayer pl, TileEntitySafe tes) {
+		masterSafe = tes;
+		sInv = tes.isConnected() ? new InventoryLargeChest("", ((TileEntitySafe)tes.getConnected()).inventory, tes.inventory) : tes.inventory;
 		sInv.openChest();
 		
 		int leftCol = 9;
-		int ySize = 132 + 18*safeInv.getSizeInventory()/9;
+		invRows = sInv.getSizeInventory()/9;
+		int ySize = 132 + 18*invRows;
 
-        for (int slt=0; slt<safeInv.getSizeInventory(); slt++) {
-        	addSlotToContainer(new Slot(safeInv, slt, 8+18*(slt%9), 26+18*(slt/9)));
+        for (int slt=0; slt<sInv.getSizeInventory(); slt++) {
+        	addSlotToContainer(new Slot(sInv, slt, 8+18*(slt%9), 26+18*(slt/9)));
         }
 		
 		for (int slt=9; slt < pl.inventory.mainInventory.length; slt++){
@@ -77,5 +81,5 @@ public class ContainerSafe extends Container {
 
 		return var3;
 	}
-
+	
 }

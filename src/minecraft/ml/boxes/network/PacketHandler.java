@@ -16,6 +16,7 @@ public class PacketHandler extends ml.core.network.PacketHandler {
 		
 		addHandler(PacketDescribeCrate.class);
 		addHandler(PacketDescribeSafe.class);
+		addHandler(PacketDescribeSafe.PacketLockSafe.class);
 	}
 
 }

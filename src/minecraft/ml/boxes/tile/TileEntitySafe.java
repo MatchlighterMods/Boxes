@@ -21,9 +21,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.ForgeDirection;
 
-public class TileEntitySafe extends TileEntityConnectable implements IEventedTE, IRotatableTE, IInventory, ISidedInventory {
-
-	private ItemStack[] stacks;
+public class TileEntitySafe extends TileEntityConnectable implements IEventedTE, IRotatableTE {
+	
+	public SafeInventory inventory;
 
 	public String mechId = "";
 	public SafeMechanism mech;
@@ -35,7 +35,7 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 	public int users = 0;
 
 	public TileEntitySafe() {
-		stacks = new ItemStack[getSizeInventory()];
+		inventory = new SafeInventory();
 		mech = new MechFallback(this);
 	}
 
@@ -54,9 +54,9 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 		{
 			NBTTagCompound nbttagcompound1 = (NBTTagCompound) nbttaglist.tagAt(i);
 			int j = nbttagcompound1.getByte("Slot") & 0xff;
-			if (j >= 0 && j < stacks.length)
+			if (j >= 0 && j < inventory.stacks.length)
 			{
-				stacks[j] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
+				inventory.stacks[j] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
 			}
 		}
 	}
@@ -71,13 +71,13 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 		tag.setBoolean("unlocked", unlocked);
 
 		NBTTagList nbttaglist = new NBTTagList();
-		for (int i = 0; i < stacks.length; i++)
+		for (int i = 0; i < inventory.stacks.length; i++)
 		{
-			if (stacks[i] != null)
+			if (inventory.stacks[i] != null)
 			{
 				NBTTagCompound nbttagcompound1 = new NBTTagCompound();
 				nbttagcompound1.setByte("Slot", (byte) i);
-				stacks[i].writeToNBT(nbttagcompound1);
+				inventory.stacks[i].writeToNBT(nbttagcompound1);
 				nbttaglist.appendTag(nbttagcompound1);
 			}
 		}
@@ -110,8 +110,7 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 
 	@Override
 	public void onConnect(boolean isMaster, TileEntityConnectable remote) {
-		if (isMaster)
-			((TileEntitySafe)remote).mech = mech;
+		
 	}
 
 	@Override
@@ -159,111 +158,6 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 			users = arg;
 		}
 		return true;
-	}
-
-	@Override
-	public int getSizeInventory() {
-		return 27;
-	}
-
-	@Override
-	public ItemStack getStackInSlot(int i) {
-		return stacks[i];
-	}
-
-	@Override
-	public ItemStack decrStackSize(int i, int j) {
-		if (this.stacks[i] != null)
-		{
-			ItemStack var3;
-
-			if (this.stacks[i].stackSize <= j)
-			{
-				var3 = this.stacks[i];
-				this.stacks[i] = null;
-				this.onInventoryChanged();
-				return var3;
-			}
-			else
-			{
-				var3 = this.stacks[i].splitStack(j);
-
-				if (this.stacks[i].stackSize == 0)
-				{
-					this.stacks[i] = null;
-				}
-
-				this.onInventoryChanged();
-				return var3;
-			}
-		}
-		else
-		{
-			return null;
-		}
-	}
-
-	@Override
-	public ItemStack getStackInSlotOnClosing(int i) {
-		return null;
-	}
-
-	@Override
-	public void setInventorySlotContents(int i, ItemStack itemstack) {
-		stacks[i] = itemstack;
-		onInventoryChanged();
-	}
-
-	@Override
-	public String getInvName() {
-		return "Boxes.safe";
-	}
-
-	@Override
-	public boolean isInvNameLocalized() {
-		return false;
-	}
-
-	@Override
-	public int getInventoryStackLimit() {
-		return 64;
-	}
-
-	@Override
-	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
-		return isMaster() ? unlocked : ((TileEntitySafe)getMaster()).unlocked;
-	}
-
-	@Override
-	public void openChest() {
-		users +=1;
-		worldObj.addBlockEvent(xCoord, yCoord, zCoord, Registry.BlockMeta.blockID, 2, users);
-	}
-
-	@Override
-	public void closeChest() {
-		users -=1;
-		worldObj.addBlockEvent(xCoord, yCoord, zCoord, Registry.BlockMeta.blockID, 2, users);
-	}
-
-	@Override
-	public int[] getAccessibleSlotsFromSide(int var1) {
-		return new int[]{};
-	}
-
-	@Override
-	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
-		return true;
-	}
-
-	@Override
-	public boolean canExtractItem(int i, ItemStack itemstack, int j) {
-		return false;
-	}
-
-	@Override
-	public boolean canInsertItem(int i, ItemStack itemstack, int j) {
-		return false;
 	}
 
 	@Override
@@ -332,9 +226,9 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 
 	@Override
 	public void hostBroken() {
-		for (int i=0; i<this.getSizeInventory(); i++){
-			if (getStackInSlot(i) != null)
-				ItemUtils.dropItemIntoWorld(worldObj, xCoord, yCoord, zCoord, getStackInSlot(i));
+		for (int i=0; i<this.inventory.getSizeInventory(); i++){
+			if (inventory.getStackInSlot(i) != null)
+				ItemUtils.dropItemIntoWorld(worldObj, xCoord, yCoord, zCoord, inventory.getStackInSlot(i));
 		}
 	}
 
@@ -362,5 +256,124 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 		if (linkedDir == ForgeDirection.UP)
 			cbb.maxY+=1;
 		return cbb;
+	}
+	
+	protected class SafeInventory implements IInventory { //Secure the inventory from mods that don't respect ISidedInventory
+
+		private ItemStack[] stacks;
+		
+		public SafeInventory() {
+			stacks = new ItemStack[getSizeInventory()];
+		}
+		
+		@Override
+		public int getSizeInventory() {
+			return 27;
+		}
+
+		@Override
+		public ItemStack getStackInSlot(int i) {
+			return stacks[i];
+		}
+
+		@Override
+		public ItemStack decrStackSize(int i, int j) {
+			if (this.stacks[i] != null)
+			{
+				ItemStack var3;
+
+				if (this.stacks[i].stackSize <= j)
+				{
+					var3 = this.stacks[i];
+					this.stacks[i] = null;
+					this.onInventoryChanged();
+					return var3;
+				}
+				else
+				{
+					var3 = this.stacks[i].splitStack(j);
+
+					if (this.stacks[i].stackSize == 0)
+					{
+						this.stacks[i] = null;
+					}
+
+					this.onInventoryChanged();
+					return var3;
+				}
+			}
+			else
+			{
+				return null;
+			}
+		}
+
+		@Override
+		public ItemStack getStackInSlotOnClosing(int i) {
+			return null;
+		}
+
+		@Override
+		public void setInventorySlotContents(int i, ItemStack itemstack) {
+			stacks[i] = itemstack;
+			onInventoryChanged();
+		}
+
+		@Override
+		public String getInvName() {
+			return "Boxes.safe";
+		}
+
+		@Override
+		public boolean isInvNameLocalized() {
+			return false;
+		}
+
+		@Override
+		public int getInventoryStackLimit() {
+			return 64;
+		}
+
+		@Override
+		public boolean isUseableByPlayer(EntityPlayer entityplayer) {
+			return worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) == TileEntitySafe.this && isMaster() ? unlocked : ((TileEntitySafe)getMaster()).unlocked;
+		}
+
+		@Override
+		public void openChest() {
+			users +=1;
+			worldObj.addBlockEvent(xCoord, yCoord, zCoord, Registry.BlockMeta.blockID, 2, users);
+		}
+
+		@Override
+		public void closeChest() {
+			users -=1;
+			worldObj.addBlockEvent(xCoord, yCoord, zCoord, Registry.BlockMeta.blockID, 2, users);
+		}
+
+		@Override
+		public boolean isStackValidForSlot(int i, ItemStack itemstack) {
+			return true;
+		}
+
+		@Override
+		public void onInventoryChanged() {
+			TileEntitySafe.this.onInventoryChanged();
+		}
+
+//		@Override
+//		public int[] getAccessibleSlotsFromSide(int var1) {
+//			return new int[]{};
+//		}
+//
+//		@Override
+//		public boolean canExtractItem(int i, ItemStack itemstack, int j) {
+//			return false;
+//		}
+//
+//		@Override
+//		public boolean canInsertItem(int i, ItemStack itemstack, int j) {
+//			return false;
+//		}
 	}
 }

@@ -36,7 +36,7 @@ public class CommonProxy implements IGuiHandler {
 		case 3: //Safe
 			if (te instanceof TileEntitySafe) {
 				TileEntitySafe tes = (TileEntitySafe)te;
-				return new ContainerSafe(player, tes.isConnected() ? new InventoryLargeChest("", (TileEntitySafe)tes.getConnected(), tes) : tes);
+				return new ContainerSafe(player, tes);
 			}
 			break;
 		}

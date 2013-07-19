@@ -3,10 +3,13 @@ package ml.boxes.client.gui;
 import org.lwjgl.opengl.GL11;
 
 import codechicken.nei.recipe.GuiUsageRecipe;
+import cpw.mods.fml.common.network.PacketDispatcher;
 
 import invtweaks.api.ContainerGUI;
 import ml.boxes.Icons;
 import ml.boxes.inventory.ContainerSafe;
+import ml.boxes.network.packets.PacketDescribeSafe;
+import ml.boxes.tile.TileEntitySafe;
 import ml.core.geo.Rectangle;
 import ml.core.geo.Vector2;
 import ml.core.gui.GuiContainerControl;
@@ -20,6 +23,7 @@ import ml.core.texture.maps.BasicCustomTextureMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.InventoryLargeChest;
 
 @ContainerGUI
 public class GuiSafe extends GuiContainerControl {
@@ -46,8 +50,10 @@ public class GuiSafe extends GuiContainerControl {
 	@Override
 	protected void drawBackgroundLayer(float f, int i, int j) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		this.mc.renderEngine.bindTexture(safeCont.isLarge ? "/mods/Boxes/textures/gui/safeGui_lg.png" : "/mods/Boxes/textures/gui/safeGui_sm.png");
-		drawTexturedModalRect(0, 0, 0, 0, xSize, ySize);
+		this.mc.renderEngine.bindTexture("/mods/Boxes/textures/gui/safeGui_lg.png");
+		
+		drawTexturedModalRect(0, 0, 0, 0, xSize, 25+safeCont.invRows*18);
+		drawTexturedModalRect(0, 25+safeCont.invRows*18, 0, 133, xSize, 107);
 	}
 
 	protected class TabLock extends GuiTab {
@@ -62,7 +68,7 @@ public class GuiSafe extends GuiContainerControl {
 		@Override
 		public boolean onMouseClicked(int lmX, int lmY, MouseButton button) {
 			mc.thePlayer.closeScreen();
-			// TODO Send lock packet
+			PacketDispatcher.sendPacketToServer(new PacketDescribeSafe.PacketLockSafe(safeCont.masterSafe).convertToPkt250());
 			return true;
 		}
 		

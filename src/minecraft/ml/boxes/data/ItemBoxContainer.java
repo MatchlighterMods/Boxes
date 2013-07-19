@@ -47,5 +47,10 @@ public class ItemBoxContainer implements IBoxContainer {
 		
 		return true;
 	}
+	
+	@Override
+	public boolean isUseableByPlayer(EntityPlayer epl) {
+		return data.isUseableByPlayer(epl);
+	}
 
 }

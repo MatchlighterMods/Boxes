@@ -47,4 +47,22 @@ public class PacketDescribeSafe extends MLPacket {
 	@Override
 	public void handleServerSide(EntityPlayer epl) throws IOException {}
 	
+	public static class PacketLockSafe extends MLPacket {
+		public @data TileEntitySafe tes;
+		
+		public PacketLockSafe(TileEntitySafe tes) {
+			super("Boxes");
+			
+			this.tes = tes;
+		}
+		
+		public PacketLockSafe(EntityPlayer pl, ByteArrayDataInput data) throws IOException {
+			super(pl, data);
+		}
+		
+		@Override
+		public void handleServerSide(EntityPlayer epl) throws IOException {
+			tes.lock();
+		}
+	}
 }
