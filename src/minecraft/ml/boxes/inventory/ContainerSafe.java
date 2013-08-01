@@ -1,5 +1,7 @@
 package ml.boxes.inventory;
 
+import invtweaks.api.container.ChestContainer;
+
 import java.util.List;
 
 import org.omg.PortableServer.IdUniquenessPolicyValue;
@@ -12,6 +14,7 @@ import net.minecraft.inventory.InventoryLargeChest;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
+@ChestContainer
 public class ContainerSafe extends Container {
 
 	public TileEntitySafe masterSafe;
@@ -47,8 +50,8 @@ public class ContainerSafe extends Container {
 	}
 	
 	@Override
-	public void onCraftGuiClosed(EntityPlayer par1EntityPlayer) {
-		super.onCraftGuiClosed(par1EntityPlayer);
+	public void onContainerClosed(EntityPlayer par1EntityPlayer) {
+		super.onContainerClosed(par1EntityPlayer);
 		sInv.closeChest();
 	}
 	

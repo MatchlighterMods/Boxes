@@ -1,5 +1,7 @@
 package ml.boxes.inventory;
 
+import invtweaks.api.container.ChestContainer;
+
 import java.util.List;
 
 import ml.boxes.data.IBoxContainer;
@@ -9,6 +11,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
+@ChestContainer
 public class ContainerBox extends Container {
 
 	public final IBoxContainer box;
@@ -86,8 +89,8 @@ public class ContainerBox extends Container {
 	}
 
 	@Override
-	public void onCraftGuiClosed(EntityPlayer par1EntityPlayer) {
-		super.onCraftGuiClosed(par1EntityPlayer);
+	public void onContainerClosed(EntityPlayer par1EntityPlayer) {
+		super.onContainerClosed(par1EntityPlayer);
 		save(par1EntityPlayer);
 		box.boxClose();
 	}

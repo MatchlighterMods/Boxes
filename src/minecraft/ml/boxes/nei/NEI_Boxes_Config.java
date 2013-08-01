@@ -4,6 +4,7 @@ import ml.boxes.Boxes;
 import ml.boxes.Registry;
 import ml.boxes.block.MetaType;
 import ml.boxes.client.ContentTipHandler;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -152,8 +153,9 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 
 		@Override
 		public void renderObjects(GuiContainer gui, int mousex, int mousey) {
+			Minecraft mc = Minecraft.getMinecraft();
 			if (ContentTipHandler.openTip != null)
-				ContentTipHandler.renderContentTip(gui.mc, mousex, mousey, 0);
+				ContentTipHandler.renderContentTip(mc, mousex, mousey, 0);
 		}
 
 		@Override

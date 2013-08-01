@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -22,7 +22,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.ReflectionHelper;
+import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -66,7 +66,7 @@ public class BoxItemRenderer implements IItemRenderer {
 			BoxTESR.instance.setBoxFlaps(5, 2, 0, 0);
 			break;
 		case EQUIPPED_FIRST_PERSON:
-			EntityLiving holder = (EntityLiving)data[1];
+			EntityLivingBase holder = (EntityLivingBase)data[1];
 			Minecraft mc = FMLClientHandler.instance().getClient();
 			if (Boxes.config.enableMapStyleRendering &&
 					holder instanceof EntityPlayer &&
@@ -86,14 +86,14 @@ public class BoxItemRenderer implements IItemRenderer {
 				GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 				GL11.glScalef(2.5F, 2.5F, 2.5F);
 				
-				float tickTime = ((Timer)ReflectionHelper.getPrivateValue(Minecraft.class, mc, 10)).renderPartialTicks;
+				float tickTime = ((Timer)ObfuscationReflectionHelper.getPrivateValue(Minecraft.class, mc, "timer")).renderPartialTicks;
 				
 				if (holder.rotationPitch<45F && Boxes.config.mapRenderingView){
 					holder.rotationPitch += tickTime * 6F;
 				}
 				
-				float prevEuipProg = ReflectionHelper.getPrivateValue(ItemRenderer.class, RenderManager.instance.itemRenderer, 3);
-				float euipProg = ReflectionHelper.getPrivateValue(ItemRenderer.class, RenderManager.instance.itemRenderer, 2);
+				float euipProg = ObfuscationReflectionHelper.getPrivateValue(ItemRenderer.class, RenderManager.instance.itemRenderer, "equippedProgress");
+				float prevEuipProg = ObfuscationReflectionHelper.getPrivateValue(ItemRenderer.class, RenderManager.instance.itemRenderer, "prevEquippedProgress");
 				
 				float f1 = prevEuipProg + (euipProg - prevEuipProg) * tickTime;
 				float f4 = 0.8F;
@@ -145,7 +145,7 @@ public class BoxItemRenderer implements IItemRenderer {
 				GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
 				GL11.glRotatef(f7 * -85.0F, 0.0F, 0.0F, 1.0F);
 				GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-				GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTextureForDownloadableImage(holder.skinUrl, holder.getTexture()));
+				//GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTextureForDownloadableImage(holder.skinUrl, holder.getTexture()));
 
 				for (k = 0; k < 2; k++)
 				{

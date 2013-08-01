@@ -9,16 +9,16 @@ import ml.boxes.tile.safe.SafeMechanism;
 import ml.core.item.ItemUtils;
 import ml.core.tile.IRotatableTE;
 import ml.core.tile.TileEntityConnectable;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChatMessageComponent;
 import net.minecraftforge.common.ForgeDirection;
 
 public class TileEntitySafe extends TileEntityConnectable implements IEventedTE, IRotatableTE {
@@ -194,7 +194,7 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 					mech.beginUnlock(epl);
 				}
 			} else {
-				epl.sendChatToPlayer("\u00A77\u00A7oThe door is blocked.");
+				epl.sendChatToPlayer(ChatMessageComponent.func_111066_d("\u00A77\u00A7oThe door is blocked."));
 			}
 		} else {
 			//epl.sendChatToPlayer("\u00A77\u00A7oNever seen anyone open a safe from a side without a door.");
@@ -233,7 +233,7 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 	}
 
 	@Override
-	public void hostPlaced(EntityLiving pl, ItemStack is) {
+	public void hostPlaced(EntityLivingBase pl, ItemStack is) {
 		if (!worldObj.isRemote) {
 			NBTTagCompound tag = is.getTagCompound() != null ? is.getTagCompound() : new NBTTagCompound();
 			mech = MechsHelper.tryInstantiate(tag.getString("mechType"), this);
@@ -352,7 +352,7 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 		}
 
 		@Override
-		public boolean isStackValidForSlot(int i, ItemStack itemstack) {
+		public boolean isItemValidForSlot(int i, ItemStack itemstack) {
 			return true;
 		}
 

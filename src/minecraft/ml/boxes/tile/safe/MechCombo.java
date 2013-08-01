@@ -83,7 +83,7 @@ public class MechCombo extends SafeMechanism {
 			GL11.glTranslatef(5F, stacked ? 16F:8F, 1F);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			
-			TileEntityRenderer.instance.renderEngine.bindTexture("/mods/Boxes/textures/models/dials.png");
+			TileEntityRenderer.instance.renderEngine.func_110577_a(SafeTESR.texDial);
 			SafeTESR.instance.sModel.renderPart("ComboBack");
 			for (int i=0; i<3; i++){
 				GL11.glPushMatrix();

@@ -10,6 +10,7 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -83,7 +84,7 @@ public class BlockBox extends BlockContainer {
 
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z,
-			EntityLiving entity, ItemStack is) {
+			EntityLivingBase entity, ItemStack is) {
 	
 		TileEntity te = world.getBlockTileEntity(x, y, z);
 		if (te instanceof TileEntityBox){

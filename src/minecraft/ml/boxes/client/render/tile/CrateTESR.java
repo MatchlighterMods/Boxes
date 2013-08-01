@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 import net.minecraftforge.common.ForgeDirection;
@@ -23,7 +24,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class CrateTESR extends TileEntitySpecialRenderer {
 
-	private IModelCustom crateModel = AdvancedModelLoader.loadModel("/mods/Boxes/models/crate.obj");
+	protected static ResourceLocation texMain = new ResourceLocation("Boxes:textures/models/crate.png");
+	private IModelCustom crateModel = AdvancedModelLoader.loadModel("/assets/boxes/models/crate.obj");
 	public static CrateTESR instance = new CrateTESR();
 
 	@Override
@@ -117,7 +119,7 @@ public class CrateTESR extends TileEntitySpecialRenderer {
 
 	public void render() {
 		GL11.glScalef(0.0625F, 0.0625F, 0.0625F);
-		bindTextureByName("/mods/Boxes/textures/models/crate.png");
+		this.func_110628_a(texMain);
 		crateModel.renderPart("Border");
 		crateModel.renderPart("Supports");
 	}

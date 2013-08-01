@@ -4,7 +4,7 @@ import net.minecraft.util.Icon;
 
 public enum MetaType {
 	Crate("Boxes:crate", "Boxes.crate.name"),
-	Safe("Boxes:safe", "Boxes.safe.name", true);
+	Safe("Boxes:safe", "Boxes.safe.name");
 	
 	public String ulName;
 	public boolean hidden;

@@ -14,6 +14,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraft.util.StringTranslate;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.registry.LanguageRegistry;
@@ -125,6 +126,6 @@ public class ItemBox extends ItemBlock {
 	}
 	
 	public static String getColoredBoxName(int i){
-		return StringTranslate.getInstance().translateKey("item.fireworksCharge." + ItemDye.dyeColorNames[i]) + " " + LanguageRegistry.instance().getStringLocalization("item.box.name", "en_US");
+		return StatCollector.translateToLocal("item.fireworksCharge." + ItemDye.dyeColorNames[i]) + " " + LanguageRegistry.instance().getStringLocalization("item.box.name", "en_US");
 	}
 }

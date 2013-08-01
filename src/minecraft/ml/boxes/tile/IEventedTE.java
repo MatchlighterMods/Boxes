@@ -1,6 +1,7 @@
 package ml.boxes.tile;
 
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.ForgeDirection;
@@ -11,7 +12,7 @@ public interface IEventedTE {
 	
 	public void onLeftClicked(EntityPlayer pl);
 	
-	public void hostPlaced(EntityLiving pl, ItemStack is);
+	public void hostPlaced(EntityLivingBase pl, ItemStack is);
 	
 	public void hostBroken();
 	

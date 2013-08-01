@@ -3,6 +3,7 @@ package ml.boxes.tile.safe;
 import ml.boxes.tile.TileEntitySafe;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatMessageComponent;
 
 /**
  * A fall-back mechanism that will be loaded if a safe fails to save or load properly.
@@ -30,7 +31,7 @@ public class MechFallback extends SafeMechanism {
 
 	@Override
 	public void beginUnlock(EntityPlayer epl) {
-		epl.sendChatToPlayer("\u00A77\u00A7oWarning: The safe has been corrupted and can no longer be locked properly!");
+		epl.sendChatToPlayer(ChatMessageComponent.func_111066_d("\u00A77\u00A7oWarning: The safe has been corrupted and can no longer be locked properly!"));
 		safe.unlock();
 	}
 

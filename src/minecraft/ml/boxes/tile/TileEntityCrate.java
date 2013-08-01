@@ -8,6 +8,7 @@ import ml.core.block.BlockUtils;
 import ml.core.item.ItemUtils;
 import ml.core.tile.IRotatableTE;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
@@ -45,7 +46,7 @@ public class TileEntityCrate extends TileEntity implements ISidedInventory, IRot
 	}
 
 	public void sendPacket(){
-		PacketDispatcher.sendPacketToAllInDimension(getDescriptionPacket(), worldObj.getWorldInfo().getDimension());
+		PacketDispatcher.sendPacketToAllInDimension(getDescriptionPacket(), worldObj.provider.dimensionId);
 	}
 	
 	public void testTriggerPacket(){
@@ -258,7 +259,7 @@ public class TileEntityCrate extends TileEntity implements ISidedInventory, IRot
 	}
 
 	@Override
-	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
+	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
 		return allowItem(itemstack);
 	}
 
@@ -305,7 +306,7 @@ public class TileEntityCrate extends TileEntity implements ISidedInventory, IRot
 			if (stacks[0] != null){
 				for (int i=0; i<pl.inventory.mainInventory.length; i++){
 					ItemStack is = pl.inventory.getStackInSlot(i);
-					if (is != null && isStackValidForSlot(0, is)){
+					if (is != null && isItemValidForSlot(0, is)){
 						int chg = Math.min(is.stackSize, CRATE_SIZE-getTotalItems());
 						itemCount += pl.inventory.decrStackSize(i, chg).stackSize;
 					}
@@ -372,7 +373,7 @@ public class TileEntityCrate extends TileEntity implements ISidedInventory, IRot
 	}
 
 	@Override
-	public void hostPlaced(EntityLiving pl, ItemStack is) {}
+	public void hostPlaced(EntityLivingBase pl, ItemStack is) {}
 	
 	@Override
 	public boolean onAttemptUpgrade(EntityPlayer pl, ItemStack is, int side) {

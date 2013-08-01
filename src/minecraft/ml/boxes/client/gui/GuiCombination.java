@@ -4,12 +4,15 @@ import ml.boxes.client.render.tile.SafeTESR;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 public class GuiCombination extends GuiScreen {
 
+	protected static ResourceLocation bgRes = new ResourceLocation("Boxes:textures/gui/comboBg.png");
+	
 	public int xSize = 126;
 	public int ySize = 57;
 	public int guiLeft;
@@ -32,7 +35,7 @@ public class GuiCombination extends GuiScreen {
 
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-		this.mc.renderEngine.bindTexture("/mods/Boxes/textures/gui/comboBg.png");
+		this.mc.func_110434_K().func_110577_a(bgRes);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
@@ -48,8 +51,8 @@ public class GuiCombination extends GuiScreen {
 		GL11.glRotatef(-135.0F, 0.0F, 1.0F, 0.0F);
 		GL11.glTranslatef(2F, 0, 0);
 
-		GL11.glPushMatrix();			
-		mc.renderEngine.bindTexture("/mods/Boxes/textures/models/dials.png");
+		GL11.glPushMatrix();
+		this.mc.func_110434_K().func_110577_a(SafeTESR.texDial);
 		SafeTESR.instance.sModel.renderPart("ComboBack");
 		for (int i=0; i<3; i++){
 			GL11.glPushMatrix();

@@ -5,6 +5,7 @@ import ml.boxes.tile.safe.SafeMechanism.RenderPass;
 import ml.core.block.BlockUtils;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 import net.minecraftforge.common.ForgeDirection;
@@ -17,8 +18,11 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class SafeTESR extends TileEntitySpecialRenderer {
+	
+	public static ResourceLocation texMain = new ResourceLocation("Boxes:textures/models/safe.png");
+	public static ResourceLocation texDial = new ResourceLocation("Boxes:textures/models/dials.png");
 
-	public IModelCustom sModel = AdvancedModelLoader.loadModel("/mods/Boxes/models/safe.obj");
+	public IModelCustom sModel = AdvancedModelLoader.loadModel("/assets/boxes/models/safe.obj");
 	public static SafeTESR instance = new SafeTESR();
 
 	@Override
@@ -36,7 +40,7 @@ public class SafeTESR extends TileEntitySpecialRenderer {
 			BlockUtils.glRotateForFaceDir(tes.facing);
 
 			GL11.glScalef(0.0625F, 0.0625F, 0.0625F);
-			bindTextureByName("/mods/Boxes/textures/models/safe.png");
+			this.func_110628_a(texMain);
 			sModel.renderPart("Safe_Base");
 			sModel.renderPart(renderTall ? "Safe_Tall":"Safe_Small");
 			if (renderTall) sModel.renderPart("Safe_Shelf");
@@ -61,13 +65,13 @@ public class SafeTESR extends TileEntitySpecialRenderer {
 
 	public void renderAsItem(){
 		GL11.glScalef(0.0625F, 0.0625F, 0.0625F);
-		bindTextureByName("/mods/Boxes/textures/models/safe.png");
+		this.func_110628_a(texMain);
 		sModel.renderPart("Safe_Base");
 		sModel.renderPart("Safe_Small");
 		sModel.renderPart("Door_Small");
 
 		GL11.glTranslatef(15F, 8F, 15F);
-		bindTextureByName("/mods/Boxes/textures/models/dials.png");
+		this.func_110628_a(texDial);
 		sModel.renderPart("ComboBack");
 		for (int i=0; i<3; i++){
 			GL11.glPushMatrix();

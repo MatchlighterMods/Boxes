@@ -196,8 +196,8 @@ public class TileEntityBox extends TileEntity implements IInventory, IBoxContain
 	}
 
 	@Override
-	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
-		return getBox().isStackValidForSlot(i, itemstack);
+	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
+		return getBox().isItemValidForSlot(i, itemstack);
 	}
 
 	@Override

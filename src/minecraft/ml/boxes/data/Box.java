@@ -143,7 +143,7 @@ public class Box implements IInventory {
 
 	@Override
 	public void setInventorySlotContents(int var1, ItemStack var2) {
-		if (isStackValidForSlot(var1, var2)){
+		if (isItemValidForSlot(var1, var2)){
 			inventory[var1] = var2;
 			this.onInventoryChanged();
 		}else{
@@ -224,7 +224,7 @@ public class Box implements IInventory {
 			{
 				stackOn = this.getStackInSlot(itI);
 
-				if (stackOn == null && this.isStackValidForSlot(itI, is))
+				if (stackOn == null && this.isItemValidForSlot(itI, is))
 				{
 					this.setInventorySlotContents(itI, is.copy());
 					is.stackSize = 0;
@@ -284,7 +284,7 @@ public class Box implements IInventory {
 
 		@Override
 		public boolean isItemValid(ItemStack par1ItemStack) {
-			return boxData.isStackValidForSlot(this.getSlotIndex(), par1ItemStack);
+			return boxData.isItemValidForSlot(this.getSlotIndex(), par1ItemStack);
 		}
 	}
 
@@ -294,7 +294,7 @@ public class Box implements IInventory {
 	}
 
 	@Override
-	public boolean isStackValidForSlot(int i, ItemStack is) {
+	public boolean isItemValidForSlot(int i, ItemStack is) {
 		if (is == null)
 			return true;
 		if (is.getItem() instanceof ItemBox || ContentBlacklist.ItemBlacklisted(ContentBlacklist.LIST_BOX, is))

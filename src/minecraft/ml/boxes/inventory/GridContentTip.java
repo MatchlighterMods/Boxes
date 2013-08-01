@@ -13,11 +13,13 @@ import ml.core.gui.GuiRenderUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
 public class GridContentTip extends ContentTip {
 
+	protected static ResourceLocation tipBgRes = new ResourceLocation("Boxes:textures/gui/contentTipGui2.png");
 	protected static Vector2<Integer> gridDimensions;
 	private static List<ItemStack> contentStacks = new ArrayList<ItemStack>();
 	
@@ -50,7 +52,7 @@ public class GridContentTip extends ContentTip {
 			int slotY = 10+row*18;
 
 			ItemStack is = contentStacks.get(i);
-			mc.renderEngine.bindTexture("/mods/Boxes/textures/gui/contentTipGui2.png");
+			mc.func_110434_K().func_110577_a(tipBgRes);
 			GuiRenderUtils.drawTexturedModalRect(slotX-1, slotY-1, 0, 106, 18, 18);
 
 			GuiRenderUtils.drawStackAt(mc, slotX, slotY, is);
@@ -66,7 +68,7 @@ public class GridContentTip extends ContentTip {
 	
 	@Override
 	protected void renderBackground(Minecraft mc, int mx, int my) {
-		mc.renderEngine.bindTexture("/mods/Boxes/textures/gui/contentTipGui2.png");
+		mc.func_110434_K().func_110577_a(tipBgRes);
 		GuiRenderUtils.drawSlicedRect(0, 0, tipBounds.width, tipBounds.height, 0, 0, 178, 106, 9, 9, 7, 7);
 	}
 	

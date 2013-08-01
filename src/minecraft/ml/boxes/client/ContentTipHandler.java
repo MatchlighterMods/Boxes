@@ -63,8 +63,8 @@ public class ContentTipHandler implements ITickHandler {
 		if (mc.currentScreen instanceof GuiContainer){
 			GuiContainer asGuiContainer = (GuiContainer)mc.currentScreen;
 
-			int guiXSize = ObfuscationReflectionHelper.getPrivateValue(GuiContainer.class, (GuiContainer)mc.currentScreen, 1);
-			int guiYSize = ObfuscationReflectionHelper.getPrivateValue(GuiContainer.class, (GuiContainer)mc.currentScreen, 2);
+			int guiXSize = ObfuscationReflectionHelper.getPrivateValue(GuiContainer.class, (GuiContainer)mc.currentScreen, "xSize");
+			int guiYSize = ObfuscationReflectionHelper.getPrivateValue(GuiContainer.class, (GuiContainer)mc.currentScreen, "ySize");
 
 			Vector2<Integer> m = GeoMath.getScaledMouse();
 

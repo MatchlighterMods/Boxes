@@ -5,6 +5,7 @@ import ml.boxes.tile.TileEntityBox;
 import ml.core.block.BlockUtils;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -15,6 +16,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class BoxTESR extends TileEntitySpecialRenderer {
 
+	protected static ResourceLocation texColor = new ResourceLocation("Boxes:textures/models/boxColor.png");
+	protected static ResourceLocation texMain = new ResourceLocation("Boxes:textures/models/box.png");
+	
 	private ModelBox boxModel = new ModelBox();
 	public static BoxTESR instance = new BoxTESR();
 
@@ -63,11 +67,11 @@ public class BoxTESR extends TileEntitySpecialRenderer {
 
 		GL11.glColor4f(red, green, blue, 1.0F);
 
-		bindTextureByName("/mods/Boxes/textures/models/boxColor.png");
+		this.func_110628_a(texColor);
 		boxModel.renderAll();
 
 		GL11.glColor4f(0.7F, 0.47F, 0.3F, 1F);
-		bindTextureByName("/mods/Boxes/textures/models/box.png");
+		this.func_110628_a(texMain);
 		boxModel.renderAll();
 
 		GL11.glColor4f(1F, 1F, 1F, 1F);
