@@ -57,7 +57,7 @@ def main():
 		f.write("%s=%s\n" %("Boxes.build.mcpversion",mcpversion))
 		f.write("%s=%s\n" %("Boxes.build.mcversion",mcversion))
 
-	print("Version information: Boxes %s.%s.%s using MCP %s for %s" % (major, minor, rev, mcpversion, mcversion))
+	print("Version information: Boxes %s.%s.%s%s using MCP %s for %s" % (major, minor, rev, info, mcpversion, mcversion))
 
 if __name__ == '__main__':
 	main()

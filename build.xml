@@ -59,7 +59,7 @@
 		<property name="version.minor" value="${Boxes.build.minor.number}" />
 		<property name="version.rev" value="${Boxes.build.revision.number}" />
 		<property name="version.info" value="${Boxes.build.info}" />
-		<property name="version" value="${version.major}.${version.minor}.${version.rev}.${version.build}-${version.info}" />
+		<property name="version" value="${version.major}.${version.minor}.${version.rev}.${version.build}${version.info}" />
 		<antcall target="writeversion" />
 	</target>
 
