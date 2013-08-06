@@ -145,7 +145,7 @@ public class BoxItemRenderer implements IItemRenderer {
 				GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
 				GL11.glRotatef(f7 * -85.0F, 0.0F, 0.0F, 1.0F);
 				GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-				//GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTextureForDownloadableImage(holder.skinUrl, holder.getTexture()));
+				//GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTextureForDownloadableImage(holder.skinUrl, holder.getTexture())); //TODO
 
 				for (k = 0; k < 2; k++)
 				{

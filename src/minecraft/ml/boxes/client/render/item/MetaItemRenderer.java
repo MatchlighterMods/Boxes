@@ -19,6 +19,7 @@ public class MetaItemRenderer implements IItemRenderer {
 		switch (type) {
 		case ENTITY:
 		case EQUIPPED:
+		case EQUIPPED_FIRST_PERSON:
 		case INVENTORY:
 			return true;
 		case FIRST_PERSON_MAP:
@@ -49,9 +50,6 @@ public class MetaItemRenderer implements IItemRenderer {
 			break;
 		case EQUIPPED_FIRST_PERSON:
 		case EQUIPPED:
-//			GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-//			GL11.glRotatef(-90F, 0F, 1F, 0F);
-//			GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 			break;
 		case INVENTORY:
 			GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
@@ -63,6 +61,10 @@ public class MetaItemRenderer implements IItemRenderer {
 			CrateTESR.instance.render();
 			break;
 		case Safe:
+			GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+			GL11.glRotatef(type==ItemRenderType.INVENTORY ? -90F : 90F, 0F, 1F, 0F);
+			GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+			
 			SafeTESR.instance.renderAsItem();
 			break;
 		}
