@@ -42,7 +42,7 @@ public class ContainerBox extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer var1) {
-		return box.isUseableByPlayer(var1) && (!(box instanceof ItemBoxContainer) || ((ItemBoxContainer)box).stack == var1.getCurrentEquippedItem());
+		return box.isUseableByPlayer(var1) ;//&& (!(box instanceof ItemBoxContainer) || ((ItemBoxContainer)box).stack == var1.getCurrentEquippedItem());
 	}
 
 	@Override
