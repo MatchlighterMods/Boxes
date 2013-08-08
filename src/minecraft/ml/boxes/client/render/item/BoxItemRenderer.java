@@ -86,14 +86,14 @@ public class BoxItemRenderer implements IItemRenderer {
 				GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 				GL11.glScalef(2.5F, 2.5F, 2.5F);
 				
-				float tickTime = ((Timer)ObfuscationReflectionHelper.getPrivateValue(Minecraft.class, mc, "timer")).renderPartialTicks;
+				float tickTime = ((Timer)ObfuscationReflectionHelper.getPrivateValue(Minecraft.class, mc, "field_" + "71428_T", "timer", "S")).renderPartialTicks;
 				
 				if (holder.rotationPitch<45F && Boxes.config.mapRenderingView){
 					holder.rotationPitch += tickTime * 6F;
 				}
 				
-				float euipProg = ObfuscationReflectionHelper.getPrivateValue(ItemRenderer.class, RenderManager.instance.itemRenderer, "equippedProgress");
-				float prevEuipProg = ObfuscationReflectionHelper.getPrivateValue(ItemRenderer.class, RenderManager.instance.itemRenderer, "prevEquippedProgress");
+				float euipProg = ObfuscationReflectionHelper.getPrivateValue(ItemRenderer.class, RenderManager.instance.itemRenderer, "field_" + "78454_c", "equippedProgress", "g");
+				float prevEuipProg = ObfuscationReflectionHelper.getPrivateValue(ItemRenderer.class, RenderManager.instance.itemRenderer, "field_" + "78451_d", "prevEquippedProgress", "h");
 				
 				float f1 = prevEuipProg + (euipProg - prevEuipProg) * tickTime;
 				float f4 = 0.8F;
