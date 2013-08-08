@@ -144,6 +144,9 @@ public class TileEntityBox extends TileEntity implements IInventory, IBoxContain
 	public boolean isUseableByPlayer(EntityPlayer var1) {
 		return worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) == this && data.isUseableByPlayer(var1);
 	}
+	
+	@Override
+	public boolean boxUseableByPlayer(EntityPlayer epl) {return isUseableByPlayer(epl);} //Required to prevent a reobfuscation error
 
 	@Override
 	public void openChest() {

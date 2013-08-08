@@ -19,5 +19,5 @@ public interface IBoxContainer {
 	public boolean slotPreClick(ContainerBox cb, int slotNum, int mouseBtn, int action,
 			EntityPlayer par4EntityPlayer);
 	
-	public boolean isUseableByPlayer(EntityPlayer epl);
+	public boolean boxUseableByPlayer(EntityPlayer epl);
 }
