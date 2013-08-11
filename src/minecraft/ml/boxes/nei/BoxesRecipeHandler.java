@@ -25,7 +25,7 @@ public class BoxesRecipeHandler extends ShapedRecipeHandler {
 		}
 				
 		private void cycle(){
-			ArrayList<PositionedStack> ingreds = getIngredients();
+			List<PositionedStack> ingreds = getIngredients();
             for(int i = 0; i < 9; i++)
                 invCrafting.setInventorySlotContents(i, i < ingreds.size() ? ingreds.get(i).item : null);
 			this.result = new PositionedStack(recipe.getCraftingResult(invCrafting), 119, 24);
