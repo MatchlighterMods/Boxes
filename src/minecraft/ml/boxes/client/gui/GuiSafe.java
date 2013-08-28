@@ -3,14 +3,14 @@ package ml.boxes.client.gui;
 import ml.boxes.Icons;
 import ml.boxes.inventory.ContainerSafe;
 import ml.boxes.network.packets.PacketDescribeSafe;
-import ml.core.geo.Rectangle;
-import ml.core.geo.Vector2;
 import ml.core.gui.GuiContainerControl;
 import ml.core.gui.GuiSide;
 import ml.core.gui.MouseButton;
 import ml.core.gui.controls.ControlTabManager;
 import ml.core.gui.controls.ControlTabManager.GuiTab;
 import ml.core.texture.maps.BasicCustomTextureMap;
+import ml.core.vec.Rectangle;
+import ml.core.vec.Vector2;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 

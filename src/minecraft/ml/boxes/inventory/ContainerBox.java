@@ -58,29 +58,24 @@ public class ContainerBox extends Container {
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2) //TODO Fix so no Shift+Clicking Boxes
-	{
+	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2) {
 		ItemStack var3 = null;
 		Slot var4 = (Slot)this.inventorySlots.get(par2);
 		int bxSize = box.getBox().getSizeInventory();
 
-		if (var4 != null && var4.getHasStack())
-		{
+		if (var4 != null && var4.getHasStack()) {
 			ItemStack var5 = var4.getStack();
 			var3 = var5.copy();
-			if (par2 < bxSize){
+			if (par2 < bxSize) {
 				if (!mergeItemStack(var5, bxSize,inventorySlots.size(), true))
 					return null;
-			} else if (!box.getBox().mergeItemStack(var5, 0, bxSize)){
+			} else if (!box.getBox().mergeItemStack(var5, 0, bxSize)) {
 				return null;
 			}
 
-			if (var5.stackSize == 0)
-			{
+			if (var5.stackSize == 0) {
 				var4.putStack((ItemStack)null);
-			}
-			else
-			{
+			} else {
 				var4.onSlotChanged();
 			}
 		}

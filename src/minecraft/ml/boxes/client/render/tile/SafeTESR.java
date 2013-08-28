@@ -23,7 +23,7 @@ public class SafeTESR extends TileEntitySpecialRenderer {
 	public static ResourceLocation texDial = new ResourceLocation("Boxes:textures/models/dials.png");
 
 	public IModelCustom sModel = AdvancedModelLoader.loadModel("/assets/boxes/models/safe.obj");
-	public static SafeTESR instance = new SafeTESR();
+	public static SafeTESR INSTANCE = new SafeTESR();
 
 	@Override
 	public void renderTileEntityAt(TileEntity te, double d0, double d1,

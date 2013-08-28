@@ -26,7 +26,7 @@ public class CrateTESR extends TileEntitySpecialRenderer {
 
 	protected static ResourceLocation texMain = new ResourceLocation("Boxes:textures/models/crate.png");
 	private IModelCustom crateModel = AdvancedModelLoader.loadModel("/assets/boxes/models/crate.obj");
-	public static CrateTESR instance = new CrateTESR();
+	public static CrateTESR INSTANCE = new CrateTESR();
 
 	@Override
 	public void renderTileEntityAt(TileEntity te, double d0, double d1,

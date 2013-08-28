@@ -84,13 +84,13 @@ public class MechCombo extends SafeMechanism {
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			
 			TileEntityRenderer.instance.renderEngine.func_110577_a(SafeTESR.texDial);
-			SafeTESR.instance.sModel.renderPart("ComboBack");
+			SafeTESR.INSTANCE.sModel.renderPart("ComboBack");
 			for (int i=0; i<3; i++){
 				GL11.glPushMatrix();
 				GL11.glTranslatef(-0.75F*(float)i, 0F, 0F);
 				GL11.glRotatef(-36*(dispCombination[i]), 1F, 0, 0);
-				SafeTESR.instance.sModel.renderPart("Wheel_Sides");
-				SafeTESR.instance.sModel.renderPart("Wheel_Num");
+				SafeTESR.INSTANCE.sModel.renderPart("Wheel_Sides");
+				SafeTESR.INSTANCE.sModel.renderPart("Wheel_Num");
 				GL11.glPopMatrix();
 			}
 			break;

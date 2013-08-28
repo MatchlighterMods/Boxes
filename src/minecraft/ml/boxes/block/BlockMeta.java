@@ -3,9 +3,11 @@ package ml.boxes.block;
 import ml.boxes.Boxes;
 import ml.boxes.tile.IEventedTE;
 import ml.boxes.tile.TileEntityCrate;
+import ml.boxes.tile.TileEntityDisplayCase;
 import ml.boxes.tile.TileEntitySafe;
 import ml.core.block.BlockUtils;
 import ml.core.tile.IRotatableTE;
+import ml.core.vec.Cuboid6;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -19,6 +21,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 
@@ -41,6 +44,8 @@ public class BlockMeta extends BlockContainer {
 			return new TileEntityCrate();
 		case Safe:
 			return new TileEntitySafe();
+		case DisplayCase:
+			return new TileEntityDisplayCase();
 		}
 		return null;
 	}
@@ -100,6 +105,20 @@ public class BlockMeta extends BlockContainer {
 		}
 		if (te instanceof IEventedTE){
 			((IEventedTE)te).hostPlaced(entity, is);
+		}
+	}
+	
+	//Called after onBlockPlacedBy by ItemBoxBlocks
+	public void onBlockPlacedByFull(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata) {
+		TileEntity te = world.getBlockTileEntity(x, y, z);
+		if (te instanceof TileEntityDisplayCase) {
+			TileEntityDisplayCase tedc = (TileEntityDisplayCase)te;
+			tedc.facing = ForgeDirection.getOrientation(side);
+			
+			if (tedc.facing == ForgeDirection.UP) {
+				tedc.rotation = ForgeDirection.EAST;
+			}
+			
 		}
 	}
 	
@@ -200,5 +219,21 @@ public class BlockMeta extends BlockContainer {
 	@Override
 	public Icon getIcon(int side, int meta) {
 		return MetaType.fromMeta(meta).ricon;
+	}
+	
+	@Override
+	public void setBlockBoundsBasedOnState(IBlockAccess ibla, int x, int y, int z) {
+		
+		TileEntity te = ibla.getBlockTileEntity(x, y, z);
+		if (te instanceof TileEntityDisplayCase) {
+			TileEntityDisplayCase tedc = (TileEntityDisplayCase)te;
+
+			Cuboid6 bb = new Cuboid6(0.125D, 0, 0.0625D, 0.875D, 0.375D, 0.9375D);
+			bb.transform(tedc.getTransformation());
+			bb.setToBlockBounds(this);
+			
+		} else {
+			setBlockBounds(0, 0, 0, 1, 1, 1);
+		}
 	}
 }

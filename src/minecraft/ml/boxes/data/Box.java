@@ -7,7 +7,7 @@ import ml.boxes.api.ContentBlacklist;
 import ml.boxes.inventory.ContentTip;
 import ml.boxes.inventory.GridContentTip;
 import ml.boxes.item.ItemBox;
-import ml.core.geo.Rectangle;
+import ml.core.vec.Rectangle;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;

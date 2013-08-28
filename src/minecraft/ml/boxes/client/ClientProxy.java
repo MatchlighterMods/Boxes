@@ -11,11 +11,13 @@ import ml.boxes.client.render.item.BoxItemRenderer;
 import ml.boxes.client.render.item.MetaItemRenderer;
 import ml.boxes.client.render.tile.BoxTESR;
 import ml.boxes.client.render.tile.CrateTESR;
+import ml.boxes.client.render.tile.DisplayCaseTESR;
 import ml.boxes.client.render.tile.SafeTESR;
 import ml.boxes.inventory.ContainerBox;
 import ml.boxes.inventory.ContainerSafe;
 import ml.boxes.tile.TileEntityBox;
 import ml.boxes.tile.TileEntityCrate;
+import ml.boxes.tile.TileEntityDisplayCase;
 import ml.boxes.tile.TileEntitySafe;
 import ml.core.texture.maps.BasicCustomTextureMap;
 import net.minecraft.entity.player.EntityPlayer;
@@ -56,8 +58,9 @@ public class ClientProxy extends CommonProxy {
 		MinecraftForgeClient.registerItemRenderer(Boxes.config.boxBlockID, new BoxItemRenderer());
 		TickRegistry.registerTickHandler(new ContentTipHandler(), Side.CLIENT);
 		
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCrate.class, CrateTESR.instance);
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySafe.class, SafeTESR.instance);
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCrate.class, CrateTESR.INSTANCE);
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySafe.class, SafeTESR.INSTANCE);
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDisplayCase.class, DisplayCaseTESR.INSTANCE);
 		MinecraftForgeClient.registerItemRenderer(Boxes.config.generalBlockID, new MetaItemRenderer());
 		
 		BasicCustomTextureMap.GUI.addProvider(new Icons());

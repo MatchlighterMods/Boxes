@@ -2,6 +2,7 @@ package ml.boxes.client.render.item;
 
 import ml.boxes.block.MetaType;
 import ml.boxes.client.render.tile.CrateTESR;
+import ml.boxes.client.render.tile.DisplayCaseTESR;
 import ml.boxes.client.render.tile.SafeTESR;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
@@ -58,14 +59,17 @@ public class MetaItemRenderer implements IItemRenderer {
 		
 		switch (MetaType.fromMeta(item.getItemDamage())){
 		case Crate:
-			CrateTESR.instance.render();
+			CrateTESR.INSTANCE.render();
 			break;
 		case Safe:
 			GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 			GL11.glRotatef(type==ItemRenderType.INVENTORY ? -90F : 90F, 0F, 1F, 0F);
 			GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 			
-			SafeTESR.instance.renderAsItem();
+			SafeTESR.INSTANCE.renderAsItem();
+			break;
+		case DisplayCase:
+			DisplayCaseTESR.INSTANCE.render(10);
 			break;
 		}
 		

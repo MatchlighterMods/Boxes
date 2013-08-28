@@ -7,6 +7,7 @@ import ml.boxes.recipe.RecipeBox;
 import ml.boxes.recipe.RecipeKey;
 import ml.boxes.tile.TileEntityBox;
 import ml.boxes.tile.TileEntityCrate;
+import ml.boxes.tile.TileEntityDisplayCase;
 import ml.boxes.tile.TileEntitySafe;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
@@ -28,7 +29,7 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-@Mod(modid="Boxes", name="Boxes", dependencies="required-after:Forge@[6.5,);required-after:MLCore@[0.7,)")
+@Mod(modid="Boxes", name="Boxes", dependencies="required-after:Forge@[6.5,)")
 @NetworkMod(versionBounds="[0.7,0.8)", clientSideRequired=true, serverSideRequired=false, channels={"Boxes"}, packetHandler=PacketHandler.class)
 public class Boxes {
 	
@@ -55,6 +56,7 @@ public class Boxes {
 		GameRegistry.registerTileEntity(TileEntityBox.class, "box");
 		GameRegistry.registerTileEntity(TileEntityCrate.class, "crate");
 		GameRegistry.registerTileEntity(TileEntitySafe.class, "safe");
+		GameRegistry.registerTileEntity(TileEntityDisplayCase.class, "disp_case");
 		
 		Registry.registerBlocks();
 		
