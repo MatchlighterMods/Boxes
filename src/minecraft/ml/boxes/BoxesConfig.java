@@ -20,11 +20,14 @@ public class BoxesConfig extends Config {
 	public @Prop(comment="When set to true, boxes will render like a map when opened in hand", category="appearance") boolean enableMapStyleRendering = true;
 	public @Prop(comment="When set to true, map-style rendering will make the camera look down into the box", category="appearance") boolean mapRenderingView = false;
 	
+	@Renamed("appearance.crateItemRenderMode")
 	public @Prop(comment="For rendering items in crates. Higher settings can significantly impact performance\n" +
-			"0) Always render items in 2D. 1) Render above and below 3D. 2) Render all 3D", category="appearance") int crateItemRenderMode = 0;
+			"0) Always render items in 2D. 1) Render above and below 3D. 2) Render all 3D", category="crate") int crate_ItemRenderMode = 0;
+	@Renamed("appearance.crateBlockRenderMode")
 	public @Prop(comment="For rendering blocks in crates. Does not impact performance.\n" +
-			"0) Always render blocks in 2D. 1) Render above and below 3D. 2) Render all 3D", category="appearance") int crateBlockRenderMode = 1;
-
+			"0) Always render blocks in 2D. 1) Render above and below 3D. 2) Render all 3D", category="crate") int crate_BlockRenderMode = 1;
+	public @Prop(comment="0) Use Minecraft's Fancy/Fast setting. 1) Fast 2) Fancy", category="crate") int crate_RenderMode = 0;
+	
 	@Override
 	public String getFailMsg() {
 		return "Boxes config load error";

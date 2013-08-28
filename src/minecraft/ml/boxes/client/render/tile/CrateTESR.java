@@ -1,12 +1,15 @@
 package ml.boxes.client.render.tile;
 
 import ml.boxes.Boxes;
+import ml.boxes.BoxesConfig;
 import ml.boxes.Registry;
 import ml.boxes.block.BlockMeta;
 import ml.boxes.tile.TileEntityCrate;
+import ml.core.Config;
 import ml.core.block.BlockUtils;
 import ml.core.render.WorldRenderLib;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -35,11 +38,12 @@ public class CrateTESR extends TileEntitySpecialRenderer {
 	private RenderBlocks renderBlocks = new RenderBlocks();
 	public static CrateTESR INSTANCE = new CrateTESR();
 	
-	public boolean fast_crates = true;
+	private boolean shouldFastRender() {
+		return Boxes.config.crate_RenderMode !=2 && (!Minecraft.isFancyGraphicsEnabled() || Boxes.config.crate_RenderMode==1);
+	}
 
 	@Override
-	public void renderTileEntityAt(TileEntity te, double d0, double d1,
-			double d2, float f) {
+	public void renderTileEntityAt(TileEntity te, double d0, double d1, double d2, float f) {
 
 		TileEntityCrate tec = (TileEntityCrate)te;
 		Tessellator tes = Tessellator.instance;
@@ -59,14 +63,14 @@ public class CrateTESR extends TileEntitySpecialRenderer {
 		if (tec.cItem != null){
 			GL11.glDisable(GL11.GL_LIGHTING);
 			GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-			GL11.glTranslatef(tec.facing.offsetX*0.5F, tec.facing.offsetY*(fast_crates ? 0.7F : 0.6F), tec.facing.offsetZ*0.5F);
+			GL11.glTranslatef(tec.facing.offsetX*0.5F, tec.facing.offsetY*(shouldFastRender() ? 0.7F : 0.6F), tec.facing.offsetZ*0.5F);
 
 			GL11.glRotatef(BlockUtils.getRotationFromDirection(tec.facing), 0, 1.0F, 0F);
 
 			boolean isBlock = tec.cItem.getItem() instanceof ItemBlock;
 			boolean upOrDwn = tec.facing == ForgeDirection.UP || tec.facing == ForgeDirection.DOWN;
 
-			int rendMode = isBlock ? Boxes.config.crateBlockRenderMode : Boxes.config.crateItemRenderMode;
+			int rendMode = isBlock ? Boxes.config.crate_BlockRenderMode : Boxes.config.crate_ItemRenderMode;
 
 			FontRenderer fr = getFontRenderer();
 			if (upOrDwn){
@@ -75,7 +79,7 @@ public class CrateTESR extends TileEntitySpecialRenderer {
 
 			GL11.glPushMatrix();
 			WorldRenderLib.shouldSpreadItems = false;
-			if (!upOrDwn && !fast_crates) GL11.glTranslatef(0, 0, 0.0625F);
+			if (!upOrDwn && !shouldFastRender()) GL11.glTranslatef(0, 0, 0.0625F);
 			WorldRenderLib.renderItemIntoWorldCenteredAt(tec.cItem, !(rendMode == 0 || (rendMode == 1 && !upOrDwn)));
 			GL11.glPopMatrix();
 
@@ -128,7 +132,7 @@ public class CrateTESR extends TileEntitySpecialRenderer {
 
 	public void render() {
 		
-		if (fast_crates) {
+		if (shouldFastRender()) {
 			this.func_110628_a(TextureMap.field_110575_b);
 			GL11.glPushMatrix();
 			GL11.glTranslated(0.5F, 0.5F, 0.5F);
