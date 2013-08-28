@@ -20,12 +20,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 
 public class BlockMeta extends BlockContainer {
+	
+	public static int renderTypeOverride = -1;
 	
 	public BlockMeta(int par1) {
 		super(par1, Material.iron);
@@ -57,9 +60,13 @@ public class BlockMeta extends BlockContainer {
 	
 	@Override
 	public int getRenderType() {
-		return -1;
+		return renderTypeOverride;
 	}
 
+	public static void resetRenderType() {
+		renderTypeOverride = -1;
+	}
+	
 	@Override
 	public boolean renderAsNormalBlock() {
 		return false;
@@ -198,6 +205,7 @@ public class BlockMeta extends BlockContainer {
 	
 	@Override
 	public void registerIcons(IconRegister par1IconRegister) {
+		cfrnt = par1IconRegister.registerIcon("Boxes:crate_front");
 		for (MetaType typ : MetaType.values()){
 			typ.ricon = par1IconRegister.registerIcon(typ.icon);
 		}
@@ -216,9 +224,15 @@ public class BlockMeta extends BlockContainer {
 		return super.getPickBlock(target, world, x, y, z);
 	}
 	
+	public ResourceLocation cFront = new ResourceLocation("Boxes:crate_front");
+	public Icon cfrnt;
 	@Override
 	public Icon getIcon(int side, int meta) {
-		return MetaType.fromMeta(meta).ricon;
+		MetaType mt = MetaType.fromMeta(meta);
+		if (mt==MetaType.Crate && side==5) {
+			return cfrnt;
+		}
+		return mt.ricon;
 	}
 	
 	@Override

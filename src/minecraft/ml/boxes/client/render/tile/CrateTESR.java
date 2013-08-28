@@ -2,12 +2,16 @@ package ml.boxes.client.render.tile;
 
 import ml.boxes.Boxes;
 import ml.boxes.Registry;
+import ml.boxes.block.BlockMeta;
 import ml.boxes.tile.TileEntityCrate;
 import ml.core.block.BlockUtils;
 import ml.core.render.WorldRenderLib;
+import net.minecraft.block.Block;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
@@ -28,7 +32,10 @@ public class CrateTESR extends TileEntitySpecialRenderer {
 
 	protected static ResourceLocation texMain = new ResourceLocation("Boxes:textures/models/crate.png");
 	private IModelCustom crateModel = AdvancedModelLoader.loadModel("/assets/boxes/models/crate.obj");
+	private RenderBlocks renderBlocks = new RenderBlocks();
 	public static CrateTESR INSTANCE = new CrateTESR();
+	
+	public boolean fast_crates = true;
 
 	@Override
 	public void renderTileEntityAt(TileEntity te, double d0, double d1,
@@ -39,7 +46,6 @@ public class CrateTESR extends TileEntitySpecialRenderer {
 
 		GL11.glPushMatrix();
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-
 		GL11.glTranslatef((float)d0, (float)d1, (float)d2);
 
 		GL11.glPushMatrix();
@@ -53,7 +59,7 @@ public class CrateTESR extends TileEntitySpecialRenderer {
 		if (tec.cItem != null){
 			GL11.glDisable(GL11.GL_LIGHTING);
 			GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-			GL11.glTranslatef(tec.facing.offsetX*0.5F, tec.facing.offsetY*0.6F, tec.facing.offsetZ*0.5F);
+			GL11.glTranslatef(tec.facing.offsetX*0.5F, tec.facing.offsetY*(fast_crates ? 0.7F : 0.6F), tec.facing.offsetZ*0.5F);
 
 			GL11.glRotatef(BlockUtils.getRotationFromDirection(tec.facing), 0, 1.0F, 0F);
 
@@ -69,7 +75,7 @@ public class CrateTESR extends TileEntitySpecialRenderer {
 
 			GL11.glPushMatrix();
 			WorldRenderLib.shouldSpreadItems = false;
-			if (!upOrDwn) GL11.glTranslatef(0, 0, 0.0625F);
+			if (!upOrDwn && !fast_crates) GL11.glTranslatef(0, 0, 0.0625F);
 			WorldRenderLib.renderItemIntoWorldCenteredAt(tec.cItem, !(rendMode == 0 || (rendMode == 1 && !upOrDwn)));
 			GL11.glPopMatrix();
 
@@ -121,11 +127,23 @@ public class CrateTESR extends TileEntitySpecialRenderer {
 	}
 
 	public void render() {
-		GL11.glScalef(0.0625F, 0.0625F, 0.0625F);
 		
-		this.func_110628_a(texMain);
-		crateModel.renderPart("Border");
-		crateModel.renderPart("Supports");
+		if (fast_crates) {
+			this.func_110628_a(TextureMap.field_110575_b);
+			GL11.glPushMatrix();
+			GL11.glTranslated(0.5F, 0.5F, 0.5F);
+			renderBlocks.overrideBlockBounds(0, 0, 0, 1, 1, 1);
+			BlockMeta.renderTypeOverride = 0;
+			renderBlocks.renderBlockAsItem(Registry.BlockMeta, 0, 1F);
+			renderBlocks.unlockBlockBounds();
+			BlockMeta.resetRenderType();
+			GL11.glPopMatrix();
+		} else {
+			GL11.glScalef(0.0625F, 0.0625F, 0.0625F);
+			this.func_110628_a(texMain);
+			crateModel.renderPart("Border");
+			crateModel.renderPart("Supports");
+		}
 	}
 
 }
