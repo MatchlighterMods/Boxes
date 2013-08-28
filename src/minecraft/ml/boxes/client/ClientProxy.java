@@ -4,9 +4,7 @@ import ml.boxes.Boxes;
 import ml.boxes.CommonProxy;
 import ml.boxes.Icons;
 import ml.boxes.client.gui.GuiBox;
-import ml.boxes.client.gui.GuiCombination;
 import ml.boxes.client.gui.GuiSafe;
-import ml.boxes.client.render.NullBlockRenderer;
 import ml.boxes.client.render.item.BoxItemRenderer;
 import ml.boxes.client.render.item.MetaItemRenderer;
 import ml.boxes.client.render.tile.BoxTESR;
@@ -52,8 +50,6 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void load(){		
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBox.class, BoxTESR.instance);
-		Boxes.nullRendererID = RenderingRegistry.getNextAvailableRenderId();
-		RenderingRegistry.registerBlockHandler(new NullBlockRenderer());
 		
 		MinecraftForgeClient.registerItemRenderer(Boxes.config.boxBlockID, new BoxItemRenderer());
 		TickRegistry.registerTickHandler(new ContentTipHandler(), Side.CLIENT);

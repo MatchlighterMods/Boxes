@@ -43,7 +43,7 @@ public class BlockBox extends BlockContainer {
 
 	@Override
 	public int getRenderType() {
-		return Boxes.nullRendererID;
+		return -1;
 	}
 
 	@Override

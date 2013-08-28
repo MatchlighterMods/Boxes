@@ -40,7 +40,6 @@ public class Boxes {
 	public static Boxes instance;
 	public static Boolean neiInstalled = false;
 	
-	public static int nullRendererID = -1;
 	public static CreativeTabs BoxTab = new BoxesCreativeTab("boxes");
 	
 	public static BoxesConfig config = new BoxesConfig();

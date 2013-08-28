@@ -35,32 +35,28 @@ public class DisplayCaseTESR extends TileEntitySpecialRenderer {
 		
 		tedc.getTransformation().glTransform();
 		
-//		GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-//		GL11.glRotatef(BlockUtils.getRotationFromDirection(tedc.rotation), 0F, 1F, 0F);
-//		if (tedc.facing != ForgeDirection.UP) {
-//			
-//			GL11.glRotatef(BlockUtils.getRotationFromDirection(tedc.facing), 0F, 1F, 0F);
-//			GL11.glRotatef(-90F, 1F, 0F, 0F);
-//		}
-//		
-//		GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-		
 		render(0);
 		
 		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 		GL11.glPopMatrix();
 	}
 
-	public void render(int LideAng) {
+	public void render(int lidAng) {
+		GL11.glPushMatrix();
 		GL11.glScalef(0.0625F, 0.0625F, 0.0625F);
-
+		
 		this.func_110628_a(testLiner);
 		caseModel.renderPart("Liner");
 		
 		this.func_110628_a(texMain);
 		caseModel.renderPart("Base");
+		
+		GL11.glTranslatef(14F, 4F, 0);
+		GL11.glRotatef(-lidAng, 0, 0, 1);
+		GL11.glTranslatef(-14F, -4F, 0);
 		caseModel.renderPart("Lid_Frame");
 		caseModel.renderPart("Lid_Extras");
+		GL11.glPopMatrix();
 	}
 	
 }

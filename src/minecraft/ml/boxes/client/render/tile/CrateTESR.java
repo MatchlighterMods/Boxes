@@ -1,10 +1,12 @@
 package ml.boxes.client.render.tile;
 
 import ml.boxes.Boxes;
+import ml.boxes.Registry;
 import ml.boxes.tile.TileEntityCrate;
 import ml.core.block.BlockUtils;
 import ml.core.render.WorldRenderLib;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemBlock;
@@ -37,6 +39,7 @@ public class CrateTESR extends TileEntitySpecialRenderer {
 
 		GL11.glPushMatrix();
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+
 		GL11.glTranslatef((float)d0, (float)d1, (float)d2);
 
 		GL11.glPushMatrix();
@@ -119,6 +122,7 @@ public class CrateTESR extends TileEntitySpecialRenderer {
 
 	public void render() {
 		GL11.glScalef(0.0625F, 0.0625F, 0.0625F);
+		
 		this.func_110628_a(texMain);
 		crateModel.renderPart("Border");
 		crateModel.renderPart("Supports");
