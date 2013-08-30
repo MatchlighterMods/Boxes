@@ -204,11 +204,15 @@ public class BlockMeta extends BlockContainer {
 	}
 	
 	@Override
-	public void registerIcons(IconRegister par1IconRegister) {
-		cfrnt = par1IconRegister.registerIcon("Boxes:crate_front");
-		for (MetaType typ : MetaType.values()){
-			typ.ricon = par1IconRegister.registerIcon(typ.icon);
-		}
+	public void registerIcons(IconRegister reg) {
+		
+		MetaType.Crate.icons.add(reg.registerIcon("Boxes:crate"));
+		MetaType.Crate.icons.add(reg.registerIcon("Boxes:crate_front"));
+		
+		MetaType.Safe.icons.add(reg.registerIcon("Boxes:safe"));
+		
+		MetaType.DisplayCase.icons.add(reg.registerIcon("Boxes:case"));
+		
 	};
 	
 	@Override
@@ -229,10 +233,15 @@ public class BlockMeta extends BlockContainer {
 	@Override
 	public Icon getIcon(int side, int meta) {
 		MetaType mt = MetaType.fromMeta(meta);
-		if (mt==MetaType.Crate && side==5) {
-			return cfrnt;
-		}
-		return mt.ricon;
+		
+		switch (mt) {
+		case Crate:
+			if (side==5)
+				return mt.icons.get(1);
+			return mt.icons.get(0);
+		default:
+			return mt.icons.get(0);	
+		}		
 	}
 	
 	@Override

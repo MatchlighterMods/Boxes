@@ -35,7 +35,7 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 		MultiItemRange mainRng = new MultiItemRange();
 		mainRng.add(Registry.ItemResources);
 		for (MetaType mt : MetaType.values()){
-			if (!mt.hidden){
+			if (!mt.hidden()){
 				mainRng.add(new ItemStack(Registry.BlockMeta, 1, mt.ordinal()));
 			}
 		}

@@ -5,6 +5,10 @@ import ml.core.Config.Prop.Renamed;
 import net.minecraftforge.common.Configuration;
 
 public class BoxesConfig extends Config {
+	
+	public BoxesConfig(Configuration fcfg) {
+		super(fcfg);
+	}
 
 	public @Prop(category=Configuration.CATEGORY_BLOCK) int boxBlockID = 540;
 	public @Prop(category=Configuration.CATEGORY_BLOCK) int generalBlockID = 541;
@@ -28,8 +32,4 @@ public class BoxesConfig extends Config {
 			"0) Always render blocks in 2D. 1) Render above and below 3D. 2) Render all 3D", category="crate") int crate_BlockRenderMode = 1;
 	public @Prop(comment="0) Use Minecraft's Fancy/Fast setting. 1) Fast 2) Fancy", category="crate") int crate_RenderMode = 0;
 	
-	@Override
-	public String getFailMsg() {
-		return "Boxes config load error";
-	}
 }

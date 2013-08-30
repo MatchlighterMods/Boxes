@@ -42,12 +42,12 @@ public class Boxes {
 	
 	public static CreativeTabs BoxTab = new BoxesCreativeTab("boxes");
 	
-	public static BoxesConfig config = new BoxesConfig();
+	public static BoxesConfig config;
 
 	@EventHandler
 	public void PreInit(FMLPreInitializationEvent evt){
 		Configuration cfg = new Configuration(evt.getSuggestedConfigurationFile());
-		config.load(cfg);
+		config = (BoxesConfig)new BoxesConfig(cfg).load();
 	}
 	
 	@EventHandler

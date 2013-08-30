@@ -29,7 +29,7 @@ public class ItemBoxBlocks extends ItemBlock {
 	@Override
 	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List lst) {
 		for (MetaType mt : MetaType.values()){
-			if (!mt.hidden){
+			if (!mt.hidden()){
 				lst.add(new ItemStack(this, 1, mt.ordinal()));
 			}
 		}
@@ -38,7 +38,7 @@ public class ItemBoxBlocks extends ItemBlock {
 	@Override
 	public String getItemDisplayName(ItemStack is) {
 		MetaType mt = MetaType.fromMeta(is.getItemDamage());
-		return mt != null ? LanguageRegistry.instance().getStringLocalization(mt.ulName, "en_US") : "";
+		return mt != null ? LanguageRegistry.instance().getStringLocalization("Boxes."+mt.toString()+".name", "en_US") : "";
 	}
 	
 	@Override

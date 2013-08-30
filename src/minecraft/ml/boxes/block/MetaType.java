@@ -1,31 +1,42 @@
 package ml.boxes.block;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.util.Icon;
 
 public enum MetaType {
-	Crate("Boxes:crate", "Boxes.crate.name"),
-	Safe("Boxes:safe", "Boxes.safe.name"),
-	DisplayCase("Boxes:case", "Boxes.display_case.name");
+	Crate(0),
+	Safe(1),
+	DisplayCase(2);
 	
-	public String ulName;
-	public boolean hidden;
-	public String icon;
-	public Icon ricon;
+	public final int meta;
+	public final int metaLength;
 	
-	private MetaType(String ico, String ulName) {
-		this(ico, ulName, false);
+	public List<Icon> icons = new ArrayList<Icon>();
+	
+	private MetaType(int meta) {
+		this(meta, 1);
 	}
 	
-	private MetaType(String ico, String ulName, boolean hide) {
-		this.icon = ico;
-		this.ulName = ulName;
-		this.hidden = hide;
+	private MetaType(int meta, int mLength) {
+		this.meta = meta;
+		this.metaLength = mLength;
+	}
+	
+	public boolean hidden() {
+		return this.getClass().getAnnotation(Hide.class) != null;
 	}
 	
 	public static MetaType fromMeta(int meta){
-		if (meta >-1 && meta<MetaType.values().length){
-			return MetaType.values()[meta];
+		for (MetaType mt : values()) {
+			if (mt.meta >= meta && meta<mt.meta+mt.metaLength) {
+				return mt;
+			}
 		}
+		
 		return null;
 	}
+	
+	private static @interface Hide {}
 }
