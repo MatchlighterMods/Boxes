@@ -67,14 +67,18 @@ public class Boxes {
 		LanguageRegistry.instance().addStringLocalization("item.key.name", "en_US", "Key");
 		LanguageRegistry.instance().addStringLocalization("itemGroup.boxes", "en_US", "Boxes");
 		
-		LanguageRegistry.instance().addStringLocalization("Boxes.safe.name", "en_US", "Lockbox");
-		LanguageRegistry.instance().addStringLocalization("Boxes.crate.name", "en_US", "Crate");
+		LanguageRegistry.instance().addStringLocalization("Boxes.Safe.name", "en_US", "Lockbox");
+		LanguageRegistry.instance().addStringLocalization("Boxes.Crate.name", "en_US", "Crate");
+		LanguageRegistry.instance().addStringLocalization("Boxes.DisplayCase.name", "en_US", "Display Case");
 		
 		NetworkRegistry.instance().registerGuiHandler(instance, proxy);
 		
 		GameRegistry.addRecipe(new ItemStack(Registry.ItemResources, 1, 0), "ppp", "sws", "ppp", 'p', Item.paper, 's', Item.silk, 'w', Item.bucketWater);
 		GameRegistry.addRecipe(ItemType.ISFromType(ItemType.Label, 3), "ppp", " s ", 'p', Item.paper, 's', Item.slimeBall);
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Registry.BlockMeta, 1, MetaType.Crate.ordinal()), "wsw", "scs", "wsw", 'w', "logWood", 's', "plankWood", 'c', Block.chest));
+		
+		if (config.crate_allowCrafting)
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Registry.BlockMeta, 1, MetaType.Crate.ordinal()), "wsw", "scs", "wsw", 'w', "logWood", 's', "plankWood", 'c', Block.chest));
+		
 		GameRegistry.addRecipe(new RecipeBox());
 		GameRegistry.addRecipe(new RecipeKey(" m", "nm", "nm", 'n', Item.goldNugget, 'm', Item.ingotGold));
 		

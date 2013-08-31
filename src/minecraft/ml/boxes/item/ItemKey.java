@@ -17,7 +17,7 @@ public class ItemKey extends Item {
 	
 	public ItemKey(int par1) {
 		super(par1);
-		// TODO Auto-generated constructor stub
+		setUnlocalizedName("key");
 	}
 
 	@Override
@@ -50,8 +50,8 @@ public class ItemKey extends Item {
 	
 	@Override
 	public void registerIcons(IconRegister par1IconRegister) {
-		keyIcon = par1IconRegister.registerIcon("Boxes:keyGold");
-		keyColorIcon = par1IconRegister.registerIcon("Boxes:keyColor");
+		keyIcon = par1IconRegister.registerIcon("Boxes:key_gold");
+		keyColorIcon = par1IconRegister.registerIcon("Boxes:key_color");
 	}
 	
 	@Override
