@@ -1,5 +1,6 @@
 package ml.boxes.data;
 
+import ml.boxes.api.box.IBoxContainer;
 import ml.boxes.inventory.ContainerBox;
 import ml.boxes.item.ItemBox;
 import net.minecraft.entity.player.EntityPlayer;

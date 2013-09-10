@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import ml.boxes.Boxes;
 import ml.boxes.item.ItemBox;
+import ml.boxes.tile.TileEntityAbstractBox;
 import ml.boxes.tile.TileEntityBox;
 import ml.core.block.BlockUtils;
 import net.minecraft.block.BlockContainer;
@@ -105,7 +106,7 @@ public class BlockBox extends BlockContainer {
 		TileEntity te = world.getBlockTileEntity(x, y, z);
 		
 		if (te instanceof TileEntityBox){
-			ItemBox.saveBoxData(is, ((TileEntityBox)te).getBox());
+			ItemBox.saveBoxData(is, ((TileEntityAbstractBox)te).getBox());
 		}
 		iss.add(is);
 		return iss;		

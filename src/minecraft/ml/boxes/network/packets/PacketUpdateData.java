@@ -2,7 +2,7 @@ package ml.boxes.network.packets;
 
 import java.io.IOException;
 
-import ml.boxes.tile.TileEntityBox;
+import ml.boxes.tile.TileEntityAbstractBox;
 import ml.core.network.MLPacket;
 import ml.core.network.MLPacket.data;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,10 +15,10 @@ import cpw.mods.fml.common.network.Player;
 
 public class PacketUpdateData extends MLPacket {
 
-	public @data TileEntityBox teb;
+	public @data TileEntityAbstractBox teb;
 	public @data NBTTagCompound pktData;
 	
-	public PacketUpdateData(TileEntityBox te) {
+	public PacketUpdateData(TileEntityAbstractBox te) {
 		super("Boxes");
 
 		this.teb = te;

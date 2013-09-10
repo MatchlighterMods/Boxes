@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ml.boxes.api.ContentBlacklist;
+import ml.boxes.api.box.IBoxContainer;
 import ml.boxes.inventory.ContentTip;
 import ml.boxes.inventory.GridContentTip;
 import ml.boxes.item.ItemBox;

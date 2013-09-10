@@ -6,7 +6,7 @@ import ml.boxes.Boxes;
 import ml.boxes.Registry;
 import ml.boxes.data.Box;
 import ml.boxes.data.ItemBoxContainer;
-import ml.boxes.tile.TileEntityBox;
+import ml.boxes.tile.TileEntityAbstractBox;
 import ml.core.PlayerUtils;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -82,7 +82,7 @@ public class ItemBox extends ItemBlock {
 		if (super.placeBlockAt(stack, player, world, x, y, z, side, hitX, hitY, hitZ, metadata)){
 			if (world.getBlockId(x, y, z) == this.blockID)
 			{
-				TileEntityBox te = (TileEntityBox)world.getBlockTileEntity(x, y, z);
+				TileEntityAbstractBox te = (TileEntityAbstractBox)world.getBlockTileEntity(x, y, z);
 				te.getBox().loadNBT(ItemBox.getBoxNBT(stack));
 			}
 		}

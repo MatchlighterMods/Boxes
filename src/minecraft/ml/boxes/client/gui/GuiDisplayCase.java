@@ -2,6 +2,7 @@ package ml.boxes.client.gui;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
+import org.lwjgl.util.glu.GLU;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -33,6 +34,21 @@ public class GuiDisplayCase extends GuiContainerControl {
 		
 		this.mc.func_110434_K().func_110577_a(bgRes);
 		drawTexturedModalRect(0, 0, 0, 0, xSize, ySize);
+		
+		GL11.glPushMatrix();
+		GL11.glTranslatef(80F, 30F, 10F);
+		GL11.glScalef(2F, 2F, 2F);
+		GL11.glTranslatef(12F, 12F, 0F);
+		GL11.glRotatef(90F, 1F, 0F, 0F);
+		GL11.glRotatef(180F, 0F, 0F, 1F);
+		
+		mc.func_110434_K().func_110577_a(DisplayCaseTESR.testLiner);
+		DisplayCaseTESR.INSTANCE.caseModel.renderPart("Liner");
+		
+		mc.func_110434_K().func_110577_a(DisplayCaseTESR.texMain);
+		DisplayCaseTESR.INSTANCE.caseModel.renderPart("Base");
+		
+		GL11.glPopMatrix();
 	}
 
 }

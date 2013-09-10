@@ -22,8 +22,10 @@ public class TileEntityDisplayCase extends TileEntityEvented implements IInvento
 	public ForgeDirection facing = ForgeDirection.UP;
 	public ForgeDirection rotation = ForgeDirection.NORTH;
 	
+	private ItemStack[] inventory;
+	
 	public TileEntityDisplayCase() {
-		
+		inventory = new ItemStack[getSizeInventory()];
 	}
 	
 	@Override
@@ -69,7 +71,6 @@ public class TileEntityDisplayCase extends TileEntityEvented implements IInvento
 	
 	@Override
 	public int getSizeInventory() {
-		// TODO Auto-generated method stub
 		return 1;
 	}
 

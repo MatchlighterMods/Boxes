@@ -4,7 +4,7 @@ import invtweaks.api.container.ChestContainer;
 
 import java.util.List;
 
-import ml.boxes.data.IBoxContainer;
+import ml.boxes.api.box.IBoxContainer;
 import ml.boxes.data.ItemBoxContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;

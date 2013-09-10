@@ -1,5 +1,6 @@
-package ml.boxes.data;
+package ml.boxes.api.box;
 
+import ml.boxes.data.Box;
 import ml.boxes.inventory.ContainerBox;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;

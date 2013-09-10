@@ -1,20 +1,14 @@
 package ml.boxes.tile;
 
 import ml.boxes.Boxes;
+import ml.boxes.api.box.IBoxContainer;
 import ml.boxes.data.Box;
-import ml.boxes.data.IBoxContainer;
-import ml.boxes.inventory.ContainerBox;
-import ml.boxes.network.packets.PacketUpdateData;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 
-public class TileEntityBox extends TileEntity implements IInventory, IBoxContainer {
+public class TileEntityBox extends TileEntityAbstractBox {
 
 	public float prevAngleOuter = 0F; //Used for smoothness when FPS > 1 tick
 	public float flapAngleOuter = 0F;
@@ -25,11 +19,27 @@ public class TileEntityBox extends TileEntity implements IInventory, IBoxContain
 	public ForgeDirection facing = ForgeDirection.NORTH;
 	private int syncTime = 0;
 	private int users = 0;
+
+	@Override
+	protected void init() {
+		data = new Box(this);
+	}
 	
-	private Box data = new Box(this);
+	@Override
+	protected void loadBoxData(NBTTagCompound boxTag) {
+		this.data = new Box(boxTag, this);
+	}
 	
-	public TileEntityBox() {
-		
+	@Override
+	public void readFromNBT(NBTTagCompound par1nbtTagCompound) {
+		super.readFromNBT(par1nbtTagCompound);
+		facing=ForgeDirection.getOrientation(par1nbtTagCompound.getInteger("faceDir"));
+	}
+	
+	@Override
+	public void writeToNBT(NBTTagCompound par1nbtTagCompound) {
+		super.writeToNBT(par1nbtTagCompound);
+		par1nbtTagCompound.setInteger("faceDir", facing.ordinal());
 	}
 	
 	@Override
@@ -86,58 +96,14 @@ public class TileEntityBox extends TileEntity implements IInventory, IBoxContain
 		return true;
 	}
 
-	@Override
-	public void readFromNBT(NBTTagCompound par1nbtTagCompound) {
-		super.readFromNBT(par1nbtTagCompound);
-		data=new Box(par1nbtTagCompound.getCompoundTag("box"), this);
-		facing=ForgeDirection.getOrientation(par1nbtTagCompound.getInteger("faceDir"));
-	}
-
-	@Override
-	public void writeToNBT(NBTTagCompound par1nbtTagCompound) {
-		super.writeToNBT(par1nbtTagCompound);
-		par1nbtTagCompound.setCompoundTag("box", data.asNBTTag());
-		par1nbtTagCompound.setInteger("faceDir", facing.ordinal());
-	}
-
 	public void setFacing(ForgeDirection f){
 		facing = f;
 		onInventoryChanged();
 	}
 	
 	@Override
-	public int getSizeInventory() {
-		return data.getSizeInventory();
-	}
-
-	@Override
-	public ItemStack getStackInSlot(int var1) {
-		return data.getStackInSlot(var1);
-	}
-
-	@Override
-	public ItemStack decrStackSize(int var1, int var2) {
-		return data.decrStackSize(var1, var2);
-	}
-
-	@Override
-	public ItemStack getStackInSlotOnClosing(int var1) {
-		return data.getStackInSlotOnClosing(var1);
-	}
-
-	@Override
-	public void setInventorySlotContents(int var1, ItemStack var2) {
-		data.setInventorySlotContents(var1, var2);
-	}
-
-	@Override
 	public String getInvName() {
 		return data.getInvName();
-	}
-
-	@Override
-	public int getInventoryStackLimit() {
-		return data.getInventoryStackLimit();
 	}
 
 	@Override
@@ -145,9 +111,6 @@ public class TileEntityBox extends TileEntity implements IInventory, IBoxContain
 		return worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) == this && data.isUseableByPlayer(var1);
 	}
 	
-	@Override
-	public boolean boxUseableByPlayer(EntityPlayer epl) {return isUseableByPlayer(epl);} //Required to prevent a reobfuscation error
-
 	@Override
 	public void openChest() {
 		users++;
@@ -161,51 +124,7 @@ public class TileEntityBox extends TileEntity implements IInventory, IBoxContain
 	}
 
 	@Override
-	public void saveData() {
-		onInventoryChanged();
-	}
-
-	@Override
-	public void boxOpen() {
-		openChest();
-	}
-
-	@Override
-	public void boxClose() {
-		closeChest();
-	}
-
-	@Override
-	public Box getBox() {
-		return data;
-	}
-
-	@Override
-	public Packet getDescriptionPacket() {
-		return (new PacketUpdateData(this)).convertToPkt250();
-	}
-
-	@Override
-	public void ejectItem(ItemStack is) {
-		if (!worldObj.isRemote){
-			EntityItem ei = new EntityItem(worldObj, 0.5F + xCoord, 1F + yCoord, 0.5F + zCoord, is);
-			worldObj.spawnEntityInWorld(ei);
-		}
-	}
-
-	@Override
 	public boolean isInvNameLocalized() {
 		return getBox().isInvNameLocalized();
-	}
-
-	@Override
-	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
-		return getBox().isItemValidForSlot(i, itemstack);
-	}
-
-	@Override
-	public boolean slotPreClick(ContainerBox cb, int slotNum, int mouseBtn,
-			int action, EntityPlayer par4EntityPlayer) {
-		return true;
 	}
 }
