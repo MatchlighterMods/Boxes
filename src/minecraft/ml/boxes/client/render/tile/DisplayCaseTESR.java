@@ -44,7 +44,9 @@ public class DisplayCaseTESR extends TileEntitySpecialRenderer {
 		GL11.glTranslatef(0.5F, 0.125F, 0.5F);
 		GL11.glRotatef(90F, 1F, 0F, 0F);
 		GL11.glRotatef(0F, 0F, 0F, 1F);
-		WorldRenderLib.renderItemIntoWorldCenteredAt(is, true);
+		if (tedc.rItem != null) {
+			WorldRenderLib.renderItemIntoWorldCenteredAt(tedc.rItem, true);
+		}
 		GL11.glPopMatrix();
 		
 		render(90);

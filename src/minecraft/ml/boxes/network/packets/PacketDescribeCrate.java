@@ -15,7 +15,6 @@ public class PacketDescribeCrate extends MLPacket {
 	public @data TileEntityCrate tec;
 	public @data ForgeDirection facing;
 	
-	public @data boolean hasStack;
 	public @data ItemStack is;
 	public @data int itemCnt;
 	
@@ -27,8 +26,7 @@ public class PacketDescribeCrate extends MLPacket {
 		this.tec = tec;
 		this.facing = tec.facing;
 
-		hasStack = tec.getStackInSlot(0) != null;
-		is = hasStack ? tec.getStackInSlot(0).copy() : null;
+		is = tec.getStackInSlot(0) != null ? tec.getStackInSlot(0).copy() : null;
 		//is.stackSize = 1;
 		itemCnt = tec.getTotalItems();
 		upg_label = tec.upg_label;
@@ -45,7 +43,7 @@ public class PacketDescribeCrate extends MLPacket {
 	@Override
 	public void handleClientSide(EntityPlayer epl) throws IOException {
 		tec.facing = facing;
-		tec.cItem = hasStack ? is : null;
+		tec.cItem = is;
 		tec.itemCount = itemCnt;
 		
 		tec.upg_label = upg_label;

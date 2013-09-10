@@ -5,6 +5,7 @@ import java.io.IOException;
 import com.google.common.io.ByteArrayDataInput;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.ForgeDirection;
 import ml.boxes.network.PacketHandler;
 import ml.boxes.tile.TileEntityDisplayCase;
@@ -16,6 +17,8 @@ public class PacketDescribeDisplay extends MLPacket {
 	public @data ForgeDirection facing;
 	public @data ForgeDirection rotation;
 	
+	public @data ItemStack is;
+	
 	public PacketDescribeDisplay(EntityPlayer pl, ByteArrayDataInput dataIn) {
 		super(pl, dataIn);
 	}	
@@ -26,12 +29,14 @@ public class PacketDescribeDisplay extends MLPacket {
 		this.tedc = te;
 		this.facing = te.facing;
 		this.rotation = te.rotation;
+		this.is = te.getStackInSlot(0);
 	}
 	
 	@Override
 	public void handleClientSide(EntityPlayer epl) throws IOException {
 		tedc.facing = facing;
 		tedc.rotation = rotation;
+		tedc.rItem = is;
 	}
 	
 }

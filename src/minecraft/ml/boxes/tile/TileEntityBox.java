@@ -100,11 +100,6 @@ public class TileEntityBox extends TileEntityAbstractBox {
 		facing = f;
 		onInventoryChanged();
 	}
-	
-	@Override
-	public String getInvName() {
-		return data.getInvName();
-	}
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer var1) {

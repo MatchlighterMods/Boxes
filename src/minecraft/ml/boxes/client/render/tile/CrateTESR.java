@@ -84,7 +84,7 @@ public class CrateTESR extends TileEntitySpecialRenderer {
 
 			GL11.glPushMatrix();
 			if (upOrDwn){
-				GL11.glTranslatef(0F, 0.25F*tec.facing.offsetY + 0.05625F, -0.001F);
+				GL11.glTranslatef(0F, 0.3125F*tec.facing.offsetY + 0.05625F, -0.001F);
 				GL11.glNormal3f(0.0F, 1.0F, 0.0F);
 				//GL11.glRotatef(-RenderManager.instance.playerViewY, 0.0F, 1.0F, 0.0F);
 				//GL11.glRotatef(RenderManager.instance.playerViewX, 1.0F, 0.0F, 0.0F);

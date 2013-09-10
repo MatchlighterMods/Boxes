@@ -1,5 +1,8 @@
 package ml.boxes.tile;
 
+import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import ml.boxes.Boxes;
 import ml.boxes.network.packets.PacketDescribeDisplay;
 import ml.core.block.BlockUtils;
@@ -13,6 +16,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
@@ -21,6 +25,8 @@ public class TileEntityDisplayCase extends TileEntityEvented implements IInvento
 
 	public ForgeDirection facing = ForgeDirection.UP;
 	public ForgeDirection rotation = ForgeDirection.NORTH;
+	
+	public @SideOnly(Side.CLIENT) ItemStack rItem;
 	
 	private ItemStack[] inventory;
 	
@@ -33,6 +39,18 @@ public class TileEntityDisplayCase extends TileEntityEvented implements IInvento
 		super.readFromNBT(tag);
 		facing = ForgeDirection.getOrientation(tag.getInteger("facing"));
 		rotation = ForgeDirection.getOrientation(tag.getInteger("rot"));
+		
+		NBTTagList nbttaglist = tag.getTagList("Items");
+		inventory = new ItemStack[getSizeInventory()];
+		for (int i = 0; i < nbttaglist.tagCount(); i++)
+		{
+			NBTTagCompound nbttagcompound1 = (NBTTagCompound) nbttaglist.tagAt(i);
+			int j = nbttagcompound1.getByte("Slot") & 0xff;
+			if (j >= 0 && j < inventory.length)
+			{
+				inventory[j] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
+			}
+		}
 	}
 	
 	@Override
@@ -40,11 +58,31 @@ public class TileEntityDisplayCase extends TileEntityEvented implements IInvento
 		super.writeToNBT(tag);
 		tag.setInteger("facing", facing.ordinal());
 		tag.setInteger("rot", rotation.ordinal());
+		
+		NBTTagList nbttaglist = new NBTTagList();
+		for (int i = 0; i < inventory.length; i++)
+		{
+			if (inventory[i] != null)
+			{
+				NBTTagCompound nbttagcompound1 = new NBTTagCompound();
+				nbttagcompound1.setByte("Slot", (byte) i);
+				inventory[i].writeToNBT(nbttagcompound1);
+				nbttaglist.appendTag(nbttagcompound1);
+			}
+		}
+
+		tag.setTag("Items", nbttaglist);
 	}
 	
 	@Override
 	public Packet getDescriptionPacket() {
 		return new PacketDescribeDisplay(this).convertToPkt250();
+	}
+	
+	@Override
+	public void onInventoryChanged() {
+		super.onInventoryChanged();
+		PacketDispatcher.sendPacketToAllInDimension(getDescriptionPacket(), worldObj.provider.dimensionId);
 	}
 	
 	public Transformation getTransformation() {
@@ -76,37 +114,63 @@ public class TileEntityDisplayCase extends TileEntityEvented implements IInvento
 
 	@Override
 	public ItemStack getStackInSlot(int i) {
-		// TODO Auto-generated method stub
-		return null;
+		return inventory[i];
 	}
 
 	@Override
 	public ItemStack decrStackSize(int i, int j) {
-		// TODO Auto-generated method stub
-		return null;
+		if (this.inventory[i] != null)
+		{
+			ItemStack var3;
+
+			if (this.inventory[i].stackSize <= j)
+			{
+				var3 = this.inventory[i];
+				this.inventory[i] = null;
+				this.onInventoryChanged();
+				return var3;
+			}
+			else
+			{
+				var3 = this.inventory[i].splitStack(j);
+
+				if (this.inventory[i].stackSize == 0)
+				{
+					this.inventory[i] = null;
+				}
+
+				this.onInventoryChanged();
+				return var3;
+			}
+		}
+		else
+		{
+			return null;
+		}
 	}
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int i) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void setInventorySlotContents(int i, ItemStack itemstack) {
-		// TODO Auto-generated method stub
-		
+		if (isItemValidForSlot(i, itemstack)){
+			inventory[i] = itemstack;
+			this.onInventoryChanged();
+		}else{
+			
+		}
 	}
 
 	@Override
 	public String getInvName() {
-		// TODO Auto-generated method stub
-		return null;
+		return "";
 	}
 
 	@Override
 	public boolean isInvNameLocalized() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -122,13 +186,11 @@ public class TileEntityDisplayCase extends TileEntityEvented implements IInvento
 
 	@Override
 	public void openChest() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void closeChest() {
-		// TODO Auto-generated method stub
 		
 	}
 

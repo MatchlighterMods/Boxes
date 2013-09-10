@@ -68,6 +68,11 @@ public abstract class TileEntityAbstractBox extends TileEntity implements IInven
 	}
 
 	@Override
+	public String getInvName() {
+		return data.getInvName();
+	}
+	
+	@Override
 	public boolean boxUseableByPlayer(EntityPlayer epl) {return isUseableByPlayer(epl);} //Required to prevent a reobfuscation error
 
 	@Override
