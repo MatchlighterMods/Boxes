@@ -1,6 +1,6 @@
 package ml.boxes.client.gui;
 
-import ml.boxes.Icons;
+import ml.boxes.client.Icons;
 import ml.boxes.inventory.ContainerSafe;
 import ml.boxes.network.packets.PacketDescribeSafe;
 import ml.core.gui.GuiContainerControl;

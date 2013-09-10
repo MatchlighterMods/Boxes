@@ -1,4 +1,4 @@
-package ml.boxes;
+package ml.boxes.client;
 
 import ml.core.texture.maps.BasicCustomTextureMap;
 import ml.core.texture.maps.BasicCustomTextureMap.IIconProvider;

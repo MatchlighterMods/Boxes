@@ -5,6 +5,7 @@ import ml.boxes.client.render.tile.BoxTESR;
 import ml.boxes.data.ItemBoxContainer;
 import ml.boxes.inventory.ContainerBox;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.entity.Render;
@@ -12,6 +13,7 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
@@ -145,7 +147,7 @@ public class BoxItemRenderer implements IItemRenderer {
 				GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
 				GL11.glRotatef(f7 * -85.0F, 0.0F, 0.0F, 1.0F);
 				GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-				//GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTextureForDownloadableImage(holder.skinUrl, holder.getTexture())); //TODO
+				Minecraft.getMinecraft().func_110434_K().func_110577_a(((EntityClientPlayerMP)holder).func_110306_p());
 
 				for (k = 0; k < 2; k++)
 				{

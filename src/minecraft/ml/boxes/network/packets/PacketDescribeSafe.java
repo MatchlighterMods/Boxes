@@ -2,6 +2,7 @@ package ml.boxes.network.packets;
 
 import java.io.IOException;
 
+import ml.boxes.network.PacketHandler;
 import ml.boxes.tile.TileEntitySafe;
 import ml.core.network.MLPacket;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,7 +21,7 @@ public class PacketDescribeSafe extends MLPacket {
 	public @data NBTTagCompound mechData;
 	
 	public PacketDescribeSafe(TileEntitySafe tes) {
-		super("Boxes");
+		super(PacketHandler.defChan);
 		
 		this.tes = tes;
 		this.facing = tes.facing;
@@ -43,9 +44,6 @@ public class PacketDescribeSafe extends MLPacket {
 		tes.unlocked = sUnlocked;
 		tes.mech.loadNBT(mechData);
 	}
-
-	@Override
-	public void handleServerSide(EntityPlayer epl) throws IOException {}
 	
 	public static class PacketLockSafe extends MLPacket {
 		public @data TileEntitySafe tes;

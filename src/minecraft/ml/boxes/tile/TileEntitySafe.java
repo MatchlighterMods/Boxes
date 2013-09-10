@@ -212,9 +212,6 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 	}
 
 	@Override
-	public void onLeftClicked(EntityPlayer pl) {}
-
-	@Override
 	public void onNeighborBlockChange() {
 		refreshConnection();
 
@@ -240,11 +237,6 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 			mech.loadNBT(tag.getCompoundTag("mechProps"));
 			tryConnection();
 		}
-	}
-
-	@Override
-	public boolean onAttemptUpgrade(EntityPlayer pl, ItemStack is, int side) {
-		return false;
 	}
 
 	@Override
@@ -375,5 +367,13 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 //		public boolean canInsertItem(int i, ItemStack itemstack, int j) {
 //			return false;
 //		}
+	}
+
+	@Override
+	public void onLeftClicked(EntityPlayer pl) {}
+	
+	@Override
+	public boolean onAttemptUpgrade(EntityPlayer pl, ItemStack is, int side) {
+		return false;
 	}
 }

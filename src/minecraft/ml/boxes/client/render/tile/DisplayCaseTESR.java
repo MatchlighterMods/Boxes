@@ -5,10 +5,13 @@ import org.lwjgl.opengl.GL12;
 
 import ml.boxes.tile.TileEntityDisplayCase;
 import ml.core.block.BlockUtils;
+import ml.core.render.WorldRenderLib;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.AdvancedModelLoader;
@@ -17,12 +20,14 @@ import net.minecraftforge.common.ForgeDirection;
 
 public class DisplayCaseTESR extends TileEntitySpecialRenderer {
 	
-	protected static ResourceLocation texMain = new ResourceLocation("Boxes:textures/models/case.png");
-	private IModelCustom caseModel = AdvancedModelLoader.loadModel("/assets/boxes/models/displayCase.obj");
+	public static ResourceLocation texMain = new ResourceLocation("Boxes:textures/models/case.png");
+	public IModelCustom caseModel = AdvancedModelLoader.loadModel("/assets/boxes/models/displayCase.obj");
 	public static DisplayCaseTESR INSTANCE = new DisplayCaseTESR();
 	
 	public static ResourceLocation testLiner = new ResourceLocation("textures/blocks/wool_colored_light_blue.png");
 
+	ItemStack is = new ItemStack(Item.swordDiamond);
+	
 	@Override
 	public void renderTileEntityAt(TileEntity tileentity, double d0, double d1,
 			double d2, float f) {
@@ -35,13 +40,20 @@ public class DisplayCaseTESR extends TileEntitySpecialRenderer {
 		
 		tedc.getTransformation().glTransform();
 		
-		render(0);
+		GL11.glPushMatrix();
+		GL11.glTranslatef(0.5F, 0.125F, 0.5F);
+		GL11.glRotatef(90F, 1F, 0F, 0F);
+		GL11.glRotatef(0F, 0F, 0F, 1F);
+		WorldRenderLib.renderItemIntoWorldCenteredAt(is, true);
+		GL11.glPopMatrix();
+		
+		render(90);
 		
 		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 		GL11.glPopMatrix();
 	}
 
-	public void render(int lidAng) {
+	public void render(float lidAng) {
 		GL11.glPushMatrix();
 		GL11.glScalef(0.0625F, 0.0625F, 0.0625F);
 		

@@ -78,7 +78,6 @@ public class CrateTESR extends TileEntitySpecialRenderer {
 			}
 
 			GL11.glPushMatrix();
-			WorldRenderLib.shouldSpreadItems = false;
 			if (!upOrDwn && !shouldFastRender()) GL11.glTranslatef(0, 0, 0.0625F);
 			WorldRenderLib.renderItemIntoWorldCenteredAt(tec.cItem, !(rendMode == 0 || (rendMode == 1 && !upOrDwn)));
 			GL11.glPopMatrix();
@@ -131,7 +130,6 @@ public class CrateTESR extends TileEntitySpecialRenderer {
 	}
 
 	public void render() {
-		
 		if (shouldFastRender()) {
 			this.func_110628_a(TextureMap.field_110575_b);
 			GL11.glPushMatrix();

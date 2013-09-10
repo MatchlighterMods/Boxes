@@ -123,7 +123,7 @@ public class BlockMeta extends BlockContainer {
 			tedc.facing = ForgeDirection.getOrientation(side);
 			
 			if (tedc.facing == ForgeDirection.UP) {
-				tedc.rotation = ForgeDirection.EAST;
+				tedc.rotation = BlockUtils.getPlacedForgeDir(player, x, y, z, new ForgeDirection[]{ForgeDirection.EAST, ForgeDirection.WEST, ForgeDirection.NORTH, ForgeDirection.SOUTH});
 			}
 			
 		}

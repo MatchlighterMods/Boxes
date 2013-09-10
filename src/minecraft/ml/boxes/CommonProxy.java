@@ -2,9 +2,11 @@ package ml.boxes;
 
 import ml.boxes.data.ItemBoxContainer;
 import ml.boxes.inventory.ContainerBox;
+import ml.boxes.inventory.ContainerDisplayCase;
 import ml.boxes.inventory.ContainerSafe;
 import ml.boxes.item.ItemBox;
 import ml.boxes.tile.TileEntityBox;
+import ml.boxes.tile.TileEntityDisplayCase;
 import ml.boxes.tile.TileEntitySafe;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryLargeChest;
@@ -20,6 +22,7 @@ public class CommonProxy implements IGuiHandler {
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world,
 			int x, int y, int z) {
+		
 		TileEntity te = world.getBlockTileEntity(x, y, z);
 		switch (ID) {
 		case 1: //BoxIsAsTileEntity
@@ -37,6 +40,11 @@ public class CommonProxy implements IGuiHandler {
 			if (te instanceof TileEntitySafe) {
 				TileEntitySafe tes = (TileEntitySafe)te;
 				return new ContainerSafe(player, tes);
+			}
+			break;
+		case 4: //DispCase
+			if (te instanceof TileEntityDisplayCase) {
+				return new ContainerDisplayCase((TileEntityDisplayCase)te, player);
 			}
 			break;
 		}

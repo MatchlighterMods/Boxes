@@ -69,6 +69,18 @@ public class MetaItemRenderer implements IItemRenderer {
 			SafeTESR.INSTANCE.renderAsItem();
 			break;
 		case DisplayCase:
+			switch (type) {
+			case INVENTORY:
+				GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+				GL11.glRotatef(180F, 0F, 1F, 0F);
+				GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+				break;
+			case EQUIPPED:
+			case EQUIPPED_FIRST_PERSON:
+				GL11.glTranslatef(0F, 0.5F, 0F);
+				break;
+			}
+				
 			DisplayCaseTESR.INSTANCE.render(10);
 			break;
 		}
