@@ -1,10 +1,8 @@
 package ml.boxes.tile;
 
 import ml.boxes.Boxes;
-import ml.boxes.api.box.IBoxContainer;
 import ml.boxes.data.Box;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.ForgeDirection;
 

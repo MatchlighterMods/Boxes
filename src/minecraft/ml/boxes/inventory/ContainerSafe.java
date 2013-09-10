@@ -1,11 +1,6 @@
 package ml.boxes.inventory;
 
 import invtweaks.api.container.ChestContainer;
-
-import java.util.List;
-
-import org.omg.PortableServer.IdUniquenessPolicyValue;
-
 import ml.boxes.tile.TileEntitySafe;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;

@@ -12,8 +12,6 @@ import net.minecraft.item.ItemStack;
 
 import com.google.common.io.ByteArrayDataInput;
 
-import cpw.mods.fml.common.network.Player;
-
 public class PacketTipClick extends MLPacket {
 	
 	public @data int inventorySlot;

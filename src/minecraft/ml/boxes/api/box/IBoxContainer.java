@@ -3,7 +3,6 @@ package ml.boxes.api.box;
 import ml.boxes.data.Box;
 import ml.boxes.data.ItemBoxContainer;
 import ml.boxes.inventory.ContainerBox;
-import ml.boxes.item.ItemBox;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;

@@ -2,12 +2,13 @@ package ml.boxes.client;
 
 import ml.boxes.Boxes;
 import ml.boxes.CommonProxy;
+import ml.boxes.Registry;
 import ml.boxes.client.gui.GuiBox;
 import ml.boxes.client.gui.GuiDisplayCase;
 import ml.boxes.client.gui.GuiSafe;
 import ml.boxes.client.render.item.BoxItemRenderer;
-import ml.boxes.client.render.item.MetaItemRenderer;
 import ml.boxes.client.render.tile.BoxTESR;
+import ml.boxes.client.render.tile.BoxesBlockRenderer;
 import ml.boxes.client.render.tile.CrateTESR;
 import ml.boxes.client.render.tile.DisplayCaseTESR;
 import ml.boxes.client.render.tile.SafeTESR;
@@ -20,6 +21,7 @@ import ml.boxes.tile.TileEntityDisplayCase;
 import ml.boxes.tile.TileEntitySafe;
 import ml.core.texture.maps.BasicCustomTextureMap;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import cpw.mods.fml.client.registry.ClientRegistry;
@@ -34,19 +36,20 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world,
 			int x, int y, int z) {
-		switch (ID) {
-		case 1:
-		case 2: //Box
-			ContainerBox container = (ContainerBox)getServerGuiElement(ID, player, world, x, y, z);
-			if (container != null)
-				return new GuiBox(container, player);
-			break;
-		case 3: //Safe
+		
+		int aID = ID>>4, subID = ID & 15;
+		
+		Container cont = (Container)getServerGuiElement(ID, player, world, x, y, z);
+		if (cont instanceof ContainerBox) {
+			return new GuiBox((ContainerBox)cont, player);
+			
+		} else if (cont instanceof ContainerSafe) {
 			return new GuiSafe((ContainerSafe)getServerGuiElement(ID, player, world, x, y, z));
-			//break;
-		case 4:
+			
+		} else if (cont instanceof ContainerDisplayCase) {
 			return new GuiDisplayCase((ContainerDisplayCase)getServerGuiElement(ID, player, world, x, y, z));
 		}
+		
 		return null;
 	}
 
@@ -60,7 +63,10 @@ public class ClientProxy extends CommonProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCrate.class, CrateTESR.INSTANCE);
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySafe.class, SafeTESR.INSTANCE);
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDisplayCase.class, DisplayCaseTESR.INSTANCE);
-		MinecraftForgeClient.registerItemRenderer(Boxes.config.generalBlockID, new MetaItemRenderer());
+		//MinecraftForgeClient.registerItemRenderer(Boxes.config.generalBlockID, new MetaItemRenderer());
+		
+		Registry.MetaBlockRenderID = RenderingRegistry.getNextAvailableRenderId();
+		RenderingRegistry.registerBlockHandler(Registry.MetaBlockRenderID, new BoxesBlockRenderer());
 		
 		BasicCustomTextureMap.GUI.addProvider(new Icons());
 	}

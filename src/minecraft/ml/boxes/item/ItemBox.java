@@ -15,7 +15,6 @@ import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
-import net.minecraft.util.StringTranslate;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
@@ -120,7 +119,7 @@ public class ItemBox extends ItemBlock {
 			EntityPlayer par3EntityPlayer) {
 		
 		if (!par3EntityPlayer.isSneaking())
-			par3EntityPlayer.openGui(Boxes.instance, 2, par2World, 0,0,0);
+			par3EntityPlayer.openGui(Boxes.instance, 2<<4, par2World, 0,0,0);
 		
 		return super.onItemRightClick(par1ItemStack, par2World, par3EntityPlayer);
 	}

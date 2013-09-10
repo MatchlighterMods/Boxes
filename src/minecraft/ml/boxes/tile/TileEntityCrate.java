@@ -7,7 +7,6 @@ import ml.core.PlayerUtils;
 import ml.core.block.BlockUtils;
 import ml.core.item.ItemUtils;
 import ml.core.tile.IRotatableTE;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;

@@ -1,25 +1,21 @@
 package ml.boxes.tile;
 
-import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import ml.boxes.Boxes;
 import ml.boxes.network.packets.PacketDescribeDisplay;
 import ml.core.block.BlockUtils;
 import ml.core.vec.Vector3;
-import ml.core.vec.transform.Matrix4d;
 import ml.core.vec.transform.Rotation;
-import ml.core.vec.transform.Scale;
 import ml.core.vec.transform.Transformation;
-import ml.core.vec.transform.Translation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.packet.Packet;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
+import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class TileEntityDisplayCase extends TileEntityEvented implements IInventory {
 

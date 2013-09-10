@@ -3,6 +3,7 @@ package ml.boxes.block;
 import java.util.ArrayList;
 
 import ml.boxes.Boxes;
+import ml.boxes.Registry;
 import ml.boxes.item.ItemBox;
 import ml.boxes.tile.TileEntityAbstractBox;
 import ml.boxes.tile.TileEntityBox;
@@ -10,7 +11,6 @@ import ml.core.block.BlockUtils;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -44,7 +44,7 @@ public class BlockBox extends BlockContainer {
 
 	@Override
 	public int getRenderType() {
-		return -1;
+		return Registry.MetaBlockRenderID;
 	}
 
 	@Override

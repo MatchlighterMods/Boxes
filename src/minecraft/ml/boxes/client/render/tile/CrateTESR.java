@@ -1,19 +1,15 @@
 package ml.boxes.client.render.tile;
 
 import ml.boxes.Boxes;
-import ml.boxes.BoxesConfig;
 import ml.boxes.Registry;
 import ml.boxes.block.BlockMeta;
 import ml.boxes.tile.TileEntityCrate;
-import ml.core.Config;
 import ml.core.block.BlockUtils;
 import ml.core.render.WorldRenderLib;
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemBlock;

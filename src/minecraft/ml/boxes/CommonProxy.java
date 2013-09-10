@@ -9,7 +9,6 @@ import ml.boxes.tile.TileEntityBox;
 import ml.boxes.tile.TileEntityDisplayCase;
 import ml.boxes.tile.TileEntitySafe;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.InventoryLargeChest;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -23,28 +22,25 @@ public class CommonProxy implements IGuiHandler {
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world,
 			int x, int y, int z) {
 		
-		TileEntity te = world.getBlockTileEntity(x, y, z);
-		switch (ID) {
-		case 1: //BoxIsAsTileEntity
-			if (te instanceof TileEntityBox){
+		int aID = ID>>4, subID = ID & 15;
+		switch (aID) {
+		case 0:
+			TileEntity te = world.getBlockTileEntity(x, y, z);
+			if (te == null) return null;
+			if (te.getClass() == TileEntityBox.class){
 				return new ContainerBox(((TileEntityBox)te), player);
+				
+			} else if (te.getClass() == TileEntitySafe.class) {
+				TileEntitySafe tes = (TileEntitySafe)te;
+				return new ContainerSafe(player, tes);
+				
+			} else if (te.getClass() == TileEntityDisplayCase.class) {
+				return new ContainerDisplayCase((TileEntityDisplayCase)te, player);
 			}
-			break;
-		case 2: //BoxIsAsItem
+		case 2: //Box as item
 			ItemStack is = player.getCurrentEquippedItem();
 			if (is != null && is.getItem() instanceof ItemBox){ 
 				return new ContainerBox(new ItemBoxContainer(is), player);
-			}
-			break;
-		case 3: //Safe
-			if (te instanceof TileEntitySafe) {
-				TileEntitySafe tes = (TileEntitySafe)te;
-				return new ContainerSafe(player, tes);
-			}
-			break;
-		case 4: //DispCase
-			if (te instanceof TileEntityDisplayCase) {
-				return new ContainerDisplayCase((TileEntityDisplayCase)te, player);
 			}
 			break;
 		}

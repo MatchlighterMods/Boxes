@@ -8,6 +8,8 @@ import ml.boxes.item.ItemKey;
 import ml.boxes.item.ItemMechs;
 import ml.boxes.item.ItemResources;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class Registry {
 
@@ -39,5 +41,9 @@ public class Registry {
 		ItemMechs = new ItemMechs(Boxes.config.mechsItemID-256);
 		GameRegistry.registerItem(ItemMechs, "mechs");
 	}
+	
+	// Renderers //
+	@SideOnly(Side.CLIENT)
+	public static int MetaBlockRenderID;
 
 }

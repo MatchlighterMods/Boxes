@@ -2,14 +2,14 @@ package ml.boxes.network.packets;
 
 import java.io.IOException;
 
-import com.google.common.io.ByteArrayDataInput;
-
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.ForgeDirection;
 import ml.boxes.network.PacketHandler;
 import ml.boxes.tile.TileEntityDisplayCase;
 import ml.core.network.MLPacket;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.ForgeDirection;
+
+import com.google.common.io.ByteArrayDataInput;
 
 public class PacketDescribeDisplay extends MLPacket {
 

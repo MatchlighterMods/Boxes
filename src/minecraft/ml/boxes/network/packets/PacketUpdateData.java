@@ -4,14 +4,10 @@ import java.io.IOException;
 
 import ml.boxes.tile.TileEntityAbstractBox;
 import ml.core.network.MLPacket;
-import ml.core.network.MLPacket.data;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 
 import com.google.common.io.ByteArrayDataInput;
-
-import cpw.mods.fml.common.network.Player;
 
 public class PacketUpdateData extends MLPacket {
 

@@ -1,14 +1,7 @@
 package ml.boxes.client.render.tile;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
 import ml.boxes.tile.TileEntityDisplayCase;
-import ml.core.block.BlockUtils;
 import ml.core.render.WorldRenderLib;
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -16,7 +9,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
-import net.minecraftforge.common.ForgeDirection;
+
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
 public class DisplayCaseTESR extends TileEntitySpecialRenderer {
 	
@@ -40,6 +35,8 @@ public class DisplayCaseTESR extends TileEntitySpecialRenderer {
 		
 		tedc.getTransformation().glTransform();
 		
+		render(90);
+		
 		GL11.glPushMatrix();
 		GL11.glTranslatef(0.5F, 0.125F, 0.5F);
 		GL11.glRotatef(90F, 1F, 0F, 0F);
@@ -48,8 +45,6 @@ public class DisplayCaseTESR extends TileEntitySpecialRenderer {
 			WorldRenderLib.renderItemIntoWorldCenteredAt(tedc.rItem, true);
 		}
 		GL11.glPopMatrix();
-		
-		render(90);
 		
 		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 		GL11.glPopMatrix();

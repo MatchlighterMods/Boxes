@@ -1,6 +1,5 @@
 package ml.boxes.client;
 
-import ml.core.texture.maps.BasicCustomTextureMap;
 import ml.core.texture.maps.BasicCustomTextureMap.IIconProvider;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.util.Icon;
