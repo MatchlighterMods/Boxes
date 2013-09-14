@@ -28,7 +28,7 @@ public class GuiDisplayCase extends GuiContainerControl {
 	protected void drawBackgroundLayer(float f, int i, int j) {
 		GL11.glColor3f(1F, 1F, 1F);
 		
-		this.mc.func_110434_K().func_110577_a(bgRes);
+		this.mc.getTextureManager().bindTexture(bgRes);
 		drawTexturedModalRect(0, 0, 0, 0, xSize, ySize);
 		
 		GL11.glPushMatrix();
@@ -38,10 +38,10 @@ public class GuiDisplayCase extends GuiContainerControl {
 		GL11.glRotatef(90F, 1F, 0F, 0F);
 		GL11.glRotatef(180F, 0F, 0F, 1F);
 		
-		mc.func_110434_K().func_110577_a(DisplayCaseTESR.testLiner);
+		mc.getTextureManager().bindTexture(DisplayCaseTESR.testLiner);
 		DisplayCaseTESR.INSTANCE.caseModel.renderPart("Liner");
 		
-		mc.func_110434_K().func_110577_a(DisplayCaseTESR.texMain);
+		mc.getTextureManager().bindTexture(DisplayCaseTESR.texMain);
 		DisplayCaseTESR.INSTANCE.caseModel.renderPart("Base");
 		
 		GL11.glPopMatrix();

@@ -16,6 +16,7 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
@@ -220,7 +221,9 @@ public class BlockMeta extends BlockContainer {
 		case Crate:
 			TileEntityCrate tec = (TileEntityCrate)world.getBlockTileEntity(x, y, z);
 			if (!Minecraft.getMinecraft().thePlayer.isSneaking() && tec != null && tec.cItem != null) {
-				return tec.cItem;
+				ItemStack pick = tec.cItem.copy();
+				pick.stackSize = 1;
+				return pick;
 			}
 			break;
 		}

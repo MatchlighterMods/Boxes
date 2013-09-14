@@ -28,7 +28,7 @@ public class GuiBox extends GuiContainer {
 			int var3) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		
-		this.mc.func_110434_K().func_110577_a(bgRes);
+		this.mc.getTextureManager().bindTexture(bgRes);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 
 	}

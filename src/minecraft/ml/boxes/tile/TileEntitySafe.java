@@ -194,7 +194,7 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 					mech.beginUnlock(epl);
 				}
 			} else {
-				epl.sendChatToPlayer(ChatMessageComponent.func_111066_d("\u00A77\u00A7oThe door is blocked."));
+				epl.sendChatToPlayer(ChatMessageComponent.createFromText("\u00A77\u00A7oThe door is blocked."));
 			}
 		} else {
 			//epl.sendChatToPlayer("\u00A77\u00A7oNever seen anyone open a safe from a side without a door.");

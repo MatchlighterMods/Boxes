@@ -44,7 +44,7 @@ public class GuiSafe extends GuiContainerControl {
 	protected void drawBackgroundLayer(float f, int i, int j) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		
-		this.mc.func_110434_K().func_110577_a(bgRes);
+		this.mc.getTextureManager().bindTexture(bgRes);
 		drawTexturedModalRect(0, 0, 0, 0, xSize, 25+safeCont.invRows*18);
 		drawTexturedModalRect(0, 25+safeCont.invRows*18, 0, 133, xSize, 107);
 	}
@@ -75,7 +75,7 @@ public class GuiSafe extends GuiContainerControl {
 		public void renderContents(Minecraft mc, int lmX, int lmY) {
 			mouseIn = new Rectangle(0, 0, this.size.X, this.size.Y).isPointInside(lmX, lmY);
 			
-			mc.renderEngine.func_110577_a(BasicCustomTextureMap.GUI.resourceLoc);
+			mc.renderEngine.bindTexture(BasicCustomTextureMap.GUI.resourceLoc);
 			drawTexturedModelRectFromIcon(3, 5, Icons.LOCK, 14, 14);
 			if (mouseIn && size.equals(getTargetSize())) {
 				fontRenderer.drawString("Lock", 24, (24-fontRenderer.FONT_HEIGHT)/2+1, 0xFFFFFF, true);

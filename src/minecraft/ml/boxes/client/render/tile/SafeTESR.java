@@ -40,7 +40,7 @@ public class SafeTESR extends TileEntitySpecialRenderer {
 			BlockUtils.glRotateForFaceDir(tes.facing);
 
 			GL11.glScalef(0.0625F, 0.0625F, 0.0625F);
-			this.func_110628_a(texMain);
+			this.bindTexture(texMain);
 			sModel.renderPart("Safe_Base");
 			sModel.renderPart(renderTall ? "Safe_Tall":"Safe_Small");
 			if (renderTall) sModel.renderPart("Safe_Shelf");
@@ -65,13 +65,13 @@ public class SafeTESR extends TileEntitySpecialRenderer {
 
 	public void renderAsItem(){
 		GL11.glScalef(0.0625F, 0.0625F, 0.0625F);
-		this.func_110628_a(texMain);
+		this.bindTexture(texMain);
 		sModel.renderPart("Safe_Base");
 		sModel.renderPart("Safe_Small");
 		sModel.renderPart("Door_Small");
 
 		GL11.glTranslatef(15F, 8F, 15F);
-		this.func_110628_a(texDial);
+		this.bindTexture(texDial);
 		sModel.renderPart("ComboBack");
 		for (int i=0; i<3; i++){
 			GL11.glPushMatrix();

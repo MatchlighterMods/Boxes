@@ -18,6 +18,8 @@ public class ItemKey extends Item {
 	public ItemKey(int par1) {
 		super(par1);
 		setUnlocalizedName("key");
+		setHasSubtypes(true);
+		setMaxStackSize(1);
 	}
 
 	@Override

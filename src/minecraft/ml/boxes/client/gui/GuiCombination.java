@@ -35,7 +35,7 @@ public class GuiCombination extends GuiScreen {
 
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-		this.mc.func_110434_K().func_110577_a(bgRes);
+		this.mc.getTextureManager().bindTexture(bgRes);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
@@ -52,7 +52,7 @@ public class GuiCombination extends GuiScreen {
 		GL11.glTranslatef(2F, 0, 0);
 
 		GL11.glPushMatrix();
-		this.mc.func_110434_K().func_110577_a(SafeTESR.texDial);
+		this.mc.getTextureManager().bindTexture(SafeTESR.texDial);
 		SafeTESR.INSTANCE.sModel.renderPart("ComboBack");
 		for (int i=0; i<3; i++){
 			GL11.glPushMatrix();

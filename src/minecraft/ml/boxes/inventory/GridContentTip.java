@@ -52,7 +52,7 @@ public class GridContentTip extends ContentTip {
 			int slotY = 10+row*18;
 
 			ItemStack is = contentStacks.get(i);
-			mc.func_110434_K().func_110577_a(tipBgRes);
+			mc.getTextureManager().bindTexture(tipBgRes);
 			GuiRenderUtils.drawTexturedModalRect(slotX-1, slotY-1, 0, 106, 18, 18);
 
 			GuiRenderUtils.drawStackAt(mc, slotX, slotY, is);
@@ -68,7 +68,7 @@ public class GridContentTip extends ContentTip {
 	
 	@Override
 	protected void renderBackground(Minecraft mc, int mx, int my) {
-		mc.func_110434_K().func_110577_a(tipBgRes);
+		mc.getTextureManager().bindTexture(tipBgRes);
 		GuiRenderUtils.drawSlicedRect(0, 0, tipBounds.width, tipBounds.height, 0, 0, 178, 106, 9, 9, 7, 7);
 	}
 	

@@ -54,10 +54,10 @@ public class DisplayCaseTESR extends TileEntitySpecialRenderer {
 		GL11.glPushMatrix();
 		GL11.glScalef(0.0625F, 0.0625F, 0.0625F);
 		
-		this.func_110628_a(testLiner);
+		this.bindTexture(testLiner);
 		caseModel.renderPart("Liner");
 		
-		this.func_110628_a(texMain);
+		this.bindTexture(texMain);
 		caseModel.renderPart("Base");
 		
 		GL11.glTranslatef(14F, 4F, 0);

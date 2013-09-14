@@ -127,7 +127,7 @@ public class CrateTESR extends TileEntitySpecialRenderer {
 
 	public void render() {
 		if (shouldFastRender()) {
-			this.func_110628_a(TextureMap.field_110575_b);
+			this.bindTexture(TextureMap.locationBlocksTexture);
 			GL11.glPushMatrix();
 			GL11.glTranslated(0.5F, 0.5F, 0.5F);
 			renderBlocks.overrideBlockBounds(0, 0, 0, 1, 1, 1);
@@ -138,7 +138,7 @@ public class CrateTESR extends TileEntitySpecialRenderer {
 			GL11.glPopMatrix();
 		} else {
 			GL11.glScalef(0.0625F, 0.0625F, 0.0625F);
-			this.func_110628_a(texMain);
+			this.bindTexture(texMain);
 			crateModel.renderPart("Border");
 			crateModel.renderPart("Supports");
 		}

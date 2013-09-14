@@ -67,11 +67,11 @@ public class BoxTESR extends TileEntitySpecialRenderer {
 
 		GL11.glColor4f(red, green, blue, 1.0F);
 
-		this.func_110628_a(texColor);
+		this.bindTexture(texColor);
 		boxModel.renderAll();
 
 		GL11.glColor4f(0.7F, 0.47F, 0.3F, 1F);
-		this.func_110628_a(texMain);
+		this.bindTexture(texMain);
 		boxModel.renderAll();
 
 		GL11.glColor4f(1F, 1F, 1F, 1F);

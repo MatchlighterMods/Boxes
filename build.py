@@ -54,13 +54,15 @@ def getVersion():
 	Commands._version_config = os.path.join(mcp_dir,Commands._version_config)
 	
 	print("Obtaining version information from git")
-	cmd = "git describe --long --match='[^(jenkins)]*'"
+	execCmd("git checkout master") # Get tags from the master branch
+
 	try:
-		process = subprocess.Popen(cmdsplit(cmd), stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=-1)
-		vers, _ = process.communicate()
+		vers = execCmd("git describe --long --match='[^(jenkins)]*'")
 	except OSError:
 		print("Git not found")
 		vers="v1.0-0-deadbeef"
+	execCmd("git checkout %s" % branch)
+	
 	(major,minor,info,rev,githash)=re.match("v(\d+).(\d+)(-.*)?-(\d+)-(.*)",vers).groups()
 	if not info: info=""
 
@@ -115,6 +117,12 @@ def main():
 	#TODO Get Zip
 
 # Library Functions
+
+def execCmd(cmd):
+	process = subprocess.Popen(cmdsplit(cmd), stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=-1)
+	out, _ = process.communicate()
+	return out
+
 def cmdsplit(args):
 	if os.sep == '\\':
 		args = args.replace('\\', '\\\\')
