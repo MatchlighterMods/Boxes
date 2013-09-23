@@ -30,7 +30,7 @@
 		
 		<property name="forge.home" location="${build.env}/forge" />
 		<property name="mcp.home" location="${forge.home}/mcp" />
-		<property name="mcp.libs" location="${mcp.home}/lib" />
+		<property name="mcp.lib" location="${mcp.home}/lib" />
 		
 		<condition property="python.exe" value="${mcp.home}/runtime/bin/python/python_mcp" else="python">
 			<os family="Windows" />
