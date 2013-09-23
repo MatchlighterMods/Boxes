@@ -189,6 +189,7 @@ public abstract class ContentTip {
 		return tipBounds.isPointInside(pX, pY);
 	}
 	
+	@Deprecated
     public ItemStack slotClickOld(int slotNum, int arg, int action, EntityPlayer par4EntityPlayer)
     {
     	ItemBoxContainer ibox = getIIB();

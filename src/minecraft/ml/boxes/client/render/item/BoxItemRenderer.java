@@ -38,19 +38,19 @@ public class BoxItemRenderer implements IItemRenderer {
 		case INVENTORY:
 		case EQUIPPED_FIRST_PERSON:
 			return true;
-		case FIRST_PERSON_HOLDING:
-			Minecraft mc = FMLClientHandler.instance().getClient();
-			EntityLivingBase holder = mc.thePlayer;
-			return (Boxes.config.enableMapStyleRendering &&
-					holder instanceof EntityPlayer &&
-					holder == mc.thePlayer &&
-					((EntityPlayer) holder).openContainer instanceof ContainerBox &&
-					((ContainerBox)((EntityPlayer)holder).openContainer).box instanceof ItemBoxContainer &&
-					mc.gameSettings.thirdPersonView == 0 &&
-					!mc.renderViewEntity.isPlayerSleeping() &&
-					!mc.gameSettings.hideGUI &&
-					!mc.playerController.enableEverythingIsScrewedUpMode()
-					);
+//		case FIRST_PERSON_HOLDING:
+//			Minecraft mc = FMLClientHandler.instance().getClient();
+//			EntityLivingBase holder = mc.thePlayer;
+//			return (Boxes.config.enableMapStyleRendering &&
+//					holder instanceof EntityPlayer &&
+//					holder == mc.thePlayer &&
+//					((EntityPlayer) holder).openContainer instanceof ContainerBox &&
+//					((ContainerBox)((EntityPlayer)holder).openContainer).box instanceof ItemBoxContainer &&
+//					mc.gameSettings.thirdPersonView == 0 &&
+//					!mc.renderViewEntity.isPlayerSleeping() &&
+//					!mc.gameSettings.hideGUI &&
+//					!mc.playerController.enableEverythingIsScrewedUpMode()
+//					);
 
 		case FIRST_PERSON_MAP:
 		}
@@ -66,7 +66,7 @@ public class BoxItemRenderer implements IItemRenderer {
 		case EQUIPPED_BLOCK:
 		case BLOCK_3D:
 		case INVENTORY_BLOCK:
-		case HOLD_HANDS:
+//		case HOLD_HANDS:
 			return true;
 		}
 		return false;
@@ -80,13 +80,13 @@ public class BoxItemRenderer implements IItemRenderer {
 			GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 			BoxTESR.instance.setBoxFlaps(5, 2, 0, 0);
 			break;
-		case FIRST_PERSON_HOLDING:
-			GL11.glScalef(128F, 128F, 128F);
-			GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-			GL11.glRotatef(-90F, 1F, 0F, 0F);
-			GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-			BoxTESR.instance.setBoxFlaps(150, 150, 150, 150);
-			break;
+//		case FIRST_PERSON_HOLDING:
+//			GL11.glScalef(128F, 128F, 128F);
+//			GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+//			GL11.glRotatef(-90F, 1F, 0F, 0F);
+//			GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+//			BoxTESR.instance.setBoxFlaps(150, 150, 150, 150);
+//			break;
 		case EQUIPPED_FIRST_PERSON:
 		case EQUIPPED:
 			BoxTESR.instance.setBoxFlaps(5, 2, 0, 0);
