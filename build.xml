@@ -27,10 +27,10 @@
 		
 		<property name="ext" location="${build.env}/../../../userContent" />
 		<property name="forge.src" location="${ext}/forge" />
-		<property name="mlcore.src" location="${ext}/MLCore/src" />
 		
 		<property name="forge.home" location="${build.env}/forge" />
 		<property name="mcp.home" location="${forge.home}/mcp" />
+		<property name="mcp.libs" location="${mcp.home}/lib" />
 		
 		<condition property="python.exe" value="${mcp.home}/runtime/bin/python/python_mcp" else="python">
 			<os family="Windows" />
@@ -88,16 +88,16 @@
 			<fileset dir="${forge.src}" includes="**/*" />
 		</copy>
 	</target>
-	
-	<target name="importMLCore" depends="initVersion">
-		<copy todir="${mcp.srcdir}" overwrite="true">
-			<fileset dir="${mlcore.src}" includes="**/*" />
-		</copy>
-	</target>
 
 	<target name="merge" depends="initVersion">
 		<copy todir="${mcp.srcdir}" overwrite="true" verbose="true">
 			<fileset dir="${code.src.dir}" includes="**/*.java" />
+		</copy>
+	</target>
+	
+	<target name="instLibs" depends="initVersion">
+		<copy todir="${mcp.lib}" overwrite="true" verbose="true">
+			<fileset dir="libs" includes="**/*" />
 		</copy>
 	</target>
 	
@@ -114,7 +114,7 @@
 		</exec>
 	</target>
 
-	<target name="build" depends="clean,loadForge,initVersion,importMLCore,merge,recompile,reobfuscate">
+	<target name="build" depends="clean,loadForge,instLibs,initVersion,merge,recompile,reobfuscate">
 		<antcall target="writeversion" />
 		<antcall target="extract-built-jar"/>
 	</target>
