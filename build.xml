@@ -36,6 +36,9 @@
 			<os family="Windows" />
 		</condition>
 		
+		<property name="mcp.binoutput" location="${mcp.home}/bin" />
+		<property name="mcp.binoutput.classes" location="${mcp.binoutput}/minecraft" />
+		
 		<property name="mcp.obfoutput" location="${mcp.home}/reobf" />
 		<property name="mcp.obfoutput.classes" location="${mcp.obfoutput}/minecraft" />
 		<property name="mcp.srcdir" location="${mcp.home}/src" />
@@ -122,7 +125,7 @@
 	<target name="extract-built-jar">
 		<property name="jarname" value="${modname}-${version.minecraft}-${version}" /> 
 		<mkdir dir="${build.dest}" />
-		<jar destfile="${build.dest}/${jarname}.zip">
+		<jar destfile="${build.dest}/${jarname}.jar">
 			<fileset dir="${mcp.obfoutput.classes}" includes="**/ml/boxes/**/*.class" />
 			<fileset dir="${mcp.obfoutput.classes}" includes="**/buildcraft/api/**/*" />
 			<fileset dir="${mcp.obfoutput.classes}" includes="**/invtweaks/api/**/*" />
@@ -144,9 +147,29 @@
 				</concat>
 				<mergemapper to="mcmod.info" />
 			</mappedresources>
-			<!-- <fileset dir="${resource.dir}" erroronmissingdir="false">
-				<filename name="**/*.png" />
-			</fileset> -->
+		</jar>
+		<jar destfile="${build.dest}/${jarname}-dev.jar">
+			<fileset dir="${mcp.binoutput.classes}" includes="**/ml/boxes/**/*.class" />
+			<!--<fileset dir="${mcp.binoutput.classes}" includes="**/buildcraft/api/**/*" />-->
+			<!--<fileset dir="${mcp.binoutput.classes}" includes="**/invtweaks/api/**/*" />-->
+			
+			<fileset dir="${res.dir}" includes="**" />
+			
+			<zipfileset dir="${build.env}" includes="version.properties"/>
+			<mappedresources>
+				<concat>
+					<fileset dir="${build.env}" includes="mcmod.info" />
+					<filterchain>
+						<replacetokens>
+							<token key="VERSION" value="${version}" />
+						</replacetokens>
+						<replacetokens>
+							<token key="MCVERSION" value="${version.minecraft}" />
+						</replacetokens>
+					</filterchain>
+				</concat>
+				<mergemapper to="mcmod.info" />
+			</mappedresources>
 		</jar>
 	</target>
 </project>
