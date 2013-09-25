@@ -4,9 +4,14 @@ import ml.boxes.tile.TileEntityDisplayCase;
 import ml.core.render.WorldRenderLib;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.client.IItemRenderer.ItemRenderType;
+import net.minecraftforge.client.IItemRenderer.ItemRendererHelper;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 
@@ -21,8 +26,6 @@ public class DisplayCaseTESR extends TileEntitySpecialRenderer {
 	
 	public static ResourceLocation testLiner = new ResourceLocation("textures/blocks/wool_colored_light_blue.png");
 
-	ItemStack is = new ItemStack(Item.swordDiamond);
-	
 	@Override
 	public void renderTileEntityAt(TileEntity tileentity, double d0, double d1,
 			double d2, float f) {
@@ -42,6 +45,10 @@ public class DisplayCaseTESR extends TileEntitySpecialRenderer {
 		GL11.glRotatef(90F, 1F, 0F, 0F);
 		GL11.glRotatef(0F, 0F, 0F, 1F);
 		if (tedc.rItem != null) {
+			IItemRenderer cstm = MinecraftForgeClient.getItemRenderer(tedc.rItem, ItemRenderType.ENTITY);
+			if (tedc.rItem.getItem() instanceof ItemBlock || (cstm != null && cstm.shouldUseRenderHelper(ItemRenderType.ENTITY, tedc.rItem, ItemRendererHelper.BLOCK_3D)))
+				GL11.glScalef(0.75F, 0.75F, 0.75F);
+			
 			WorldRenderLib.renderItemIntoWorldCenteredAt(tedc.rItem, true);
 		}
 		GL11.glPopMatrix();

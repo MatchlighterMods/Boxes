@@ -7,7 +7,9 @@ import ml.boxes.Boxes;
 import ml.boxes.Registry;
 import ml.boxes.client.render.tile.SafeTESR;
 import ml.boxes.tile.TileEntitySafe;
+import ml.core.ChatUtils;
 import ml.core.StringUtils;
+import ml.core.item.StackUtils;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -17,7 +19,7 @@ import org.lwjgl.opengl.GL11;
 
 public class MechCombo extends SafeMechanism {
 
-	public static int COMBO_LENGTH = 3;
+	public static final int COMBO_LENGTH = 3;
 	
 	public int[] combination;
 	public int[] dispCombination;
@@ -27,9 +29,20 @@ public class MechCombo extends SafeMechanism {
 		combination = new int[COMBO_LENGTH];
 	}
 	
-	@MethodAddInfo()
+	@MethodAddInfoToSafe()
 	public static void getISInfo(ItemStack is, List infos) {
-		infos.add("Combination: " + StringUtils.join(is.stackTagCompound.getIntArray("combination"), "-"));
+		NBTTagCompound tag = StackUtils.getStackTag(is);
+		
+		StringBuilder bldr = new StringBuilder();
+		bldr.append("Combination:");
+		for (int i=0; i<COMBO_LENGTH; i++) {
+			int c = tag.getInteger("digi_"+i);
+			
+			bldr.append(" ");
+			bldr.append(ChatUtils.getColorStringFromDye(c));
+			bldr.append(StringUtils.getLColorName(c));
+		}
+		infos.add(bldr.toString());
 	}
 		
 	@OnUsedInCrafting
@@ -45,14 +58,19 @@ public class MechCombo extends SafeMechanism {
 	@Override
 	public NBTTagCompound saveNBT() {
 		NBTTagCompound tag = new NBTTagCompound();
-		tag.setIntArray("combination", combination);
+		for (int i=0; i<combination.length; i++) {
+			tag.setInteger("digi_"+i, combination[i]);
+		}
 		tag.setIntArray("dispCombo", dispCombination);
 		return tag;
 	}
 	@Override
 	public void loadNBT(NBTTagCompound mechKey) {
-		combination = mechKey.getIntArray("combination");
 		dispCombination = mechKey.getIntArray("dispCombo");
+		
+		for (int i=0; i<COMBO_LENGTH; i++) {
+			combination[i] = mechKey.getInteger("digi_"+i);
+		}
 		
 		if (combination.length != COMBO_LENGTH) combination = new int[3];
 		if (dispCombination.length != COMBO_LENGTH) dispCombination = new int[3];

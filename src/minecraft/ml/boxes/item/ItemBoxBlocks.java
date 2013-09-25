@@ -11,6 +11,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
@@ -38,7 +39,7 @@ public class ItemBoxBlocks extends ItemBlock {
 	@Override
 	public String getItemDisplayName(ItemStack is) {
 		MetaType mt = MetaType.fromMeta(is.getItemDamage());
-		return mt != null ? LanguageRegistry.instance().getStringLocalization("Boxes."+mt.toString()+".name", "en_US") : "";
+		return mt != null ? StatCollector.translateToLocal("block."+mt.toString().toLowerCase()+".name") : "";
 	}
 	
 	@Override

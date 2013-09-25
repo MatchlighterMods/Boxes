@@ -61,16 +61,6 @@ public class Boxes {
 		
 		Registry.registerItems();
 		
-		LanguageRegistry.instance().addStringLocalization("item.box.name", "en_US", "Box");
-		LanguageRegistry.instance().addStringLocalization("item.cardboard.name", "en_US", "Cardboard Sheet");
-		LanguageRegistry.instance().addStringLocalization("item.label.name", "en_US", "Label");
-		LanguageRegistry.instance().addStringLocalization("item.key.name", "en_US", "Key");
-		LanguageRegistry.instance().addStringLocalization("itemGroup.boxes", "en_US", "Boxes");
-		
-		LanguageRegistry.instance().addStringLocalization("Boxes.Safe.name", "en_US", "Lockbox");
-		LanguageRegistry.instance().addStringLocalization("Boxes.Crate.name", "en_US", "Crate");
-		LanguageRegistry.instance().addStringLocalization("Boxes.DisplayCase.name", "en_US", "Display Case");
-		
 		NetworkRegistry.instance().registerGuiHandler(instance, proxy);
 		
 		GameRegistry.addRecipe(new ItemStack(Registry.ItemResources, 1, 0), "ppp", "sws", "ppp", 'p', Item.paper, 's', Item.silk, 'w', Item.bucketWater);

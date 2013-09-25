@@ -162,83 +162,63 @@ public class Box implements IInventory {
 		return 64;
 	}
 
-	public boolean mergeItemStack(ItemStack is, int lbound, int ubound)
-	{
+	public boolean mergeItemStack(ItemStack is, int lbound, int ubound) {
 		boolean var5 = false;
 		int itI = lbound;
 
 		boolean direction = lbound > ubound;
-		if (direction)
-		{
+		if (direction) {
 			itI = ubound - 1;
 		}
 
 		ItemStack stackOn;
 
-		if (is.isStackable())
-		{
-			while (is.stackSize > 0 && (!direction && itI < ubound || direction && itI >= lbound))
-			{
+		if (is.isStackable()) {
+			while (is.stackSize > 0 && (!direction && itI < ubound || direction && itI >= lbound)) {
 				stackOn = this.getStackInSlot(itI);
 
-				if (stackOn != null && stackOn.itemID == is.itemID && (!is.getHasSubtypes() || is.getItemDamage() == stackOn.getItemDamage()) && ItemStack.areItemStackTagsEqual(is, stackOn))
-				{
+				if (stackOn != null && stackOn.itemID == is.itemID && (!is.getHasSubtypes() || is.getItemDamage() == stackOn.getItemDamage()) && ItemStack.areItemStackTagsEqual(is, stackOn)) {
 					int var9 = stackOn.stackSize + is.stackSize;
 
-					if (var9 <= is.getMaxStackSize())
-					{
+					if (var9 <= is.getMaxStackSize()) {
 						is.stackSize = 0;
 						stackOn.stackSize = var9;
 						var5 = true;
-					}
-					else if (stackOn.stackSize < is.getMaxStackSize())
-					{
+					} else if (stackOn.stackSize < is.getMaxStackSize()) {
 						is.stackSize -= is.getMaxStackSize() - stackOn.stackSize;
 						stackOn.stackSize = is.getMaxStackSize();
 						var5 = true;
 					}
 				}
 
-				if (direction)
-				{
+				if (direction) {
 					--itI;
-				}
-				else
-				{
+				} else {
 					++itI;
 				}
 			}
 		}
 
-		if (is.stackSize > 0)
-		{
-			if (direction)
-			{
+		if (is.stackSize > 0) {
+			if (direction) {
 				itI = ubound - 1;
-			}
-			else
-			{
+			} else {
 				itI = lbound;
 			}
 
-			while (!direction && itI < ubound || direction && itI >= lbound)
-			{
+			while (!direction && itI < ubound || direction && itI >= lbound) {
 				stackOn = this.getStackInSlot(itI);
 
-				if (stackOn == null && this.isItemValidForSlot(itI, is))
-				{
+				if (stackOn == null && this.isItemValidForSlot(itI, is)) {
 					this.setInventorySlotContents(itI, is.copy());
 					is.stackSize = 0;
 					var5 = true;
 					break;
 				}
 
-				if (direction)
-				{
+				if (direction) {
 					--itI;
-				}
-				else
-				{
+				} else {
 					++itI;
 				}
 			}

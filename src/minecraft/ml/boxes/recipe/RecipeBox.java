@@ -3,6 +3,7 @@ package ml.boxes.recipe;
 import ml.boxes.Registry;
 import ml.boxes.data.ItemBoxContainer;
 import ml.boxes.item.ItemBox;
+import ml.core.item.ItemUtils;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemDye;
@@ -19,12 +20,12 @@ public class RecipeBox implements IRecipe {
 
 	}
 
+	private ItemStack cb = new ItemStack(Registry.ItemResources);
 	@Override
 	public boolean matches(InventoryCrafting inv, World world){
-		ItemStack cb = new ItemStack(Registry.ItemResources);
 		
 		for (int i : new int[]{0,1,2, 3,5, 6,7,8}){
-			if (!checkItemEquals(cb, inv.getStackInSlot(i)))
+			if (!ItemUtils.checkItemEquals(cb, inv.getStackInSlot(i)))
 				return false;
 		}
 		
@@ -63,14 +64,5 @@ public class RecipeBox implements IRecipe {
 	@Override
 	public ItemStack getRecipeOutput() {
 		return new ItemStack(Registry.BlockBox, 1, 0);
-	}
-	
-	private boolean checkItemEquals(ItemStack target, ItemStack input)
-	{
-		if (input == null && target != null || input != null && target == null)
-		{
-			return false;
-		}
-		return (target.itemID == input.itemID && (target.getItemDamage() == Short.MAX_VALUE || target.getItemDamage() == input.getItemDamage()));
 	}
 }

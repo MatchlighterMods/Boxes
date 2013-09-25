@@ -8,6 +8,7 @@ import ml.boxes.data.Box;
 import ml.boxes.data.ItemBoxContainer;
 import ml.boxes.tile.TileEntityAbstractBox;
 import ml.core.PlayerUtils;
+import ml.core.StringUtils;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
@@ -125,6 +126,6 @@ public class ItemBox extends ItemBlock {
 	}
 	
 	public static String getColoredBoxName(int i){
-		return StatCollector.translateToLocal("item.fireworksCharge." + ItemDye.dyeColorNames[i]) + " " + LanguageRegistry.instance().getStringLocalization("item.box.name", "en_US");
+		return StringUtils.getLColorName(i) + " " + LanguageRegistry.instance().getStringLocalization("item.box.name", "en_US");
 	}
 }

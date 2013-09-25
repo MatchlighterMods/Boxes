@@ -17,7 +17,7 @@ public class MechKey extends SafeMechanism {
 		super(tsafe);
 	}
 
-	@MethodAddInfo
+	@MethodAddInfoToSafe
 	public static void getISInfo(ItemStack is, List infos) {
 		infos.add("KeyId: " + is.stackTagCompound.getInteger("keyId"));
 	}

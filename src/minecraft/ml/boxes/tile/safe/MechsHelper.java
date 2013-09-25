@@ -14,7 +14,7 @@ public class MechsHelper {
 	
 	public static SafeMechanism tryInstantiate(String mechName, TileEntitySafe safe) {
 		if (SafeMechanism.mechs.containsKey(mechName)){
-			Class clazz = SafeMechanism.mechs.get(mechName).mechClass;
+			Class clazz = SafeMechanism.mechs.get(mechName);
 			try {
 				return (SafeMechanism)clazz.getConstructor(TileEntitySafe.class).newInstance(safe);
 			} catch (Exception e) {
@@ -28,9 +28,9 @@ public class MechsHelper {
 		NBTTagCompound tag = is.getTagCompound() != null ? is.getTagCompound() : new NBTTagCompound();
 		String mechN = tag.getString("mechType");
 		if (SafeMechanism.mechs.containsKey(mechN)) {
-			Class smech = SafeMechanism.mechs.get(mechN).mechClass;
+			Class smech = SafeMechanism.mechs.get(mechN);
 			infos.add("Mechanism: " + LanguageRegistry.instance().getStringLocalization(mechN));
-			List<Method> anns = ReflectionUtils.getMethodsAnnotatedWith(smech, SafeMechanism.MethodAddInfo.class);
+			List<Method> anns = ReflectionUtils.getMethodsAnnotatedWith(smech, SafeMechanism.MethodAddInfoToSafe.class);
 			for (Method mthd : anns) {
 				if (Modifier.isStatic(mthd.getModifiers())) {
 					try {
@@ -49,8 +49,8 @@ public class MechsHelper {
 	
 	public static void copyNBTDataToSafe(String MechID, ItemStack mechStack, NBTTagCompound safeMechTag) {
 		if (SafeMechanism.mechs.containsKey(MechID)) {
-			Class smech = SafeMechanism.mechs.get(MechID).mechClass;
-			List<Method> anns = ReflectionUtils.getMethodsAnnotatedWith(smech, SafeMechanism.MethodAddInfo.class);
+			Class smech = SafeMechanism.mechs.get(MechID);
+			List<Method> anns = ReflectionUtils.getMethodsAnnotatedWith(smech, SafeMechanism.MethodAddInfoToSafe.class);
 			for (Method mthd : anns) {
 				if (Modifier.isStatic(mthd.getModifiers())) {
 					try {
@@ -67,8 +67,8 @@ public class MechsHelper {
 
 	public static ItemStack getDecraftedMechStack(String MechID, NBTTagCompound safeMechTag) {
 		if (SafeMechanism.mechs.containsKey(MechID)) {
-			Class smech = SafeMechanism.mechs.get(MechID).mechClass;
-			List<Method> anns = ReflectionUtils.getMethodsAnnotatedWith(smech, SafeMechanism.MethodAddInfo.class);
+			Class smech = SafeMechanism.mechs.get(MechID);
+			List<Method> anns = ReflectionUtils.getMethodsAnnotatedWith(smech, SafeMechanism.MethodAddInfoToSafe.class);
 			for (Method mthd : anns) {
 				if (Modifier.isStatic(mthd.getModifiers())) {
 					try {

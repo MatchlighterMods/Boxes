@@ -23,7 +23,7 @@ public abstract class SafeMechanism {
 	 */
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.METHOD)
-	public static @interface MethodAddInfo {}
+	public static @interface MethodAddInfoToSafe {}
 	
 	/**
 	 * <b>(Optional)</b> Annotate your OnSafeCraftedWith static method with this annotation.<br>
@@ -44,10 +44,10 @@ public abstract class SafeMechanism {
 	@Target(ElementType.METHOD)
 	public static @interface MethodGetItemStack {}
 
-	public final static Map<String, RegMech> mechs = new HashMap<String, RegMech>();
+	public final static Map<String, Class<?extends SafeMechanism>> mechs = new HashMap<String, Class<?extends SafeMechanism>>();
 
-	public final static void registerMechanism(IItemMech itm, Class<? extends SafeMechanism> mechCls) {
-		mechs.put(mechCls.getName(), new RegMech(itm, mechCls));
+	public final static void registerMechanism(Class<? extends SafeMechanism> mechCls) {
+		mechs.put(mechCls.getName(), mechCls);
 	}
 	
 	public final TileEntitySafe safe;
@@ -96,15 +96,5 @@ public abstract class SafeMechanism {
 	public static enum RenderPass {
 		SafeBody,
 		SafeDoor;
-	}
-	
-	public static class RegMech {
-		public final IItemMech craftingItem;
-		public final Class<? extends SafeMechanism> mechClass;
-		
-		public RegMech(IItemMech cItem, Class<? extends SafeMechanism> mCls) {
-			craftingItem = cItem;
-			mechClass = mCls;
-		}
 	}
 }
