@@ -6,6 +6,7 @@ import java.util.List;
 
 import ml.boxes.api.box.IBoxContainer;
 import ml.boxes.data.ItemBoxContainer;
+import ml.core.item.StackUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
@@ -69,7 +70,7 @@ public class ContainerBox extends Container {
 			if (par2 < bxSize) {
 				if (!mergeItemStack(var5, bxSize,inventorySlots.size(), true))
 					return null;
-			} else if (!box.getBox().mergeItemStack(var5, 0, bxSize)) {
+			} else if (!StackUtils.mergeItemStack(var5, 0, bxSize, false, this)) {
 				return null;
 			}
 
