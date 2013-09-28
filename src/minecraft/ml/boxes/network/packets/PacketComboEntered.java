@@ -54,7 +54,7 @@ public class PacketComboEntered extends MLPacket {
 		if (te instanceof TileEntitySafe) {
 			TileEntitySafe tes = (TileEntitySafe)te;
 			if (tes.mech instanceof MechCombo && Arrays.equals(((MechCombo)tes.mech).combination, combo)) {
-				tes.unlock();
+				tes.doUnlock();
 				tes.playerOpened(epl);
 			}
 		}

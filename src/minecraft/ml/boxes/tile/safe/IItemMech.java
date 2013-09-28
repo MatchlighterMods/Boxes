@@ -9,6 +9,6 @@ public interface IItemMech {
 	 * Should return the full class name of the Mechanism to apply to the safe.
 	 * e.g. ml.boxes.tile.safe.MechCombo (Class.getName())
 	 */
-	public String getMechID(InventoryCrafting inv, ItemStack mechStack, ItemStack safeStack);
+	public String getMechID(ItemStack mechStack);
 	
 }

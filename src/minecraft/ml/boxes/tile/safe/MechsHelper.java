@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.List;
 
+import ml.boxes.api.safe.SafeMechanism;
 import ml.boxes.tile.TileEntitySafe;
 import ml.core.ReflectionUtils;
 import net.minecraft.item.ItemStack;

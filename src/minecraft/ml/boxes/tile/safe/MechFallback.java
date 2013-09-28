@@ -1,6 +1,7 @@
 package ml.boxes.tile.safe;
 
-import ml.boxes.tile.TileEntitySafe;
+import ml.boxes.api.safe.ISafe;
+import ml.boxes.api.safe.SafeMechanism;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatMessageComponent;
@@ -13,35 +14,25 @@ import net.minecraft.util.ChatMessageComponent;
  */
 public class MechFallback extends SafeMechanism {
 
-	protected NBTTagCompound loadedTag = new NBTTagCompound();
-	
-	public MechFallback(TileEntitySafe tsafe) {
-		super(tsafe);
-	}
-
 	@Override
-	public NBTTagCompound saveNBT() {
-		return loadedTag;
-	}
-
-	@Override
-	public void loadNBT(NBTTagCompound mechTag) {
-		loadedTag = mechTag;
-	}
-
-	@Override
-	public void beginUnlock(EntityPlayer epl) {
+	public void beginUnlock(ISafe safe, EntityPlayer epl) {
 		epl.sendChatToPlayer(ChatMessageComponent.createFromText("\u00A77\u00A7oWarning: The safe has been corrupted and can no longer be locked properly!"));
-		safe.unlock();
+		safe.doUnlock();
 	}
 
 	@Override
-	public boolean canConnectWith(SafeMechanism tmech) {
-		return true;
+	public boolean canConnectWith(ISafe self, ISafe remote) {
+		return false;
 	}
 
 	@Override
-	public void render(RenderPass pass, boolean stacked) {
+	public void render(ISafe safe, RenderPass pass, boolean stacked) {
 		
+	}
+
+	@Override
+	public NBTTagCompound writeNBTPacket(ISafe safe) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

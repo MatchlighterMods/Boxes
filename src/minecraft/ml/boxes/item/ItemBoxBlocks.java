@@ -5,7 +5,8 @@ import java.util.List;
 import ml.boxes.Boxes;
 import ml.boxes.block.BlockMeta;
 import ml.boxes.block.MetaType;
-import ml.boxes.tile.safe.MechsHelper;
+import ml.boxes.tile.safe.MechRegistry;
+import ml.core.item.StackUtils;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,7 +14,6 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class ItemBoxBlocks extends ItemBlock {
 
@@ -47,7 +47,12 @@ public class ItemBoxBlocks extends ItemBlock {
 		MetaType mt = MetaType.fromMeta(is.getItemDamage());
 		switch(mt){
 		case Safe:
-			MechsHelper.attemptGetISInfo(is, par3List);
+			ItemStack mech = ItemStack.loadItemStackFromNBT(StackUtils.getStackTag(is).getCompoundTag("mech"));
+			if (mech != null) {
+				MechRegistry.getInfoForSafe(mech, is, par3List);
+			} else {
+				
+			}
 			return;
 		}
 	}

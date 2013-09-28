@@ -2,11 +2,13 @@ package ml.boxes.tile;
 
 import ml.boxes.Boxes;
 import ml.boxes.Registry;
+import ml.boxes.api.safe.ISafe;
+import ml.boxes.api.safe.SafeMechanism;
 import ml.boxes.network.packets.PacketDescribeSafe;
 import ml.boxes.tile.safe.MechFallback;
-import ml.boxes.tile.safe.MechsHelper;
-import ml.boxes.tile.safe.SafeMechanism;
+import ml.boxes.tile.safe.MechRegistry;
 import ml.core.item.ItemUtils;
+import ml.core.item.StackUtils;
 import ml.core.tile.IRotatableTE;
 import ml.core.tile.TileEntityConnectable;
 import net.minecraft.entity.EntityLivingBase;
@@ -21,11 +23,11 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatMessageComponent;
 import net.minecraftforge.common.ForgeDirection;
 
-public class TileEntitySafe extends TileEntityConnectable implements IEventedTE, IRotatableTE {
+public class TileEntitySafe extends TileEntityConnectable implements ISafe, IEventedTE, IRotatableTE {
 	
 	public SafeInventory inventory;
-
-	public String mechId = "";
+	
+	protected NBTTagCompound mechTag;
 	public SafeMechanism mech;
 
 	public float doorAng = 0F;
@@ -43,10 +45,9 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
 
-		mechId = tag.getString("mechType");
-		mech = MechsHelper.tryInstantiate(mechId, this);
-		mech.loadNBT(tag.getCompoundTag("mechProps"));
-
+		mechTag = tag.getCompoundTag("mech");
+		mech = MechRegistry.getMechForStack(mechStack, this);
+		
 		unlocked = tag.getBoolean("unlocked");
 
 		NBTTagList nbttaglist = tag.getTagList("Items");
@@ -65,8 +66,11 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 	public void writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
 
-		tag.setString("mechType", mechId);
-		tag.setCompoundTag("mechProps", mech.saveNBT());
+		if (mechTag != null) {
+			tag.setTag("mech", mechTag);
+		} else {
+			tag.removeTag("mech");
+		}
 
 		tag.setBoolean("unlocked", unlocked);
 
@@ -89,10 +93,16 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 	public Packet getDescriptionPacket() {
 		return new PacketDescribeSafe(this).convertToPkt250();
 	}
+	
+	@Override
+	public NBTTagCompound getMechTag() {
+		return mechTag;
+	}
 
-	public void unlock() {
+	@Override
+	public void doUnlock() {
 		unlocked = true;
-		if (isMaster() && isConnected()) ((TileEntitySafe)getConnected()).unlock();
+		if (isMaster() && isConnected()) ((TileEntitySafe)getConnected()).doUnlock();
 		worldObj.addBlockEvent(xCoord, yCoord, zCoord, Registry.BlockMeta.blockID, 1, 1);
 	}
 
@@ -232,9 +242,11 @@ public class TileEntitySafe extends TileEntityConnectable implements IEventedTE,
 	@Override
 	public void hostPlaced(EntityLivingBase pl, ItemStack is) {
 		if (!worldObj.isRemote) {
-			NBTTagCompound tag = is.getTagCompound() != null ? is.getTagCompound() : new NBTTagCompound();
-			mech = MechsHelper.tryInstantiate(tag.getString("mechType"), this);
-			mech.loadNBT(tag.getCompoundTag("mechProps"));
+			NBTTagCompound tag = StackUtils.getStackTag(is);
+			
+			mechTag = tag.getCompoundTag("mech");
+			mech = MechRegistry.getMechForStack(mechStack, this);
+
 			tryConnection();
 		}
 	}

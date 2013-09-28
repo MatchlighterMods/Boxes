@@ -3,10 +3,10 @@ package ml.boxes.item;
 import java.util.List;
 
 import ml.boxes.Boxes;
+import ml.boxes.api.safe.SafeMechanism;
 import ml.boxes.tile.safe.IItemMech;
 import ml.boxes.tile.safe.MechCombo;
 import ml.boxes.tile.safe.MechKey;
-import ml.boxes.tile.safe.SafeMechanism;
 import ml.core.ChatUtils;
 import ml.core.StringUtils;
 import ml.core.item.StackUtils;
@@ -41,7 +41,7 @@ public class ItemMechs extends Item implements IItemMech {
 		
 		//Register our Mechanisms now that we have an Item instance for association
 		for (Class<? extends SafeMechanism> clazz : ourMechs.values()) {
-			SafeMechanism.registerMechanism(clazz);
+			//SafeMechanism.registerMechanism(clazz);
 		}
 	}
 	
@@ -76,8 +76,7 @@ public class ItemMechs extends Item implements IItemMech {
 	}
 
 	@Override
-	public String getMechID(InventoryCrafting inv, ItemStack mechStack,
-			ItemStack safeStack) {
+	public String getMechID(ItemStack mechStack) {
 		if (ourMechs.containsKey(mechStack.getItemDamage())){
 			return ourMechs.get(mechStack.getItemDamage()).getName();
 		}

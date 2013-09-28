@@ -37,6 +37,7 @@ public class BoxesConfig extends Config {
 	
 	//Safes
 	public @Prop(category="lockbox") boolean lockbox_allowCrafting = true;
+	public @Prop(category="lockbox", comment="Use steel for safes if it is available") boolean lockbox_useSteel = true;
 	
 	//DisplayCases
 	public @Prop(category="dispcase") boolean dispcase_allowCrafting = true;

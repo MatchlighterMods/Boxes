@@ -1,7 +1,7 @@
 package ml.boxes.client.render.tile;
 
+import ml.boxes.api.safe.SafeMechanism.RenderPass;
 import ml.boxes.tile.TileEntitySafe;
-import ml.boxes.tile.safe.SafeMechanism.RenderPass;
 import ml.core.block.BlockUtils;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
@@ -45,7 +45,7 @@ public class SafeTESR extends TileEntitySpecialRenderer {
 			sModel.renderPart(renderTall ? "Safe_Tall":"Safe_Small");
 			if (renderTall) sModel.renderPart("Safe_Shelf");
 			
-			tes.mech.render(RenderPass.SafeBody, renderTall);
+			tes.mech.render(tes, RenderPass.SafeBody, renderTall);
 			
 			float doorAng1 = tes.prevDoorAng + (tes.doorAng-tes.prevDoorAng)*tickTime;
 			doorAng1 = (float)Math.sin(doorAng1*3.14/2);
@@ -57,7 +57,7 @@ public class SafeTESR extends TileEntitySpecialRenderer {
 
 			sModel.renderPart(renderTall ? "Door_Tall":"Door_Small");
 
-			tes.mech.render(RenderPass.SafeDoor, renderTall);
+			tes.mech.render(tes, RenderPass.SafeDoor, renderTall);
 
 			GL11.glPopMatrix();
 		}

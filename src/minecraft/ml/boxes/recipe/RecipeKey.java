@@ -4,7 +4,7 @@ import java.util.List;
 
 import ml.boxes.Registry;
 import ml.core.inventory.InventoryUtils;
-import ml.core.item.RecipeMixed;
+import ml.core.item.recipe.RecipeMixed;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
