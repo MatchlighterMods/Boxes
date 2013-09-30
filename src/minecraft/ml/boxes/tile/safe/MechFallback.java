@@ -1,7 +1,10 @@
 package ml.boxes.tile.safe;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import ml.boxes.api.safe.ISafe;
 import ml.boxes.api.safe.SafeMechanism;
+import ml.core.ChatUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatMessageComponent;
@@ -13,6 +16,16 @@ import net.minecraft.util.ChatMessageComponent;
  * @author Matchlighter
  */
 public class MechFallback extends SafeMechanism {
+	
+	@Override
+	public String getMechId() {
+		return "fallback";
+	}
+	
+	@Override
+	public String getUnlocalizedMechName() {
+		return ChatUtils.color_darkRed + ChatUtils.italic + "Invalid";
+	}
 
 	@Override
 	public void beginUnlock(ISafe safe, EntityPlayer epl) {
@@ -26,6 +39,7 @@ public class MechFallback extends SafeMechanism {
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void render(ISafe safe, RenderPass pass, boolean stacked) {
 		
 	}

@@ -16,6 +16,10 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public abstract class SafeMechanism {
+	
+	public abstract String getMechId();
+	
+	public abstract String getUnlocalizedMechName();
 
 	public void addInfoForSafe(NBTTagCompound mechTag, List lst) {}
 	

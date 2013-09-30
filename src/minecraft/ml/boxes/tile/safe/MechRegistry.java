@@ -1,38 +1,42 @@
 package ml.boxes.tile.safe;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-import ml.boxes.api.safe.IMechHandler;
-import ml.boxes.api.safe.ISafe;
+import cpw.mods.fml.common.FMLLog;
+
 import ml.boxes.api.safe.SafeMechanism;
+import ml.core.item.StackUtils;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 
 public class MechRegistry {
 	
-	public static ArrayList<IMechHandler> handlers = new ArrayList<IMechHandler>();
+	private static HashMap<String, SafeMechanism> mechs = new HashMap<String, SafeMechanism>();
+	public static MechFallback fallback = new MechFallback();
 	
-	public static SafeMechanism getMechForStack(ItemStack is, ISafe safe) {
-		for (IMechHandler hndlr : handlers) {
-			if (hndlr.handlesMechForStack(is))
-				return hndlr.createMechanism(safe, is.stackTagCompound);
-		}
-		return new MechFallback(safe);
+	public static boolean registerMech(String mechId, SafeMechanism smech) {
+		if (mechs.containsKey(mechId)) return false;
+		FMLLog.info("Registering SafeMechanism \"%s\"", mechId);
+		mechs.put(mechId, smech);
+		return true;
 	}
 	
-	public static boolean isAMechanism(ItemStack is) {
-		for (IMechHandler hndlr : handlers) {
-			if (hndlr.handlesMechForStack(is))
-				return true;
-		}
-		return false;
-	}
-	
-	public static void getInfoForSafe(ItemStack mech, ItemStack safe, List lst) {
-		for (IMechHandler hndlr : handlers) {
-			if (hndlr.handlesMechForStack(mech))
-				hndlr.addInfoToSafe(mech, safe, lst);
-		}
+	public static SafeMechanism getMechForId(String mId) {
+		if (mechs.containsKey(mId))
+			return mechs.get(mId);
+		return fallback;
 	}
 
+	public static void addInfoForSafe(NBTTagCompound mechTag, ItemStack safeStack, List lst) {
+		String mechId = StackUtils.getStackTag(safeStack).getString("mech_type");
+		SafeMechanism mech = getMechForId(mechId); 
+		lst.add("Mechanism: " + StatCollector.translateToLocal(mech.getUnlocalizedMechName()));
+		mech.addInfoForSafe(mechTag, lst);
+	}
+
+	public static boolean isIdRegistered(String mId) {
+		return mechs.containsKey(mId);
+	}
 }

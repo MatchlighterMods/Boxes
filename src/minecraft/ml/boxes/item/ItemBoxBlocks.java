@@ -12,6 +12,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
@@ -43,16 +44,13 @@ public class ItemBoxBlocks extends ItemBlock {
 	}
 	
 	@Override
-	public void addInformation(ItemStack is, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
+	public void addInformation(ItemStack is, EntityPlayer par2EntityPlayer, List lst, boolean par4) {
 		MetaType mt = MetaType.fromMeta(is.getItemDamage());
+		NBTTagCompound stackTag = StackUtils.getStackTag(is);
+		
 		switch(mt){
 		case Safe:
-			ItemStack mech = ItemStack.loadItemStackFromNBT(StackUtils.getStackTag(is).getCompoundTag("mech"));
-			if (mech != null) {
-				MechRegistry.getInfoForSafe(mech, is, par3List);
-			} else {
-				
-			}
+			MechRegistry.addInfoForSafe(stackTag.getCompoundTag("mech_data"), is, lst);
 			return;
 		}
 	}

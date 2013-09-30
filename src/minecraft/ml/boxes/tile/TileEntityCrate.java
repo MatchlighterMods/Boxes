@@ -88,7 +88,7 @@ public class TileEntityCrate extends TileEntity implements ISidedInventory, IRot
 
 		NBTTagCompound upgTag = new NBTTagCompound();
 		upgTag.setBoolean("Label", upg_label);
-		tag.setTag("Upgrades", upgTag);
+		tag.setCompoundTag("Upgrades", upgTag);
 
 		NBTTagList nbttaglist = new NBTTagList();
 		for (int i = 0; i < stacks.length; i++)

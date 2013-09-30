@@ -3,14 +3,18 @@ package ml.boxes.recipe;
 import java.util.Arrays;
 
 import ml.boxes.Boxes;
-import ml.boxes.tile.safe.IItemMech;
+import ml.boxes.Registry;
+import ml.boxes.api.safe.IItemMech;
+import ml.boxes.block.MetaType;
 import ml.boxes.tile.safe.MechRegistry;
 import ml.core.item.ItemUtils;
+import ml.core.item.StackUtils;
 import ml.core.item.recipe.RecipeShapedVariable;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -36,14 +40,24 @@ public class RecipeSafe extends RecipeShapedVariable {
 	@Override
 	public boolean itemMatchesAt(int lx, int ly, ItemStack is) {
 		if (lx==2 && ly==1) {
-			return is != null && MechRegistry.isAMechanism(is);
+			if (is==null || is.getItem() instanceof IItemMech) return false;
+			String mId = ((IItemMech)is.getItem()).getMechID(is);
+			return MechRegistry.isIdRegistered(mId);
 		}
 		return super.itemMatchesAt(lx, ly, is);
 	}
 	
 	@Override
 	public ItemStack getCraftingResult(InventoryCrafting inventorycrafting) {
-		return null;
+		ItemStack mechStack = inventorycrafting.getStackInRowAndColumn(2, 1);
+		ItemStack safeStack = new ItemStack(Registry.BlockMeta, 1, MetaType.Safe.meta);
+		
+		NBTTagCompound mechTag = StackUtils.getStackTag(mechStack);
+		NBTTagCompound safeTag = StackUtils.getStackTag(safeStack);
+		
+		safeTag.setCompoundTag("mech_data", mechTag);
+		
+		return safeStack;
 	}
 
 	@Override

@@ -27,7 +27,7 @@ public class TileEntitySafe extends TileEntityConnectable implements ISafe, IEve
 	
 	public SafeInventory inventory;
 	
-	protected NBTTagCompound mechTag;
+	public NBTTagCompound mechTag;
 	public SafeMechanism mech;
 
 	public float doorAng = 0F;
@@ -38,15 +38,15 @@ public class TileEntitySafe extends TileEntityConnectable implements ISafe, IEve
 
 	public TileEntitySafe() {
 		inventory = new SafeInventory();
-		mech = new MechFallback(this);
+		mech = MechRegistry.fallback;
 	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
 
-		mechTag = tag.getCompoundTag("mech");
-		mech = MechRegistry.getMechForStack(mechStack, this);
+		mech = MechRegistry.getMechForId(tag.getString("mech_id"));
+		mechTag = tag.getCompoundTag("mech_data");
 		
 		unlocked = tag.getBoolean("unlocked");
 
@@ -67,7 +67,7 @@ public class TileEntitySafe extends TileEntityConnectable implements ISafe, IEve
 		super.writeToNBT(tag);
 
 		if (mechTag != null) {
-			tag.setTag("mech", mechTag);
+			tag.setCompoundTag("mech", mechTag);
 		} else {
 			tag.removeTag("mech");
 		}
@@ -115,7 +115,7 @@ public class TileEntitySafe extends TileEntityConnectable implements ISafe, IEve
 	@Override
 	public boolean canConnectWith(TileEntityConnectable remoteTec) {
 		TileEntitySafe rtes = (TileEntitySafe)remoteTec;
-		return mech.getClass() == rtes.mech.getClass() && mech.canConnectWith(rtes.mech);
+		return mech.getClass() == rtes.mech.getClass() && mech.canConnectWith(this, rtes);
 	}
 
 	@Override
@@ -201,7 +201,7 @@ public class TileEntitySafe extends TileEntityConnectable implements ISafe, IEve
 				if (unlocked) {
 					playerOpened(epl);
 				} else {
-					mech.beginUnlock(epl);
+					mech.beginUnlock(this, epl);
 				}
 			} else {
 				epl.sendChatToPlayer(ChatMessageComponent.createFromText("\u00A77\u00A7oThe door is blocked."));
@@ -244,8 +244,8 @@ public class TileEntitySafe extends TileEntityConnectable implements ISafe, IEve
 		if (!worldObj.isRemote) {
 			NBTTagCompound tag = StackUtils.getStackTag(is);
 			
-			mechTag = tag.getCompoundTag("mech");
-			mech = MechRegistry.getMechForStack(mechStack, this);
+			mech = MechRegistry.getMechForId(tag.getString("mech_id"));
+			mechTag = tag.getCompoundTag("mech_data");
 
 			tryConnection();
 		}

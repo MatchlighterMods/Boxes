@@ -3,10 +3,11 @@ package ml.boxes.item;
 import java.util.List;
 
 import ml.boxes.Boxes;
+import ml.boxes.api.safe.IItemMech;
 import ml.boxes.api.safe.SafeMechanism;
-import ml.boxes.tile.safe.IItemMech;
 import ml.boxes.tile.safe.MechCombo;
 import ml.boxes.tile.safe.MechKey;
+import ml.boxes.tile.safe.MechRegistry;
 import ml.core.ChatUtils;
 import ml.core.StringUtils;
 import ml.core.item.StackUtils;
@@ -23,10 +24,14 @@ import com.google.common.collect.HashBiMap;
 public class ItemMechs extends Item implements IItemMech {
 	
 	//Used for DRY internal mapping of Metadata to the SafeMechanism subclass
-	private static BiMap<Integer, Class<? extends SafeMechanism>> ourMechs = HashBiMap.create();
+	private static BiMap<Integer, SafeMechanism> ourMechs = HashBiMap.create();
 	static {
-		ourMechs.put(0, MechCombo.class);
-		ourMechs.put(1, MechKey.class);
+		ourMechs.put(0, new MechCombo());
+		ourMechs.put(1, new MechKey());
+		
+		for (SafeMechanism m : ourMechs.values()) {
+			MechRegistry.registerMech(m.getMechId(), m);
+		}
 	}
 	
 	public static int metaFroMech(Class<?extends SafeMechanism> cls) {
@@ -38,23 +43,19 @@ public class ItemMechs extends Item implements IItemMech {
 		setMaxStackSize(1);
 		setHasSubtypes(true);
 		setCreativeTab(Boxes.BoxTab);
-		
-		//Register our Mechanisms now that we have an Item instance for association
-		for (Class<? extends SafeMechanism> clazz : ourMechs.values()) {
-			//SafeMechanism.registerMechanism(clazz);
-		}
 	}
 	
 	@Override
 	public void addInformation(ItemStack is, EntityPlayer par2EntityPlayer, List lst, boolean par4) {
 		super.addInformation(is, par2EntityPlayer, lst, par4);
 		NBTTagCompound tag = StackUtils.getStackTag(is);
+		
 		switch (is.getItemDamage()) {
 		case 0:
-			MechCombo.getISInfo(is, lst);
+			//MechCombo.getISInfo(is, lst);
 			break;
 		case 1:
-			MechKey.getISInfo(is, lst);
+			//MechKey.getISInfo(is, lst);
 			break;
 		}
 	}
@@ -78,7 +79,7 @@ public class ItemMechs extends Item implements IItemMech {
 	@Override
 	public String getMechID(ItemStack mechStack) {
 		if (ourMechs.containsKey(mechStack.getItemDamage())){
-			return ourMechs.get(mechStack.getItemDamage()).getName();
+			return ourMechs.get(mechStack.getItemDamage()).getMechId();
 		}
 		return null;
 	}

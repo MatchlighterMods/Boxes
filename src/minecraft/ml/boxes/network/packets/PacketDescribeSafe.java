@@ -28,7 +28,7 @@ public class PacketDescribeSafe extends MLPacket {
 		this.linkDir = tes.linkedDir;
 		
 		sUnlocked = tes.unlocked;
-		mechData = tes.mech.writeNBTPacket();
+		mechData = tes.mechTag;
 	}
 	
 	public PacketDescribeSafe(EntityPlayer pl, ByteArrayDataInput data) throws IOException {
@@ -42,7 +42,7 @@ public class PacketDescribeSafe extends MLPacket {
 		tes.linkedDir = linkDir;
 		
 		tes.unlocked = sUnlocked;
-		tes.mech.loadNBT(mechData);
+		tes.mechTag = mechData;
 	}
 	
 	public static class PacketLockSafe extends MLPacket {

@@ -20,43 +20,36 @@ import net.minecraft.tileentity.TileEntity;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 public class MechCombo extends SafeMechanism {
 
 	public static final int COMBO_LENGTH = 3;
+	public static final String comboTagName = "combination";
 	
+	@Override
+	public String getMechId() {
+		return "ml.combo";
+	}
+	
+	@Override
+	public String getUnlocalizedMechName() {
+		return "item.mechanism.combo";
+	}
+	
+	@Override
 	public void addInfoForSafe(NBTTagCompound mechTag, List infos) {
 		StringBuilder bldr = new StringBuilder();
 		bldr.append("Combination:");
-		for (int i=0; i<COMBO_LENGTH; i++) {
-			int c = mechTag.getInteger("digi_"+i);
-			
+		int[] combo = mechTag.getIntArray(comboTagName);
+		for (int i=0; i<combo.length; i++) {
+			int c = combo[i];
 			bldr.append(" ");
 			bldr.append(ChatUtils.getColorStringFromDye(c));
 			bldr.append(StringUtils.getLColorName(c));
 		}
 		infos.add(bldr.toString());
-	}
-
-	@Override
-	public NBTTagCompound saveNBT() {
-		NBTTagCompound tag = new NBTTagCompound();
-		for (int i=0; i<combination.length; i++) {
-			tag.setInteger("digi_"+i, combination[i]);
-		}
-		tag.setIntArray("dispCombo", dispCombination);
-		return tag;
-	}
-	
-	@Override
-	public void loadNBT(NBTTagCompound mechKey) {
-		dispCombination = mechKey.getIntArray("dispCombo");
-		
-		for (int i=0; i<COMBO_LENGTH; i++) {
-			combination[i] = mechKey.getInteger("digi_"+i);
-		}
-		
-		if (combination.length != COMBO_LENGTH) combination = new int[3];
-		if (dispCombination.length != COMBO_LENGTH) dispCombination = new int[3];
 	}
 	
 	@Override
@@ -75,10 +68,11 @@ public class MechCombo extends SafeMechanism {
 
 	@Override
 	public boolean canConnectWith(ISafe self, ISafe remote) {
-		return Arrays.equals(self.getMechTag().getIntArray("combination"), remote.getMechTag().getIntArray("combination"));
+		return Arrays.equals(self.getMechTag().getIntArray(comboTagName), remote.getMechTag().getIntArray(comboTagName));
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void render(ISafe safe, RenderPass pass, boolean stacked) {
 		switch(pass){
 		case SafeDoor:
@@ -87,7 +81,8 @@ public class MechCombo extends SafeMechanism {
 			
 			TileEntityRenderer.instance.renderEngine.bindTexture(SafeTESR.texDial);
 			SafeTESR.INSTANCE.sModel.renderPart("ComboBack");
-			for (int i=0; i<3; i++){
+			int[] dispCombination = safe.getMechTag().getIntArray("dispCombo");
+			for (int i=0; i<dispCombination.length; i++){
 				GL11.glPushMatrix();
 				GL11.glTranslatef(-0.75F*(float)i, 0F, 0F);
 				GL11.glRotatef(-36*(dispCombination[i]), 1F, 0, 0);
