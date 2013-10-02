@@ -126,6 +126,6 @@ public class ItemBox extends ItemBlock {
 	}
 	
 	public static String getColoredBoxName(int i){
-		return StringUtils.getLColorName(i) + " " + LanguageRegistry.instance().getStringLocalization("item.box.name", "en_US");
+		return StringUtils.getLColorName(i) + " " + StatCollector.translateToLocal("item.box.name");
 	}
 }

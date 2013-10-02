@@ -6,6 +6,7 @@ item.cardboard.name=Cardboard Sheet
 block.safe.name=Lockbox
 item.mechanism.combo.name=Combo Lock
 item.mechanism.key.name=Key Lock
+item.mechanism.invalid.name=Invalid
 item.key.name=Key
 
 block.crate.name=Crate

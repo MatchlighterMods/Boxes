@@ -28,9 +28,13 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 		GuiContainerManager.addObjectHandler(handler);
 		GuiContainerManager.addDrawHandler(handler);
 
-		TemplateRecipeHandler recipeHandler = new BoxesRecipeHandler();
-		API.registerRecipeHandler(recipeHandler);
-		API.registerUsageHandler(recipeHandler);
+		API.registerRecipeHandler(new BoxesRecipeHandler());
+		API.registerUsageHandler(new BoxesRecipeHandler());
+		
+		if (Boxes.config.lockbox_allowCrafting) {
+			API.registerRecipeHandler(new ComboRecipeHandler());
+			API.registerUsageHandler(new ComboRecipeHandler());
+		}
 
 		MultiItemRange mainRng = new MultiItemRange();
 		mainRng.add(Registry.ItemResources);

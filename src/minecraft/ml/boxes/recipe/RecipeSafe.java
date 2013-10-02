@@ -20,29 +20,41 @@ import net.minecraftforge.oredict.OreDictionary;
 
 public class RecipeSafe extends RecipeShapedVariable {
 
-	@Override
-	public boolean matches(InventoryCrafting inv, World world) {
-
-		boolean steelOn = Arrays.asList(OreDictionary.getOreNames()).contains("ingotSteel");
-		for (int i : new int[]{0,1,2, 3, 6,7,8}){
-			if (Boxes.config.lockbox_useSteel && steelOn) {
-				if (OreDictionary.getOreID(inv.getStackInSlot(i)) != OreDictionary.getOreID("ingotSteel"))
-					return false;
-			} else {
-				if (!ItemUtils.checkItemEquals(Item.ingotIron, inv.getStackInSlot(i)))
-					return false;
-			}
-		}
-		
-		return true;
+//	@Override
+//	public boolean matches(InventoryCrafting inv, World world) {
+//
+//		boolean steelOn = Arrays.asList(OreDictionary.getOreNames()).contains("ingotSteel");
+//		for (int i : new int[]{0,1,2, 3, 6,7,8}){
+//			if (Boxes.config.lockbox_useSteel && steelOn) {
+//				if (OreDictionary.getOreID(inv.getStackInSlot(i)) != OreDictionary.getOreID("ingotSteel"))
+//					return false;
+//			} else {
+//				if (!ItemUtils.checkItemEquals(Item.ingotIron, inv.getStackInSlot(i)))
+//					return false;
+//			}
+//		}
+//		
+//		return true;
+//	}
+	
+	public RecipeSafe() {
+		super(3,3);
 	}
 
 	@Override
 	public boolean itemMatchesAt(int lx, int ly, ItemStack is) {
+	
+		boolean steelOn = Arrays.asList(OreDictionary.getOreNames()).contains("ingotSteel");
 		if (lx==2 && ly==1) {
-			if (is==null || is.getItem() instanceof IItemMech) return false;
+			if (is==null || !(is.getItem() instanceof IItemMech)) return false;
 			String mId = ((IItemMech)is.getItem()).getMechID(is);
 			return MechRegistry.isIdRegistered(mId);
+		} else if ((ly==0 || ly==2) || lx==0) {
+			if (Boxes.config.lockbox_useSteel && steelOn) {
+				return (OreDictionary.getOreID(is) == OreDictionary.getOreID("ingotSteel"));
+			} else {
+				return ItemUtils.checkItemEquals(Item.ingotIron, is);
+			}
 		}
 		return super.itemMatchesAt(lx, ly, is);
 	}
@@ -55,6 +67,7 @@ public class RecipeSafe extends RecipeShapedVariable {
 		NBTTagCompound mechTag = StackUtils.getStackTag(mechStack);
 		NBTTagCompound safeTag = StackUtils.getStackTag(safeStack);
 		
+		safeTag.setString("mech_id", ((IItemMech)mechStack.getItem()).getMechID(mechStack));
 		safeTag.setCompoundTag("mech_data", mechTag);
 		
 		return safeStack;

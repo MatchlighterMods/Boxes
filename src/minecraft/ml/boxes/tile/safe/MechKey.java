@@ -26,9 +26,13 @@ public class MechKey extends SafeMechanism {
 		return "item.mechanism.key";
 	}
 	
+	public static void addInfo(NBTTagCompound mechTag, List lst) {
+		lst.add("Key Id: " + mechTag.getInteger("keyId"));
+	}
+	
 	@Override
 	public void addInfoForSafe(NBTTagCompound mechTag, List lst) {
-		lst.add("KeyId: " + mechTag.getInteger("keyId"));
+		addInfo(mechTag, lst);
 	}
 	
 	@Override

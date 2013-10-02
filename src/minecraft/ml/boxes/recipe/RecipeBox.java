@@ -42,14 +42,9 @@ public class RecipeBox implements IRecipe {
 		ItemStack is = new ItemStack(Registry.BlockBox, 1);
 		ItemBoxContainer iib = new ItemBoxContainer(is);
 		
-		ItemStack dyeStack = var1.getStackInRowAndColumn(1, 1);
-		for (int i=0; i<16; i++){
-			if (OreDictionary.getOreID(new ItemStack(Item.dyePowder, 1, i)) == OreDictionary.getOreID(dyeStack)){
-				iib.getBox().boxName = ItemBox.getColoredBoxName(i);
-				iib.getBox().boxColor = ItemDye.dyeColors[i];
-				break;
-			}
-		}
+		int dyeId = ItemUtils.getVanillaColorId(var1.getStackInRowAndColumn(1, 1));
+		iib.getBox().boxName = ItemBox.getColoredBoxName(dyeId);
+		iib.getBox().boxColor = ItemDye.dyeColors[dyeId];
 
 		iib.saveData();
 

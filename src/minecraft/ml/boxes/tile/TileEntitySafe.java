@@ -27,6 +27,7 @@ public class TileEntitySafe extends TileEntityConnectable implements ISafe, IEve
 	
 	public SafeInventory inventory;
 	
+	public String mech_id;
 	public NBTTagCompound mechTag;
 	public SafeMechanism mech;
 
@@ -45,7 +46,8 @@ public class TileEntitySafe extends TileEntityConnectable implements ISafe, IEve
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
 
-		mech = MechRegistry.getMechForId(tag.getString("mech_id"));
+		mech_id = tag.getString("mech_id");
+		mech = MechRegistry.getMechForId(mech_id);
 		mechTag = tag.getCompoundTag("mech_data");
 		
 		unlocked = tag.getBoolean("unlocked");
@@ -66,10 +68,11 @@ public class TileEntitySafe extends TileEntityConnectable implements ISafe, IEve
 	public void writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
 
+		tag.setString("mech_id", mech_id);
 		if (mechTag != null) {
-			tag.setCompoundTag("mech", mechTag);
+			tag.setCompoundTag("mech_data", mechTag);
 		} else {
-			tag.removeTag("mech");
+			tag.removeTag("mech_data");
 		}
 
 		tag.setBoolean("unlocked", unlocked);
@@ -244,7 +247,8 @@ public class TileEntitySafe extends TileEntityConnectable implements ISafe, IEve
 		if (!worldObj.isRemote) {
 			NBTTagCompound tag = StackUtils.getStackTag(is);
 			
-			mech = MechRegistry.getMechForId(tag.getString("mech_id"));
+			mech_id = tag.getString("mech_id");
+			mech = MechRegistry.getMechForId(mech_id);
 			mechTag = tag.getCompoundTag("mech_data");
 
 			tryConnection();

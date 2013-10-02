@@ -12,6 +12,7 @@ import ml.boxes.tile.TileEntitySafe;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -20,6 +21,10 @@ public abstract class SafeMechanism {
 	public abstract String getMechId();
 	
 	public abstract String getUnlocalizedMechName();
+	
+	public String getLocalizedName() {
+		return StatCollector.translateToLocal(getUnlocalizedMechName()+".name");
+	}
 
 	public void addInfoForSafe(NBTTagCompound mechTag, List lst) {}
 	

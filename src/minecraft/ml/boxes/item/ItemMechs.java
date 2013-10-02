@@ -34,8 +34,12 @@ public class ItemMechs extends Item implements IItemMech {
 		}
 	}
 	
-	public static int metaFroMech(Class<?extends SafeMechanism> cls) {
-		return ourMechs.inverse().get(cls);
+	public static int metaForMech(Class<?extends SafeMechanism> cls) {
+		for (SafeMechanism sm : ourMechs.values()) {
+			if (cls.isInstance(sm))
+				return ourMechs.inverse().get(sm);
+		}
+		return -1;
 	}
 	
 	public ItemMechs(int par1) {
@@ -52,10 +56,10 @@ public class ItemMechs extends Item implements IItemMech {
 		
 		switch (is.getItemDamage()) {
 		case 0:
-			//MechCombo.getISInfo(is, lst);
+			MechCombo.addInfo(tag, lst);
 			break;
 		case 1:
-			//MechKey.getISInfo(is, lst);
+			MechKey.addInfo(tag, lst);
 			break;
 		}
 	}

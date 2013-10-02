@@ -24,7 +24,12 @@ public class MechFallback extends SafeMechanism {
 	
 	@Override
 	public String getUnlocalizedMechName() {
-		return ChatUtils.color_darkRed + ChatUtils.italic + "Invalid";
+		return "item.mechanism.invalid";
+	}
+	
+	@Override
+	public String getLocalizedName() {
+		return ChatUtils.color_darkRed + ChatUtils.italic + super.getLocalizedName();
 	}
 
 	@Override

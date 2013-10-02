@@ -6,6 +6,7 @@ import java.util.List;
 import cpw.mods.fml.common.FMLLog;
 
 import ml.boxes.api.safe.SafeMechanism;
+import ml.core.ChatUtils;
 import ml.core.item.StackUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -30,9 +31,9 @@ public class MechRegistry {
 	}
 
 	public static void addInfoForSafe(NBTTagCompound mechTag, ItemStack safeStack, List lst) {
-		String mechId = StackUtils.getStackTag(safeStack).getString("mech_type");
+		String mechId = StackUtils.getStackTag(safeStack).getString("mech_id");
 		SafeMechanism mech = getMechForId(mechId); 
-		lst.add("Mechanism: " + StatCollector.translateToLocal(mech.getUnlocalizedMechName()));
+		lst.add("Mechanism: " + ChatUtils.italic + ChatUtils.color_white + mech.getLocalizedName());
 		mech.addInfoForSafe(mechTag, lst);
 	}
 

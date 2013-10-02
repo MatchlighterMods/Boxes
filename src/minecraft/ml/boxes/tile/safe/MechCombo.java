@@ -38,18 +38,20 @@ public class MechCombo extends SafeMechanism {
 		return "item.mechanism.combo";
 	}
 	
-	@Override
-	public void addInfoForSafe(NBTTagCompound mechTag, List infos) {
-		StringBuilder bldr = new StringBuilder();
-		bldr.append("Combination:");
+	public static void addInfo(NBTTagCompound mechTag, List infos) {
+		infos.add("Combination:");
 		int[] combo = mechTag.getIntArray(comboTagName);
+		String inf = "";
 		for (int i=0; i<combo.length; i++) {
 			int c = combo[i];
-			bldr.append(" ");
-			bldr.append(ChatUtils.getColorStringFromDye(c));
-			bldr.append(StringUtils.getLColorName(c));
+			inf += " "+ChatUtils.getColorStringFromDye(c)+StringUtils.getLColorName(c);
 		}
-		infos.add(bldr.toString());
+		infos.add(inf);
+	}
+	
+	@Override
+	public void addInfoForSafe(NBTTagCompound mechTag, List lst) {
+		addInfo(mechTag, lst);
 	}
 	
 	@Override

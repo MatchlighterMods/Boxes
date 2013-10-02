@@ -4,7 +4,9 @@ import ml.boxes.block.MetaType;
 import ml.boxes.item.ItemType;
 import ml.boxes.network.PacketHandler;
 import ml.boxes.recipe.RecipeBox;
+import ml.boxes.recipe.RecipeComboMech;
 import ml.boxes.recipe.RecipeKey;
+import ml.boxes.recipe.RecipeSafe;
 import ml.boxes.tile.TileEntityBox;
 import ml.boxes.tile.TileEntityCrate;
 import ml.boxes.tile.TileEntityDisplayCase;
@@ -66,11 +68,17 @@ public class Boxes {
 		GameRegistry.addRecipe(new ItemStack(Registry.ItemResources, 1, 0), "ppp", "sws", "ppp", 'p', Item.paper, 's', Item.silk, 'w', Item.bucketWater);
 		GameRegistry.addRecipe(ItemType.ISFromType(ItemType.Label, 3), "ppp", " s ", 'p', Item.paper, 's', Item.slimeBall);
 		
-		if (config.crate_allowCrafting)
-			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Registry.BlockMeta, 1, MetaType.Crate.ordinal()), "wsw", "scs", "wsw", 'w', "logWood", 's', "plankWood", 'c', Block.chest));
-		
 		GameRegistry.addRecipe(new RecipeBox());
-		GameRegistry.addRecipe(new RecipeKey(" m", "nm", "nm", 'n', Item.goldNugget, 'm', Item.ingotGold));
+		
+		if (config.crate_allowCrafting) {
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Registry.BlockMeta, 1, MetaType.Crate.ordinal()), "wsw", "scs", "wsw", 'w', "logWood", 's', "plankWood", 'c', Block.chest));
+		}
+		
+		if (config.lockbox_allowCrafting) {
+			GameRegistry.addRecipe(new RecipeSafe());
+			GameRegistry.addRecipe(new RecipeKey(" m", "nm", "nm", 'n', Item.goldNugget, 'm', Item.ingotGold));
+			GameRegistry.addRecipe(new RecipeComboMech());
+		}
 		
 		initDungeonLoot();
 		

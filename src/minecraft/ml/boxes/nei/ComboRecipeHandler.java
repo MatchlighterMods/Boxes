@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ml.boxes.Registry;
+import ml.boxes.nei.BoxesRecipeHandler.CachedBoxesRecipe;
 import ml.boxes.recipe.RecipeBox;
+import ml.boxes.recipe.RecipeComboMech;
+import ml.boxes.recipe.RecipeSafe;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -15,34 +18,39 @@ import codechicken.nei.InventoryCraftingDummy;
 import codechicken.nei.NEIClientUtils;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.ShapedRecipeHandler;
+import codechicken.nei.recipe.ShapedRecipeHandler.CachedShapedRecipe;
+import codechicken.nei.recipe.TemplateRecipeHandler.CachedRecipe;
 
-public class BoxesRecipeHandler extends ShapedRecipeHandler {
+public class ComboRecipeHandler extends ShapedRecipeHandler {
 
-	public class CachedBoxesRecipe extends CachedShapedRecipe{
-		public CachedBoxesRecipe(Object [] rec) {
+	public class CachedDialRecipe extends CachedShapedRecipe{
+		public CachedDialRecipe(Object [] rec) {
 			super(3, 3, rec, recipe.getRecipeOutput());
 			cycle();
 		}
 
 		private void cycle(){
 			List<PositionedStack> ingreds = getIngredients();
-			for(int i = 0; i < 9; i++)
-				invCrafting.setInventorySlotContents(i, i < ingreds.size() ? ingreds.get(i).item : null);
+			for (int x=0; x<3; x++) {
+				for (int y=0; y<3; y++) {
+					invCrafting.setInventorySlotContents(x+y*3, x*3+y < ingreds.size() ? ingreds.get(x*3+y).item : null);
+				}
+			}
 			this.result = new PositionedStack(recipe.getCraftingResult(invCrafting), 119, 24);
 		}		
 	}
 
 	private InventoryCrafting invCrafting = new InventoryCraftingDummy();
-	private RecipeBox recipe = new RecipeBox();
-	private final CachedBoxesRecipe cached;
+	private RecipeComboMech recipe = new RecipeComboMech();
+	private final CachedDialRecipe cached;
 
-	public BoxesRecipeHandler() {
-		ItemStack cb = new ItemStack(Registry.ItemResources);
+	public ComboRecipeHandler() {
+		ItemStack irn = new ItemStack(Item.ingotIron);
 		List<ItemStack> dyes = new ArrayList<ItemStack>();
 		for (int i=0; i<16; i++){
 			dyes.addAll(OreDictionary.getOres(OreDictionary.getOreID(new ItemStack(Item.dyePowder, 1, i))));
 		}
-		cached = new CachedBoxesRecipe(new Object[]{cb,cb,cb, cb,dyes,cb, cb,cb,cb});
+		cached = new CachedDialRecipe(new Object[]{irn,irn,irn, dyes,dyes,dyes, irn,irn,irn});
 	}
 
 	@Override
@@ -77,7 +85,7 @@ public class BoxesRecipeHandler extends ShapedRecipeHandler {
 			cycleticks++;
 			if(cycleticks%20 == 0)
 				for(CachedRecipe crecipe : arecipes)
-					((CachedBoxesRecipe)crecipe).cycle();
+					((CachedDialRecipe)crecipe).cycle();
 		}
 	}
 }
