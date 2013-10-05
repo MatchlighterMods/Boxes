@@ -1,14 +1,12 @@
 package ml.boxes.recipe;
 
 import ml.boxes.Registry;
-import ml.boxes.item.ItemBox;
 import ml.boxes.item.ItemMechs;
 import ml.boxes.tile.safe.MechCombo;
 import ml.core.item.ItemUtils;
 import ml.core.item.StackUtils;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;

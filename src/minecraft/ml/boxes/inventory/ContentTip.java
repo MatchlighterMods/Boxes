@@ -9,7 +9,7 @@ import ml.boxes.data.ItemBoxContainer;
 import ml.boxes.network.packets.PacketTipClick;
 import ml.core.vec.GeoMath;
 import ml.core.vec.Rectangle;
-import ml.core.vec.Vector2;
+import ml.core.vec.Vector2i;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -34,7 +34,7 @@ public abstract class ContentTip {
 	protected Rectangle gcBounds;
 	protected int hvrSltIndex;
 	
-	protected Vector2<Integer> targetSize = new Vector2(0, 0);
+	protected Vector2i targetSize = new Vector2i(0, 0);
 	
 	protected boolean renderContents;
 	public boolean interacting = false;
@@ -54,26 +54,26 @@ public abstract class ContentTip {
 	public void tick(Minecraft mc){
 		
 		renderContents = true;
-		if (targetSize.X != tipBounds.width || targetSize.Y != tipBounds.height){
+		if (targetSize.x != tipBounds.width || targetSize.y != tipBounds.height){
 			renderContents = false;
-			if (targetSize.X > tipBounds.width){
+			if (targetSize.x > tipBounds.width){
 				tipBounds.width += 16;
-				if (targetSize.X < tipBounds.width)
-					tipBounds.width = targetSize.X;
-			} else if (targetSize.X < tipBounds.width) {
+				if (targetSize.x < tipBounds.width)
+					tipBounds.width = targetSize.x;
+			} else if (targetSize.x < tipBounds.width) {
 				tipBounds.width -= 16;
-				if (targetSize.X > tipBounds.width)
-					tipBounds.width = targetSize.X;
+				if (targetSize.x > tipBounds.width)
+					tipBounds.width = targetSize.x;
 			}
 			
-			if (targetSize.Y > tipBounds.height){
+			if (targetSize.y > tipBounds.height){
 				tipBounds.height += 16;
-				if (targetSize.Y < tipBounds.height)
-					tipBounds.height = targetSize.Y;
-			} else if (targetSize.Y < tipBounds.height) {
+				if (targetSize.y < tipBounds.height)
+					tipBounds.height = targetSize.y;
+			} else if (targetSize.y < tipBounds.height) {
 				tipBounds.height -= 16;
-				if (targetSize.Y > tipBounds.height)
-					tipBounds.height = targetSize.Y;
+				if (targetSize.y > tipBounds.height)
+					tipBounds.height = targetSize.y;
 			}
 			
 			tipBounds.xCoord = gcBounds.xCoord + boxSlot.xDisplayPosition + (16-tipBounds.width)/2;

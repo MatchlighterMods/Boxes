@@ -9,7 +9,7 @@ import ml.core.StringUtils;
 import ml.core.gui.GuiRenderUtils;
 import ml.core.vec.GeoMath;
 import ml.core.vec.Rectangle;
-import ml.core.vec.Vector2;
+import ml.core.vec.Vector2i;
 import net.minecraft.client.Minecraft;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -20,7 +20,7 @@ import org.lwjgl.opengl.GL11;
 public class GridContentTip extends ContentTip {
 
 	protected static ResourceLocation tipBgRes = new ResourceLocation("Boxes:textures/gui/contentTipGui2.png");
-	protected static Vector2<Integer> gridDimensions;
+	protected static Vector2i gridDimensions;
 	private static List<ItemStack> contentStacks = new ArrayList<ItemStack>();
 	
 	public GridContentTip(Slot slt, Rectangle gcRect) {
@@ -31,8 +31,8 @@ public class GridContentTip extends ContentTip {
 	@Override
 	protected void renderPreview(Minecraft mc, int mx, int my) {
 		for (int i=0; i<contentStacks.size(); i++){
-			int col = i%gridDimensions.X;
-			int row = i/gridDimensions.X;
+			int col = i%gridDimensions.x;
+			int row = i/gridDimensions.x;
 
 			int slotX = 8+col*18;
 			int slotY = 10+row*18;
@@ -45,8 +45,8 @@ public class GridContentTip extends ContentTip {
 	@Override
 	protected void renderIteractable(Minecraft mc, int mx, int my) {
 		for (int i=0; i<contentStacks.size(); i++){
-			int col = i%gridDimensions.X;
-			int row = i/gridDimensions.X;
+			int col = i%gridDimensions.x;
+			int row = i/gridDimensions.x;
 
 			int slotX = 8+col*18;
 			int slotY = 10+row*18;
@@ -99,8 +99,8 @@ public class GridContentTip extends ContentTip {
 			}
 			gridDimensions = GeoMath.determineSquarestGrid(contentStacks.size());
 		}
-		targetSize.X = gridDimensions.X*18 +16;
-		targetSize.Y = gridDimensions.Y*18 +16;
+		targetSize.x = gridDimensions.x*18 +16;
+		targetSize.y = gridDimensions.y*18 +16;
 		
 		super.tick(mc);
 	}
@@ -109,8 +109,8 @@ public class GridContentTip extends ContentTip {
 	public int getSlotAtPosition(int pX, int pY) {
 		if (interacting && renderContents){
 			for (int i=0; i< getIIB().getBox().getSizeInventory(); i++){
-				int col = i%gridDimensions.X;
-				int row = i/gridDimensions.X;
+				int col = i%gridDimensions.x;
+				int row = i/gridDimensions.x;
 
 				int slotX = 8+col*18 + tipBounds.xCoord;
 				int slotY = 10+row*18 + tipBounds.yCoord;

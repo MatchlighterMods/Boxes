@@ -15,7 +15,6 @@ import codechicken.nei.forge.GuiContainerManager;
 import codechicken.nei.forge.IContainerDrawHandler;
 import codechicken.nei.forge.IContainerInputHandler;
 import codechicken.nei.forge.IContainerObjectHandler;
-import codechicken.nei.recipe.TemplateRecipeHandler;
 
 public class NEI_Boxes_Config implements IConfigureNEI {
 

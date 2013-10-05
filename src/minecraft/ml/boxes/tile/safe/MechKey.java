@@ -2,17 +2,14 @@ package ml.boxes.tile.safe;
 
 import java.util.List;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
-import ml.boxes.Registry;
 import ml.boxes.api.safe.ISafe;
 import ml.boxes.api.safe.SafeMechanism;
 import ml.boxes.item.ItemKey;
-import ml.boxes.tile.TileEntitySafe;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class MechKey extends SafeMechanism {
 	
@@ -50,7 +47,7 @@ public class MechKey extends SafeMechanism {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void render(ISafe safe, RenderPass pass, boolean stacked) {
+	public void render(NBTTagCompound mech_data, RenderPass pass, boolean stacked) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -4,17 +4,13 @@ import java.util.Arrays;
 import java.util.List;
 
 import ml.boxes.Boxes;
-import ml.boxes.Registry;
 import ml.boxes.api.safe.ISafe;
 import ml.boxes.api.safe.SafeMechanism;
 import ml.boxes.client.render.tile.SafeTESR;
-import ml.boxes.tile.TileEntitySafe;
 import ml.core.ChatUtils;
 import ml.core.StringUtils;
-import ml.core.item.StackUtils;
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
@@ -64,8 +60,9 @@ public class MechCombo extends SafeMechanism {
 	@Override
 	public void beginUnlock(ISafe safe, EntityPlayer epl) {
 		TileEntity sfte = (TileEntity)safe;
-		if (sfte.worldObj.isRemote)
-			epl.openGui(Boxes.instance, 3, sfte.worldObj, sfte.xCoord, sfte.yCoord, sfte.zCoord);
+		if (!sfte.worldObj.isRemote) {
+			epl.openGui(Boxes.instance, 3<<4, sfte.worldObj, sfte.xCoord, sfte.yCoord, sfte.zCoord);
+		}
 	}
 
 	@Override
@@ -75,15 +72,15 @@ public class MechCombo extends SafeMechanism {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void render(ISafe safe, RenderPass pass, boolean stacked) {
+	public void render(NBTTagCompound mechTag, RenderPass pass, boolean stacked) {
 		switch(pass){
 		case SafeDoor:
 			GL11.glTranslatef(5F, stacked ? 16F:8F, 1F);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			
-			TileEntityRenderer.instance.renderEngine.bindTexture(SafeTESR.texDial);
+			Minecraft.getMinecraft().renderEngine.bindTexture(SafeTESR.texDial);
 			SafeTESR.INSTANCE.sModel.renderPart("ComboBack");
-			int[] dispCombination = safe.getMechTag().getIntArray("dispCombo");
+			int[] dispCombination = mechTag.getIntArray("dispCombo");
 			for (int i=0; i<dispCombination.length; i++){
 				GL11.glPushMatrix();
 				GL11.glTranslatef(-0.75F*(float)i, 0F, 0F);

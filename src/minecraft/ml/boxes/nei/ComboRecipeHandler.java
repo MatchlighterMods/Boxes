@@ -3,11 +3,7 @@ package ml.boxes.nei;
 import java.util.ArrayList;
 import java.util.List;
 
-import ml.boxes.Registry;
-import ml.boxes.nei.BoxesRecipeHandler.CachedBoxesRecipe;
-import ml.boxes.recipe.RecipeBox;
 import ml.boxes.recipe.RecipeComboMech;
-import ml.boxes.recipe.RecipeSafe;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -18,8 +14,6 @@ import codechicken.nei.InventoryCraftingDummy;
 import codechicken.nei.NEIClientUtils;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.ShapedRecipeHandler;
-import codechicken.nei.recipe.ShapedRecipeHandler.CachedShapedRecipe;
-import codechicken.nei.recipe.TemplateRecipeHandler.CachedRecipe;
 
 public class ComboRecipeHandler extends ShapedRecipeHandler {
 

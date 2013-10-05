@@ -11,8 +11,9 @@ import ml.boxes.inventory.ContentTip;
 import ml.boxes.item.ItemBox;
 import ml.core.vec.GeoMath;
 import ml.core.vec.Rectangle;
-import ml.core.vec.Vector2;
+import ml.core.vec.Vector2i;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
@@ -46,10 +47,10 @@ public class ContentTipHandler implements ITickHandler {
 		if (type.contains(TickType.RENDER) && !Boxes.neiInstalled){ //NEI Provides a better place for doing this. Use it if we can
 			Minecraft mc = FMLClientHandler.instance().getClient();
 			if (mc.currentScreen instanceof GuiContainer){
-				Vector2<Integer> m = GeoMath.getScaledMouse();
+				Vector2i m = GeoMath.getScaledMouse();
 				GL11.glPushMatrix();
 				GL11.glTranslatef(0F, 0F, 200F);
-				renderContentTip(mc, m.X, m.Y, (Float)tickData[0]);
+				renderContentTip(mc, m.x, m.y, (Float)tickData[0]);
 				GL11.glPopMatrix();
 			}
 		}else if (type.contains(TickType.CLIENT)){
@@ -66,7 +67,7 @@ public class ContentTipHandler implements ITickHandler {
 			int guiXSize = ObfuscationReflectionHelper.getPrivateValue(GuiContainer.class, (GuiContainer)mc.currentScreen, "field_" + "74194_b", "xSize", "b");
 			int guiYSize = ObfuscationReflectionHelper.getPrivateValue(GuiContainer.class, (GuiContainer)mc.currentScreen, "field_" + "74195_c", "ySize", "c");
 
-			Vector2<Integer> m = GeoMath.getScaledMouse();
+			Vector2i m = GeoMath.getScaledMouse();
 
 			gcBounds.width = asGuiContainer.width;
 			gcBounds.height = asGuiContainer.height;
@@ -74,16 +75,16 @@ public class ContentTipHandler implements ITickHandler {
 			gcBounds.xCoord = (asGuiContainer.width - guiXSize) / 2;
 			gcBounds.yCoord = (asGuiContainer.height - guiYSize) / 2;
 			
-			if (openTip == null || !openTip.revalidate(m.X, m.Y)){
+			if (openTip == null || !openTip.revalidate(m.x, m.y)){
 				openTip = null;
 				
 				boolean thoverSlot = false;
 				for (Object objSlt : asGuiContainer.inventorySlots.inventorySlots){
 					Slot slt = (Slot)objSlt;
-					if (GeoMath.pointInRect(m.X, m.Y, gcBounds.xCoord + slt.xDisplayPosition, gcBounds.yCoord + slt.yDisplayPosition, 16, 16)){
+					if (GeoMath.pointInRect(m.x, m.y, gcBounds.xCoord + slt.xDisplayPosition, gcBounds.yCoord + slt.yDisplayPosition, 16, 16)){
 						thoverSlot = true;
 						if (hoverSlot != slt)
-							tickerTime = mc.getSystemTime();
+							tickerTime = Minecraft.getSystemTime();
 						hoverSlot = slt;
 					}
 				}
@@ -94,8 +95,8 @@ public class ContentTipHandler implements ITickHandler {
 			if (hoverSlot != null &&
 					hoverSlot.getHasStack() &&
 					(hoverSlot.getStack().getItem() instanceof ItemBox) &&
-					(!Boxes.config.shiftForTip || asGuiContainer.isShiftKeyDown()) &&
-					(mc.getSystemTime() - tickerTime > Boxes.config.tipReactionTime || asGuiContainer.isShiftKeyDown()) &&
+					(!Boxes.config.shiftForTip || GuiScreen.isShiftKeyDown()) &&
+					(Minecraft.getSystemTime() - tickerTime > Boxes.config.tipReactionTime || GuiScreen.isShiftKeyDown()) &&
 					!(asGuiContainer instanceof GuiBox && ((ContainerBox)asGuiContainer.inventorySlots).box instanceof ItemBoxContainer && mc.thePlayer.inventory.currentItem == hoverSlot.getSlotIndex()) && //((ItemIBox)((ContainerBox)asGuiContainer.inventorySlots).box).stack == hoverSlot.getStack()
 					openTip == null
 					)
@@ -123,7 +124,7 @@ public class ContentTipHandler implements ITickHandler {
 	}
 	
 	public static boolean canBeInteractive(Minecraft mc){
-		return (Boxes.neiInstalled && mc.currentScreen.isShiftKeyDown() && hoverSlot.inventory instanceof InventoryPlayer);
+		return (Boxes.neiInstalled && GuiScreen.isShiftKeyDown() && hoverSlot.inventory instanceof InventoryPlayer);
 	}
 
 	private static ItemBoxContainer getItemIBox(){

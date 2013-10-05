@@ -3,14 +3,12 @@ package ml.boxes.tile.safe;
 import java.util.HashMap;
 import java.util.List;
 
-import cpw.mods.fml.common.FMLLog;
-
 import ml.boxes.api.safe.SafeMechanism;
-import ml.core.ChatUtils;
 import ml.core.item.StackUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.EnumChatFormatting;
+import cpw.mods.fml.common.FMLLog;
 
 public class MechRegistry {
 	
@@ -33,7 +31,7 @@ public class MechRegistry {
 	public static void addInfoForSafe(NBTTagCompound mechTag, ItemStack safeStack, List lst) {
 		String mechId = StackUtils.getStackTag(safeStack).getString("mech_id");
 		SafeMechanism mech = getMechForId(mechId); 
-		lst.add("Mechanism: " + ChatUtils.italic + ChatUtils.color_white + mech.getLocalizedName());
+		lst.add("Mechanism: " + EnumChatFormatting.ITALIC.toString() + EnumChatFormatting.WHITE + mech.getLocalizedName());
 		mech.addInfoForSafe(mechTag, lst);
 	}
 

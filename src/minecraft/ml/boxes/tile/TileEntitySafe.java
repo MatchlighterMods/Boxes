@@ -5,7 +5,6 @@ import ml.boxes.Registry;
 import ml.boxes.api.safe.ISafe;
 import ml.boxes.api.safe.SafeMechanism;
 import ml.boxes.network.packets.PacketDescribeSafe;
-import ml.boxes.tile.safe.MechFallback;
 import ml.boxes.tile.safe.MechRegistry;
 import ml.core.item.ItemUtils;
 import ml.core.item.StackUtils;

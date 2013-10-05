@@ -2,7 +2,6 @@ package ml.boxes.client.gui;
 
 import ml.boxes.client.render.tile.DisplayCaseTESR;
 import ml.boxes.inventory.ContainerDisplayCase;
-import ml.core.gui.GuiContainerControl;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
@@ -20,12 +19,12 @@ public class GuiDisplayCase extends GuiContainerControl {
 	}
 
 	@Override
-	protected void initControls() {
+	public void initControls(ControlsManager mgr) {
 		
 	}
-
+	
 	@Override
-	protected void drawBackgroundLayer(float f, int i, int j) {
+	protected void drawGuiContainerBackgroundLayer(float f, int mX, int mY) {
 		GL11.glColor3f(1F, 1F, 1F);
 		
 		this.mc.getTextureManager().bindTexture(bgRes);
@@ -45,6 +44,8 @@ public class GuiDisplayCase extends GuiContainerControl {
 		DisplayCaseTESR.INSTANCE.caseModel.renderPart("Base");
 		
 		GL11.glPopMatrix();
+		
+		super.drawGuiContainerBackgroundLayer(f, mX, mY);
 	}
 
 }

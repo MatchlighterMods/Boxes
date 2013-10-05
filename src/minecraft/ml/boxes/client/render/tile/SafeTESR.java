@@ -1,9 +1,14 @@
 package ml.boxes.client.render.tile;
 
+import ml.boxes.api.safe.SafeMechanism;
 import ml.boxes.api.safe.SafeMechanism.RenderPass;
 import ml.boxes.tile.TileEntitySafe;
+import ml.boxes.tile.safe.MechRegistry;
 import ml.core.block.BlockUtils;
+import ml.core.item.StackUtils;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.AdvancedModelLoader;
@@ -45,8 +50,9 @@ public class SafeTESR extends TileEntitySpecialRenderer {
 			sModel.renderPart(renderTall ? "Safe_Tall":"Safe_Small");
 			if (renderTall) sModel.renderPart("Safe_Shelf");
 			
-			tes.mech.render(tes, RenderPass.SafeBody, renderTall);
+			tes.mech.render(tes.getMechTag(), RenderPass.SafeBody, renderTall);
 			
+			this.bindTexture(texMain);
 			float doorAng1 = tes.prevDoorAng + (tes.doorAng-tes.prevDoorAng)*tickTime;
 			doorAng1 = (float)Math.sin(doorAng1*3.14/2);
 			int doorAng = (int)(120 * doorAng1);
@@ -57,29 +63,25 @@ public class SafeTESR extends TileEntitySpecialRenderer {
 
 			sModel.renderPart(renderTall ? "Door_Tall":"Door_Small");
 
-			tes.mech.render(tes, RenderPass.SafeDoor, renderTall);
+			tes.mech.render(tes.getMechTag(), RenderPass.SafeDoor, renderTall);
 
 			GL11.glPopMatrix();
 		}
 	}
 
-	public void renderAsItem(){
+	public void renderAsItem(ItemStack is){
+		
+		NBTTagCompound stackTag = StackUtils.getStackTag(is);
+		SafeMechanism sm = MechRegistry.getMechForId(stackTag.getString("mech_id"));
+		
 		GL11.glScalef(0.0625F, 0.0625F, 0.0625F);
 		this.bindTexture(texMain);
 		sModel.renderPart("Safe_Base");
 		sModel.renderPart("Safe_Small");
 		sModel.renderPart("Door_Small");
-
-		GL11.glTranslatef(15F, 8F, 15F);
-		this.bindTexture(texDial);
-		sModel.renderPart("ComboBack");
-		for (int i=0; i<3; i++){
-			GL11.glPushMatrix();
-			GL11.glTranslatef(0.75F*(float)i, 0F, 0F);
-			sModel.renderPart("Wheel_Sides");
-			sModel.renderPart("Wheel_Num");
-			GL11.glPopMatrix();
-		}
+		
+		sm.render(stackTag.getCompoundTag("mech_data"), RenderPass.SafeBody, false);
+		sm.render(stackTag.getCompoundTag("mech_data"), RenderPass.SafeDoor, false);
 	}
 
 }

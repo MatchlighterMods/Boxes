@@ -5,7 +5,6 @@ import ml.boxes.data.ItemBoxContainer;
 import ml.boxes.item.ItemBox;
 import ml.core.item.ItemUtils;
 import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;

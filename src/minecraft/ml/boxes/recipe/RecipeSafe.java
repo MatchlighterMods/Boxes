@@ -13,9 +13,7 @@ import ml.core.item.recipe.RecipeShapedVariable;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class RecipeSafe extends RecipeShapedVariable {

@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import ml.boxes.network.PacketHandler;
 import ml.boxes.tile.TileEntitySafe;
+import ml.boxes.tile.safe.MechRegistry;
 import ml.core.network.MLPacket;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -18,6 +19,7 @@ public class PacketDescribeSafe extends MLPacket {
 	public @data ForgeDirection linkDir;
 	
 	public @data boolean sUnlocked;
+	public @data String mech_id;
 	public @data NBTTagCompound mechData;
 	
 	public PacketDescribeSafe(TileEntitySafe tes) {
@@ -28,6 +30,7 @@ public class PacketDescribeSafe extends MLPacket {
 		this.linkDir = tes.linkedDir;
 		
 		sUnlocked = tes.unlocked;
+		mech_id = tes.mech_id;
 		mechData = tes.mechTag;
 	}
 	
@@ -42,6 +45,8 @@ public class PacketDescribeSafe extends MLPacket {
 		tes.linkedDir = linkDir;
 		
 		tes.unlocked = sUnlocked;
+		tes.mech_id = mech_id;
+		tes.mech = MechRegistry.getMechForId(mech_id);
 		tes.mechTag = mechData;
 	}
 	

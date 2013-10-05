@@ -3,7 +3,7 @@ package ml.boxes.tile;
 import ml.boxes.Boxes;
 import ml.boxes.network.packets.PacketDescribeDisplay;
 import ml.core.block.BlockUtils;
-import ml.core.vec.Vector3;
+import ml.core.vec.Vector3d;
 import ml.core.vec.transform.Rotation;
 import ml.core.vec.transform.Transformation;
 import net.minecraft.entity.player.EntityPlayer;
@@ -85,12 +85,12 @@ public class TileEntityDisplayCase extends TileEntityEvented implements IInvento
 		Transformation t;
 		
 		if (facing != ForgeDirection.UP) {
-			t = new Rotation(new Vector3(1, 0, 0), -90);
-			t = t.append(new Rotation(new Vector3(0,1,0), BlockUtils.getRotationFromDirection(facing)));
+			t = new Rotation(new Vector3d(1, 0, 0), -90);
+			t = t.append(new Rotation(new Vector3d(0,1,0), BlockUtils.getRotationFromDirection(facing)));
 		} else {
-			t = new Rotation(new Vector3(0,1,0), BlockUtils.getRotationFromDirection(rotation)-90);
+			t = new Rotation(new Vector3d(0,1,0), BlockUtils.getRotationFromDirection(rotation)-90);
 		}
-		t = t.localize(new Vector3(0.5D, 0.5D, 0.5D));
+		t = t.localize(new Vector3d(0.5D, 0.5D, 0.5D));
 		
 		return t;
 	}

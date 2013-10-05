@@ -1,13 +1,13 @@
 package ml.boxes.tile.safe;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import ml.boxes.api.safe.ISafe;
 import ml.boxes.api.safe.SafeMechanism;
-import ml.core.ChatUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatMessageComponent;
+import net.minecraft.util.EnumChatFormatting;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * A fall-back mechanism that will be loaded if a safe fails to save or load properly.
@@ -29,7 +29,7 @@ public class MechFallback extends SafeMechanism {
 	
 	@Override
 	public String getLocalizedName() {
-		return ChatUtils.color_darkRed + ChatUtils.italic + super.getLocalizedName();
+		return EnumChatFormatting.DARK_RED.toString() + EnumChatFormatting.ITALIC.toString() + super.getLocalizedName();
 	}
 
 	@Override
@@ -45,7 +45,7 @@ public class MechFallback extends SafeMechanism {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void render(ISafe safe, RenderPass pass, boolean stacked) {
+	public void render(NBTTagCompound mech_data, RenderPass pass, boolean stacked) {
 		
 	}
 

@@ -23,13 +23,13 @@ public class BoxesBlockRenderer implements ISimpleBlockRenderingHandler {
 			case Crate:
 				CrateTESR.INSTANCE.render();
 				break;
-			case Safe:
-				GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-				GL11.glRotatef(-90F, 0F, 1F, 0F);
-				GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-				
-				SafeTESR.INSTANCE.renderAsItem();
-				break;
+//			case Safe:
+//				GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+//				GL11.glRotatef(-90F, 0F, 1F, 0F);
+//				GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+//				
+//				SafeTESR.INSTANCE.renderAsItem();
+//				break;
 			case DisplayCase:
 				GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 				GL11.glRotatef(180F, 0F, 1F, 0F);

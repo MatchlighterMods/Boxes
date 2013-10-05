@@ -3,14 +3,13 @@ package ml.boxes.client.gui;
 import ml.boxes.client.Icons;
 import ml.boxes.inventory.ContainerSafe;
 import ml.boxes.network.packets.PacketDescribeSafe;
-import ml.core.gui.GuiContainerControl;
-import ml.core.gui.GuiSide;
-import ml.core.gui.MouseButton;
-import ml.core.gui.controls.ControlTabManager;
-import ml.core.gui.controls.ControlTabManager.GuiTab;
+import ml.core.enums.MouseButton;
+import ml.core.enums.NaturalSide;
+import ml.core.gui.controls.tabs.ControlTabManager;
+import ml.core.gui.controls.tabs.ControlTabManager.GuiTab;
 import ml.core.texture.maps.BasicCustomTextureMap;
 import ml.core.vec.Rectangle;
-import ml.core.vec.Vector2;
+import ml.core.vec.Vector2i;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 
@@ -32,23 +31,25 @@ public class GuiSafe extends GuiContainerControl {
 	}
 
 	@Override
-	protected void initControls() {
-		ControlTabManager ctm = new ControlTabManager(this, GuiSide.Right);
-		ctm.tabTopMargin = 20;
+	public void initControls(ControlsManager cm) {
+		ControlTabManager ctm = new ControlTabManager(this, NaturalSide.Right);
+		ctm.tabMargin = 20;
 		
 		ctm.tabs.add(new TabLock(ctm));
-		controls.add(ctm);
+		cm.controls.add(ctm);
 	}
 
 	@Override
-	protected void drawBackgroundLayer(float f, int i, int j) {
+	protected void drawGuiContainerBackgroundLayer(float f, int mX, int mY) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		
 		this.mc.getTextureManager().bindTexture(bgRes);
 		drawTexturedModalRect(0, 0, 0, 0, xSize, 25+safeCont.invRows*18);
 		drawTexturedModalRect(0, 25+safeCont.invRows*18, 0, 133, xSize, 107);
+		
+		super.drawGuiContainerBackgroundLayer(f, mX, mY);
 	}
-
+	
 	protected class TabLock extends GuiTab {
 
 		boolean mouseIn = false;
@@ -65,15 +66,15 @@ public class GuiSafe extends GuiContainerControl {
 			return true;
 		}
 		
-		private Vector2<Integer> trg = new Vector2<Integer>(24,24);
+		private Vector2i trg = new Vector2i(24,24);
 		@Override
-		public Vector2<Integer> getTargetSize() {
+		public Vector2i getTargetSize() {
 			return trg.set(mouseIn ? 24+8+fontRenderer.getStringWidth("Lock") : defaultSize, defaultSize);
 		}
 
 		@Override
 		public void renderContents(Minecraft mc, int lmX, int lmY) {
-			mouseIn = new Rectangle(0, 0, this.size.X, this.size.Y).isPointInside(lmX, lmY);
+			mouseIn = new Rectangle(0, 0, this.size.x, this.size.y).isPointInside(lmX, lmY);
 			
 			mc.renderEngine.bindTexture(BasicCustomTextureMap.GUI.resourceLoc);
 			drawTexturedModelRectFromIcon(3, 5, Icons.LOCK, 14, 14);

@@ -7,12 +7,14 @@ import ml.boxes.client.gui.GuiBox;
 import ml.boxes.client.gui.GuiDisplayCase;
 import ml.boxes.client.gui.GuiSafe;
 import ml.boxes.client.render.item.BoxItemRenderer;
+import ml.boxes.client.render.item.MetaItemRenderer;
 import ml.boxes.client.render.tile.BoxTESR;
 import ml.boxes.client.render.tile.BoxesBlockRenderer;
 import ml.boxes.client.render.tile.CrateTESR;
 import ml.boxes.client.render.tile.DisplayCaseTESR;
 import ml.boxes.client.render.tile.SafeTESR;
 import ml.boxes.inventory.ContainerBox;
+import ml.boxes.inventory.ContainerCombo;
 import ml.boxes.inventory.ContainerDisplayCase;
 import ml.boxes.inventory.ContainerSafe;
 import ml.boxes.tile.TileEntityBox;
@@ -48,6 +50,10 @@ public class ClientProxy extends CommonProxy {
 			
 		} else if (cont instanceof ContainerDisplayCase) {
 			return new GuiDisplayCase((ContainerDisplayCase)getServerGuiElement(ID, player, world, x, y, z));
+			
+		} else if (cont instanceof ContainerCombo) {
+			//return new GuiCombination((ContainerCombo)cont);
+			
 		}
 		
 		return null;
@@ -63,7 +69,7 @@ public class ClientProxy extends CommonProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCrate.class, CrateTESR.INSTANCE);
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySafe.class, SafeTESR.INSTANCE);
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDisplayCase.class, DisplayCaseTESR.INSTANCE);
-		//MinecraftForgeClient.registerItemRenderer(Boxes.config.generalBlockID, new MetaItemRenderer());
+		MinecraftForgeClient.registerItemRenderer(Boxes.config.generalBlockID, new MetaItemRenderer());
 		
 		Registry.MetaBlockRenderID = RenderingRegistry.getNextAvailableRenderId();
 		RenderingRegistry.registerBlockHandler(Registry.MetaBlockRenderID, new BoxesBlockRenderer());

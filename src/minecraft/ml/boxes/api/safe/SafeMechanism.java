@@ -1,16 +1,8 @@
 package ml.boxes.api.safe;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import ml.boxes.tile.TileEntitySafe;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import cpw.mods.fml.relauncher.Side;
@@ -58,7 +50,7 @@ public abstract class SafeMechanism {
 	 * @param stacked True if the safe is a double-safe
 	 */
 	@SideOnly(Side.CLIENT)
-	public abstract void render(ISafe safe, RenderPass pass, boolean stacked); 
+	public abstract void render(NBTTagCompound mech_data, RenderPass pass, boolean stacked); 
 	
 	public static enum RenderPass {
 		SafeBody,
