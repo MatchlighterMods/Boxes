@@ -143,6 +143,9 @@
 						<replacetokens>
 							<token key="MCVERSION" value="${version.minecraft}" />
 						</replacetokens>
+						<replacetokens>
+							<token key="MLCORE_VERSION" value="${MLCore.version}" />
+						</replacetokens>
 					</filterchain>
 				</concat>
 				<mergemapper to="mcmod.info" />
@@ -165,6 +168,9 @@
 						</replacetokens>
 						<replacetokens>
 							<token key="MCVERSION" value="${version.minecraft}" />
+						</replacetokens>
+						<replacetokens>
+							<token key="MLCORE_VERSION" value="${MLCore.version}" />
 						</replacetokens>
 					</filterchain>
 				</concat>

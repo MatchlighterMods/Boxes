@@ -31,7 +31,7 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(modid="Boxes", name="Boxes", dependencies="required-after:Forge@[6.5,)")
-@NetworkMod(versionBounds="[0.7,0.8)", clientSideRequired=true, serverSideRequired=false, channels={"Boxes"}, packetHandler=PacketHandler.class)
+@NetworkMod(clientSideRequired=true, serverSideRequired=false, channels={PacketHandler.defChan}, packetHandler=PacketHandler.class)
 public class Boxes {
 	
 	@SidedProxy(serverSide="ml.boxes.CommonProxy", clientSide="ml.boxes.client.ClientProxy")

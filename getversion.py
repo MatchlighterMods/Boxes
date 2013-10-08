@@ -56,6 +56,12 @@ def main():
 		f.write("%s=%s\n" %("Boxes.build.githash",githash))
 		f.write("%s=%s\n" %("Boxes.build.mcpversion",mcpversion))
 		f.write("%s=%s\n" %("Boxes.build.mcversion",mcversion))
+		
+		for dirname, dirnames, filenames in os.walk('libs'):
+			for fn in filenames:
+				m = re.match(r'^(.*)-.*-(\d*\.\d*\.\d*\.\d*)-.*\.jar', fn)
+				if m is not None:
+					f.write("%s.version=%s\n" %(m.group(1), m.group(2)))
 
 	print("Version information: Boxes %s.%s.%s%s using MCP %s for %s" % (major, minor, rev, info, mcpversion, mcversion))
 
