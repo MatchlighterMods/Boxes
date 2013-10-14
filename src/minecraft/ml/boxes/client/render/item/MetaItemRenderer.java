@@ -15,6 +15,9 @@ public class MetaItemRenderer implements IItemRenderer {
 
 	@Override
 	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
+		if (item.getItemDamage() != MetaType.Safe.meta)
+			return false;
+		
 		switch (type) {
 		case ENTITY:
 		case EQUIPPED:

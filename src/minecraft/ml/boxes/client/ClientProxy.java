@@ -4,8 +4,6 @@ import ml.boxes.Boxes;
 import ml.boxes.CommonProxy;
 import ml.boxes.Registry;
 import ml.boxes.client.gui.GuiBox;
-import ml.boxes.client.gui.GuiDisplayCase;
-import ml.boxes.client.gui.GuiSafe;
 import ml.boxes.client.render.item.BoxItemRenderer;
 import ml.boxes.client.render.item.MetaItemRenderer;
 import ml.boxes.client.render.tile.BoxTESR;
@@ -21,6 +19,7 @@ import ml.boxes.tile.TileEntityBox;
 import ml.boxes.tile.TileEntityCrate;
 import ml.boxes.tile.TileEntityDisplayCase;
 import ml.boxes.tile.TileEntitySafe;
+import ml.boxes.window.WindowSafe;
 import ml.core.texture.maps.BasicCustomTextureMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -41,15 +40,19 @@ public class ClientProxy extends CommonProxy {
 		
 		int aID = ID>>4, subID = ID & 15;
 		
+		if (aID == 0 && world.getBlockTileEntity(x, y, z) instanceof TileEntitySafe) {
+			return new WindowSafe(player, Side.CLIENT).getGui();
+		}
+		
 		Container cont = (Container)getServerGuiElement(ID, player, world, x, y, z);
 		if (cont instanceof ContainerBox) {
 			return new GuiBox((ContainerBox)cont, player);
 			
 		} else if (cont instanceof ContainerSafe) {
-			return new GuiSafe((ContainerSafe)getServerGuiElement(ID, player, world, x, y, z));
+			//return new GuiSafe((ContainerSafe)getServerGuiElement(ID, player, world, x, y, z));
 			
 		} else if (cont instanceof ContainerDisplayCase) {
-			return new GuiDisplayCase((ContainerDisplayCase)getServerGuiElement(ID, player, world, x, y, z));
+			//return new GuiDisplayCase((ContainerDisplayCase)getServerGuiElement(ID, player, world, x, y, z));
 			
 		} else if (cont instanceof ContainerCombo) {
 			//return new GuiCombination((ContainerCombo)cont);

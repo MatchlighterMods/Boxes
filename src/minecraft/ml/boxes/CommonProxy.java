@@ -4,16 +4,17 @@ import ml.boxes.data.ItemBoxContainer;
 import ml.boxes.inventory.ContainerBox;
 import ml.boxes.inventory.ContainerCombo;
 import ml.boxes.inventory.ContainerDisplayCase;
-import ml.boxes.inventory.ContainerSafe;
 import ml.boxes.item.ItemBox;
 import ml.boxes.tile.TileEntityBox;
 import ml.boxes.tile.TileEntityDisplayCase;
 import ml.boxes.tile.TileEntitySafe;
+import ml.boxes.window.WindowSafe;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.network.IGuiHandler;
+import cpw.mods.fml.relauncher.Side;
 
 public class CommonProxy implements IGuiHandler {
 
@@ -34,7 +35,8 @@ public class CommonProxy implements IGuiHandler {
 				
 			} else if (te.getClass() == TileEntitySafe.class) {
 				TileEntitySafe tes = (TileEntitySafe)te;
-				return new ContainerSafe(player, tes);
+				//return new ContainerSafe(player, tes);
+				return new WindowSafe(player, Side.SERVER).getContainer();
 				
 			} else if (te.getClass() == TileEntityDisplayCase.class) {
 				return new ContainerDisplayCase((TileEntityDisplayCase)te, player);
