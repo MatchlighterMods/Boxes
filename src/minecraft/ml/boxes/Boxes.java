@@ -90,8 +90,8 @@ public class Boxes {
 	}
 	
 	public void initDungeonLoot(){
-		ChestGenHooks.addItem(ChestGenHooks.DUNGEON_CHEST, new WeightedRandomChestContent(new ItemStack(Registry.ItemResources), 1, 3, 100));
-		ChestGenHooks.addItem(ChestGenHooks.VILLAGE_BLACKSMITH, new WeightedRandomChestContent(new ItemStack(Registry.ItemResources), 1, 5, 12));
+		if (config.allowCardboardDungeonSpawn) ChestGenHooks.addItem(ChestGenHooks.DUNGEON_CHEST, new WeightedRandomChestContent(new ItemStack(Registry.ItemResources), 1, 3, 100));
+		if (config.allowCardboardBlackSmithSpawn) ChestGenHooks.addItem(ChestGenHooks.VILLAGE_BLACKSMITH, new WeightedRandomChestContent(new ItemStack(Registry.ItemResources), 1, 5, 12));
 		ChestGenHooks.addItem(ChestGenHooks.BONUS_CHEST, new WeightedRandomChestContent(new ItemStack(Registry.ItemResources), 1, 4, 7));
 	}
 	

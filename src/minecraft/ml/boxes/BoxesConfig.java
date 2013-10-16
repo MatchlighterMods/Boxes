@@ -15,6 +15,9 @@ public class BoxesConfig extends Config {
 	
 	@Renamed("cardboardItemID")
 	public @Prop(category=Configuration.CATEGORY_ITEM) int materialsItemID = 3000;
+	public @Prop(category="boxes.tweaks") boolean allowCardboardDungeonSpawn = true;
+	public @Prop(category="boxes.tweaks") boolean allowCardboardBlackSmithSpawn = true;
+	
 	public @Prop(category=Configuration.CATEGORY_ITEM) int keyItemID = 3001;
 	public @Prop(category=Configuration.CATEGORY_ITEM) int mechsItemID = 3002;
 	
