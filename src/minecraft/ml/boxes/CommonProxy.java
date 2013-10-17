@@ -2,7 +2,6 @@ package ml.boxes;
 
 import ml.boxes.data.ItemBoxContainer;
 import ml.boxes.inventory.ContainerBox;
-import ml.boxes.inventory.ContainerCombo;
 import ml.boxes.inventory.ContainerDisplayCase;
 import ml.boxes.item.ItemBox;
 import ml.boxes.tile.TileEntityBox;
@@ -35,8 +34,9 @@ public class CommonProxy implements IGuiHandler {
 				
 			} else if (te.getClass() == TileEntitySafe.class) {
 				TileEntitySafe tes = (TileEntitySafe)te;
-				//return new ContainerSafe(player, tes);
-				return new WindowSafe(player, Side.SERVER).getContainer();
+				WindowSafe ws = new WindowSafe(player, Side.SERVER, tes);
+				ws.initControls();
+				return ws.getContainer();
 				
 			} else if (te.getClass() == TileEntityDisplayCase.class) {
 				return new ContainerDisplayCase((TileEntityDisplayCase)te, player);
@@ -48,7 +48,7 @@ public class CommonProxy implements IGuiHandler {
 			}
 			break;
 		case 3: //Combination Lock Gui
-			return new ContainerCombo((TileEntitySafe)world.getBlockTileEntity(x, y, z));
+			
 		}
 		
 		return null;

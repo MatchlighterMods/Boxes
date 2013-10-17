@@ -14,7 +14,6 @@ public class RecipeKey extends RecipeMixed {
 
 	public RecipeKey(Object... recipe) {
 		super(Registry.ItemKey, recipe);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override

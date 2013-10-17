@@ -2,7 +2,11 @@ package ml.boxes;
 
 import ml.boxes.block.MetaType;
 import ml.boxes.item.ItemType;
-import ml.boxes.network.PacketHandler;
+import ml.boxes.network.packets.PacketDescribeCrate;
+import ml.boxes.network.packets.PacketDescribeDisplay;
+import ml.boxes.network.packets.PacketDescribeSafe;
+import ml.boxes.network.packets.PacketTipClick;
+import ml.boxes.network.packets.PacketUpdateData;
 import ml.boxes.recipe.RecipeBox;
 import ml.boxes.recipe.RecipeComboMech;
 import ml.boxes.recipe.RecipeKey;
@@ -31,7 +35,7 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(modid="Boxes", name="Boxes", dependencies="required-after:Forge@[6.5,)")
-@NetworkMod(clientSideRequired=true, serverSideRequired=false, channels={PacketHandler.defChan}, packetHandler=PacketHandler.class)
+@NetworkMod(clientSideRequired=true, serverSideRequired=false) //, channels={PacketHandler.defChan}, packetHandler=PacketHandler.class)
 public class Boxes {
 	
 	@SidedProxy(serverSide="ml.boxes.CommonProxy", clientSide="ml.boxes.client.ClientProxy")
@@ -64,6 +68,17 @@ public class Boxes {
 		
 		NetworkRegistry.instance().registerGuiHandler(instance, proxy);
 		
+		ml.core.network.PacketHandler pkh = new ml.core.network.PacketHandler();
+			pkh.addHandler(PacketUpdateData.class);
+			pkh.addHandler(PacketTipClick.class);
+			
+			pkh.addHandler(PacketDescribeCrate.class);
+			pkh.addHandler(PacketDescribeSafe.class);
+			pkh.addHandler(PacketDescribeSafe.PacketLockSafe.class);
+			pkh.addHandler(PacketDescribeDisplay.class);
+		
+		NetworkRegistry.instance().registerChannel(pkh, "Boxes");
+		
 		GameRegistry.addRecipe(new ItemStack(Registry.ItemResources, 1, 0), "ppp", "sws", "ppp", 'p', Item.paper, 's', Item.silk, 'w', Item.bucketWater);
 		GameRegistry.addRecipe(ItemType.ISFromType(ItemType.Label, 3), "ppp", " s ", 'p', Item.paper, 's', Item.slimeBall);
 		
@@ -90,8 +105,11 @@ public class Boxes {
 	}
 	
 	public void initDungeonLoot(){
-		if (config.allowCardboardDungeonSpawn) ChestGenHooks.addItem(ChestGenHooks.DUNGEON_CHEST, new WeightedRandomChestContent(new ItemStack(Registry.ItemResources), 1, 3, 100));
-		if (config.allowCardboardBlackSmithSpawn) ChestGenHooks.addItem(ChestGenHooks.VILLAGE_BLACKSMITH, new WeightedRandomChestContent(new ItemStack(Registry.ItemResources), 1, 5, 12));
+		if (config.allowCardboardDungeonSpawn)
+			ChestGenHooks.addItem(ChestGenHooks.DUNGEON_CHEST, new WeightedRandomChestContent(new ItemStack(Registry.ItemResources), 1, 3, 100));
+		if (config.allowCardboardBlackSmithSpawn)
+			ChestGenHooks.addItem(ChestGenHooks.VILLAGE_BLACKSMITH, new WeightedRandomChestContent(new ItemStack(Registry.ItemResources), 1, 5, 12));
+		
 		ChestGenHooks.addItem(ChestGenHooks.BONUS_CHEST, new WeightedRandomChestContent(new ItemStack(Registry.ItemResources), 1, 4, 7));
 	}
 	

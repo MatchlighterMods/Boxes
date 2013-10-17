@@ -12,7 +12,6 @@ import ml.boxes.client.render.tile.CrateTESR;
 import ml.boxes.client.render.tile.DisplayCaseTESR;
 import ml.boxes.client.render.tile.SafeTESR;
 import ml.boxes.inventory.ContainerBox;
-import ml.boxes.inventory.ContainerCombo;
 import ml.boxes.inventory.ContainerDisplayCase;
 import ml.boxes.inventory.ContainerSafe;
 import ml.boxes.tile.TileEntityBox;
@@ -41,7 +40,9 @@ public class ClientProxy extends CommonProxy {
 		int aID = ID>>4, subID = ID & 15;
 		
 		if (aID == 0 && world.getBlockTileEntity(x, y, z) instanceof TileEntitySafe) {
-			return new WindowSafe(player, Side.CLIENT).getGui();
+			WindowSafe ws = new WindowSafe(player, Side.CLIENT, (TileEntitySafe)world.getBlockTileEntity(x, y, z));
+			ws.initControls();
+			return ws.getGui();
 		}
 		
 		Container cont = (Container)getServerGuiElement(ID, player, world, x, y, z);
@@ -53,9 +54,6 @@ public class ClientProxy extends CommonProxy {
 			
 		} else if (cont instanceof ContainerDisplayCase) {
 			//return new GuiDisplayCase((ContainerDisplayCase)getServerGuiElement(ID, player, world, x, y, z));
-			
-		} else if (cont instanceof ContainerCombo) {
-			//return new GuiCombination((ContainerCombo)cont);
 			
 		}
 		

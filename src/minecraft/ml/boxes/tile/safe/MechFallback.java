@@ -51,7 +51,6 @@ public class MechFallback extends SafeMechanism {
 
 	@Override
 	public NBTTagCompound writeNBTPacket(ISafe safe) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

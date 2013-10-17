@@ -48,7 +48,7 @@ public class MechKey extends SafeMechanism {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void render(NBTTagCompound mech_data, RenderPass pass, boolean stacked) {
-		// TODO Auto-generated method stub
+		// TODO Render the Key Hole
 		
 	}
 

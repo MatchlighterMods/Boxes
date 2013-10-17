@@ -31,7 +31,7 @@ public class PacketDescribeSafe extends MLPacket {
 		
 		sUnlocked = tes.unlocked;
 		mech_id = tes.mech_id;
-		mechData = tes.mechTag;
+		mechData = tes.mech.writeNBTPacket(tes);
 	}
 	
 	public PacketDescribeSafe(EntityPlayer pl, ByteArrayDataInput data) throws IOException {

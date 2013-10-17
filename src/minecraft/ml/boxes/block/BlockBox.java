@@ -60,7 +60,7 @@ public class BlockBox extends BlockContainer {
 	@Override
 	public ItemStack getPickBlock(MovingObjectPosition target, World world,
 			int x, int y, int z) {
-		// TODO Auto-generated method stub
+		// TODO Correct PickBlock issues
 		return super.getPickBlock(target, world, x, y, z);
 	}
 	

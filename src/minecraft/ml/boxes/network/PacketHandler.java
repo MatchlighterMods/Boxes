@@ -6,6 +6,7 @@ import ml.boxes.network.packets.PacketDescribeSafe;
 import ml.boxes.network.packets.PacketTipClick;
 import ml.boxes.network.packets.PacketUpdateData;
 
+@Deprecated
 public class PacketHandler extends ml.core.network.PacketHandler {
 	
 	public static final String defChan = "Boxes";
