@@ -40,7 +40,7 @@ public class MechFallback extends SafeMechanism {
 
 	@Override
 	public boolean canConnectWith(ISafe self, ISafe remote) {
-		return false;
+		return true;
 	}
 
 	@Override

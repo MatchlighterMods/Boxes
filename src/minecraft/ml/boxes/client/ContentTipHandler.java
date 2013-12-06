@@ -79,15 +79,15 @@ public class ContentTipHandler implements ITickHandler {
 				openTip = null;
 				
 				boolean thoverSlot = false;
-				for (Object objSlt : asGuiContainer.inventorySlots.inventorySlots){
-					Slot slt = (Slot)objSlt;
-					if (GeoMath.pointInRect(m.x, m.y, gcBounds.xCoord + slt.xDisplayPosition, gcBounds.yCoord + slt.yDisplayPosition, 16, 16)){
+				//for (Object objSlt : asGuiContainer.inventorySlots.inventorySlots){
+					Slot slt = asGuiContainer.getSlotAtPosition(m.x, m.y); //(Slot)objSlt;
+					//if (GeoMath.pointInRect(m.x, m.y, gcBounds.xCoord + slt.xDisplayPosition, gcBounds.yCoord + slt.yDisplayPosition, 16, 16)){
 						thoverSlot = true;
 						if (hoverSlot != slt)
 							tickerTime = Minecraft.getSystemTime();
 						hoverSlot = slt;
-					}
-				}
+					//}
+				//}
 				if (!thoverSlot)
 					hoverSlot = null;
 			}

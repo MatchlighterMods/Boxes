@@ -42,6 +42,7 @@ public class ClientProxy extends CommonProxy {
 		if (aID == 0 && world.getBlockTileEntity(x, y, z) instanceof TileEntitySafe) {
 			WindowSafe ws = new WindowSafe(player, Side.CLIENT, (TileEntitySafe)world.getBlockTileEntity(x, y, z));
 			ws.initControls();
+			ws.guiTick();
 			return ws.getGui();
 		}
 		

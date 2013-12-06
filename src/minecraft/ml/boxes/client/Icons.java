@@ -1,6 +1,6 @@
 package ml.boxes.client;
 
-import ml.core.texture.maps.BasicCustomTextureMap.IIconProvider;
+import ml.core.texture.IIconProvider;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.util.Icon;
 import cpw.mods.fml.relauncher.Side;
