@@ -8,15 +8,26 @@ import ml.boxes.tile.TileEntityBox;
 import ml.boxes.tile.TileEntityDisplayCase;
 import ml.boxes.tile.TileEntitySafe;
 import ml.boxes.window.WindowSafe;
+import ml.core.gui.MLGuiHandler;
+import ml.core.gui.core.TopParentGuiElement;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.relauncher.Side;
 
-public class CommonProxy implements IGuiHandler {
+public class CommonProxy extends MLGuiHandler {
 
+	@Override
+	public TopParentGuiElement getTopElement(int ID, EntityPlayer player, World world, int x, int y, int z, Side side) {
+		
+		if (ID == 11 && world.getBlockTileEntity(x, y, z) instanceof TileEntitySafe) {
+			return new WindowSafe(player, side, (TileEntitySafe)world.getBlockTileEntity(x, y, z));
+		}
+		
+		return null;
+	}
+	
 	public void load(){}
 	
 	@Override
@@ -32,12 +43,6 @@ public class CommonProxy implements IGuiHandler {
 			if (te.getClass() == TileEntityBox.class){
 				return new ContainerBox(((TileEntityBox)te), player);
 				
-			} else if (te.getClass() == TileEntitySafe.class) {
-				TileEntitySafe tes = (TileEntitySafe)te;
-				WindowSafe ws = new WindowSafe(player, Side.SERVER, tes);
-				ws.initControls();
-				return ws.getContainer();
-				
 			} else if (te.getClass() == TileEntityDisplayCase.class) {
 				return new ContainerDisplayCase((TileEntityDisplayCase)te, player);
 			}
@@ -51,13 +56,13 @@ public class CommonProxy implements IGuiHandler {
 			
 		}
 		
-		return null;
+		return super.getServerGuiElement(subID, player, world, x, y, z);
 	}
 
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world,
 			int x, int y, int z) {
-		return null;
+		return super.getClientGuiElement(ID, player, world, x, y, z);
 	}
 
 }

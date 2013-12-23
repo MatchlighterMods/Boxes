@@ -2,7 +2,9 @@ package ml.boxes.api.safe;
 
 import java.util.List;
 
+import ml.core.item.StackUtils;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import cpw.mods.fml.relauncher.Side;
@@ -43,6 +45,23 @@ public abstract class SafeMechanism {
 	 * Called when the safe is locked 
 	 */
 	public void onLocked(ISafe safe){};
+	
+	/**
+	 * Determines if the passed item maps to this mechanism.
+	 */
+	public abstract boolean itemMatches(ItemStack itm);
+	
+	/**
+	 * @return NBT data that should be copied from the Mech stack to the safe
+	 */
+	public NBTTagCompound mechDataFromItem(ItemStack itm) {
+		return StackUtils.getStackTag(itm);
+	}
+	
+	/**
+	 * @return Should return the mechanism in Item form.
+	 */
+	public abstract ItemStack itemFromMech(NBTTagCompound mechData);
 	
 	/**
 	 * Render any additions to the safe.

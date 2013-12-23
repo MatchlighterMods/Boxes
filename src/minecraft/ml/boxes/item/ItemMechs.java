@@ -3,7 +3,6 @@ package ml.boxes.item;
 import java.util.List;
 
 import ml.boxes.Boxes;
-import ml.boxes.api.safe.IItemMech;
 import ml.boxes.api.safe.SafeMechanism;
 import ml.boxes.tile.safe.MechCombo;
 import ml.boxes.tile.safe.MechKey;
@@ -18,7 +17,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
-public class ItemMechs extends Item implements IItemMech {
+public class ItemMechs extends Item {
+	
+	public static final int MECH_COMBO_META = 0;
+	public static final int MECH_KEY_META = 1;
 	
 	//Used for DRY internal mapping of Metadata to the SafeMechanism subclass
 	private static BiMap<Integer, SafeMechanism> ourMechs = HashBiMap.create();
@@ -75,14 +77,6 @@ public class ItemMechs extends Item implements IItemMech {
 	@Override
 	public void registerIcons(IconRegister par1IconRegister) {
 		
-	}
-
-	@Override
-	public String getMechID(ItemStack mechStack) {
-		if (ourMechs.containsKey(mechStack.getItemDamage())){
-			return ourMechs.get(mechStack.getItemDamage()).getMechId();
-		}
-		return null;
 	}
 
 }

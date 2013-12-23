@@ -18,7 +18,6 @@ import ml.boxes.tile.TileEntityBox;
 import ml.boxes.tile.TileEntityCrate;
 import ml.boxes.tile.TileEntityDisplayCase;
 import ml.boxes.tile.TileEntitySafe;
-import ml.boxes.window.WindowSafe;
 import ml.core.texture.maps.BasicCustomTextureMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -36,16 +35,7 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world,
 			int x, int y, int z) {
-		
-		int aID = ID>>4, subID = ID & 15;
-		
-		if (aID == 0 && world.getBlockTileEntity(x, y, z) instanceof TileEntitySafe) {
-			WindowSafe ws = new WindowSafe(player, Side.CLIENT, (TileEntitySafe)world.getBlockTileEntity(x, y, z));
-			ws.initControls();
-			ws.guiTick();
-			return ws.getGui();
-		}
-		
+				
 		Container cont = (Container)getServerGuiElement(ID, player, world, x, y, z);
 		if (cont instanceof ContainerBox) {
 			return new GuiBox((ContainerBox)cont, player);
@@ -58,7 +48,7 @@ public class ClientProxy extends CommonProxy {
 			
 		}
 		
-		return null;
+		return super.getClientGuiElement(ID, player, world, x, y, z);
 	}
 
 	@Override

@@ -8,8 +8,6 @@ import ml.boxes.item.ItemKey;
 import ml.boxes.item.ItemMechs;
 import ml.boxes.item.ItemResources;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class Registry {
 
@@ -42,8 +40,7 @@ public class Registry {
 		GameRegistry.registerItem(ItemMechs, "mechs");
 	}
 	
-	// Renderers //
-	@SideOnly(Side.CLIENT)
+	// Renderers // -- Do NOT SideOnly these. Apparently the PathFinder uses them... ?!
 	public static int MetaBlockRenderID;
 
 }

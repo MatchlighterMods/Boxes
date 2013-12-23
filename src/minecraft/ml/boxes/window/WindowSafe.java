@@ -1,13 +1,10 @@
 package ml.boxes.window;
 
-import org.lwjgl.opengl.GL11;
-
 import ml.boxes.client.Icons;
 import ml.boxes.network.packets.PacketDescribeSafe;
 import ml.boxes.tile.TileEntitySafe;
 import ml.core.enums.NaturalSide;
 import ml.core.gui.GuiRenderUtils;
-import ml.core.gui.controls.button.ControlButton;
 import ml.core.gui.controls.inventory.ControlPlayerInventory;
 import ml.core.gui.controls.inventory.ControlSlot;
 import ml.core.gui.controls.inventory.ControlSlotGrid;
@@ -24,6 +21,9 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryLargeChest;
 import net.minecraft.inventory.Slot;
 import net.minecraft.util.ResourceLocation;
+
+import org.lwjgl.opengl.GL11;
+
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 
@@ -52,8 +52,6 @@ public class WindowSafe extends Window {
 		ControlTabManager ctm = new ControlTabManager(this, NaturalSide.Right);
 		ctm.tabMargin = 20;
 		ctm.addChild(new TabLock(ctm));
-		
-		new ControlButton(this, new Vector2i(4,4), new Vector2i(60, 20), "Hello");
 		
 		safeGrid = new ControlSlotGrid(this, new Vector2i(7, 25), 9, sinv) {
 			@Override

@@ -192,7 +192,7 @@ public class TileEntitySafe extends TileEntityConnectable implements ISafe, IEve
 	}
 
 	public void playerOpened(EntityPlayer pl) {
-		pl.openGui(Boxes.instance, 3, worldObj, xCoord, yCoord, zCoord);
+		pl.openGui(Boxes.instance, 11, worldObj, xCoord, yCoord, zCoord);
 	}
 
 	public boolean onMasterRightClicked(EntityPlayer epl, ForgeDirection side) {

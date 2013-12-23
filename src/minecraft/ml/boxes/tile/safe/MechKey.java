@@ -5,6 +5,7 @@ import java.util.List;
 import ml.boxes.api.safe.ISafe;
 import ml.boxes.api.safe.SafeMechanism;
 import ml.boxes.item.ItemKey;
+import ml.boxes.item.ItemMechs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -55,6 +56,17 @@ public class MechKey extends SafeMechanism {
 	@Override
 	public NBTTagCompound writeNBTPacket(ISafe safe) {
 		return new NBTTagCompound();
+	}
+	
+	@Override
+	public boolean itemMatches(ItemStack itm) {
+		return (itm.getItem() instanceof ItemMechs && itm.getItemDamage() == ItemMechs.MECH_KEY_META);
+	}
+
+	@Override
+	public ItemStack itemFromMech(NBTTagCompound mechData) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

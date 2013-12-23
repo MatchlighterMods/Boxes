@@ -27,6 +27,14 @@ public class MechRegistry {
 			return mechs.get(mId);
 		return fallback;
 	}
+	
+	public static SafeMechanism findMechForItem(ItemStack itm) {
+		for (SafeMechanism sm : mechs.values()) {
+			if (sm.itemMatches(itm))
+				return sm;
+		}
+		return fallback;
+	}
 
 	public static void addInfoForSafe(NBTTagCompound mechTag, ItemStack safeStack, List lst) {
 		String mechId = StackUtils.getStackTag(safeStack).getString("mech_id");
