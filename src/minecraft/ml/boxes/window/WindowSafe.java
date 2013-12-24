@@ -12,7 +12,7 @@ import ml.core.gui.controls.tabs.ControlTabManager;
 import ml.core.gui.controls.tabs.ControlTabManager.GuiTab;
 import ml.core.gui.core.Window;
 import ml.core.gui.event.EventGuiClosing;
-import ml.core.gui.event.EventMouseClicked;
+import ml.core.gui.event.EventMouseDown;
 import ml.core.gui.event.GuiEvent;
 import ml.core.texture.maps.BasicCustomTextureMap;
 import ml.core.vec.Vector2i;
@@ -99,8 +99,8 @@ public class WindowSafe extends Window {
 		
 		@Override
 		public void handleEvent(GuiEvent evt) {
-			if (evt instanceof EventMouseClicked && evt.origin == this) {
-				EventMouseClicked evmc = (EventMouseClicked)evt;
+			if (evt instanceof EventMouseDown && evt.origin == this) {
+				EventMouseDown evmc = (EventMouseDown)evt;
 				getGui().getMinecraft().thePlayer.closeScreen();
 				PacketDispatcher.sendPacketToServer(new PacketDescribeSafe.PacketLockSafe(tes).convertToPkt250());
 			}

@@ -2,11 +2,11 @@ package ml.boxes;
 
 import ml.boxes.data.ItemBoxContainer;
 import ml.boxes.inventory.ContainerBox;
-import ml.boxes.inventory.ContainerDisplayCase;
 import ml.boxes.item.ItemBox;
 import ml.boxes.tile.TileEntityBox;
 import ml.boxes.tile.TileEntityDisplayCase;
 import ml.boxes.tile.TileEntitySafe;
+import ml.boxes.window.WindowCombo;
 import ml.boxes.window.WindowSafe;
 import ml.core.gui.MLGuiHandler;
 import ml.core.gui.core.TopParentGuiElement;
@@ -23,6 +23,8 @@ public class CommonProxy extends MLGuiHandler {
 		
 		if (ID == 11 && world.getBlockTileEntity(x, y, z) instanceof TileEntitySafe) {
 			return new WindowSafe(player, side, (TileEntitySafe)world.getBlockTileEntity(x, y, z));
+		} else if (ID == 12) { //Mech: Combo
+			return new WindowCombo(player, side);
 		}
 		
 		return null;
@@ -44,7 +46,7 @@ public class CommonProxy extends MLGuiHandler {
 				return new ContainerBox(((TileEntityBox)te), player);
 				
 			} else if (te.getClass() == TileEntityDisplayCase.class) {
-				return new ContainerDisplayCase((TileEntityDisplayCase)te, player);
+				//return new ContainerDisplayCase((TileEntityDisplayCase)te, player);
 			}
 		case 2: //Box as item
 			ItemStack is = player.getCurrentEquippedItem();
@@ -52,8 +54,6 @@ public class CommonProxy extends MLGuiHandler {
 				return new ContainerBox(new ItemBoxContainer(is), player);
 			}
 			break;
-		case 3: //Combination Lock Gui
-			
 		}
 		
 		return super.getServerGuiElement(subID, player, world, x, y, z);

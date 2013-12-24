@@ -63,7 +63,7 @@ public class MechCombo extends SafeMechanism {
 	public void beginUnlock(ISafe safe, EntityPlayer epl) {
 		TileEntity sfte = (TileEntity)safe;
 		if (!sfte.worldObj.isRemote) {
-			epl.openGui(Boxes.instance, 3<<4, sfte.worldObj, sfte.xCoord, sfte.yCoord, sfte.zCoord);
+			epl.openGui(Boxes.instance, 12, sfte.worldObj, sfte.xCoord, sfte.yCoord, sfte.zCoord);
 		}
 	}
 

@@ -13,7 +13,6 @@ import ml.boxes.client.render.tile.DisplayCaseTESR;
 import ml.boxes.client.render.tile.SafeTESR;
 import ml.boxes.inventory.ContainerBox;
 import ml.boxes.inventory.ContainerDisplayCase;
-import ml.boxes.inventory.ContainerSafe;
 import ml.boxes.tile.TileEntityBox;
 import ml.boxes.tile.TileEntityCrate;
 import ml.boxes.tile.TileEntityDisplayCase;
@@ -39,9 +38,6 @@ public class ClientProxy extends CommonProxy {
 		Container cont = (Container)getServerGuiElement(ID, player, world, x, y, z);
 		if (cont instanceof ContainerBox) {
 			return new GuiBox((ContainerBox)cont, player);
-			
-		} else if (cont instanceof ContainerSafe) {
-			//return new GuiSafe((ContainerSafe)getServerGuiElement(ID, player, world, x, y, z));
 			
 		} else if (cont instanceof ContainerDisplayCase) {
 			//return new GuiDisplayCase((ContainerDisplayCase)getServerGuiElement(ID, player, world, x, y, z));
