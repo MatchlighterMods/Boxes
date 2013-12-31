@@ -88,11 +88,11 @@ public class Boxes {
 			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Registry.BlockMeta, 1, MetaType.Crate.ordinal()), "wsw", "scs", "wsw", 'w', "logWood", 's', "plankWood", 'c', Block.chest));
 		}
 		
-		if (config.lockbox_allowCrafting) {
-			GameRegistry.addRecipe(new RecipeSafe());
-			GameRegistry.addRecipe(new RecipeKey(" m", "nm", "nm", 'n', Item.goldNugget, 'm', Item.ingotGold));
-			GameRegistry.addRecipe(new RecipeComboMech());
-		}
+//		if (config.lockbox_allowCrafting) {
+//			GameRegistry.addRecipe(new RecipeSafe());
+//			GameRegistry.addRecipe(new RecipeKey(" m", "nm", "nm", 'n', Item.goldNugget, 'm', Item.ingotGold));
+//			GameRegistry.addRecipe(new RecipeComboMech());
+//		}
 		
 		initDungeonLoot();
 		
