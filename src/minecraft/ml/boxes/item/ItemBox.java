@@ -8,7 +8,7 @@ import ml.boxes.data.Box;
 import ml.boxes.data.ItemBoxContainer;
 import ml.boxes.tile.TileEntityAbstractBox;
 import ml.core.PlayerUtils;
-import ml.core.StringUtils;
+import ml.core.util.StringUtils;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;

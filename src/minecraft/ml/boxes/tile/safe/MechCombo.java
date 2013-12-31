@@ -9,7 +9,7 @@ import ml.boxes.api.safe.SafeMechanism;
 import ml.boxes.client.render.tile.SafeTESR;
 import ml.boxes.item.ItemMechs;
 import ml.core.ChatUtils;
-import ml.core.StringUtils;
+import ml.core.util.StringUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;

@@ -1,7 +1,7 @@
 package ml.boxes;
 
-import ml.core.Config;
-import ml.core.Config.Prop.Renamed;
+import ml.core.data.Config;
+import ml.core.data.Config.Prop.Renamed;
 import net.minecraftforge.common.Configuration;
 
 public class BoxesConfig extends Config {

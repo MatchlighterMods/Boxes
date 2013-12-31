@@ -59,7 +59,7 @@ public class MetaItemRenderer implements IItemRenderer {
 		}
 		
 		switch (MetaType.fromMeta(item.getItemDamage())){
-		case Safe:
+		case Safe: //Can't do this in the ISBRH because we need the ItemStack ref
 			GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 			GL11.glRotatef(type==ItemRenderType.INVENTORY ? -90F : 90F, 0F, 1F, 0F);
 			GL11.glTranslatef(-0.5F, -0.5F, -0.5F);

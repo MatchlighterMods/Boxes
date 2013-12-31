@@ -190,7 +190,7 @@ public abstract class ContentTip {
 		}
 	};
 	
-	public ItemStack slotClick(int slotNum, int arg, int action, EntityPlayer par4EntityPlayer) { // TODO Replace with a CustomSlotClick
+	public ItemStack slotClick(int slotNum, int arg, int action, EntityPlayer par4EntityPlayer) {
 		if (action == 1) return null;
 		
 		ItemBoxContainer ibox = getIIB();

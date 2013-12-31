@@ -3,7 +3,6 @@ package ml.boxes.block;
 import java.util.ArrayList;
 
 import ml.boxes.Boxes;
-import ml.boxes.Registry;
 import ml.boxes.item.ItemBox;
 import ml.boxes.tile.TileEntityAbstractBox;
 import ml.boxes.tile.TileEntityBox;
@@ -44,7 +43,7 @@ public class BlockBox extends BlockContainer {
 
 	@Override
 	public int getRenderType() {
-		return Registry.MetaBlockRenderID;
+		return -1;
 	}
 
 	@Override

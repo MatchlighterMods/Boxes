@@ -1,7 +1,7 @@
 package ml.boxes.client.render.tile;
 
 import ml.boxes.tile.TileEntityDisplayCase;
-import ml.core.render.WorldRenderLib;
+import ml.core.world.WorldRenderUtils;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
@@ -47,7 +47,7 @@ public class DisplayCaseTESR extends TileEntitySpecialRenderer {
 			if (tedc.rItem.getItem() instanceof ItemBlock || (cstm != null && cstm.shouldUseRenderHelper(ItemRenderType.ENTITY, tedc.rItem, ItemRendererHelper.BLOCK_3D)))
 				GL11.glScalef(0.75F, 0.75F, 0.75F);
 			
-			WorldRenderLib.renderItemIntoWorldCenteredAt(tedc.rItem, true);
+			WorldRenderUtils.renderItemIntoWorldCenteredAt(tedc.rItem, true);
 		}
 		GL11.glPopMatrix();
 		

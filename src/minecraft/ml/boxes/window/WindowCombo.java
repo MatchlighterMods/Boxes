@@ -124,7 +124,6 @@ public class WindowCombo extends Window {
 			} else if (evt instanceof EventMouseMove && dragStart != null) {
 				EventMouseMove emm = (EventMouseMove)evt;
 				value = ivalue + (getLocalMousePos().y - dragStart.y)/10;
-				
 			} else if (evt instanceof EventMouseUp) {
 				bdir = 0;
 				dragStart = null;

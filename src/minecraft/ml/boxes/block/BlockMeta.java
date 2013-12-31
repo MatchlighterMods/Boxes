@@ -59,7 +59,7 @@ public class BlockMeta extends BlockContainer {
 	
 	@Override
 	public int getRenderType() {
-		return renderTypeOverride > 0 ? renderTypeOverride : Registry.MetaBlockRenderID;
+		return renderTypeOverride >= 0 ? renderTypeOverride : Registry.MetaBlockRenderID;
 	}
 
 	public static void resetRenderType() {

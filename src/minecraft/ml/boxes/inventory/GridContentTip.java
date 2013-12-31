@@ -5,8 +5,8 @@ import java.util.List;
 
 import ml.boxes.data.Box;
 import ml.boxes.data.ItemBoxContainer;
-import ml.core.StringUtils;
 import ml.core.gui.GuiRenderUtils;
+import ml.core.util.StringUtils;
 import ml.core.vec.GeoMath;
 import ml.core.vec.Rectangle;
 import ml.core.vec.Vector2i;

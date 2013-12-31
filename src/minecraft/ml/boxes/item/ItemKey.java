@@ -1,7 +1,7 @@
 package ml.boxes.item;
 
-import ml.core.RandomUtils;
 import ml.core.item.StackUtils;
+import ml.core.util.RandomUtils;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;

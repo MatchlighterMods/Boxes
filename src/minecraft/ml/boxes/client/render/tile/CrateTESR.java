@@ -5,7 +5,7 @@ import ml.boxes.Registry;
 import ml.boxes.block.BlockMeta;
 import ml.boxes.tile.TileEntityCrate;
 import ml.core.block.BlockUtils;
-import ml.core.render.WorldRenderLib;
+import ml.core.world.WorldRenderUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -34,7 +34,7 @@ public class CrateTESR extends TileEntitySpecialRenderer {
 	private RenderBlocks renderBlocks = new RenderBlocks();
 	public static CrateTESR INSTANCE = new CrateTESR();
 	
-	private boolean shouldFastRender() {
+	public static boolean shouldFastRender() {
 		return Boxes.config.crate_RenderMode !=2 && (!Minecraft.isFancyGraphicsEnabled() || Boxes.config.crate_RenderMode==1);
 	}
 
@@ -59,7 +59,7 @@ public class CrateTESR extends TileEntitySpecialRenderer {
 		if (tec.cItem != null){
 			GL11.glDisable(GL11.GL_LIGHTING);
 			GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-			GL11.glTranslatef(tec.facing.offsetX*0.5F, tec.facing.offsetY*(shouldFastRender() ? 0.7F : 0.6F), tec.facing.offsetZ*0.5F);
+			GL11.glTranslatef(tec.facing.offsetX*0.5F, tec.facing.offsetY*(shouldFastRender() ? 0.7F : 0.6F), tec.facing.offsetZ*0.51F);
 
 			GL11.glRotatef(BlockUtils.getRotationFromDirection(tec.facing), 0, 1.0F, 0F);
 
@@ -75,47 +75,49 @@ public class CrateTESR extends TileEntitySpecialRenderer {
 
 			GL11.glPushMatrix();
 			if (!upOrDwn && !shouldFastRender()) GL11.glTranslatef(0, 0, 0.0625F);
-			WorldRenderLib.renderItemIntoWorldCenteredAt(tec.cItem, !(rendMode == 0 || (rendMode == 1 && !upOrDwn)));
+			WorldRenderUtils.renderItemIntoWorldCenteredAt(tec.cItem, !(rendMode == 0 || (rendMode == 1 && !upOrDwn)));
 			GL11.glPopMatrix();
 
 			GL11.glPushMatrix();
-			if (upOrDwn){
-				GL11.glTranslatef(0F, 0.3125F*tec.facing.offsetY + 0.05625F, -0.001F);
-				GL11.glNormal3f(0.0F, 1.0F, 0.0F);
-				//GL11.glRotatef(-RenderManager.instance.playerViewY, 0.0F, 1.0F, 0.0F);
-				//GL11.glRotatef(RenderManager.instance.playerViewX, 1.0F, 0.0F, 0.0F);
-				GL11.glScalef(-0.0125F, -0.0125F, 0.0125F);
-				GL11.glDisable(GL11.GL_LIGHTING);
-				GL11.glDepthMask(false);
-				GL11.glEnable(GL11.GL_BLEND);
-				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-				Tessellator tessellator = Tessellator.instance;
-				byte b0 = 0;
-
-				GL11.glDisable(GL11.GL_TEXTURE_2D);
-				tessellator.startDrawingQuads();
-				int j = fr.getStringWidth(tec.contentString) / 2;
-				tessellator.setColorRGBA_F(0.0F, 0.0F, 0.0F, 0.5F);
-				tessellator.addVertex((double)(-j - 1), (double)(-1 + b0), 0.0D);
-				tessellator.addVertex((double)(-j - 1), (double)(8 + b0), 0.0D);
-				tessellator.addVertex((double)(j + 1), (double)(8 + b0), 0.0D);
-				tessellator.addVertex((double)(j + 1), (double)(-1 + b0), 0.0D);
-				tessellator.draw();
-				GL11.glEnable(GL11.GL_TEXTURE_2D);
-				fr.drawString(tec.contentString, -fr.getStringWidth(tec.contentString) / 2, b0, 553648127);
-				GL11.glDepthMask(true);
-				fr.drawString(tec.contentString, -fr.getStringWidth(tec.contentString) / 2, b0, -1);
-				GL11.glEnable(GL11.GL_LIGHTING);
-				GL11.glDisable(GL11.GL_BLEND);
-				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			} else {
-				GL11.glTranslatef(0, 0.4375F, 0);
-				GL11.glScalef(0.00926F, 0.00926F, 1F); //0.0625F/6.75F
-				GL11.glTranslatef(0, 3.5F, 0);
-
-				GL11.glRotatef(180, 0F, 0F, 1F);
-				GL11.glTranslatef(-fr.getStringWidth(tec.contentString)/2, 0, -0.001F);
-				fr.drawString(tec.contentString, 0, 0, 0);
+			if (tec.contentString.length() > 0) {
+				if (upOrDwn){
+					GL11.glTranslatef(0F, 0.3125F*tec.facing.offsetY + 0.05625F, -0.001F);
+					GL11.glNormal3f(0.0F, 1.0F, 0.0F);
+					//GL11.glRotatef(-RenderManager.instance.playerViewY, 0.0F, 1.0F, 0.0F);
+					//GL11.glRotatef(RenderManager.instance.playerViewX, 1.0F, 0.0F, 0.0F);
+					GL11.glScalef(-0.0125F, -0.0125F, 0.0125F);
+					GL11.glDisable(GL11.GL_LIGHTING);
+					GL11.glDepthMask(false);
+					GL11.glEnable(GL11.GL_BLEND);
+					GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+					Tessellator tessellator = Tessellator.instance;
+					byte b0 = 0;
+	
+					GL11.glDisable(GL11.GL_TEXTURE_2D);
+					tessellator.startDrawingQuads();
+					int j = fr.getStringWidth(tec.contentString) / 2;
+					tessellator.setColorRGBA_F(0.0F, 0.0F, 0.0F, 0.5F);
+					tessellator.addVertex((double)(-j - 1), (double)(-1 + b0), 0.0D);
+					tessellator.addVertex((double)(-j - 1), (double)(8 + b0), 0.0D);
+					tessellator.addVertex((double)(j + 1), (double)(8 + b0), 0.0D);
+					tessellator.addVertex((double)(j + 1), (double)(-1 + b0), 0.0D);
+					tessellator.draw();
+					GL11.glEnable(GL11.GL_TEXTURE_2D);
+					fr.drawString(tec.contentString, -fr.getStringWidth(tec.contentString) / 2, b0, 553648127);
+					GL11.glDepthMask(true);
+					fr.drawString(tec.contentString, -fr.getStringWidth(tec.contentString) / 2, b0, -1);
+					GL11.glEnable(GL11.GL_LIGHTING);
+					GL11.glDisable(GL11.GL_BLEND);
+					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+				} else {
+					GL11.glTranslatef(0, 0.4375F, 0);
+					GL11.glScalef(0.00926F, 0.00926F, 1F); //0.0625F/6.75F
+					GL11.glTranslatef(0, 3.5F, 0);
+	
+					GL11.glRotatef(180, 0F, 0F, 1F);
+					GL11.glTranslatef(-fr.getStringWidth(tec.contentString)/2, 0, -0.001F);
+					fr.drawString(tec.contentString, 0, 0, 0);
+				}
 			}
 			GL11.glPopMatrix();
 		}
