@@ -34,7 +34,7 @@ import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-@Mod(modid="Boxes", name="Boxes", dependencies="required-after:Forge@[6.5,)")
+@Mod(modid="Boxes", name="Boxes", dependencies="required-after:Forge@[6.5,); required-after:MLCore")
 @NetworkMod(clientSideRequired=true, serverSideRequired=false) //, channels={PacketHandler.defChan}, packetHandler=PacketHandler.class)
 public class Boxes {
 	
