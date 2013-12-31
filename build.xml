@@ -92,6 +92,18 @@
 		</copy>
 	</target>
 
+	<target name="loadMLCore" depends="initVersion">
+		<unzip dest="${build.env}/MLCore">
+			<fileset dir="${build.env}" includes="MLCore*.zip" />
+			<patternset>
+				<include name="src/**/*.java" />
+			</patternset>
+		</unzip>
+		<copy todir="${mcp.srcdir}" overwrite="true">
+			<fileset dir="${build.env}/MLCore/src" includes="**/*.java" />
+		</copy>
+	</target>
+	
 	<target name="merge" depends="initVersion">
 		<copy todir="${mcp.srcdir}" overwrite="true" verbose="true">
 			<fileset dir="${code.src.dir}" includes="**/*.java" />
@@ -117,7 +129,7 @@
 		</exec>
 	</target>
 
-	<target name="build" depends="clean,loadForge,instLibs,initVersion,merge,recompile,reobfuscate">
+	<target name="build" depends="clean,loadForge,loadMLCore,instLibs,initVersion,merge,recompile,reobfuscate">
 		<antcall target="writeversion" />
 		<antcall target="extract-built-jar"/>
 	</target>
