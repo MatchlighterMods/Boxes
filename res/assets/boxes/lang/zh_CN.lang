@@ -1,0 +1,15 @@
+itemGroup.boxes=盒子
+
+item.box.name=盒子
+item.cardboard.name=纸板
+
+block.safe.name=保险盒
+item.mechanism.combo.name=组合锁
+item.mechanism.key.name=钥匙锁
+item.mechanism.invalid.name=无效
+item.key.name=钥匙
+
+block.crate.name=货箱
+item.label.name=标签
+
+block.displaycase.name=展示柜
