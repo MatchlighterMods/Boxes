@@ -1,6 +1,8 @@
 package ml.boxes;
 
+import ml.boxes.api.ContentBlacklist;
 import ml.boxes.block.MetaType;
+import ml.boxes.integ.BoxesReflectionBlacklist;
 import ml.boxes.item.ItemType;
 import ml.boxes.network.packets.PacketDescribeCrate;
 import ml.boxes.network.packets.PacketDescribeDisplay;
@@ -88,13 +90,14 @@ public class Boxes {
 			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Registry.BlockMeta, 1, MetaType.Crate.ordinal()), "wsw", "scs", "wsw", 'w', "logWood", 's', "plankWood", 'c', Block.chest));
 		}
 		
-//		if (config.lockbox_allowCrafting) {
-//			GameRegistry.addRecipe(new RecipeSafe());
-//			GameRegistry.addRecipe(new RecipeKey(" m", "nm", "nm", 'n', Item.goldNugget, 'm', Item.ingotGold));
-//			GameRegistry.addRecipe(new RecipeComboMech());
-//		}
+		if (config.lockbox_allowCrafting) {
+			GameRegistry.addRecipe(new RecipeSafe());
+			GameRegistry.addRecipe(new RecipeKey(" m", "nm", "nm", 'n', Item.goldNugget, 'm', Item.ingotGold));
+			GameRegistry.addRecipe(new RecipeComboMech());
+		}
 		
 		initDungeonLoot();
+		initIntegration();
 		
 		proxy.load();
 	}
@@ -104,13 +107,17 @@ public class Boxes {
 
 	}
 	
-	public void initDungeonLoot(){
+	private void initDungeonLoot(){
 		if (config.allowCardboardDungeonSpawn)
 			ChestGenHooks.addItem(ChestGenHooks.DUNGEON_CHEST, new WeightedRandomChestContent(new ItemStack(Registry.ItemResources), 1, 3, 100));
 		if (config.allowCardboardBlackSmithSpawn)
 			ChestGenHooks.addItem(ChestGenHooks.VILLAGE_BLACKSMITH, new WeightedRandomChestContent(new ItemStack(Registry.ItemResources), 1, 5, 12));
 		
 		ChestGenHooks.addItem(ChestGenHooks.BONUS_CHEST, new WeightedRandomChestContent(new ItemStack(Registry.ItemResources), 1, 4, 7));
+	}
+	
+	private void initIntegration() {
+		ContentBlacklist.addFilter(ContentBlacklist.LIST_BOX, new BoxesReflectionBlacklist());
 	}
 	
 }
