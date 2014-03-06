@@ -12,12 +12,15 @@ import net.minecraft.item.ItemStack;
 public class BoxesReflectionBlacklist implements IItemFilter {
 
 	public static List<String> blClasses = new ArrayList<String>();
-	static {
+	static { // TODO Put these in the config file
 		// -- Backpacks Mod --//
 		blClasses.add("backpack.item.ItemBackpackBase");
 		
 		// -- ThermalExpansion Strongboxes --//
 		blClasses.add("thermalexpansion.block.strongbox.ItemBlockStrongbox");
+		
+		// -- ProjectRed Backpacks --//
+		blClasses.add("mrtjp.projectred.exploration.ItemBackpack");
 	}
 
 	private boolean reflectionItemCheck(Item itm, String clsName) {

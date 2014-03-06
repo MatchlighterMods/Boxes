@@ -78,7 +78,7 @@ public class WindowSafe extends Window {
 	
 	@Override
 	public void drawBackground() {
-		GL11.glTranslatef(this.getPosition().x, this.getPosition().y, 0);
+		GL11.glTranslatef(this.getLocalPosition().x, this.getLocalPosition().y, 0);
 		
 		bindTexture(bgRes);
 		//GuiRenderUtils.drawSlicedRect(0, 16, this.getSize().x, safeGrid.getSize().y+16, 0, 16, 178, 124, 8);
