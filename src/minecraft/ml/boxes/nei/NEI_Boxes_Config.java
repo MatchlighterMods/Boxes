@@ -22,7 +22,7 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 	public void loadConfig() {
 		Boxes.neiInstalled = true;
 
-		NEIHandler handler = new NEIHandler();
+		NEIContentTipHandler handler = new NEIContentTipHandler();
 		GuiContainerManager.addInputHandler(handler);
 		GuiContainerManager.addObjectHandler(handler);
 		GuiContainerManager.addDrawHandler(handler);
@@ -34,7 +34,7 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 			API.registerRecipeHandler(new ComboRecipeHandler());
 			API.registerUsageHandler(new ComboRecipeHandler());
 		}
-
+		
 		MultiItemRange mainRng = new MultiItemRange();
 		mainRng.add(Registry.ItemResources);
 		for (MetaType mt : MetaType.values()){
@@ -42,11 +42,11 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 				mainRng.add(new ItemStack(Registry.BlockMeta, 1, mt.ordinal()));
 			}
 		}
-		API.addSetRange("Boxes", mainRng);
+		API.addSetRange("Mod.Boxes", mainRng);
 		
 		MultiItemRange range = new MultiItemRange();
 		range.add(Registry.BlockBox);
-		API.addSetRange("Boxes.Boxes", range);
+		API.addSetRange("Mod.Boxes.Boxes", range);
 	}
 
 	@Override
@@ -58,8 +58,8 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 	public String getVersion() {
 		return "1.0";
 	}
-
-	private static class NEIHandler implements IContainerInputHandler, IContainerObjectHandler, IContainerDrawHandler{
+	
+	private static class NEIContentTipHandler implements IContainerInputHandler, IContainerObjectHandler, IContainerDrawHandler{
 
 		@Override
 		public boolean keyTyped(GuiContainer gui, char keyChar, int keyCode) {

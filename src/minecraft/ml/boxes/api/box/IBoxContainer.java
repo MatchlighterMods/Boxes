@@ -21,7 +21,7 @@ public interface IBoxContainer {
 	public Box getBox();
 	
 	/**
-	 * Eject am item if a bad item gets pumped in by a non-{@link IInventory}-respecting mod.
+	 * Eject an item if a bad item gets pumped in by a non-{@link IInventory}-respecting mod.
 	 * @param is
 	 */
 	public void ejectItem(ItemStack is);

@@ -9,6 +9,9 @@ public class BoxesConfig extends Config {
 	public BoxesConfig(Configuration fcfg) {
 		super(fcfg);
 	}
+	
+	@Category(comment="")
+	public String BOXES_CAT = "boxes";
 
 	public @Prop(category=Configuration.CATEGORY_BLOCK) int boxBlockID = 540;
 	public @Prop(category=Configuration.CATEGORY_BLOCK) int generalBlockID = 541;
