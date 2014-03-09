@@ -24,7 +24,7 @@ public abstract class ContentTip {
 
 	protected final Slot boxSlot;
 
-	protected Rectangle tipBounds = new Rectangle(0, 0, 0, 0);
+	public Rectangle tipBounds = new Rectangle(0, 0, 0, 0);
 	protected Rectangle gcBounds;
 	protected int hvrSltIndex;
 

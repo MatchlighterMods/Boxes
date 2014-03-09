@@ -4,6 +4,7 @@ import ml.boxes.Boxes;
 import ml.boxes.Registry;
 import ml.boxes.block.MetaType;
 import ml.boxes.client.ContentTipHandler;
+import ml.core.vec.Rectangle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Slot;
@@ -11,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import codechicken.nei.MultiItemRange;
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
+import codechicken.nei.api.INEIGuiAdapter;
 import codechicken.nei.forge.GuiContainerManager;
 import codechicken.nei.forge.IContainerDrawHandler;
 import codechicken.nei.forge.IContainerInputHandler;
@@ -26,6 +28,7 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 		GuiContainerManager.addInputHandler(handler);
 		GuiContainerManager.addObjectHandler(handler);
 		GuiContainerManager.addDrawHandler(handler);
+		API.registerNEIGuiHandler(handler);
 
 		API.registerRecipeHandler(new BoxesRecipeHandler());
 		API.registerUsageHandler(new BoxesRecipeHandler());
@@ -59,7 +62,7 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 		return "1.0";
 	}
 	
-	private static class NEIContentTipHandler implements IContainerInputHandler, IContainerObjectHandler, IContainerDrawHandler{
+	private static class NEIContentTipHandler extends INEIGuiAdapter implements IContainerInputHandler, IContainerObjectHandler, IContainerDrawHandler {
 
 		@Override
 		public boolean keyTyped(GuiContainer gui, char keyChar, int keyCode) {
@@ -170,5 +173,13 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 		@Override
 		public void renderSlotOverlay(GuiContainer gui, Slot slot) {}
 
+		@Override
+		public boolean hideItemPanelSlot(GuiContainer gui, int x, int y, int w,
+				int h) {
+			if (ContentTipHandler.openTip != null) {
+				return ContentTipHandler.openTip.tipBounds.intersects(new Rectangle(x, y, w, h));
+			}
+			return false;
+		}
 	}
 }

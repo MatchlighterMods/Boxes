@@ -3,6 +3,9 @@ package ml.boxes.integ;
 import java.util.ArrayList;
 import java.util.List;
 
+import scala.actors.threadpool.Arrays;
+
+import ml.boxes.Boxes;
 import ml.boxes.api.IItemFilter;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -12,15 +15,9 @@ import net.minecraft.item.ItemStack;
 public class BoxesReflectionBlacklist implements IItemFilter {
 
 	public static List<String> blClasses = new ArrayList<String>();
-	static { // TODO Put these in the config file
-		// -- Backpacks Mod --//
-		blClasses.add("backpack.item.ItemBackpackBase");
-		
-		// -- ThermalExpansion Strongboxes --//
-		blClasses.add("thermalexpansion.block.strongbox.ItemBlockStrongbox");
-		
-		// -- ProjectRed Backpacks --//
-		blClasses.add("mrtjp.projectred.exploration.ItemBackpack");
+	
+	public BoxesReflectionBlacklist() {
+		blClasses.addAll(Arrays.asList(Boxes.config.boxes_blacklist));
 	}
 
 	private boolean reflectionItemCheck(Item itm, String clsName) {
