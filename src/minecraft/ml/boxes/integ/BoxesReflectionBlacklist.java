@@ -1,9 +1,8 @@
 package ml.boxes.integ;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-
-import scala.actors.threadpool.Arrays;
 
 import ml.boxes.Boxes;
 import ml.boxes.api.IItemFilter;
@@ -18,6 +17,7 @@ public class BoxesReflectionBlacklist implements IItemFilter {
 	
 	public BoxesReflectionBlacklist() {
 		blClasses.addAll(Arrays.asList(Boxes.config.boxes_blacklist));
+		System.out.println(blClasses.size());
 	}
 
 	private boolean reflectionItemCheck(Item itm, String clsName) {
