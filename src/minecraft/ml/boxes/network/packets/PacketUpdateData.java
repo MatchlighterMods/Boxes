@@ -2,6 +2,7 @@ package ml.boxes.network.packets;
 
 import java.io.IOException;
 
+import ml.boxes.Boxes;
 import ml.boxes.tile.TileEntityAbstractBox;
 import ml.core.network.MLPacket;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,7 +16,7 @@ public class PacketUpdateData extends MLPacket {
 	public @data NBTTagCompound pktData;
 	
 	public PacketUpdateData(TileEntityAbstractBox te) {
-		super("Boxes");
+		super(Boxes.netChannel);
 
 		this.teb = te;
 		pktData = te.getBox().asNBTTag();

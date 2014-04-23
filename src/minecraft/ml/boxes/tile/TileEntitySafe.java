@@ -6,7 +6,6 @@ import ml.boxes.api.safe.ISafe;
 import ml.boxes.api.safe.SafeMechanism;
 import ml.boxes.network.packets.PacketDescribeSafe;
 import ml.boxes.tile.safe.MechRegistry;
-import ml.core.item.ItemUtils;
 import ml.core.item.StackUtils;
 import ml.core.tile.IRotatableTE;
 import ml.core.tile.TileEntityConnectable;
@@ -122,7 +121,10 @@ public class TileEntitySafe extends TileEntityConnectable implements ISafe, IEve
 
 	@Override
 	public void onConnect(boolean isMaster, TileEntityConnectable remote) {
-		
+		if (!isMaster) {
+			TileEntitySafe master = (TileEntitySafe)remote;
+			this.unlocked = master.unlocked;
+		}
 	}
 
 	@Override
@@ -136,7 +138,7 @@ public class TileEntitySafe extends TileEntityConnectable implements ISafe, IEve
 		}
 
 		float cangle = unlocked ? (users>0 ? 1F : 0.1F) : 0F;
-
+		
 		if (doorAng > cangle) {
 			if (doorAng == 1F && cangle == 0.1F){
 				// TODO Close sound
@@ -209,7 +211,7 @@ public class TileEntitySafe extends TileEntityConnectable implements ISafe, IEve
 				epl.sendChatToPlayer(ChatMessageComponent.createFromText("\u00A77\u00A7oThe door is blocked."));
 			}
 		} else {
-			//epl.sendChatToPlayer("\u00A77\u00A7oNever seen anyone open a safe from a side without a door.");
+			//epl.sendChatToPlayer("\u00A77\u00A7oYou need a drill to open a safe from the side!");
 		}
 		return true;
 	}
@@ -237,7 +239,7 @@ public class TileEntitySafe extends TileEntityConnectable implements ISafe, IEve
 	public void hostBroken() {
 		for (int i=0; i<this.inventory.getSizeInventory(); i++){
 			if (inventory.getStackInSlot(i) != null)
-				ItemUtils.dropItemIntoWorld(worldObj, xCoord, yCoord, zCoord, inventory.getStackInSlot(i));
+				StackUtils.dropStackIntoWorld(worldObj, xCoord, yCoord, zCoord, inventory.getStackInSlot(i));
 		}
 	}
 

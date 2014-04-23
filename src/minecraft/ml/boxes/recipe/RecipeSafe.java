@@ -2,12 +2,10 @@ package ml.boxes.recipe;
 
 import java.util.Arrays;
 
-import ml.boxes.Boxes;
 import ml.boxes.Registry;
 import ml.boxes.api.safe.SafeMechanism;
 import ml.boxes.block.MetaType;
 import ml.boxes.tile.safe.MechRegistry;
-import ml.core.item.ItemUtils;
 import ml.core.item.StackUtils;
 import ml.core.item.recipe.RecipeShapedVariable;
 import net.minecraft.inventory.InventoryCrafting;
@@ -23,19 +21,19 @@ public class RecipeSafe extends RecipeShapedVariable {
 	}
 
 	@Override
-	public boolean itemMatchesAt(int lx, int ly, ItemStack is) {
+	public boolean itemMatchesAt(int lx, int ly, ItemStack is, InventoryCrafting ic) {
 	
 		boolean steelOn = Arrays.asList(OreDictionary.getOreNames()).contains("ingotSteel");
 		if (lx==2 && ly==1) {
-			return (is!=null && MechRegistry.findMechForItem(is) != MechRegistry.fallback);
+			return (is!=null && MechRegistry.getMechForItem(is) != MechRegistry.fallback);
 		} else if ((ly==0 || ly==2) || lx==0) {
-			if (Boxes.config.lockbox_useSteel && steelOn) {
+			if (Registry.config.lockbox_useSteel && steelOn) {
 				return (OreDictionary.getOreID(is) == OreDictionary.getOreID("ingotSteel"));
 			} else {
-				return ItemUtils.checkItemEquals(Item.ingotIron, is);
+				return StackUtils.checkItemEquals(Item.ingotIron, is);
 			}
 		}
-		return super.itemMatchesAt(lx, ly, is);
+		return super.itemMatchesAt(lx, ly, is, ic);
 	}
 	
 	@Override
@@ -43,9 +41,9 @@ public class RecipeSafe extends RecipeShapedVariable {
 		ItemStack mechStack = inventorycrafting.getStackInRowAndColumn(2, 1);
 		ItemStack safeStack = new ItemStack(Registry.BlockMeta, 1, MetaType.Safe.meta);
 		
-		SafeMechanism sm = MechRegistry.findMechForItem(mechStack);
+		SafeMechanism sm = MechRegistry.getMechForItem(mechStack);
 		
-		NBTTagCompound mechTag = sm.mechDataFromItem(mechStack);
+		NBTTagCompound mechTag = sm.toMechData(mechStack);
 		NBTTagCompound safeTag = StackUtils.getStackTag(safeStack);
 		
 		safeTag.setString("mech_id", sm.getMechId());

@@ -2,7 +2,7 @@ package ml.boxes.network.packets;
 
 import java.io.IOException;
 
-import ml.boxes.network.PacketHandler;
+import ml.boxes.Boxes;
 import ml.boxes.tile.TileEntitySafe;
 import ml.boxes.tile.safe.MechRegistry;
 import ml.core.network.MLPacket;
@@ -23,7 +23,7 @@ public class PacketDescribeSafe extends MLPacket {
 	public @data NBTTagCompound mechData;
 	
 	public PacketDescribeSafe(TileEntitySafe tes) {
-		super(PacketHandler.defChan);
+		super(Boxes.netChannel);
 		
 		this.tes = tes;
 		this.facing = tes.facing;

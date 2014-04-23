@@ -2,10 +2,11 @@ package ml.boxes.tile.safe;
 
 import java.util.List;
 
+import ml.boxes.Registry;
 import ml.boxes.api.safe.ISafe;
 import ml.boxes.api.safe.SafeMechanism;
 import ml.boxes.item.ItemKey;
-import ml.boxes.item.ItemMechs;
+import ml.core.item.StackUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -13,7 +14,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class MechKey extends SafeMechanism {
-	
+
 	@Override
 	public String getMechId() {
 		return "ml.key";
@@ -21,22 +22,23 @@ public class MechKey extends SafeMechanism {
 	
 	@Override
 	public String getUnlocalizedMechName() {
-		return "item.mechanism.key";
+		return "mechanism.key";
 	}
 	
-	public static void addInfo(NBTTagCompound mechTag, List lst) {
+	@Override
+	public void addInfoForStack(NBTTagCompound mechTag, List lst) {
 		lst.add("Key Id: " + mechTag.getInteger("keyId"));
 	}
 	
 	@Override
 	public void addInfoForSafe(NBTTagCompound mechTag, List lst) {
-		addInfo(mechTag, lst);
+		addInfoForStack(mechTag, lst);
 	}
 	
 	@Override
 	public void beginUnlock(ISafe safe, EntityPlayer epl) {
 		ItemStack is = epl.getHeldItem();
-		if (is.getItem() instanceof ItemKey && is.getItemDamage() == safe.getMechTag().getInteger("keyId")) {
+		if (is.getItem() instanceof ItemKey && StackUtils.getTag(is, -1, "key_id") == safe.getMechTag().getInteger("keyId")) {
 			safe.doUnlock();
 		}
 	}
@@ -57,16 +59,15 @@ public class MechKey extends SafeMechanism {
 	public NBTTagCompound writeNBTPacket(ISafe safe) {
 		return new NBTTagCompound();
 	}
-	
+
 	@Override
-	public boolean itemMatches(ItemStack itm) {
-		return (itm.getItem() instanceof ItemMechs && itm.getItemDamage() == ItemMechs.MECH_KEY_META);
+	public boolean stackIsMech(ItemStack itm) {
+		return itm.getItem() == Registry.itemMechKey;
 	}
 
 	@Override
-	public ItemStack itemFromMech(NBTTagCompound mechData) {
-		// TODO Auto-generated method stub
-		return null;
+	public ItemStack toItemStack(NBTTagCompound mechData) {
+		return StackUtils.create(Registry.itemMechKey, 1, 0, mechData);
 	}
 
 }

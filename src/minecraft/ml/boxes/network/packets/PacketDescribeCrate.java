@@ -2,6 +2,7 @@ package ml.boxes.network.packets;
 
 import java.io.IOException;
 
+import ml.boxes.Boxes;
 import ml.boxes.tile.TileEntityCrate;
 import ml.core.network.MLPacket;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,7 +22,7 @@ public class PacketDescribeCrate extends MLPacket {
 	public @data boolean upg_label;
 	
 	public PacketDescribeCrate(TileEntityCrate tec) {
-		super("Boxes");
+		super(Boxes.netChannel);
 		
 		this.tec = tec;
 		this.facing = tec.facing;

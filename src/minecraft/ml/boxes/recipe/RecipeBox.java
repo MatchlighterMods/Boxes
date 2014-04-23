@@ -3,37 +3,20 @@ package ml.boxes.recipe;
 import ml.boxes.Registry;
 import ml.boxes.data.ItemBoxContainer;
 import ml.boxes.item.ItemBox;
-import ml.core.item.ItemUtils;
+import ml.boxes.item.ItemType;
+import ml.core.item.recipe.CRecipeShapedBase.AutoNEI;
+import ml.core.item.recipe.ShapedRecipe;
+import ml.core.util.DyeUtils;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.world.World;
-import net.minecraftforge.oredict.OreDictionary;
 
-public class RecipeBox implements IRecipe {
-
-	private ItemStack currentOut;
+@AutoNEI
+public class RecipeBox extends ShapedRecipe implements IRecipe {
 
 	public RecipeBox() {
-
-	}
-
-	private ItemStack cb = new ItemStack(Registry.ItemResources);
-	@Override
-	public boolean matches(InventoryCrafting inv, World world){
-		
-		for (int i : new int[]{0,1,2, 3,5, 6,7,8}){
-			if (!ItemUtils.checkItemEquals(cb, inv.getStackInSlot(i)))
-				return false;
-		}
-		
-		int oId = OreDictionary.getOreID(inv.getStackInSlot(4));
-		if (oId == -1 || !OreDictionary.getOreName(oId).startsWith("dye", 0)){
-			return false;
-		}
-
-		return true;
+		super(new ItemStack(Registry.BlockBox), "ccc", "cdc", "ccc", 'c', ItemType.ISFromType(ItemType.Cardboard, 1), 'd', DyeUtils.getAllDyeStacks());
 	}
 
 	@Override
@@ -41,22 +24,12 @@ public class RecipeBox implements IRecipe {
 		ItemStack is = new ItemStack(Registry.BlockBox, 1);
 		ItemBoxContainer iib = new ItemBoxContainer(is);
 		
-		int dyeId = ItemUtils.getVanillaColorId(var1.getStackInRowAndColumn(1, 1));
+		int dyeId = DyeUtils.getVanillaColorId(var1.getStackInRowAndColumn(1, 1));
 		iib.getBox().boxName = ItemBox.getColoredBoxName(dyeId);
 		iib.getBox().boxColor = ItemDye.dyeColors[dyeId];
 
 		iib.saveData();
 
 		return is;
-	}
-
-	@Override
-	public int getRecipeSize() {
-		return 9;
-	}
-
-	@Override
-	public ItemStack getRecipeOutput() {
-		return new ItemStack(Registry.BlockBox, 1, 0);
 	}
 }

@@ -1,5 +1,7 @@
 package ml.boxes.item;
 
+import java.util.List;
+
 import ml.core.item.StackUtils;
 import ml.core.util.RandomUtils;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -7,6 +9,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 
@@ -18,7 +21,6 @@ public class ItemKey extends Item {
 	public ItemKey(int par1) {
 		super(par1);
 		setUnlocalizedName("key");
-		setHasSubtypes(true);
 		setMaxStackSize(1);
 	}
 
@@ -33,8 +35,7 @@ public class ItemKey extends Item {
 	}
 	
 	@Override
-	public void onCreated(ItemStack par1ItemStack, World par2World,
-			EntityPlayer par3EntityPlayer) {
+	public void onCreated(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
 		if (par2World.isRemote) return;
 		checkIDd(par1ItemStack);
 	}
@@ -46,8 +47,13 @@ public class ItemKey extends Item {
 	}
 	
 	public static void checkIDd(ItemStack is) {
-		if (is.getItemDamage() == 0)
-			is.setItemDamage(RandomUtils.randomInt(1, 32000));
+		if (!StackUtils.hasTagAt(is, "key_id"))
+			StackUtils.setTag(is, RandomUtils.randomInt(1, 32000), "key_id");
+	}
+	
+	@Override
+	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List lst, boolean par4) {
+		lst.add("Id: " + EnumChatFormatting.WHITE + StackUtils.getTag(par1ItemStack, (EnumChatFormatting.DARK_RED.toString() + EnumChatFormatting.ITALIC.toString() + "Invalid"), "key_id"));
 	}
 	
 	@Override
@@ -58,11 +64,11 @@ public class ItemKey extends Item {
 	
 	@Override
 	public Icon getIcon(ItemStack stack, int pass) {
-		return (pass>0 && StackUtils.hasTagAt(stack, "display", "color")) ? keyColorIcon : keyIcon;
+		return (pass>0 && StackUtils.hasTagAt(stack, "color")) ? keyColorIcon : keyIcon;
 	}
 	
 	@Override
 	public int getColorFromItemStack(ItemStack stack, int pass) {
-		return (pass>0 && StackUtils.hasTagAt(stack, "display", "color")) ? StackUtils.getTag(stack, 0x000000, "display", "color") : 0xFFFFFF;
+		return (pass>0 && StackUtils.hasTagAt(stack, "color")) ? StackUtils.getTag(stack, 0x000000, "color") : 0xFFFFFF;
 	}
 }

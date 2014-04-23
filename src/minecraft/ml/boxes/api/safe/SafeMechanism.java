@@ -2,7 +2,6 @@ package ml.boxes.api.safe;
 
 import java.util.List;
 
-import ml.core.item.StackUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -19,6 +18,8 @@ public abstract class SafeMechanism {
 	public String getLocalizedName() {
 		return StatCollector.translateToLocal(getUnlocalizedMechName()+".name");
 	}
+	
+	public void addInfoForStack(NBTTagCompound mechTag, List lst) {}
 
 	public void addInfoForSafe(NBTTagCompound mechTag, List lst) {}
 	
@@ -49,19 +50,19 @@ public abstract class SafeMechanism {
 	/**
 	 * Determines if the passed item maps to this mechanism.
 	 */
-	public abstract boolean itemMatches(ItemStack itm);
+	public abstract boolean stackIsMech(ItemStack itm);
 	
 	/**
 	 * @return NBT data that should be copied from the Mech stack to the safe
 	 */
-	public NBTTagCompound mechDataFromItem(ItemStack itm) {
-		return StackUtils.getStackTag(itm);
+	public NBTTagCompound toMechData(ItemStack itm) {
+		return itm.hasTagCompound() ? itm.getTagCompound() : new NBTTagCompound();
 	}
 	
 	/**
 	 * @return Should return the mechanism in Item form.
 	 */
-	public abstract ItemStack itemFromMech(NBTTagCompound mechData);
+	public abstract ItemStack toItemStack(NBTTagCompound mechData);
 	
 	/**
 	 * Render any additions to the safe.

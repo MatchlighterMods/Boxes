@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import ml.boxes.Boxes;
+import ml.boxes.Registry;
 import ml.boxes.api.IItemFilter;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -16,8 +16,7 @@ public class BoxesReflectionBlacklist implements IItemFilter {
 	public static List<String> blClasses = new ArrayList<String>();
 	
 	public BoxesReflectionBlacklist() {
-		blClasses.addAll(Arrays.asList(Boxes.config.boxes_blacklist));
-		System.out.println(blClasses.size());
+		blClasses.addAll(Arrays.asList(Registry.config.boxes_blacklist));
 	}
 
 	private boolean reflectionItemCheck(Item itm, String clsName) {

@@ -2,7 +2,7 @@ package ml.boxes.network.packets;
 
 import java.io.IOException;
 
-import ml.boxes.network.PacketHandler;
+import ml.boxes.Boxes;
 import ml.boxes.tile.TileEntityDisplayCase;
 import ml.core.network.MLPacket;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,7 +24,7 @@ public class PacketDescribeDisplay extends MLPacket {
 	}	
 	
 	public PacketDescribeDisplay(TileEntityDisplayCase te) {
-		super(PacketHandler.defChan);
+		super(Boxes.netChannel);
 		
 		this.tedc = te;
 		this.facing = te.facing;

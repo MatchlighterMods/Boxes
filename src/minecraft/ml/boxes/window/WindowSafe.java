@@ -10,16 +10,18 @@ import ml.core.gui.controls.inventory.ControlSlot;
 import ml.core.gui.controls.inventory.ControlSlotGrid;
 import ml.core.gui.controls.tabs.ControlTabManager;
 import ml.core.gui.controls.tabs.ControlTabManager.GuiTab;
+import ml.core.gui.core.SlotCycler;
 import ml.core.gui.core.Window;
 import ml.core.gui.event.EventGuiClosing;
-import ml.core.gui.event.EventMouseDown;
 import ml.core.gui.event.GuiEvent;
+import ml.core.gui.event.mouse.EventMouseDown;
 import ml.core.texture.maps.BasicCustomTextureMap;
 import ml.core.vec.Vector2i;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryLargeChest;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
@@ -33,6 +35,7 @@ public class WindowSafe extends Window {
 	public IInventory sinv;
 	protected ControlPlayerInventory playerGrid;
 	protected ControlSlotGrid safeGrid;
+	protected SlotCycler scycler;
 	
 	protected static ResourceLocation bgRes = new ResourceLocation("Boxes:textures/gui/safeGui_lg.png");
 	
@@ -61,6 +64,7 @@ public class WindowSafe extends Window {
 				return cs;
 			}
 		};
+		scycler = new SlotCycler(playerGrid, safeGrid);
 	}
 	
 	@Override
@@ -88,6 +92,12 @@ public class WindowSafe extends Window {
 		
 		bindStyleTexture("window");
 		GuiRenderUtils.drawSlicedRect(0,this.getSize().y-16-playerGrid.getSize().y, this.getSize().x, playerGrid.getSize().y+16, 0, 0, 256, 256, 6);
+	}
+	
+	@Override
+	public ItemStack transferStackFromSlot(EntityPlayer epl, Slot slot) {
+		scycler.tryCycleSlot(slot);
+		return null;
 	}
 	
 	protected class TabLock extends GuiTab {

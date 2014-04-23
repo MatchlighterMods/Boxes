@@ -1,6 +1,5 @@
 package ml.boxes.client.render.tile;
 
-import ml.boxes.Boxes;
 import ml.boxes.Registry;
 import ml.boxes.block.BlockMeta;
 import ml.boxes.tile.TileEntityCrate;
@@ -35,7 +34,7 @@ public class CrateTESR extends TileEntitySpecialRenderer {
 	public static CrateTESR INSTANCE = new CrateTESR();
 	
 	public static boolean shouldFastRender() {
-		return Boxes.config.crate_RenderMode !=2 && (!Minecraft.isFancyGraphicsEnabled() || Boxes.config.crate_RenderMode==1);
+		return Registry.config.crate_RenderMode !=2 && (!Minecraft.isFancyGraphicsEnabled() || Registry.config.crate_RenderMode==1);
 	}
 
 	@Override
@@ -66,7 +65,7 @@ public class CrateTESR extends TileEntitySpecialRenderer {
 			boolean isBlock = tec.cItem.getItem() instanceof ItemBlock;
 			boolean upOrDwn = tec.facing == ForgeDirection.UP || tec.facing == ForgeDirection.DOWN;
 
-			int rendMode = isBlock ? Boxes.config.crate_BlockRenderMode : Boxes.config.crate_ItemRenderMode;
+			int rendMode = isBlock ? Registry.config.crate_BlockRenderMode : Registry.config.crate_ItemRenderMode;
 
 			FontRenderer fr = getFontRenderer();
 			if (upOrDwn){

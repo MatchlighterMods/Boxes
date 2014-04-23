@@ -53,6 +53,7 @@ public class GridContentTip extends ContentTip {
 
 			ItemStack is = contentStacks.get(i);
 			mc.getTextureManager().bindTexture(tipBgRes);
+			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GuiRenderUtils.drawTexturedModalRect(slotX-1, slotY-1, 0, 106, 18, 18);
 
 			GuiRenderUtils.drawStackAt(mc, slotX, slotY, is);

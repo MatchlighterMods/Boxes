@@ -23,6 +23,6 @@ public enum ItemType {
 	}
 	
 	public static ItemStack ISFromType(ItemType it, int stackSize){
-		return new ItemStack(Registry.ItemResources, stackSize, it.ordinal());
+		return new ItemStack(Registry.itemResources, stackSize, it.ordinal());
 	}
 }

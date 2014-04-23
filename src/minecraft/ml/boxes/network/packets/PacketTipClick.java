@@ -2,6 +2,7 @@ package ml.boxes.network.packets;
 
 import java.io.IOException;
 
+import ml.boxes.Boxes;
 import ml.boxes.data.ItemBoxContainer;
 import ml.boxes.inventory.ContentTip;
 import ml.boxes.item.ItemBox;
@@ -20,7 +21,7 @@ public class PacketTipClick extends MLPacket {
 	public @data int action;
 
 	public PacketTipClick(EntityPlayer pl, int slotWithBox, int slotInBox, int arg, int action) {
-		super("Boxes");
+		super(Boxes.netChannel);
 		chunkDataPacket = false;
 		
 		inventorySlot = slotWithBox;

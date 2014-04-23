@@ -3,6 +3,7 @@ package ml.boxes.client;
 import java.util.EnumSet;
 
 import ml.boxes.Boxes;
+import ml.boxes.Registry;
 import ml.boxes.client.gui.GuiBox;
 import ml.boxes.data.Box;
 import ml.boxes.data.ItemBoxContainer;
@@ -15,7 +16,6 @@ import ml.core.vec.Vector2i;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 
 import org.lwjgl.opengl.GL11;
@@ -83,8 +83,9 @@ public class ContentTipHandler implements ITickHandler {
 					Slot slt = asGuiContainer.getSlotAtPosition(m.x, m.y); //(Slot)objSlt;
 					//if (GeoMath.pointInRect(m.x, m.y, gcBounds.xCoord + slt.xDisplayPosition, gcBounds.yCoord + slt.yDisplayPosition, 16, 16)){
 						thoverSlot = true;
-						if (hoverSlot != slt)
+						if (hoverSlot != slt) {
 							tickerTime = Minecraft.getSystemTime();
+						}
 						hoverSlot = slt;
 					//}
 				//}
@@ -95,8 +96,8 @@ public class ContentTipHandler implements ITickHandler {
 			if (hoverSlot != null &&
 					hoverSlot.getHasStack() &&
 					(hoverSlot.getStack().getItem() instanceof ItemBox) &&
-					(!Boxes.config.shiftForTip || GuiScreen.isShiftKeyDown()) &&
-					(Minecraft.getSystemTime() - tickerTime > Boxes.config.tipReactionTime || GuiScreen.isShiftKeyDown()) &&
+					(!Registry.config.shiftForTip || GuiScreen.isShiftKeyDown()) &&
+					(Minecraft.getSystemTime() - tickerTime > Registry.config.tipReactionTime || GuiScreen.isShiftKeyDown()) &&
 					!(asGuiContainer instanceof GuiBox && ((ContainerBox)asGuiContainer.inventorySlots).box instanceof ItemBoxContainer && mc.thePlayer.inventory.currentItem == hoverSlot.getSlotIndex()) && //((ItemIBox)((ContainerBox)asGuiContainer.inventorySlots).box).stack == hoverSlot.getStack()
 					openTip == null
 					)
@@ -124,7 +125,7 @@ public class ContentTipHandler implements ITickHandler {
 	}
 	
 	public static boolean canBeInteractive(Minecraft mc){
-		return (Boxes.neiInstalled && GuiScreen.isShiftKeyDown() && hoverSlot.inventory instanceof InventoryPlayer);
+		return (Boxes.neiInstalled && GuiScreen.isShiftKeyDown()); // && hoverSlot.inventory instanceof InventoryPlayer);
 	}
 
 	private static ItemBoxContainer getItemIBox(){

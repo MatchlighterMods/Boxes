@@ -1,6 +1,6 @@
 package ml.boxes.tile;
 
-import ml.boxes.Boxes;
+import ml.boxes.Registry;
 import ml.boxes.data.Box;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -45,7 +45,7 @@ public class TileEntityBox extends TileEntityAbstractBox {
 		
 		super.updateEntity();
 		if ((++syncTime % 20) == 0)
-			worldObj.addBlockEvent(xCoord, yCoord, zCoord, Boxes.config.boxBlockID, 2, facing.ordinal());
+			worldObj.addBlockEvent(xCoord, yCoord, zCoord, Registry.config.boxBlockID, 2, facing.ordinal());
 		
 		prevAngleOuter = flapAngleOuter;
 		prevAngleInner = flapAngleInner;
@@ -107,13 +107,13 @@ public class TileEntityBox extends TileEntityAbstractBox {
 	@Override
 	public void openChest() {
 		users++;
-		worldObj.addBlockEvent(xCoord, yCoord, zCoord, Boxes.config.boxBlockID, 1, users);
+		worldObj.addBlockEvent(xCoord, yCoord, zCoord, Registry.config.boxBlockID, 1, users);
 	}
 
 	@Override
 	public void closeChest() {
 		users--;
-		worldObj.addBlockEvent(xCoord, yCoord, zCoord, Boxes.config.boxBlockID, 1, users);
+		worldObj.addBlockEvent(xCoord, yCoord, zCoord, Registry.config.boxBlockID, 1, users);
 	}
 
 	@Override

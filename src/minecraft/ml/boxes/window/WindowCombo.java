@@ -1,8 +1,10 @@
 package ml.boxes.window;
 
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
+import java.util.ArrayList;
+import java.util.List;
 
+import ml.boxes.network.packets.PacketComboEntered;
+import ml.boxes.tile.TileEntitySafe;
 import ml.core.gui.GuiRenderUtils;
 import ml.core.gui.controls.GuiControl;
 import ml.core.gui.controls.button.ControlButton;
@@ -10,29 +12,44 @@ import ml.core.gui.core.GuiElement;
 import ml.core.gui.core.Window;
 import ml.core.gui.event.EventButtonPressed;
 import ml.core.gui.event.EventKeyPressed;
-import ml.core.gui.event.EventMouseDown;
-import ml.core.gui.event.EventMouseMove;
-import ml.core.gui.event.EventMouseUp;
 import ml.core.gui.event.GuiEvent;
+import ml.core.gui.event.mouse.EventMouseDown;
+import ml.core.gui.event.mouse.EventMouseMove;
+import ml.core.gui.event.mouse.EventMouseScroll;
+import ml.core.gui.event.mouse.EventMouseUp;
 import ml.core.vec.Vector2i;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemDye;
+import net.minecraft.item.ItemStack;
+
+import org.apache.commons.lang3.StringUtils;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
+
+import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class WindowCombo extends Window {
 	
-	public WindowCombo(EntityPlayer epl, Side side) {
+	public TileEntitySafe tes;
+	public List<ControlWheel> wheels = new ArrayList<WindowCombo.ControlWheel>();
+	public ControlButton unlockBtn;
+	
+	public WindowCombo(EntityPlayer epl, Side side, TileEntitySafe tes) {
 		super(epl, side);
-		
-		setSize(96, 72);
+		setSize(96, 96);
+		this.tes = tes;
 	}
 
 	@Override
 	public void initControls() {
-		new ControlWheel(this, new Vector2i(12, 4));
-		new ControlWheel(this, new Vector2i(38, 4));
-		new ControlWheel(this, new Vector2i(64, 4));
+		wheels.clear();
+		wheels.add(new ControlWheel(this, new Vector2i(12, 4)));
+		wheels.add(new ControlWheel(this, new Vector2i(38, 4)));
+		wheels.add(new ControlWheel(this, new Vector2i(64, 4)));
+		unlockBtn = new ControlButton(this, new Vector2i(12, 72), new Vector2i(72,20), "Unlock");
 	}
 
 	@Override
@@ -42,12 +59,20 @@ public class WindowCombo extends Window {
 
 	@Override
 	public void handleEvent(GuiEvent evt) {
-		if (evt instanceof EventKeyPressed) {
-			EventKeyPressed ekp = (EventKeyPressed)evt;
-			if (ekp.key == Keyboard.KEY_RETURN) {
-				//TODO Send Unlock Packet
+		if ((evt instanceof EventKeyPressed && ((EventKeyPressed)evt).key == Keyboard.KEY_RETURN) ||
+				(evt instanceof EventButtonPressed && evt.origin == unlockBtn)) {
+			ArrayList<Integer> combo = new ArrayList<Integer>();
+			for (ControlWheel cw : wheels) {
+				combo.add(cw.value);
 			}
+			close();
+			PacketDispatcher.sendPacketToServer(new PacketComboEntered(player, tes, StringUtils.join(combo, "-")).convertToPkt250());
 		}
+	}
+	
+	@Override
+	public ItemStack transferStackFromSlot(EntityPlayer epl, Slot slot) {
+		return null;
 	}
 	
 	public static class ControlWheel extends GuiControl {
@@ -127,6 +152,8 @@ public class WindowCombo extends Window {
 			} else if (evt instanceof EventMouseUp) {
 				bdir = 0;
 				dragStart = null;
+			} else if (evt instanceof EventMouseScroll && evt.origin == this) {
+				value += ((EventMouseScroll)evt).scrollDelta > 0 ? 1 : -1;
 			}
 			value %= 16;
 			while (value < 0) value += 16;

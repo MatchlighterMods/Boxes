@@ -29,17 +29,9 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 		GuiContainerManager.addObjectHandler(handler);
 		GuiContainerManager.addDrawHandler(handler);
 		API.registerNEIGuiHandler(handler);
-
-		API.registerRecipeHandler(new BoxesRecipeHandler());
-		API.registerUsageHandler(new BoxesRecipeHandler());
-		
-		if (Boxes.config.lockbox_allowCrafting) {
-			API.registerRecipeHandler(new ComboRecipeHandler());
-			API.registerUsageHandler(new ComboRecipeHandler());
-		}
 		
 		MultiItemRange mainRng = new MultiItemRange();
-		mainRng.add(Registry.ItemResources);
+		mainRng.add(Registry.itemResources);
 		for (MetaType mt : MetaType.values()){
 			if (!mt.hidden()){
 				mainRng.add(new ItemStack(Registry.BlockMeta, 1, mt.ordinal()));
@@ -92,32 +84,27 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 		}
 
 		@Override
-		public void onMouseClicked(GuiContainer gui, int mousex, int mousey,
-				int button) {
+		public void onMouseClicked(GuiContainer gui, int mousex, int mousey, int button) {
 
 		}
 
 		@Override
-		public void onMouseUp(GuiContainer gui, int mousex, int mousey,
-				int button) {
+		public void onMouseUp(GuiContainer gui, int mousex, int mousey, int button) {
 
 		}
 
 		@Override
-		public boolean mouseScrolled(GuiContainer gui, int mousex, int mousey,
-				int scrolled) {
+		public boolean mouseScrolled(GuiContainer gui, int mousex, int mousey, int scrolled) {
 			return false;
 		}
 
 		@Override
-		public void onMouseScrolled(GuiContainer gui, int mousex, int mousey,
-				int scrolled) {
+		public void onMouseScrolled(GuiContainer gui, int mousex, int mousey, int scrolled) {
 
 		}
 
 		@Override
-		public void onMouseDragged(GuiContainer gui, int mousex, int mousey,
-				int button, long heldTime) {
+		public void onMouseDragged(GuiContainer gui, int mousex, int mousey, int button, long heldTime) {
 
 		}
 
@@ -131,16 +118,16 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 		@Override
 		public void load(GuiContainer gui) {}
 
+		private boolean hideTips = false;
 		@Override
-		public ItemStack getStackUnderMouse(GuiContainer gui, int mousex,
-				int mousey) {
+		public ItemStack getStackUnderMouse(GuiContainer gui, int mousex, int mousey) {
+			
 			if (ContentTipHandler.revalidateCurrentTip(mousex, mousey)){
 				return ContentTipHandler.openTip.getStackAtPosition(mousex, mousey);
 			}
 			return null;
 		}
 
-		private boolean hideTips = false;
 		@Override
 		public boolean objectUnderMouse(GuiContainer gui, int mousex, int mousey) {
 			hideTips = ContentTipHandler.openTip != null
@@ -174,8 +161,7 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 		public void renderSlotOverlay(GuiContainer gui, Slot slot) {}
 
 		@Override
-		public boolean hideItemPanelSlot(GuiContainer gui, int x, int y, int w,
-				int h) {
+		public boolean hideItemPanelSlot(GuiContainer gui, int x, int y, int w, int h) {
 			if (ContentTipHandler.openTip != null) {
 				return ContentTipHandler.openTip.tipBounds.intersects(new Rectangle(x, y, w, h));
 			}

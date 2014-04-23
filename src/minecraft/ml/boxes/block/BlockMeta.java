@@ -1,5 +1,7 @@
 package ml.boxes.block;
 
+import java.util.ArrayList;
+
 import ml.boxes.Boxes;
 import ml.boxes.Registry;
 import ml.boxes.tile.IEventedTE;
@@ -7,6 +9,7 @@ import ml.boxes.tile.TileEntityCrate;
 import ml.boxes.tile.TileEntityDisplayCase;
 import ml.boxes.tile.TileEntitySafe;
 import ml.core.block.BlockUtils;
+import ml.core.item.StackUtils;
 import ml.core.tile.IRotatableTE;
 import ml.core.vec.Cuboid6;
 import net.minecraft.block.BlockContainer;
@@ -16,6 +19,7 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
@@ -114,6 +118,23 @@ public class BlockMeta extends BlockContainer {
 		}
 	}
 	
+	@Override
+	public ArrayList<ItemStack> getBlockDropped(World world, int x, int y, int z, int metadata, int fortune) {
+		ArrayList<ItemStack> drops = new ArrayList<ItemStack>();
+		TileEntity te = world.getBlockTileEntity(x, y, z);
+		
+		if (te instanceof TileEntitySafe) {
+			TileEntitySafe tes = (TileEntitySafe)te;
+			ItemStack is = new ItemStack(world.getBlockId(x, y, z), 1, metadata);
+			StackUtils.setTag(is, tes.mech_id, "mech_id");
+			StackUtils.setTag(is, tes.mechTag, "mech_data");
+			drops.add(is);
+			return drops;
+		}
+
+		return super.getBlockDropped(world, x, y, z, metadata, fortune);
+	}
+	
 	//Called after onBlockPlacedBy by ItemBoxBlocks
 	public void onBlockPlacedByFull(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata) {
 		TileEntity te = world.getBlockTileEntity(x, y, z);
@@ -155,7 +176,7 @@ public class BlockMeta extends BlockContainer {
 			return 0.05F;
 		case Safe:
 			if (te instanceof TileEntitySafe && ((TileEntitySafe)te).unlocked){
-				return 0.01F;
+				return 0.02F;
 			}
 			return 0F;
 		}
@@ -203,6 +224,25 @@ public class BlockMeta extends BlockContainer {
 	}
 	
 	@Override
+	// TE is null by this point, so we need to drop it sooner
+	public void harvestBlock(World par1World, EntityPlayer par2EntityPlayer, int par3, int par4, int par5, int par6) {}
+	
+	@Override
+	public boolean removeBlockByPlayer(World world, EntityPlayer player, int x, int y, int z) {
+		if (world.isRemote)
+			return true;
+		
+		int meta = world.getBlockMetadata(x, y, z);
+		if (!((EntityPlayerMP)player).theItemInWorldManager.isCreative()) {
+			for (ItemStack is : getBlockDropped(world, x, y, z, meta, 0)){
+				super.dropBlockAsItem_do(world, x, y, z, is);
+			}
+		}
+		world.setBlock(x, y, z, 0, 0, 3);
+		return true;
+	}
+	
+	@Override
 	public void registerIcons(IconRegister reg) {
 		
 		MetaType.Crate.icons.add(reg.registerIcon("Boxes:crate"));
@@ -216,9 +256,11 @@ public class BlockMeta extends BlockContainer {
 	
 	@Override
 	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
+		TileEntity te = world.getBlockTileEntity(x, y, z);
+		
 		switch (MetaType.fromMeta(world.getBlockMetadata(x, y, z))) {
 		case Crate:
-			TileEntityCrate tec = (TileEntityCrate)world.getBlockTileEntity(x, y, z);
+			TileEntityCrate tec = (TileEntityCrate)te;
 			if (!Minecraft.getMinecraft().thePlayer.isSneaking() && tec != null && tec.cItem != null) {
 				ItemStack pick = tec.cItem.copy();
 				pick.stackSize = 1;
@@ -226,7 +268,7 @@ public class BlockMeta extends BlockContainer {
 			}
 			break;
 		}
-		return super.getPickBlock(target, world, x, y, z);
+		return getBlockDropped(world, x, y, z, world.getBlockMetadata(x, y, z), 0).get(0);
 	}
 	
 	public ResourceLocation cFront = new ResourceLocation("Boxes:crate_front");

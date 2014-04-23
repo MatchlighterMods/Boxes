@@ -5,7 +5,7 @@ import ml.boxes.api.ContentBlacklist;
 import ml.boxes.network.packets.PacketDescribeCrate;
 import ml.core.PlayerUtils;
 import ml.core.block.BlockUtils;
-import ml.core.item.ItemUtils;
+import ml.core.item.StackUtils;
 import ml.core.tile.IRotatableTE;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -366,7 +366,7 @@ public class TileEntityCrate extends TileEntity implements ISidedInventory, IRot
 				ItemStack nis = stacks[0].copy();
 				nis.stackSize = Math.min(nis.getMaxStackSize(), titems);
 				titems -= nis.stackSize;
-				ItemUtils.dropItemIntoWorld(worldObj, xCoord, yCoord, zCoord, nis, 0.7F);
+				StackUtils.dropStackIntoWorld(worldObj, xCoord, yCoord, zCoord, nis, 0.7F);
 			}
 		}
 	}
@@ -377,7 +377,7 @@ public class TileEntityCrate extends TileEntity implements ISidedInventory, IRot
 	@Override
 	public boolean onAttemptUpgrade(EntityPlayer pl, ItemStack is, int side) {
 		if (is != null){
-			if (!upg_label && is.isItemEqual(new ItemStack(Registry.ItemResources, 1, 1))){
+			if (!upg_label && is.isItemEqual(new ItemStack(Registry.itemResources, 1, 1))){
 				is.stackSize -= 1;
 				upg_label = true;
 				sendPacket();

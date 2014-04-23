@@ -21,10 +21,15 @@ public class CommonProxy extends MLGuiHandler {
 	@Override
 	public TopParentGuiElement getTopElement(int ID, EntityPlayer player, World world, int x, int y, int z, Side side) {
 		
-		if (ID == 11 && world.getBlockTileEntity(x, y, z) instanceof TileEntitySafe) {
-			return new WindowSafe(player, side, (TileEntitySafe)world.getBlockTileEntity(x, y, z));
-		} else if (ID == 12) { //Mech: Combo
-			return new WindowCombo(player, side);
+		TileEntity te = world.getBlockTileEntity(x, y, z);
+		if (te instanceof TileEntitySafe) {
+			TileEntitySafe tes = (TileEntitySafe)te;
+			if (ID == 11 && te instanceof TileEntitySafe) {
+				return new WindowSafe(player, side, tes);
+				
+			} else if (ID == 12) { //Mech: Combo
+				return new WindowCombo(player, side, tes);
+			}
 		}
 		
 		return null;

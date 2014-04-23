@@ -4,14 +4,16 @@ import java.util.Arrays;
 import java.util.List;
 
 import ml.boxes.Boxes;
+import ml.boxes.Registry;
 import ml.boxes.api.safe.ISafe;
 import ml.boxes.api.safe.SafeMechanism;
 import ml.boxes.client.render.tile.SafeTESR;
-import ml.boxes.item.ItemMechs;
 import ml.core.ChatUtils;
+import ml.core.item.StackUtils;
 import ml.core.util.StringUtils;
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -33,29 +35,30 @@ public class MechCombo extends SafeMechanism {
 	
 	@Override
 	public String getUnlocalizedMechName() {
-		return "item.mechanism.combo";
+		return "mechanism.combo";
 	}
 	
-	public static void addInfo(NBTTagCompound mechTag, List infos) {
-		infos.add("Combination:");
+	@Override
+	public void addInfoForStack(NBTTagCompound mechTag, List lst) {
+		lst.add("Combination:");
 		int[] combo = mechTag.getIntArray(comboTagName);
 		String inf = "";
 		for (int i=0; i<combo.length; i++) {
 			int c = combo[i];
 			inf += " "+ChatUtils.getColorStringFromDye(c)+StringUtils.getLColorName(c);
 		}
-		infos.add(inf);
+		lst.add(inf);
 	}
 	
 	@Override
 	public void addInfoForSafe(NBTTagCompound mechTag, List lst) {
-		addInfo(mechTag, lst);
+		addInfoForStack(mechTag, lst);
 	}
 	
 	@Override
 	public NBTTagCompound writeNBTPacket(ISafe safe) {
 		NBTTagCompound tag = new NBTTagCompound();
-		tag.setIntArray("dispCombo", safe.getMechTag().getIntArray("dispCombo"));
+		tag.setIntArray("dispCombo", new int[]{4,8,3}); //safe.getMechTag().getIntArray(comboTagName)); //TODO Make Real
 		return tag;
 	}
 
@@ -77,32 +80,49 @@ public class MechCombo extends SafeMechanism {
 	public void render(NBTTagCompound mechTag, RenderPass pass, boolean stacked) {
 		switch(pass){
 		case SafeDoor:
-			GL11.glTranslatef(5F, stacked ? 16F:8F, 1F);
+			GL11.glTranslatef(5F, stacked ? 20F:8F, 0.75F);
+			GL11.glScalef(1.2F, 1.2F, 1.2F);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			
-			Minecraft.getMinecraft().renderEngine.bindTexture(SafeTESR.texDial);
+			Tessellator tessellator = Tessellator.instance;
 			SafeTESR.INSTANCE.sModel.renderPart("ComboBack");
 			int[] dispCombination = mechTag.getIntArray("dispCombo");
 			for (int i=0; i<dispCombination.length; i++){
 				GL11.glPushMatrix();
-				GL11.glTranslatef(-0.75F*(float)i, 0F, 0F);
-				GL11.glRotatef(-36*(dispCombination[i]), 1F, 0, 0);
-				SafeTESR.INSTANCE.sModel.renderPart("Wheel_Sides");
-				SafeTESR.INSTANCE.sModel.renderPart("Wheel_Num");
+				GL11.glTranslatef(-0.6F*(float)i, 0F, 0F);
+				SafeTESR.INSTANCE.sModel.renderPart("Combo_up");
+				SafeTESR.INSTANCE.sModel.renderPart("Combo_down");
+				
+				GL11.glDisable(GL11.GL_TEXTURE_2D);
+				
+				GL11.glTranslatef(-0.6F, 0, 0.01F);
+				tessellator.startDrawingQuads();
+				tessellator.setColorRGBA_I(ItemDye.dyeColors[dispCombination[i]], 255);
+				tessellator.addVertex(-0.5F,-0.25F,0);
+				tessellator.addVertex(-0.5F,0.25F,0);
+				tessellator.addVertex(0,0.25F,0);
+				tessellator.addVertex(0,-0.25F,0);
+				tessellator.draw();
+				
+				GL11.glEnable(GL11.GL_TEXTURE_2D);
+				
 				GL11.glPopMatrix();
 			}
 			break;
 		}
 	}
-
-	@Override
-	public boolean itemMatches(ItemStack itm) {
-		return (itm.getItem() instanceof ItemMechs && itm.getItemDamage() == ItemMechs.MECH_COMBO_META);
+	
+	public int[] getCombo(NBTTagCompound tag) {
+		return tag.getIntArray(MechCombo.comboTagName);
 	}
 
 	@Override
-	public ItemStack itemFromMech(NBTTagCompound mechData) {
-		// TODO Auto-generated method stub
-		return null;
+	public boolean stackIsMech(ItemStack itm) {
+		return itm.getItem() == Registry.itemMechCombination;
+	}
+
+	@Override
+	public ItemStack toItemStack(NBTTagCompound mechData) {
+		return StackUtils.create(Registry.itemMechCombination, 1, 0, mechData);
 	}
 }

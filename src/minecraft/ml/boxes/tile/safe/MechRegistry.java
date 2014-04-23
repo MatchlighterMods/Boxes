@@ -15,10 +15,11 @@ public class MechRegistry {
 	private static HashMap<String, SafeMechanism> mechs = new HashMap<String, SafeMechanism>();
 	public static MechFallback fallback = new MechFallback();
 	
-	public static boolean registerMech(String mechId, SafeMechanism smech) {
-		if (mechs.containsKey(mechId)) return false;
-		FMLLog.info("Registering SafeMechanism \"%s\"", mechId);
-		mechs.put(mechId, smech);
+	public static boolean registerMechansism(SafeMechanism smech) {
+		if (mechs.containsKey(smech.getMechId())) return false;
+		
+		FMLLog.info("Registering SafeMechanism \"%s\"", smech.getMechId());
+		mechs.put(smech.getMechId(), smech);
 		return true;
 	}
 	
@@ -28,10 +29,19 @@ public class MechRegistry {
 		return fallback;
 	}
 	
-	public static SafeMechanism findMechForItem(ItemStack itm) {
+	public static SafeMechanism getMechForItem(ItemStack itm) {
+		for (SafeMechanism safeMechanism : mechs.values()) {
+			if (safeMechanism.stackIsMech(itm))
+				return safeMechanism;
+		}
+		return fallback;
+	}
+	
+	public static SafeMechanism mechFromClass(Class clazz) {
 		for (SafeMechanism sm : mechs.values()) {
-			if (sm.itemMatches(itm))
+			if (clazz == sm.getClass()) {
 				return sm;
+			}
 		}
 		return fallback;
 	}

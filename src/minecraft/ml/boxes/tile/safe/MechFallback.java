@@ -25,7 +25,7 @@ public class MechFallback extends SafeMechanism {
 	
 	@Override
 	public String getUnlocalizedMechName() {
-		return "item.mechanism.invalid";
+		return "mechanism.invalid";
 	}
 	
 	@Override
@@ -57,12 +57,12 @@ public class MechFallback extends SafeMechanism {
 	}
 
 	@Override
-	public boolean itemMatches(ItemStack itm) {
+	public boolean stackIsMech(ItemStack itm) {
 		return false;
 	}
 
 	@Override
-	public ItemStack itemFromMech(NBTTagCompound mechData) {
+	public ItemStack toItemStack(NBTTagCompound mechData) {
 		return null;
 	}
 }

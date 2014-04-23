@@ -57,10 +57,15 @@ public class BlockBox extends BlockContainer {
 	}
 
 	@Override
-	public ItemStack getPickBlock(MovingObjectPosition target, World world,
-			int x, int y, int z) {
-		// TODO Correct PickBlock issues
-		return super.getPickBlock(target, world, x, y, z);
+	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
+		
+		ItemStack is = new ItemStack(world.getBlockId(x, y, z), 1, world.getBlockMetadata(x, y, z));
+		TileEntity te = world.getBlockTileEntity(x, y, z);
+		
+		if (te instanceof TileEntityAbstractBox){
+			ItemBox.saveBoxData(is, ((TileEntityAbstractBox)te).getBox());
+		}
+		return is;
 	}
 	
 	@Override
@@ -69,7 +74,7 @@ public class BlockBox extends BlockContainer {
 			float par8, float par9) {
 		
 		TileEntity te = par1World.getBlockTileEntity(x, y, z);
-		if (te == null || !(te instanceof TileEntityBox))
+		if (te == null || !(te instanceof TileEntityAbstractBox))
 			return true;
 		
 		if (par1World.isBlockSolidOnSide(x, y+1, z, ForgeDirection.DOWN))
@@ -104,7 +109,7 @@ public class BlockBox extends BlockContainer {
 		ItemStack is = new ItemStack(world.getBlockId(x, y, z), 1, metadata);
 		TileEntity te = world.getBlockTileEntity(x, y, z);
 		
-		if (te instanceof TileEntityBox){
+		if (te instanceof TileEntityAbstractBox){
 			ItemBox.saveBoxData(is, ((TileEntityAbstractBox)te).getBox());
 		}
 		iss.add(is);
