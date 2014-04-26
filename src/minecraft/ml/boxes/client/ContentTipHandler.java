@@ -27,6 +27,18 @@ import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+/* TODO Consider converting ContentTips to pre-registered objects; when an inventory is opened iterate over boxes and register tips.
+ * Pros:
+ * - Abstacts ContentTips
+ * - Allows for pinned tips
+ * - Each ContentTip is left in charge of its own logic
+ * 
+ * Cons:
+ * - Must keep track if a box is moved.
+ * --- Solution 1: NEI's ISlotClickHandler can do this for us, but preview tips won't be possible w/o NEI (Are preview tips used?)
+ * --- Solution 2: Iterate through Slots every tick. If one w/ Box isn't registered, call register. <---
+ * 
+ */
 @SideOnly(Side.CLIENT)
 public class ContentTipHandler implements ITickHandler {
 
