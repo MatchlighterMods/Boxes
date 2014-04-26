@@ -7,6 +7,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 
+/**
+ * This interface is to be implemented by Classes that contain a box. e.g. The box TileEntity.<br/>
+ * This class is in charge of (dumb) reading and writing of Box NBT data to file. i.e. It should NOT process data in any way besides saving and loading. 
+ * @author Matchlighter
+ */
 public interface IBoxContainer {
 
 	public void saveData();

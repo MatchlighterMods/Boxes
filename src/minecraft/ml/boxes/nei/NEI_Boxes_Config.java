@@ -29,7 +29,7 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 		GuiContainerManager.addObjectHandler(handler);
 		GuiContainerManager.addDrawHandler(handler);
 		API.registerNEIGuiHandler(handler);
-		
+
 		MultiItemRange mainRng = new MultiItemRange();
 		mainRng.add(Registry.itemResources);
 		for (MetaType mt : MetaType.values()){
@@ -38,7 +38,7 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 			}
 		}
 		API.addSetRange("Mod.Boxes", mainRng);
-		
+
 		MultiItemRange range = new MultiItemRange();
 		range.add(Registry.BlockBox);
 		API.addSetRange("Mod.Boxes.Boxes", range);
@@ -53,7 +53,7 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 	public String getVersion() {
 		return "1.0";
 	}
-	
+
 	private static class NEIContentTipHandler extends INEIGuiAdapter implements IContainerInputHandler, IContainerObjectHandler, IContainerDrawHandler {
 
 		@Override
@@ -121,7 +121,7 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 		private boolean hideTips = false;
 		@Override
 		public ItemStack getStackUnderMouse(GuiContainer gui, int mousex, int mousey) {
-			
+
 			if (ContentTipHandler.revalidateCurrentTip(mousex, mousey)){
 				return ContentTipHandler.openTip.getStackAtPosition(mousex, mousey);
 			}
@@ -130,8 +130,6 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 
 		@Override
 		public boolean objectUnderMouse(GuiContainer gui, int mousex, int mousey) {
-			hideTips = ContentTipHandler.openTip != null
-					&& ContentTipHandler.openTip.getStackAtPosition(mousex, mousey) == null;
 			return ContentTipHandler.openTip != null && ContentTipHandler.openTip.isPointInTip(mousex, mousey);
 		}
 
@@ -147,8 +145,10 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 		@Override
 		public void renderObjects(GuiContainer gui, int mousex, int mousey) {
 			Minecraft mc = Minecraft.getMinecraft();
-			if (ContentTipHandler.openTip != null)
+			if (ContentTipHandler.openTip != null) {
 				ContentTipHandler.renderContentTip(mc, mousex, mousey, 0);
+				hideTips = ContentTipHandler.openTip.getStackAtPosition(mousex, mousey) == null;
+			}
 		}
 
 		@Override
