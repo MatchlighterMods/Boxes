@@ -99,7 +99,6 @@
 	</target>
 
 	<target name="build" depends="clean,loadForge,loadMLCore,instLibs,merge,recompile,reobfuscate">
-		<antcall target="writeversion" />
 		<antcall target="extract-built-jar"/>
 	</target>
 
