@@ -16,7 +16,7 @@
   ],
   "parent":"",
   "dependencies": [
-	"required-after:MLCore@MLCORE_VERSION@"
+	"required-after:MLCore"
   ]
 }
 ]

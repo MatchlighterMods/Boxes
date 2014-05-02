@@ -2,16 +2,6 @@
 
 <project name="Boxes" default="build">
 	<description>Boxes</description>
-	<target name="writeversion" depends="buildenvsetup">
-		<exec executable="${python.exe}" dir="${build.env}" failonerror="true">
-			<arg value="${build.env}/getversion.py" />
-			<arg value="${mcp.home}" />
-		</exec>
-		<propertyfile file="version.properties">
-			<entry key="Boxes.build.number" type="int" value="${version.build}"/>
-			<entry key="Boxes.version" type="string" value="${version}"/>
-		</propertyfile>
-	</target>
 
 	<target name="buildenvsetup">
 		<tstamp>
@@ -51,37 +41,16 @@
 		<condition property="version.build" value="${env.BUILD_NUMBER}" else="1">
 			<isset property="env.BUILD_NUMBER" />
 		</condition>
-	</target>
-
-	<target name="initVersion" depends="buildenvsetup">
-		<antcall target="writeversion" />
+		
 		<property file="version.properties" />
-		<property name="build.number" value="${Boxes.build.major.number}.${Boxes.build.minor.number}.${Boxes.build.revision.number}" />
-		<property name="version.minecraft" value="${Boxes.build.mcversion}" />
-		<property name="version.major" value="${Boxes.build.major.number}" />
-		<property name="version.minor" value="${Boxes.build.minor.number}" />
-		<property name="version.rev" value="${Boxes.build.revision.number}" />
-		<property name="version.info" value="${Boxes.build.info}" />
 		<property name="version" value="${version.major}.${version.minor}.${version.rev}.${version.build}${version.info}" />
-		<antcall target="writeversion" />
 	</target>
 
 	<target name="clean" depends="buildenvsetup">
-		<!-- <exec executable="${python.exe}" dir="${mcp.home}">
-			<arg value="${mcp.home}/runtime/updatemd5.py" />
-			<arg value="-f" />
-		</exec>
-		
-		<delete verbose="true">
-			<fileset dir="${mcp.srcdir}">
-				<present present="both" targetdir="${code.src.dir}" />
-			</fileset>
-		</delete> -->
-		<mkdir dir="${build.dest}" />
-		<delete includeemptydirs="true">
+		<delete includeemptydirs="true" failonerror="false">
 			<fileset dir="${build.dest}"/>
 		</delete>
-		<delete includeemptydirs="true">
+		<delete includeemptydirs="true" failonerror="false">
 			<fileset dir="${forge.home}"/>
 		</delete>
 	</target>
@@ -92,7 +61,7 @@
 		</copy>
 	</target>
 
-	<target name="loadMLCore" depends="initVersion">
+	<target name="loadMLCore" depends="">
 		<unzip dest="${build.env}/MLCore">
 			<fileset dir="${build.env}" includes="MLCore*.zip" />
 			<patternset>
@@ -104,38 +73,38 @@
 		</copy>
 	</target>
 	
-	<target name="merge" depends="initVersion">
+	<target name="merge" depends="">
 		<copy todir="${mcp.srcdir}" overwrite="true" verbose="true">
 			<fileset dir="${code.src.dir}" includes="**/*.java" />
 		</copy>
 	</target>
 	
-	<target name="instLibs" depends="initVersion">
+	<target name="instLibs" depends="">
 		<copy todir="${mcp.lib}" overwrite="true" verbose="true">
 			<fileset dir="libs" includes="**/*" />
 		</copy>
 	</target>
 	
-	<target name="recompile" depends="initVersion">
+	<target name="recompile" depends="">
 		<exec executable="${python.exe}" dir="${mcp.home}" failonerror="true">
 			<arg value="${mcp.home}/runtime/recompile.py" />
 		</exec>
 	</target>
 
-	<target name="reobfuscate" depends="initVersion">
+	<target name="reobfuscate" depends="">
 		<exec executable="${python.exe}" dir="${mcp.home}">
 			<arg value="${mcp.home}/runtime/reobfuscate.py" />
 			<arg value="--srgnames"/>
 		</exec>
 	</target>
 
-	<target name="build" depends="clean,loadForge,loadMLCore,instLibs,initVersion,merge,recompile,reobfuscate">
+	<target name="build" depends="clean,loadForge,loadMLCore,instLibs,merge,recompile,reobfuscate">
 		<antcall target="writeversion" />
 		<antcall target="extract-built-jar"/>
 	</target>
 
 	<target name="extract-built-jar">
-		<property name="jarname" value="${modname}-${version.minecraft}-${version}" /> 
+		<property name="jarname" value="${modname}-${minecraft.version}-${version}" /> 
 		<mkdir dir="${build.dest}" />
 		<jar destfile="${build.dest}/${jarname}.jar">
 			<fileset dir="${mcp.obfoutput.classes}" includes="**/ml/boxes/**/*.class" />
@@ -144,7 +113,6 @@
 			
 			<fileset dir="${res.dir}" includes="**" />
 			
-			<zipfileset dir="${build.env}" includes="version.properties"/>
 			<mappedresources>
 				<concat>
 					<fileset dir="${build.env}" includes="mcmod.info" />
@@ -153,7 +121,7 @@
 							<token key="VERSION" value="${version}" />
 						</replacetokens>
 						<replacetokens>
-							<token key="MCVERSION" value="${version.minecraft}" />
+							<token key="MCVERSION" value="${minecraft.version}" />
 						</replacetokens>
 						<replacetokens>
 							<token key="MLCORE_VERSION" value="${MLCore.version}" />
@@ -170,7 +138,6 @@
 			
 			<fileset dir="${res.dir}" includes="**" />
 			
-			<zipfileset dir="${build.env}" includes="version.properties"/>
 			<mappedresources>
 				<concat>
 					<fileset dir="${build.env}" includes="mcmod.info" />
@@ -179,7 +146,7 @@
 							<token key="VERSION" value="${version}" />
 						</replacetokens>
 						<replacetokens>
-							<token key="MCVERSION" value="${version.minecraft}" />
+							<token key="MCVERSION" value="${minecraft.version}" />
 						</replacetokens>
 						<replacetokens>
 							<token key="MLCORE_VERSION" value="${MLCore.version}" />
