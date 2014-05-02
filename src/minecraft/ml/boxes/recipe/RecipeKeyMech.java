@@ -2,10 +2,12 @@ package ml.boxes.recipe;
 
 import ml.boxes.Registry;
 import ml.core.item.StackUtils;
+import ml.core.item.recipe.CRecipeShapedBase.AutoNEI;
 import ml.core.item.recipe.ShapedRecipe;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 
+@AutoNEI()
 public class RecipeKeyMech extends ShapedRecipe {
 
 	public RecipeKeyMech(Object... recipe) {

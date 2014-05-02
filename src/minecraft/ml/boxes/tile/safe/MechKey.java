@@ -61,6 +61,7 @@ public class MechKey extends SafeMechanism {
 			if (renderStack == null) {
 				renderStack = this.toItemStack(mech_data);
 			}
+			renderStack.setTagCompound(mech_data);
 			
 			GL11.glTranslatef(5F, stacked ? 20F:8F, 0.75F);
 			GL11.glScalef(12F, 12F, 12F);

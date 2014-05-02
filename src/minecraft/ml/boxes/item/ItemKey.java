@@ -47,8 +47,7 @@ public class ItemKey extends Item {
 	}
 	
 	@Override
-	public void onUpdate(ItemStack par1ItemStack, World par2World,
-			Entity par3Entity, int par4, boolean par5) {
+	public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5) {
 		checkIDd(par1ItemStack);
 	}
 	
@@ -59,8 +58,8 @@ public class ItemKey extends Item {
 	
 	@Override
 	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List lst, boolean par4) {
-		int key_id = StackUtils.getTag(par1ItemStack, 0, "key_id");
-		if (key_id > 0) {
+		int key_id = StackUtils.getTag(par1ItemStack, -1, "key_id");
+		if (key_id > -1) {
 			lst.add("Id: " + EnumChatFormatting.WHITE + key_id);
 		}
 	}
