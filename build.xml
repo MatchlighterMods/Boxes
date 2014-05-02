@@ -43,7 +43,7 @@
 		</condition>
 		
 		<property file="version.properties" />
-		<property name="version" value="${version.major}.${version.minor}.${version.rev}.${version.build}${version.info}" />
+		<property name="version" value="${boxes.version}.${version.build}" />
 	</target>
 
 	<target name="clean" depends="buildenvsetup">
