@@ -1,9 +1,5 @@
 package ml.boxes;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 import ml.boxes.api.safe.ItemMechanism;
 import ml.boxes.block.BlockBox;
 import ml.boxes.block.BlockMeta;
@@ -11,6 +7,8 @@ import ml.boxes.block.MetaType;
 import ml.boxes.item.ItemBox;
 import ml.boxes.item.ItemBoxBlocks;
 import ml.boxes.item.ItemKey;
+import ml.boxes.item.ItemMechCombo;
+import ml.boxes.item.ItemMechKey;
 import ml.boxes.item.ItemResources;
 import ml.boxes.item.ItemType;
 import ml.boxes.network.packets.PacketComboEntered;
@@ -22,6 +20,7 @@ import ml.boxes.network.packets.PacketUpdateData;
 import ml.boxes.recipe.RecipeBox;
 import ml.boxes.recipe.RecipeComboMech;
 import ml.boxes.recipe.RecipeKey;
+import ml.boxes.recipe.RecipeKeyMech;
 import ml.boxes.recipe.RecipeSafe;
 import ml.boxes.tile.TileEntityBox;
 import ml.boxes.tile.TileEntityCrate;
@@ -31,6 +30,11 @@ import ml.boxes.tile.safe.MechCombo;
 import ml.boxes.tile.safe.MechKey;
 import ml.boxes.tile.safe.MechRegistry;
 import ml.core.network.PacketHandler;
+import ml.core.util.DyeUtils;
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -55,7 +59,7 @@ public class Registry {
 	public static ItemResources itemResources;
 	public static ItemKey itemKey;
 	
-	public static ItemMechanism itemMechCombination;
+	public static ItemMechCombo itemMechCombination;
 	public static ItemMechanism itemMechKey;
 	
 	public static void registerItems() {
@@ -70,11 +74,11 @@ public class Registry {
 	
 	// SafeMechanisms //
 	public static void registerSafeMechs() {
-		itemMechCombination = new ItemMechanism(Registry.config.comboMechanismItemID-256, new MechCombo());
+		itemMechCombination = new ItemMechCombo(Registry.config.comboMechanismItemID-256, new MechCombo());
 		MechRegistry.registerMechansism(itemMechCombination.safeMechanism);
 		GameRegistry.registerItem(itemMechCombination, "comboMech");
 		
-		itemMechKey = new ItemMechanism(Registry.config.keyMechanismItemID-256, new MechKey());
+		itemMechKey = new ItemMechKey(Registry.config.keyMechanismItemID-256, new MechKey());
 		MechRegistry.registerMechansism(itemMechKey.safeMechanism);
 		GameRegistry.registerItem(itemMechKey, "keyMech");
 	}
@@ -118,7 +122,8 @@ public class Registry {
 			GameRegistry.addRecipe(new RecipeSafe());
 			GameRegistry.addRecipe(new RecipeKey(" m", "nm", "nm", 'n', Item.goldNugget, 'm', Item.ingotGold));
 			GameRegistry.addRecipe(new RecipeKey("k", 'k', itemKey));
-			GameRegistry.addRecipe(new RecipeComboMech());
+			GameRegistry.addRecipe(new RecipeComboMech("iii", "ddd", "iii", 'i', Item.ingotIron, 'd', DyeUtils.getAllDyeStacks()));
+			GameRegistry.addRecipe(new RecipeKeyMech("gkg", "n g", "n g", 'g', Item.ingotGold, 'n', Item.goldNugget, 'k', itemKey));
 		}
 	}
 	

@@ -45,16 +45,19 @@ public class RecipeKey extends RecipeMixed {
 
 	@Override
 	public ItemStack getCraftingResult(InventoryCrafting inventorycrafting) {
-		ItemStack keyStack = new ItemStack(Registry.itemKey);
+		
+		boolean modify = getRecipeSize() == 1;
 		
 		ItemStack dkey = InventoryUtils.findItem(inventorycrafting, Registry.itemKey);
+		ItemStack keyStack = modify ? dkey.copy() : new ItemStack(Registry.itemKey);
+		
 		if (dkey != null) {
 			StackUtils.setTag(keyStack, StackUtils.getTag(dkey, null, "key_id"), "key_id");
-		}
+		} else StackUtils.setTag(keyStack, 0, "key_id");
 		
 		List<ItemStack> dyes = InventoryUtils.findItems(inventorycrafting, Item.dyePowder);
 		if (dyes.size() > 0) {
-			StackUtils.setTag(keyStack, DyeUtils.mixDyeColors(dyes), "color");
+			StackUtils.setTag(keyStack, DyeUtils.mixDyeColors(StackUtils.getTag(keyStack, -1, "color"), dyes), "color");
 		}
 		
 		return keyStack;
