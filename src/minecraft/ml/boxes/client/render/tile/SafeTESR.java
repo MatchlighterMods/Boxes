@@ -50,7 +50,9 @@ public class SafeTESR extends TileEntitySpecialRenderer {
 			sModel.renderPart(renderTall ? "Safe_Tall":"Safe_Small");
 			if (renderTall) sModel.renderPart("Safe_Shelf");
 			
+			GL11.glPushMatrix();
 			tes.mech.render(tes.getMechTag(), RenderPass.SafeBody, renderTall);
+			GL11.glPopMatrix();
 			
 			this.bindTexture(texMain);
 			float doorAng1 = tes.prevDoorAng + (tes.doorAng-tes.prevDoorAng)*tickTime;

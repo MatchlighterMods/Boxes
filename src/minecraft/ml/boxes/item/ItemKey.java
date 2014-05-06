@@ -20,8 +20,14 @@ public class ItemKey extends Item {
 	
 	public ItemKey(int par1) {
 		super(par1);
+		setContainerItem(this);
 		setUnlocalizedName("key");
 		setMaxStackSize(1);
+	}
+	
+	@Override
+	public ItemStack getContainerItemStack(ItemStack itemStack) {
+		return itemStack;
 	}
 
 	@Override
@@ -41,8 +47,7 @@ public class ItemKey extends Item {
 	}
 	
 	@Override
-	public void onUpdate(ItemStack par1ItemStack, World par2World,
-			Entity par3Entity, int par4, boolean par5) {
+	public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5) {
 		checkIDd(par1ItemStack);
 	}
 	
@@ -53,7 +58,10 @@ public class ItemKey extends Item {
 	
 	@Override
 	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List lst, boolean par4) {
-		lst.add("Id: " + EnumChatFormatting.WHITE + StackUtils.getTag(par1ItemStack, (EnumChatFormatting.DARK_RED.toString() + EnumChatFormatting.ITALIC.toString() + "Invalid"), "key_id"));
+		int key_id = StackUtils.getTag(par1ItemStack, -1, "key_id");
+		if (key_id > -1) {
+			lst.add("Id: " + EnumChatFormatting.WHITE + key_id);
+		}
 	}
 	
 	@Override

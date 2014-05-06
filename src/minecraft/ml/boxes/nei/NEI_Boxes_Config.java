@@ -147,8 +147,8 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 			Minecraft mc = Minecraft.getMinecraft();
 			if (ContentTipHandler.openTip != null) {
 				ContentTipHandler.renderContentTip(mc, mousex, mousey, 0);
-				hideTips = ContentTipHandler.openTip.getStackAtPosition(mousex, mousey) == null;
 			}
+			hideTips = ContentTipHandler.openTip != null && ContentTipHandler.openTip.getStackAtPosition(mousex, mousey) == null;
 		}
 
 		@Override

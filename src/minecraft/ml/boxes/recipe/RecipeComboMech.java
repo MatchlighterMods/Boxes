@@ -6,7 +6,6 @@ import ml.core.item.recipe.CRecipeShapedBase.AutoNEI;
 import ml.core.item.recipe.ShapedRecipe;
 import ml.core.util.DyeUtils;
 import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
@@ -14,8 +13,8 @@ import net.minecraft.nbt.NBTTagCompound;
 @AutoNEI
 public class RecipeComboMech extends ShapedRecipe implements IRecipe {
 
-	public RecipeComboMech() {
-		super(new ItemStack(Registry.itemMechCombination), "iii", "ddd", "iii", 'i', Item.ingotIron, 'd', DyeUtils.getAllDyeStacks());
+	public RecipeComboMech(Object... recipe) {
+		super(new ItemStack(Registry.itemMechCombination), recipe);
 	}
 
 	@Override
