@@ -14,6 +14,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.relauncher.Side;
 
 public class CommonProxy extends MLGuiHandler {
@@ -35,7 +36,9 @@ public class CommonProxy extends MLGuiHandler {
 		return null;
 	}
 	
-	public void load(){}
+	public void load(){
+		MinecraftForge.EVENT_BUS.register(this);
+	}
 	
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world,

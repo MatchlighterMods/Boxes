@@ -12,15 +12,19 @@ import ml.boxes.client.render.tile.DisplayCaseTESR;
 import ml.boxes.client.render.tile.SafeTESR;
 import ml.boxes.inventory.ContainerBox;
 import ml.boxes.inventory.ContainerDisplayCase;
+import ml.boxes.inventory.ContentTipManager;
 import ml.boxes.tile.TileEntityBox;
 import ml.boxes.tile.TileEntityCrate;
 import ml.boxes.tile.TileEntityDisplayCase;
 import ml.boxes.tile.TileEntitySafe;
 import ml.core.texture.maps.BasicCustomTextureMap;
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.client.event.GuiOpenEvent;
+import net.minecraftforge.event.ForgeSubscribe;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
@@ -62,6 +66,16 @@ public class ClientProxy extends CommonProxy {
 		RenderingRegistry.registerBlockHandler(Registry.MetaBlockRenderID, new BoxesBlockRenderer());
 		
 		BasicCustomTextureMap.GUI.addProvider(new Icons());
+		super.load();
+	}
+	
+	@ForgeSubscribe
+	public void guiOpened(GuiOpenEvent evt) {
+		if (evt.gui instanceof GuiContainer) {
+			ContentTipManager.instance = new ContentTipManager((GuiContainer)evt.gui);
+		} else {
+			ContentTipManager.instance = null;
+		}
 	}
 	
 }

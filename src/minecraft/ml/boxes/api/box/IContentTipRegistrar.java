@@ -1,10 +1,10 @@
 package ml.boxes.api.box;
 
-import net.minecraft.inventory.Slot;
 import ml.boxes.inventory.ContentTip;
+import net.minecraft.inventory.Slot;
 
 public interface IContentTipRegistrar {
 
-	public boolean registerContentTip(Slot owningSlot, ContentTip tip);
+	public boolean registerContentTip(Slot slot, ContentTip tip);
 	
 }
