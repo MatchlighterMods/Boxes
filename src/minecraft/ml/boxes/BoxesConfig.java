@@ -28,7 +28,7 @@ public class BoxesConfig extends Config {
 	};
 	
 	public @Prop(comment="Setting this to false will ignore the blacklist option and use the default list.") boolean boxes_blacklistCustom = false;
-	public @Prop(comment="Java class names for items that will be disallowed in boxes. Delete to restore default.") String[] boxes_blacklist = defaultClassBlacklist;
+	public @Prop(comment="Java class names for items that will be disallowed in boxes. Delete to restore/update default.") String[] boxes_blacklist = defaultClassBlacklist;
 	
 	@Category("boxes.appearance")
 	public @Prop(comment="When set to true, boxes will render like a map when opened in hand") boolean enableMapStyleRendering = true;
