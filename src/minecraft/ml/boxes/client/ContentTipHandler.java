@@ -1,6 +1,8 @@
 package ml.boxes.client;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.List;
 
 import ml.boxes.Boxes;
 import ml.boxes.Registry;
@@ -16,7 +18,9 @@ import ml.core.vec.Vector2i;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.inventory.InventoryCraftResult;
 import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.SlotCrafting;
 
 import org.lwjgl.opengl.GL11;
 
@@ -30,6 +34,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ContentTipHandler implements ITickHandler {
 
+	public static List<String> inventoryBlacklist = new ArrayList<String>();
+	static {
+		//inventoryBlacklist.add(InventoryCrafting.class.getName());
+		inventoryBlacklist.add(InventoryCraftResult.class.getName());
+	}
+	
 	public static ContentTip openTip;
 	
 	private static Slot hoverSlot;
@@ -125,7 +135,9 @@ public class ContentTipHandler implements ITickHandler {
 	}
 	
 	public static boolean canBeInteractive(Minecraft mc){
-		return (Boxes.neiInstalled && GuiScreen.isShiftKeyDown()); // && hoverSlot.inventory instanceof InventoryPlayer);
+		return (Boxes.neiInstalled && GuiScreen.isShiftKeyDown() &&
+				!inventoryBlacklist.contains(hoverSlot.inventory.getClass().getName()) &&
+				!(hoverSlot instanceof SlotCrafting) ); // && hoverSlot.inventory instanceof InventoryPlayer);
 	}
 
 	private static ItemBoxContainer getItemIBox(){
