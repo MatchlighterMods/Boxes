@@ -164,10 +164,13 @@ public class TileEntityCrate extends TileEntity implements ISidedInventory, IRot
 		testTriggerPacket();
 	}
 
+	private int ticks=0;
 	@Override
 	public void updateEntity() {
+		ticks++;
+		ticks %= 20;
 		if (!worldObj.isRemote){
-			consolidateStacks();
+			if (ticks == 0) consolidateStacks();
 		} else {
 			
 		}
