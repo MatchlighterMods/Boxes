@@ -89,11 +89,7 @@ public abstract class ContentTip {
 		renderBackground(mc, mx, my);
 
 		if (renderContents){
-			if (interacting){
-				renderIteractable(mc, mx, my);
-			} else {
-				renderPreview(mc, mx, my);
-			}
+			renderForeground(mc, mx, my);
 		}
 
 		GL11.glEnable(GL11.GL_LIGHTING);
@@ -101,13 +97,10 @@ public abstract class ContentTip {
 	}
 
 	@SideOnly(Side.CLIENT)
-	protected abstract void renderPreview(Minecraft mc, int mx, int my);
-
-	@SideOnly(Side.CLIENT)
-	protected abstract void renderIteractable(Minecraft mc, int mx, int my);
-
-	@SideOnly(Side.CLIENT)
 	protected abstract void renderBackground(Minecraft mc, int mx, int my);
+	
+	@SideOnly(Side.CLIENT)
+	protected abstract void renderForeground(Minecraft mc, int mx, int my);
 
 	@SideOnly(Side.CLIENT)
 	public boolean handleMouseClick(int mx, int my, int btn){

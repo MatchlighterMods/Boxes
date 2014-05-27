@@ -94,12 +94,12 @@ public class CrateTESR extends TileEntitySpecialRenderer {
 	
 					GL11.glDisable(GL11.GL_TEXTURE_2D);
 					tessellator.startDrawingQuads();
-					int j = fr.getStringWidth(tec.contentString) / 2;
+					float j = fr.getStringWidth(tec.contentString) / 2F;
 					tessellator.setColorRGBA_F(0.0F, 0.0F, 0.0F, 0.5F);
 					tessellator.addVertex((double)(-j - 1), (double)(-1 + b0), 0.0D);
 					tessellator.addVertex((double)(-j - 1), (double)(8 + b0), 0.0D);
-					tessellator.addVertex((double)(j + 1), (double)(8 + b0), 0.0D);
-					tessellator.addVertex((double)(j + 1), (double)(-1 + b0), 0.0D);
+					tessellator.addVertex((double)(j), (double)(8 + b0), 0.0D);
+					tessellator.addVertex((double)(j), (double)(-1 + b0), 0.0D);
 					tessellator.draw();
 					GL11.glEnable(GL11.GL_TEXTURE_2D);
 					fr.drawString(tec.contentString, -fr.getStringWidth(tec.contentString) / 2, b0, 553648127);

@@ -28,49 +28,55 @@ public class GridContentTip extends ContentTip {
 		
 	}
 
-	@Override
-	protected void renderPreview(Minecraft mc, int mx, int my) {
-		for (int i=0; i<contentStacks.size(); i++){
-			int col = i%gridDimensions.x;
-			int row = i/gridDimensions.x;
-
-			int slotX = 8+col*18;
-			int slotY = 10+row*18;
-			
-			ItemStack is = contentStacks.get(i);
-			GuiRenderUtils.drawSpecialStackAt(mc, slotX, slotY, is, is.stackSize> 1 ? StringUtils.toGroupedString(is.stackSize,1) : "");
-		}
-	}
-
-	@Override
-	protected void renderIteractable(Minecraft mc, int mx, int my) {
-		for (int i=0; i<contentStacks.size(); i++){
-			int col = i%gridDimensions.x;
-			int row = i/gridDimensions.x;
-
-			int slotX = 8+col*18;
-			int slotY = 10+row*18;
-
-			ItemStack is = contentStacks.get(i);
-			mc.getTextureManager().bindTexture(tipBgRes);
-			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			GuiRenderUtils.drawTexturedModalRect(slotX-1, slotY-1, 0, 106, 18, 18);
-
-			GuiRenderUtils.drawStackAt(mc, slotX, slotY, is);
-
-			GL11.glDisable(GL11.GL_LIGHTING);
-			if (GeoMath.pointInRect(mx - tipBounds.xCoord, my - tipBounds.yCoord, slotX, slotY, 16, 16)){
-				GL11.glDisable(GL11.GL_DEPTH_TEST);
-				GuiRenderUtils.drawGradientRect(slotX, slotY, slotX + 16, slotY + 16, -2130706433, -2130706433);
-				GL11.glEnable(GL11.GL_DEPTH_TEST);
-			}
-		}
-	}
+//	@Override
+//	protected void renderPreview(Minecraft mc, int mx, int my) {
+//		for (int i=0; i<contentStacks.size(); i++){
+//			int col = i%gridDimensions.x;
+//			int row = i/gridDimensions.x;
+//
+//			int slotX = 8+col*18;
+//			int slotY = 10+row*18;
+//			
+//			ItemStack is = contentStacks.get(i);
+//			GuiRenderUtils.drawSpecialStackAt(mc, slotX, slotY, is, is.stackSize> 1 ? StringUtils.toGroupedString(is.stackSize,1) : "");
+//		}
+//	}
+//
+//	@Override
+//	protected void renderIteractable(Minecraft mc, int mx, int my) {
+//		for (int i=0; i<contentStacks.size(); i++){
+//			int col = i%gridDimensions.x;
+//			int row = i/gridDimensions.x;
+//
+//			int slotX = 8+col*18;
+//			int slotY = 10+row*18;
+//
+//			ItemStack is = contentStacks.get(i);
+//			mc.getTextureManager().bindTexture(tipBgRes);
+//			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+//			GuiRenderUtils.drawTexturedModalRect(slotX-1, slotY-1, 0, 106, 18, 18);
+//
+//			GuiRenderUtils.drawStackAt(mc, slotX, slotY, is);
+//
+//			GL11.glDisable(GL11.GL_LIGHTING);
+//			if (GeoMath.pointInRect(mx - tipBounds.xCoord, my - tipBounds.yCoord, slotX, slotY, 16, 16)){
+//				GL11.glDisable(GL11.GL_DEPTH_TEST);
+//				GuiRenderUtils.drawGradientRect(slotX, slotY, slotX + 16, slotY + 16, -2130706433, -2130706433);
+//				GL11.glEnable(GL11.GL_DEPTH_TEST);
+//			}
+//		}
+//	}
 	
 	@Override
 	protected void renderBackground(Minecraft mc, int mx, int my) {
 		mc.getTextureManager().bindTexture(tipBgRes);
 		GuiRenderUtils.drawSlicedRect(0, 0, tipBounds.width, tipBounds.height, 0, 0, 178, 106, 9, 9, 7, 7);
+	}
+	
+	@Override
+	protected void renderForeground(Minecraft mc, int mx, int my) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	@Override

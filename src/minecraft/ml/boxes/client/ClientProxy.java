@@ -66,6 +66,7 @@ public class ClientProxy extends CommonProxy {
 		RenderingRegistry.registerBlockHandler(Registry.MetaBlockRenderID, new BoxesBlockRenderer());
 		
 		BasicCustomTextureMap.GUI.addProvider(new Icons());
+		
 		super.load();
 	}
 	
@@ -77,5 +78,7 @@ public class ClientProxy extends CommonProxy {
 			ContentTipManager.instance = null;
 		}
 	}
+	
+	
 	
 }

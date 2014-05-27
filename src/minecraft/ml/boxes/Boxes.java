@@ -2,6 +2,7 @@ package ml.boxes;
 
 import ml.boxes.api.ContentBlacklist;
 import ml.boxes.integ.BoxesReflectionBlacklist;
+import ml.core.vec.Matrix;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.WeightedRandomChestContent;
