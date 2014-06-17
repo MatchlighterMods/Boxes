@@ -45,6 +45,7 @@ public class TileEntityCrate extends TileEntity implements ISidedInventory, IRot
 	}
 
 	public void sendPacket(){
+		if (!sentFirstPacket) return;
 		PacketDispatcher.sendPacketToAllInDimension(getDescriptionPacket(), worldObj.provider.dimensionId);
 	}
 	
@@ -75,8 +76,10 @@ public class TileEntityCrate extends TileEntity implements ISidedInventory, IRot
 		}
 	}
 
+	private boolean sentFirstPacket = false;
 	@Override
 	public Packet getDescriptionPacket() {
+		sentFirstPacket = true;
 		return new PacketDescribeCrate(this).convertToPkt250();
 	}
 
