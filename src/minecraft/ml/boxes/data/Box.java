@@ -5,7 +5,7 @@ import java.util.List;
 
 import ml.boxes.api.ContentBlacklist;
 import ml.boxes.api.box.IBoxContainer;
-import ml.boxes.inventory.ContentTip;
+import ml.boxes.api.box.IContentTip;
 import ml.boxes.inventory.GridContentTip;
 import ml.boxes.item.ItemBox;
 import ml.core.vec.Rectangle;
@@ -178,16 +178,8 @@ public class Box implements IInventory {
 	@Override
 	public void closeChest() {}
 
-	public ContentTip createContentTip(Slot bSlot, Rectangle guiBounds){
+	public IContentTip createContentTip(Slot bSlot, Rectangle guiBounds){
 		return new GridContentTip(bSlot, guiBounds);
-	}
-
-	public boolean canOpenContentTip(){
-		return true;
-	}
-
-	public boolean canOpenContentPreview(){
-		return getContainedItemStacks().size() > 0;
 	}
 
 	public static class BoxSlot extends Slot {

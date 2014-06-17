@@ -2,10 +2,9 @@ package ml.boxes.nei;
 
 import ml.boxes.Boxes;
 import ml.boxes.Registry;
+import ml.boxes.api.box.IContentTip;
 import ml.boxes.block.MetaType;
-import ml.boxes.client.ContentTipHandler;
-import ml.core.vec.Rectangle;
-import net.minecraft.client.Minecraft;
+import ml.boxes.inventory.ContentTipManager;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -58,8 +57,10 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 
 		@Override
 		public boolean keyTyped(GuiContainer gui, char keyChar, int keyCode) {
-			if (ContentTipHandler.openTip != null){
-				return ContentTipHandler.openTip.handleKeyPress(keyChar, keyCode);
+			if (ContentTipManager.instance != null) {
+				for (IContentTip tip : ContentTipManager.instance.contentTips.values()) {
+					if (tip.handleKeyPress(keyChar, keyCode)) return true;
+				}
 			}
 			return false;
 		}
@@ -75,10 +76,11 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 		}
 
 		@Override
-		public boolean mouseClicked(GuiContainer gui, int mousex, int mousey,
-				int button) {
-			if (ContentTipHandler.revalidateCurrentTip(mousex, mousey)){
-				return ContentTipHandler.openTip.handleMouseClick(mousex, mousey, button);
+		public boolean mouseClicked(GuiContainer gui, int mousex, int mousey, int button) {
+			if (ContentTipManager.instance != null) {
+				for (IContentTip tip : ContentTipManager.instance.contentTips.values()) {
+					if (tip.handleMouseClick(mousex, mousey, button)) return true;
+				}
 			}
 			return false;
 		}
@@ -118,24 +120,27 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 		@Override
 		public void load(GuiContainer gui) {}
 
-		private boolean hideTips = false;
+		private boolean hideToolTips = false;
 		@Override
 		public ItemStack getStackUnderMouse(GuiContainer gui, int mousex, int mousey) {
-
-			if (ContentTipHandler.revalidateCurrentTip(mousex, mousey)){
-				return ContentTipHandler.openTip.getStackAtPosition(mousex, mousey);
+			if (ContentTipManager.instance != null) {
+				IContentTip ict = ContentTipManager.instance.getTipAt(mousex, mousey, false);
+				if (ict != null) return ict.getStackAtPosition(mousex, mousey);
 			}
 			return null;
 		}
 
 		@Override
 		public boolean objectUnderMouse(GuiContainer gui, int mousex, int mousey) {
-			return ContentTipHandler.openTip != null && ContentTipHandler.openTip.isPointInTip(mousex, mousey);
+			if (ContentTipManager.instance != null) {
+				return ContentTipManager.instance.getTipAt(mousex, mousey, false) != null;
+			}
+			return false;
 		}
 
 		@Override
 		public boolean shouldShowTooltip(GuiContainer gui) {
-			return !hideTips;
+			return !hideToolTips;
 		}
 
 		//IContainerDrawHandler
@@ -144,11 +149,8 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 
 		@Override
 		public void renderObjects(GuiContainer gui, int mousex, int mousey) {
-			Minecraft mc = Minecraft.getMinecraft();
-			if (ContentTipHandler.openTip != null) {
-				ContentTipHandler.renderContentTip(mc, mousex, mousey, 0);
-			}
-			hideTips = ContentTipHandler.openTip != null && ContentTipHandler.openTip.getStackAtPosition(mousex, mousey) == null;
+			if (ContentTipManager.instance != null) ContentTipManager.instance.doRender(mousex, mousey);
+			hideToolTips = getStackUnderMouse(gui, mousex, mousex) == null;
 		}
 
 		@Override
@@ -162,9 +164,7 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 
 		@Override
 		public boolean hideItemPanelSlot(GuiContainer gui, int x, int y, int w, int h) {
-			if (ContentTipHandler.openTip != null) {
-				return ContentTipHandler.openTip.tipBounds.intersects(new Rectangle(x, y, w, h));
-			}
+			// TODO
 			return false;
 		}
 	}

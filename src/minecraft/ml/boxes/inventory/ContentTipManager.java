@@ -1,10 +1,14 @@
 package ml.boxes.inventory;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import ml.boxes.api.box.IContentTip;
+import ml.boxes.api.box.IContentTipProvider;
 import ml.boxes.api.box.IContentTipRegistrar;
 import ml.core.vec.Rectangle;
 import net.minecraft.client.Minecraft;
@@ -24,7 +28,8 @@ public class ContentTipManager implements IContentTipRegistrar {
 	public Rectangle guiBounds = new Rectangle(0, 0, 0, 0); 
 	public static ContentTipManager instance;
 
-	public final Multimap<Slot, ContentTip> contentTips = HashMultimap.create();
+	public final Multimap<Slot, IContentTip> contentTips = HashMultimap.create();
+	public final ArrayList<IContentTip> tipZOrder = new ArrayList<IContentTip>();
 	public final Map<Slot, ItemStack> slotStacks = new HashMap<Slot, ItemStack>(); //Used for detecting changes and causing revalidation
 	
 	public ContentTipManager(GuiContainer gc) {
@@ -32,10 +37,20 @@ public class ContentTipManager implements IContentTipRegistrar {
 	}
 	
 	@Override
-	public boolean registerContentTip(Slot slot, ContentTip tip) {
+	public boolean registerContentTip(Slot slot, IContentTip tip) {
 		return contentTips.put(slot, tip);
 	}
+	
+	@Override
+	public Collection<IContentTip> getTipsForSlot(Slot slot) {
+		return contentTips.get(slot);
+	}
 
+	@Override
+	public GuiContainer getGuiContainer() {
+		return gContainer;
+	}
+	
 	public void discoverTipProviders() {
 		try { //There is room for _something_ to go wrong in here, so probably better safe than crashing the game.
 			for (int index=0; index < gContainer.inventorySlots.inventorySlots.size(); index++) {
@@ -43,7 +58,9 @@ public class ContentTipManager implements IContentTipRegistrar {
 				ItemStack stack = slot.getStack();
 				if (stack != null && slotStacks.get(slot) != stack) {
 					slotStacks.put(slot, stack);
-					//TODO Create Tips
+					if (stack.getItem() instanceof IContentTipProvider) { // TODO Prevent opening the tip of the current box
+						((IContentTipProvider)stack.getItem()).createContentTips(stack, contentTips.get(slot), this);
+					}
 				}
 			}
 		} catch (Exception ex) {
@@ -56,10 +73,14 @@ public class ContentTipManager implements IContentTipRegistrar {
 			instance = null;
 			return false;
 		} else {
-			Iterator<Map.Entry<Slot, ContentTip>> i = contentTips.entries().iterator();
+			Iterator<Map.Entry<Slot, IContentTip>> i = contentTips.entries().iterator();
 			while (i.hasNext()) {
-				Entry<Slot, ContentTip> entry = i.next();
-				if (entry.getKey().getStack() != slotStacks.get(entry.getKey()) || !entry.getValue().revalidate(0, 0)) {
+				Entry<Slot, IContentTip> entry = i.next();
+				if (!gContainer.inventorySlots.inventorySlots.contains(entry.getKey()) ||
+						entry.getKey().getStack() == null ||
+						entry.getKey().getStack() != slotStacks.get(entry.getKey()) ||
+						!entry.getValue().revalidate(0, 0)) {
+					
 					i.remove();
 					slotStacks.remove(entry.getKey());
 				}
@@ -81,7 +102,7 @@ public class ContentTipManager implements IContentTipRegistrar {
 			guiBounds.xCoord = (gContainer.width - guiXSize) / 2;
 			guiBounds.yCoord = (gContainer.height - guiYSize) / 2;
 			
-			for (ContentTip ct : contentTips.values()) {
+			for (IContentTip ct : contentTips.values()) {
 				ct.tick(mc);
 			}
 		}
@@ -90,9 +111,36 @@ public class ContentTipManager implements IContentTipRegistrar {
 	public void doRender(int mousex, int mousey) {
 		Minecraft mc = FMLClientHandler.instance().getClient();
 		if (revalidateTips()) {
-			for (ContentTip ct : contentTips.values()) {
+			for (IContentTip ct : contentTips.values()) {
 				ct.renderTick(mc, mousex, mousey);
 			}
 		}
 	}
+	
+	public IContentTip getTipAt(int x, int y, boolean updateZ) {
+		for (IContentTip ict : contentTips.values()) {
+			if (!tipZOrder.contains(ict)) tipZOrder.add(ict);
+		}
+		for (int i=tipZOrder.size()-1; i>=0; i--) {
+			IContentTip ict = tipZOrder.get(i);
+			if (ict.isPointInside(x, y)) {
+				if (updateZ) {
+					tipZOrder.remove(ict);
+					tipZOrder.add(ict);
+				}
+				return ict;
+			}
+		}
+		return null;
+	}
+	
+//	Minecraft mc = FMLClientHandler.instance().getClient();
+//	if (mc.currentScreen instanceof GuiContainer){
+//		Vector2i m = GeoMath.getScaledMouse();
+//		GL11.glPushMatrix();
+//		GL11.glTranslatef(0F, 0F, 200F);
+//		renderContentTip(mc, m.x, m.y, (Float)tickData[0]);
+//		GL11.glPopMatrix();
+//	}
+	
 }

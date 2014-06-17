@@ -1,5 +1,6 @@
 package ml.boxes.inventory;
 
+import ml.boxes.api.box.IContentTip;
 import ml.boxes.data.Box;
 import ml.boxes.data.ItemBoxContainer;
 import ml.boxes.network.packets.PacketTipClick;
@@ -7,8 +8,6 @@ import ml.core.inventory.CustomSlotClick;
 import ml.core.vec.Rectangle;
 import ml.core.vec.Vector2i;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiContainerCreative;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
@@ -20,7 +19,7 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public abstract class ContentTip {
+public abstract class ContentTip implements IContentTip {
 
 	protected final Slot boxSlot;
 
@@ -31,7 +30,6 @@ public abstract class ContentTip {
 	protected Vector2i targetSize = new Vector2i(0, 0);
 
 	protected boolean renderContents;
-	public boolean interacting = false;
 
 	protected int mousex = 0;
 	protected int mousey = 0;
@@ -44,6 +42,7 @@ public abstract class ContentTip {
 		origStack = boxSlot.getStack();
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void tick(Minecraft mc){
 
@@ -75,6 +74,7 @@ public abstract class ContentTip {
 		}
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void renderTick(Minecraft mc, int mx, int my){
 		hvrSltIndex = getSlotAtPosition(mx, my);
@@ -102,10 +102,11 @@ public abstract class ContentTip {
 	@SideOnly(Side.CLIENT)
 	protected abstract void renderForeground(Minecraft mc, int mx, int my);
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public boolean handleMouseClick(int mx, int my, int btn){
 		Minecraft mc = FMLClientHandler.instance().getClient();
-		if (isPointInTip(mx, my)){
+		if (isPointInside(mx, my)){
 			if (btn == 2){
 				clientSlotClick(mc, hvrSltIndex, 0, 3, mc.thePlayer);
 			} else {
@@ -116,6 +117,7 @@ public abstract class ContentTip {
 		return false;
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public boolean handleKeyPress(char chr, int kc){
 		Minecraft mc = FMLClientHandler.instance().getClient();
@@ -147,14 +149,9 @@ public abstract class ContentTip {
 		return ret;
 	}
 
+	@Override
 	public boolean revalidate(int mx, int my){
-		GuiScreen oc = FMLClientHandler.instance().getClient().currentScreen;
-		return oc instanceof GuiContainer &&
-				((GuiContainer)oc).inventorySlots.inventorySlots.contains(boxSlot) &&
-				(boxSlot != null && (((GuiContainer)oc).getSlotAtPosition(mx, my)==boxSlot || //GeoMath.pointInRect(mx, my, gcBounds.xCoord + boxSlot.xDisplayPosition, gcBounds.yCoord + boxSlot.yDisplayPosition, 16, 16) 
-						(interacting && tipBounds.isPointInside(mx, my))) &&
-						boxSlot.getHasStack() && ItemStack.areItemStackTagsEqual(origStack, boxSlot.getStack())
-						) && (interacting || getIIB().getBox().canOpenContentPreview());
+		return true;
 	}
 
 	protected ItemBoxContainer getIIB(){
@@ -163,6 +160,7 @@ public abstract class ContentTip {
 
 	public abstract int getSlotAtPosition(int pX, int pY);
 
+	@Override
 	public ItemStack getStackAtPosition(int pX, int pY){
 		int sltNum = getSlotAtPosition(pX, pY);
 		Box bd = getIIB().getBox();
@@ -171,8 +169,8 @@ public abstract class ContentTip {
 		}
 		return null;
 	}
-
-	public boolean isPointInTip(int pX, int pY){
+	
+	public boolean isPointInside(int pX, int pY){
 		return tipBounds.isPointInside(pX, pY);
 	}
 
