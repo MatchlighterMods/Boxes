@@ -33,7 +33,7 @@ public class ItemBoxContainer implements IBoxContainer {
 	}
 
 	@Override
-	public void ejectItem(ItemStack is) {} //Should never be called
+	public void ejectItem(ItemStack is) {} // Should never be called
 
 	@Override
 	public boolean slotPreClick(ContainerBox cb, int slotNum, int mouseBtn, int action,

@@ -46,7 +46,7 @@ public class PacketTipClick extends MLPacket {
 			
 			if (isInSlot != null && isInSlot.getItem() instanceof ItemBox) {
 				ItemBoxContainer iib = new ItemBoxContainer(isInSlot);
-				ContentTip ctip = (ContentTip)iib.getBox().createContentTip(slotWithBox, null);
+				ContentTip ctip = (ContentTip)iib.getBox().createContentTip(null, slotWithBox, null);
 				
 				ctip.slotClick(boxInvSlot, arg, action, epl);
 			}

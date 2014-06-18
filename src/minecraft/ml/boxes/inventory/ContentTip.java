@@ -1,10 +1,12 @@
 package ml.boxes.inventory;
 
 import ml.boxes.api.box.IContentTip;
+import ml.boxes.api.box.IContentTipRegistrar;
 import ml.boxes.data.Box;
 import ml.boxes.data.ItemBoxContainer;
 import ml.boxes.network.packets.PacketTipClick;
 import ml.core.inventory.CustomSlotClick;
+import ml.core.vec.GeoMath;
 import ml.core.vec.Rectangle;
 import ml.core.vec.Vector2i;
 import net.minecraft.client.Minecraft;
@@ -30,22 +32,25 @@ public abstract class ContentTip implements IContentTip {
 	protected Vector2i targetSize = new Vector2i(0, 0);
 
 	protected boolean renderContents;
+	protected boolean inInteractMode;
 
 	protected int mousex = 0;
 	protected int mousey = 0;
+	
+	public final IContentTipRegistrar tipManager;
 
-	private ItemStack origStack;
-
-	public ContentTip(Slot slt, Rectangle gcRect) {
+	public ContentTip(IContentTipRegistrar man, Slot slt, Rectangle gcRect) {
 		boxSlot = slt;
 		gcBounds = gcRect;
-		origStack = boxSlot.getStack();
+		this.tipManager = man;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void tick(Minecraft mc){
-
+	public void tick(Minecraft mc) {
+		
+		if (!canBeOpen()) this.targetSize = new Vector2i(0, 0);
+		
 		renderContents = true;
 		if (targetSize.x != tipBounds.width || targetSize.y != tipBounds.height){
 			renderContents = false;
@@ -76,7 +81,7 @@ public abstract class ContentTip implements IContentTip {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void renderTick(Minecraft mc, int mx, int my){
+	public void renderTick(Minecraft mc, int mx, int my) {
 		hvrSltIndex = getSlotAtPosition(mx, my);
 		mousex = mx;
 		mousey = my;
@@ -150,7 +155,7 @@ public abstract class ContentTip implements IContentTip {
 	}
 
 	@Override
-	public boolean revalidate(int mx, int my){
+	public boolean revalidate(){
 		return true;
 	}
 
@@ -170,10 +175,22 @@ public abstract class ContentTip implements IContentTip {
 		return null;
 	}
 	
+	@Override
 	public boolean isPointInside(int pX, int pY){
 		return tipBounds.isPointInside(pX, pY);
 	}
-
+	
+	@Override
+	public boolean isVisible() {
+		return tipBounds.width > 0 && tipBounds.height > 0;
+	}
+	
+	public boolean canBeOpen() {
+		Vector2i mpos = GeoMath.getScaledMouse();
+		return (tipManager.getGuiContainer().getSlotAtPosition(mpos.x, mpos.y) == boxSlot ||
+				(inInteractMode && isPointInside(mpos.x, mpos.y)));
+	}
+	
 	CustomSlotClick csc = new CustomSlotClick() {
 		@Override
 		public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2) {
@@ -191,7 +208,6 @@ public abstract class ContentTip implements IContentTip {
 
 		ibox.saveData();
 		ibox.boxClose();
-		origStack = ibox.stack;
 
 		return itemstack;
 	}

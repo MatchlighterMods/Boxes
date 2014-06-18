@@ -2,6 +2,7 @@ package ml.boxes.inventory;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -20,7 +21,11 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
+import cpw.mods.fml.common.TickType;
+import cpw.mods.fml.common.registry.TickRegistry;
+import cpw.mods.fml.relauncher.Side;
 
 public class ContentTipManager implements IContentTipRegistrar {
 
@@ -59,12 +64,12 @@ public class ContentTipManager implements IContentTipRegistrar {
 				if (stack != null && slotStacks.get(slot) != stack) {
 					slotStacks.put(slot, stack);
 					if (stack.getItem() instanceof IContentTipProvider) { // TODO Prevent opening the tip of the current box
-						((IContentTipProvider)stack.getItem()).createContentTips(stack, contentTips.get(slot), this);
+						((IContentTipProvider)stack.getItem()).createContentTips(slot, stack, contentTips.get(slot), this);
 					}
 				}
 			}
 		} catch (Exception ex) {
-
+			ex.printStackTrace();
 		}
 	}
 
@@ -78,8 +83,10 @@ public class ContentTipManager implements IContentTipRegistrar {
 				Entry<Slot, IContentTip> entry = i.next();
 				if (!gContainer.inventorySlots.inventorySlots.contains(entry.getKey()) ||
 						entry.getKey().getStack() == null ||
-						entry.getKey().getStack() != slotStacks.get(entry.getKey()) ||
-						!entry.getValue().revalidate(0, 0)) {
+						!ItemStack.areItemStacksEqual(entry.getKey().getStack(), slotStacks.get(entry.getKey())) ||
+						!ItemStack.areItemStackTagsEqual(entry.getKey().getStack(), slotStacks.get(entry.getKey())) ||
+						//entry.getKey().getStack() != slotStacks.get(entry.getKey()) ||
+						!entry.getValue().revalidate()) {
 					
 					i.remove();
 					slotStacks.remove(entry.getKey());
@@ -112,7 +119,7 @@ public class ContentTipManager implements IContentTipRegistrar {
 		Minecraft mc = FMLClientHandler.instance().getClient();
 		if (revalidateTips()) {
 			for (IContentTip ct : contentTips.values()) {
-				ct.renderTick(mc, mousex, mousey);
+				if (ct.isVisible()) ct.renderTick(mc, mousex, mousey);
 			}
 		}
 	}
@@ -123,7 +130,7 @@ public class ContentTipManager implements IContentTipRegistrar {
 		}
 		for (int i=tipZOrder.size()-1; i>=0; i--) {
 			IContentTip ict = tipZOrder.get(i);
-			if (ict.isPointInside(x, y)) {
+			if (ict.isVisible() && ict.isPointInside(x, y)) {
 				if (updateZ) {
 					tipZOrder.remove(ict);
 					tipZOrder.add(ict);
@@ -132,6 +139,33 @@ public class ContentTipManager implements IContentTipRegistrar {
 			}
 		}
 		return null;
+	}
+	
+	public static class TickHandler implements ITickHandler {
+
+		@Override
+		public void tickStart(EnumSet<TickType> type, Object... tickData) {
+		}
+
+		@Override
+		public void tickEnd(EnumSet<TickType> type, Object... tickData) {
+			if (instance != null) instance.doTick();
+		}
+
+		@Override
+		public EnumSet<TickType> ticks() {
+			return EnumSet.of(TickType.CLIENT);
+		}
+
+		@Override
+		public String getLabel() {
+			return "ConententTips";
+		}
+		
+	}
+	
+	static {
+		TickRegistry.registerTickHandler(new TickHandler(), Side.CLIENT);
 	}
 	
 //	Minecraft mc = FMLClientHandler.instance().getClient();

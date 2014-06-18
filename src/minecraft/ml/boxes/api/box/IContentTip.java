@@ -19,10 +19,12 @@ public interface IContentTip {
 	@SideOnly(Side.CLIENT)
 	public boolean handleKeyPress(char chr, int kc);
 
-	public boolean revalidate(int mx, int my);
+	public boolean revalidate();
 
 	public ItemStack getStackAtPosition(int pX, int pY);
 	
 	public boolean isPointInside(int x, int y);
+	
+	public boolean isVisible();
 
 }

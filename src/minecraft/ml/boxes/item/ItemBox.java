@@ -10,11 +10,13 @@ import ml.boxes.api.box.IContentTipProvider;
 import ml.boxes.api.box.IContentTipRegistrar;
 import ml.boxes.data.Box;
 import ml.boxes.data.ItemBoxContainer;
+import ml.boxes.inventory.ContentTipManager;
 import ml.boxes.tile.TileEntityAbstractBox;
 import ml.core.PlayerUtils;
 import ml.core.util.StringUtils;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
@@ -133,7 +135,7 @@ public class ItemBox extends ItemBlock implements IContentTipProvider {
 	}
 
 	@Override
-	public void createContentTips(ItemStack is, Collection<IContentTip> tips, IContentTipRegistrar tipManager) {
-		// TODO
+	public void createContentTips(Slot slot, ItemStack is, Collection<IContentTip> tips, IContentTipRegistrar tipManager) {
+		tips.add((new ItemBoxContainer(is)).getBox().createContentTip(tipManager, slot, ((ContentTipManager)tipManager).guiBounds));
 	}
 }
