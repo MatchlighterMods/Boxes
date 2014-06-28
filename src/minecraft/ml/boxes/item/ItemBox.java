@@ -1,16 +1,22 @@
 package ml.boxes.item;
 
+import java.util.Collection;
 import java.util.List;
 
 import ml.boxes.Boxes;
 import ml.boxes.Registry;
+import ml.boxes.api.box.IContentTip;
+import ml.boxes.api.box.IContentTipProvider;
+import ml.boxes.api.box.IContentTipRegistrar;
 import ml.boxes.data.Box;
 import ml.boxes.data.ItemBoxContainer;
+import ml.boxes.inventory.ContentTipManager;
 import ml.boxes.tile.TileEntityAbstractBox;
 import ml.core.PlayerUtils;
 import ml.core.util.StringUtils;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
@@ -19,7 +25,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-public class ItemBox extends ItemBlock {
+public class ItemBox extends ItemBlock implements IContentTipProvider {
 
 	private int blockID;
 	
@@ -50,8 +56,7 @@ public class ItemBox extends ItemBlock {
 	}
 
 	@Override
-	public void addInformation(ItemStack par1ItemStack,
-			EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
+	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
 		// TODO Add information for the box
 		super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
 	}
@@ -127,5 +132,10 @@ public class ItemBox extends ItemBlock {
 	
 	public static String getColoredBoxName(int i){
 		return StringUtils.getLColorName(i) + " " + StatCollector.translateToLocal("item.box.name");
+	}
+
+	@Override
+	public void createContentTips(Slot slot, ItemStack is, Collection<IContentTip> tips, IContentTipRegistrar tipManager) {
+		tips.add((new ItemBoxContainer(is)).getBox().createContentTip(tipManager, slot, ((ContentTipManager)tipManager).guiBounds));
 	}
 }

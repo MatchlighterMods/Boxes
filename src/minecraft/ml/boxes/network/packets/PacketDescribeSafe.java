@@ -6,6 +6,7 @@ import ml.boxes.Boxes;
 import ml.boxes.tile.TileEntitySafe;
 import ml.boxes.tile.safe.MechRegistry;
 import ml.core.network.MLPacket;
+import ml.core.vec.BlockCoord;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.ForgeDirection;
@@ -14,7 +15,7 @@ import com.google.common.io.ByteArrayDataInput;
 
 public class PacketDescribeSafe extends MLPacket {
 	
-	public @data TileEntitySafe tes;
+	public @data BlockCoord teCoord;
 	public @data ForgeDirection facing;
 	public @data ForgeDirection linkDir;
 	
@@ -25,7 +26,7 @@ public class PacketDescribeSafe extends MLPacket {
 	public PacketDescribeSafe(TileEntitySafe tes) {
 		super(Boxes.netChannel);
 		
-		this.tes = tes;
+		this.teCoord = new BlockCoord(tes);
 		this.facing = tes.facing;
 		this.linkDir = tes.linkedDir;
 		
@@ -40,7 +41,7 @@ public class PacketDescribeSafe extends MLPacket {
 	
 	@Override
 	public void handleClientSide(EntityPlayer epl) throws IOException {
-
+		TileEntitySafe tes = (TileEntitySafe)teCoord.getTileEntity(epl.worldObj);
 		tes.facing = facing;
 		tes.linkedDir = linkDir;
 		

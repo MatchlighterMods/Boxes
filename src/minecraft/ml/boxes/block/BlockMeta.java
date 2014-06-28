@@ -212,8 +212,7 @@ public class BlockMeta extends BlockContainer {
 	}
 	
 	@Override
-	public void breakBlock(World par1World, int x, int y, int z,
-			int par5, int meta) {
+	public void breakBlock(World par1World, int x, int y, int z, int par5, int meta) {
 		
 		TileEntity te = par1World.getBlockTileEntity(x, y, z);
 		if (te instanceof IEventedTE){
