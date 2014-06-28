@@ -1,7 +1,5 @@
 package ml.boxes.inventory;
 
-import invtweaks.api.container.ChestContainer;
-
 import java.util.List;
 
 import ml.boxes.api.box.IBoxContainer;
@@ -12,7 +10,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-@ChestContainer
+//@ChestContainer
 public class ContainerBox extends Container {
 
 	public final IBoxContainer box;

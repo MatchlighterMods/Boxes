@@ -150,7 +150,7 @@ public class NEI_Boxes_Config implements IConfigureNEI {
 		@Override
 		public void renderObjects(GuiContainer gui, int mousex, int mousey) {
 			if (ContentTipManager.instance != null) ContentTipManager.instance.doRender(mousex, mousey);
-			hideToolTips = getStackUnderMouse(gui, mousex, mousex) == null;
+			hideToolTips = getStackUnderMouse(gui, mousex, mousex) == null && objectUnderMouse(gui, mousex, mousey);
 		}
 
 		@Override
