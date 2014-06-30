@@ -52,12 +52,11 @@ public class PacketDescribeSafe extends MLPacket {
 	}
 	
 	public static class PacketLockSafe extends MLPacket {
-		public @data TileEntitySafe tes;
+		public @data BlockCoord teCoord;
 		
 		public PacketLockSafe(TileEntitySafe tes) {
 			super("Boxes");
-			
-			this.tes = tes;
+			this.teCoord = new BlockCoord(tes);
 		}
 		
 		public PacketLockSafe(EntityPlayer pl, ByteArrayDataInput data) throws IOException {
@@ -66,7 +65,7 @@ public class PacketDescribeSafe extends MLPacket {
 		
 		@Override
 		public void handleServerSide(EntityPlayer epl) throws IOException {
-			tes.lock();
+			((TileEntitySafe)teCoord.getTileEntity(epl.worldObj)).lock();
 		}
 	}
 }

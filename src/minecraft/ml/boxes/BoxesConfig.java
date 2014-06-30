@@ -52,7 +52,7 @@ public class BoxesConfig extends Config {
 	//Safes
 	@Category(value="lockbox")
 	public @Prop() boolean lockbox_allowCrafting = true;
-	public @Prop(comment="Use steel for safes if it is available") boolean lockbox_useSteel = true;
+	public @Prop(comment="Use steel for safes if it is available") boolean lockbox_useSteel = false;
 	public @Prop() int keyItemID = 3001;
 	public @Prop() int keyMechanismItemID = 3002;
 	public @Prop() int comboMechanismItemID = 3003;
