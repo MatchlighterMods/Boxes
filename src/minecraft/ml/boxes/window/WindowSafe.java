@@ -81,7 +81,7 @@ public class WindowSafe extends Window {
 	}
 	
 	@Override
-	public void drawBackground() {
+	public void drawBackground(float partialTick) {
 		GL11.glTranslatef(this.getLocalPosition().x, this.getLocalPosition().y, 0);
 		
 		bindTexture(bgRes);
@@ -120,12 +120,12 @@ public class WindowSafe extends Window {
 		private Vector2i trg = new Vector2i(24,24);
 		@Override
 		public Vector2i getTargetSize() {
-			return trg.set(treeHasHover() ? 24+8+getGui().getMinecraft().fontRenderer.getStringWidth("Lock") : defaultSize, defaultSize);
+			return trg.set(treeHasHover() ? 24+8+getMC().fontRenderer.getStringWidth("Lock") : defaultSize, defaultSize);
 		}
 		
 		@Override
-		public void drawBackground() {
-			super.drawBackground();
+		public void drawBackground(float partialTick) {
+			super.drawBackground(partialTick);
 			bindTexture(BasicCustomTextureMap.GUI.resourceLoc);
 			GuiRenderUtils.drawTexturedModelRectFromIcon(3, 5, Icons.LOCK, 14, 14);
 			

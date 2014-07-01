@@ -90,7 +90,7 @@ public class WindowCombo extends Window {
 		
 		@Override
 		@SideOnly(Side.CLIENT)
-		public void drawBackground() {
+		public void drawBackground(float partialTick) {
 			bindStyleTexture("swatch");
 			int color = ItemDye.dyeColors[value];
 			
