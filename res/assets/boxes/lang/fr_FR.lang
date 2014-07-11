@@ -1,0 +1,18 @@
+itemGroup.boxes=Boîtes
+
+item.box.name=Boîte
+item.cardboard.name=Feuille de Carton
+block.safe.name=Lockbox
+item.key.name=Clé
+
+block.crate.name=Caisse
+item.label.name=Etiquette
+
+block.displaycase.name=Vitrine
+
+# Lockbox Mechanisms
+mechanism.combo.item.name=Lock de Combinaison
+mechanism.combo.name=Combinaison
+mechanism.key.item.name=Lock de Clé
+mechanism.key.name=Clé
+mechanism.invalid.name=Invalide
